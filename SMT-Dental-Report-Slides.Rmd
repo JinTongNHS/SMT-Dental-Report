@@ -7,6 +7,16 @@ output:
   ioslides_presentation: default
 fontsize: 9pt
 ---
+```{r include = FALSE}
+library(tidyverse)
+library(readxl)
+source("functions.R")
+slide4_UDA <- read_excel("data/slide4_UDA.xlsx")
+slide5_UDA <- read_excel("data/slide5_UDA.xlsx")
+slide6_UOA <- read_excel("data/slide6_UOA.xlsx")
+slide7_UOA <- read_excel("data/slide7_UOA.xlsx")
+slide8_data <- read_excel("data/slide8_data.xlsx")
+```
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
