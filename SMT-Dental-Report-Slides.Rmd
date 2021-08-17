@@ -50,11 +50,10 @@ scheduling period can be considered fixed.
 
 
 ## UDA activity data for 2021/2022
-
 ```{r echo = FALSE, warning = FALSE, fig.height=4}
 plot_UDA_UOA_to_target(slide4_UDA, "UDA")
-
 ```
+
 * This chart shows the average monthly performance of
 the 6851 GDS/PDS/PDS+ contracts (with annual contracted UDAs
 of greater than or equal to 100) measured against the minimum
@@ -70,6 +69,7 @@ they would reach 60% in September)
 ```{r echo = FALSE, warning = FALSE, fig.height=4}
 plot_cumulative_UDA_UOA_to_target(slide4_UDA, "UDA")
 ```
+
 * This chart shows the cumulative (Year-to-date) activity
 of the 6851 GDS/PDS/PDS+ contracts) measured against the
 expected monthly total activity to achieve the 60% threshold by
@@ -79,4 +79,83 @@ threshold.
 * From April to July 4282 contracts (62%) are at least two thirds
 towards delivering the 60% threshold.
 
+## UDA delivery July-20 to July-21
 
+```{r echo = FALSE, warning = FALSE, fig.height=4}
+plot_UDA_UOA_delivery(slide5_UDA, "UDA")
+```
+
+* This graph shows the average UDA delivery as a % of
+contracted activity when each month has been scaled up to
+12 months. The graph uses scheduled data to measure the
+activity
+* The table below shows the proportion of practices delivering
+between a certain % group of contracted UDA activity from
+July 2020 to July 2021 if performance for that
+month is annualised. As with the graph the table uses
+scheduled data.
+
+## UOA activity data for 2021/2022
+
+```{r echo = FALSE, warning = FALSE, fig.height=4}
+plot_UDA_UOA_to_target(slide6_UOA, "UOA")
+
+```
+
+* This chart shows the average monthly performance of
+the 757 GDS/PDS contracts (with annual contracted UDAs of
+greater than or equal to 100) measured against the minimum
+activity required (16.7%) to reach the 80% threshold by September
+* In the month of July 230 contracts (30%) achieved at least 16.7%
+towards their 80% threshold (if they achieved this each month then
+they would reach 80% in September)
+
+## UOA cumulative activity data for 2021/2022
+
+```{r echo = FALSE, warning = FALSE, fig.height=4}
+plot_cumulative_UDA_UOA_to_target(slide6_UOA, "UOA")
+
+```
+
+* This chart shows the cumulative (Year-to-date) average
+activity of the 757 GDS/PDS contracts) measured against the
+expected monthly activity to achieve the 80% threshold by
+September. The graph measures the total cumulative UOAs
+performed divided by the total expected activity of the 80%
+threshold.
+* From April to July 359 contracts (47%) are at least two thirds
+towards delivering the 80% threshold
+
+## UOA delivery July-20 to July-21
+
+```{r echo = FALSE, warning = FALSE, fig.height=4}
+plot_UDA_UOA_delivery(slide7_UOA, "UOA")
+```
+
+* This graph shows the average UOA delivery as a % of contracted
+activity when each month has been scaled up to 12 months. The
+graph uses scheduled data to measure the activity. 
+* The table below shows the proportion of practices delivering
+between a certain % group of contracted UOA activity from July
+2020 to July 2021 if performance for that month is annualised. As
+with the graph the table uses scheduled data. 
+
+## Time series of banded Courses of Treatment 2019-20 to 2021-22
+```{r echo = FALSE, warning = FALSE}
+plot_banded_CoT(slide8_data)
+```
+
+## Urgent treatment form submissions in July 2021 saw an increase from June 2021
+
+```{r echo = FALSE, warning = FALSE, fig.height=4}
+plot_urgent_form_submissions(slide8_data)
+```
+
+* This graph shows the number of urgent treatment forms
+declared per month from April to March in both
+2019/2020 and 2020/2021, and just for April to July in
+2021/2022. 
+* The urgent treatment form count in July 2021 was
+356,885, whilst in July 2019-20 this number was
+395,931, which is a 10% decrease from the pre-COVID
+world. 
