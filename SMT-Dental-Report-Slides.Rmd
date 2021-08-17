@@ -1,37 +1,82 @@
 ---
-title: "SMT-Dental-Report-Slides"
+title: "SMT Dental Data Pack"
 author: "NHS England and NHS Improvement"
 date: "16/08/2021"
 output:
   beamer_presentation: default
   ioslides_presentation: default
+fontsize: 9pt
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-## R Markdown
+## Contents
 
-This is an R Markdown presentation. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+#### Calendar data 2021/2022 (explanation slide 3)
+###### April to September data only:
+* UDA contracts achieving 60% (4)
+* UOA contracts achieving 80% (6)
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document.
+#### Scheduled data activity slides (explanation slide 3)
+* Total UDA activity scales up by 12 (5)
+* Total UOA activity scaled up by 12 (7)
+* Historic banded Courses of Treatment comparison (8)
+* Total urgent FP17 form count 2019/2020 to 2020/2021 (9)
 
-## Slide with Bullets
 
-- Bullet 1
-- Bullet 2
-- Bullet 3
+*Please Note: Slides 4 and 6 use calendar data as a measure of activity for the first half of the 2021-2022 year.*
+*Slides 5, 7 and 8-9 use scheduled data, as per previous SMT data packs.*
+*The scheduled data is from 16th June – 16th July and is fixed.*
 
-## Slide with R Output
+## Calendar data explanation
 
-```{r cars, echo = TRUE}
-summary(cars)
+* Slides 4 & 6 are based on calendar month data
+* Calendar data is based on courses of treatment completed within an entire month, for example 1st February to 28th Feb
+* For calendar data if a COT was completed in February but not declared till March, that activity would still be registered as
+occurring in February.
+* Calculation has changed from last month- rather than taking an average of all providers percentage activity to date, the activity %
+is now based on total number of UDA/Os delivered as a % of the total number of UDA/Os expected by September (60%/80%
+threshold).
+
+### Scheduled data explanation
+* Slides 5,7, 8 and 9 are based on scheduled data
+* The scheduling time period is usually between the 20th of one month and the 20th of the next month i.e., 21st April to the
+19th May. That means that any Mandatory contract COT completed after this period will not be included in the May
+scheduled data. However, if for example a COT was completed on May 1st, but reported to the BSA after the end of the
+reporting period (April 21st – May 19th), that activity would go into the following scheduled period. As a result, the
+scheduling period can be considered fixed.
+
+
+## UDA activity data for 2021/2022
+
+```{r echo = FALSE, warning = FALSE, fig.height=4}
+plot_UDA_UOA_to_target(slide4_UDA, "UDA")
+
 ```
+* This chart shows the average monthly performance of
+the 6851 GDS/PDS/PDS+ contracts (with annual contracted UDAs
+of greater than or equal to 100) measured against the minimum
+activity required (16.7%) to reach the 60% threshold by
+September. 
+* In the month of July 3089 contracts (45%) achieved at least 16.7%
+towards their 60% threshold (if they achieved this each month then
+they would reach 60% in September)
 
-## Slide with Plot
 
-```{r pressure}
-plot(pressure)
+## UDA cumulative activity data for 2021/2022
+
+```{r echo = FALSE, warning = FALSE, fig.height=4}
+plot_cumulative_UDA_UOA_to_target(slide4_UDA, "UDA")
 ```
+* This chart shows the cumulative (Year-to-date) activity
+of the 6851 GDS/PDS/PDS+ contracts) measured against the
+expected monthly total activity to achieve the 60% threshold by
+September. The graph measures the total cumulative UDAs
+performed divided by the total expected activity of the 60%
+threshold.
+* From April to July 4282 contracts (62%) are at least two thirds
+towards delivering the 60% threshold.
+
 
