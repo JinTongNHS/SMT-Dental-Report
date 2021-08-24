@@ -1,12 +1,17 @@
 ---
-title: "SMT Dental Data Pack"
-author: "NHS England and NHS Improvement"
-date: "16/08/2021"
+title: |
+  ![](logo.jpg){width=1in}  
+  SMT Dental Data Report 
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+author: |
+  ![](footer.jpg){width=4in}
 output:
-  beamer_presentation: default
-  ioslides_presentation: default
+  beamer_presentation:
+    latex_engine: xelatex
+sansfont: Calibri Light
 fontsize: 9pt
 ---
+
 ```{r include = FALSE}
 library(tidyverse)
 library(readxl)
@@ -22,7 +27,7 @@ slide8_data <- read_excel("data/slide8_data.xlsx")
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-## Contents
+## Contents {data-background="slide-backgrounds\NHS_cover_background.JPG"}
 
 #### Calendar data 2021/2022 (explanation slide 3)
 ###### April to September data only:
@@ -33,14 +38,13 @@ knitr::opts_chunk$set(echo = FALSE)
 * Total UDA activity scales up by 12 (5)
 * Total UOA activity scaled up by 12 (7)
 * Historic banded Courses of Treatment comparison (8)
-* Total urgent FP17 form count 2019/2020 to 2020/2021 (9)
-
+* Total urgent FP17 form count 2019/2020 to 2020/2021 (9)  
 
 *Please Note: Slides 4 and 6 use calendar data as a measure of activity for the first half of the 2021-2022 year.*
 *Slides 5, 7 and 8-9 use scheduled data, as per previous SMT data packs.*
 *The scheduled data is from 16th June – 16th July and is fixed.*
 
-## Calendar data explanation
+## Calendar data explanation {data-background="slide-backgrounds\NHS_background.JPG"}
 
 * Slides 4 & 6 are based on calendar month data
 * Calendar data is based on courses of treatment completed within an entire month, for example 1st February to 28th Feb
