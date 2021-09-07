@@ -4,9 +4,10 @@
 format_activity_data <- function(data, septemberTarget){
   
   #get data into the right format to plot
+  #annual_contracted_UDA_UOA/2 to get 6 month target
   data <- data %>%
     mutate(month = as.Date(month)) %>%
-    mutate(target_UDA_UOAs_delivered_by_sept = annual_contracted_UDA_UOA * septemberTarget / 100) %>%
+    mutate(target_UDA_UOAs_delivered_by_sept = (annual_contracted_UDA_UOA/2) * septemberTarget / 100) %>%
     mutate(perc_of_UDA_UOA_target_delivered = monthly_UDA_UOAs_delivered * 100 / target_UDA_UOAs_delivered_by_sept) %>%
     mutate(perc_of_UDA_UOA_target_delivered = round(perc_of_UDA_UOA_target_delivered, 1))
 }
