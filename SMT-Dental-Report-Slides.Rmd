@@ -68,6 +68,10 @@ scheduling period can be considered fixed.
 plot_UDA_UOA_to_target(slide4_UDA, "UDA")
 ```
 
+<!-- ```{r echo = FALSE, warning = FALSE, fig.height=4} -->
+<!-- plot_UDA_UOA_to_target(get_into_slide4_format_calendar(dental_data_combined_calendar, remove_prototypes = T), "UDA") -->
+<!-- ``` -->
+
 * This chart shows the average monthly performance of
 the 6851 GDS/PDS/PDS+ contracts (with annual contracted UDAs
 of greater than or equal to 100) measured against the minimum
@@ -84,6 +88,10 @@ they would reach 60% in September)
 plot_cumulative_UDA_UOA_to_target(slide4_UDA, "UDA")
 ```
 
+<!-- ```{r echo = FALSE, warning = FALSE, fig.height=4} -->
+<!-- plot_cumulative_UDA_UOA_to_target(get_into_slide4_format_calendar(dental_data_combined_calendar, remove_prototypes = T), "UDA") -->
+<!-- ``` -->
+
 * This chart shows the cumulative (Year-to-date) activity
 of the 6851 GDS/PDS/PDS+ contracts) measured against the
 expected monthly total activity to achieve the 60% threshold by
@@ -98,6 +106,7 @@ towards delivering the 60% threshold.
 ```{r echo = FALSE, warning = FALSE, fig.height=4}
 plot_UDA_UOA_delivery(slide5_UDA, "UDA")
 ```
+<!-- get_slide4_table(remove_prototypes = F) -->
 
 * This graph shows the average UDA delivery as a % of
 contracted activity when each month has been scaled up to
@@ -130,6 +139,8 @@ they would reach 80% in September)
 plot_cumulative_UDA_UOA_to_target(slide6_UOA, "UOA")
 
 ```
+
+<!-- plot_cumulative_UDA_UOA_to_target(data = get_into_slide6_format_calendar(remove_prototypes = F), "UOA") -->
 
 * This chart shows the cumulative (Year-to-date) average
 activity of the 757 GDS/PDS contracts) measured against the
