@@ -1,0 +1,222 @@
+---
+title: "Dental Health Inequalities"
+author: "NHS England and NHS Improvement"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: 
+  powerpoint_presentation
+---
+
+
+```{r include = FALSE}
+library(tidyverse)
+library(readxl)
+source("health_inequalities_functions.R")
+monthly_HE <- readRDS("~/R-Projects/SMT-Dental-Report/data/health_inequalities_data/monthly_HE.rds")
+child_band2_FV <- readRDS("~/R-Projects/SMT-Dental-Report/data/health_inequalities_data/child_band2_FV.rds")
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## National Level
+
+## Band 2 courses of treatment ncompared to FV rates for 3-16 year olds
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_child_band2_FV()
+```
+
+## Total FP17s by ethnic group
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_ethnicity(band = total_FP17, band_name = "Total", numOrPerc = "num", level = "National")
+```
+
+## Banded FP17s by ethnic group
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_ethnicity(band = band1, band_name = "Band 1", numOrPerc = "num", level = "National")
+```
+
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_ethnicity(band = band2, band_name = "Band 2", numOrPerc = "num", level = "National")
+```
+
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_ethnicity(band = band3, band_name = "Band 3", numOrPerc = "num", level = "National")
+```
+
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_ethnicity(band = urgent, band_name = "Urgent", numOrPerc = "num", level = "National")
+```
+
+## Percentage of total FP17s by ethnic group
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_ethnicity(band = perc_total_FP17, band_name = "Total", numOrPerc = "perc", level = "National")
+```
+
+## Percentage of banded FP17s by ethnic group
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_ethnicity(band = perc_band1, band_name = "Band 1", numOrPerc = "perc", level = "National")
+```
+
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_ethnicity(band = perc_band2, band_name = "Band 2", numOrPerc = "perc", level = "National")
+```
+
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_ethnicity(band = perc_band3, band_name = "Band 3", numOrPerc = "perc", level = "National")
+```
+
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_ethnicity(band = perc_urgent, band_name = "Urgent", numOrPerc = "perc", level = "National")
+```
+
+
+
+## Total FP17s by gender
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_gender(band = total_FP17, band_name = "Total", numOrPerc = "num", level = "National")
+```
+
+## Banded FP17s by gender
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_gender(band = band1, band_name = "Band 1", numOrPerc = "num", level = "National")
+```
+
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_gender(band = band2, band_name = "Band 2", numOrPerc = "num", level = "National")
+```
+
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_gender(band = band3, band_name = "Band 3", numOrPerc = "num", level = "National")
+```
+
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_gender(band = urgent, band_name = "Urgent", numOrPerc = "num", level = "National")
+```
+
+## Percentage of total FP17s by gender
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_gender(band = perc_total_FP17, band_name = "Total", numOrPerc = "perc", level = "National")
+```
+
+## Percentage of banded FP17s by gender
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_gender(band = perc_band1, band_name = "Band 1", numOrPerc = "perc", level = "National")
+```
+
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_gender(band = perc_band2, band_name = "Band 2", numOrPerc = "perc", level = "National")
+```
+
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_gender(band = perc_band3, band_name = "Band 3", numOrPerc = "perc", level = "National")
+```
+
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_gender(band = perc_urgent, band_name = "Urgent", numOrPerc = "perc", level = "National")
+```
+
+
+
+## Total FP17s by patient charge status
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_charge_status(band = total_FP17, band_name = "Total", numOrPerc = "num", level = "National")
+```
+
+## Banded FP17s by patient charge status
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_charge_status(band = band1, band_name = "Band 1", numOrPerc = "num", level = "National")
+```
+
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_charge_status(band = band2, band_name = "Band 2", numOrPerc = "num", level = "National")
+```
+
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_charge_status(band = band3, band_name = "Band 3", numOrPerc = "num", level = "National")
+```
+
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_charge_status(band = urgent, band_name = "Urgent", numOrPerc = "num", level = "National")
+```
+
+## Percentage of total FP17s by patient charge status
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_charge_status(band = perc_total_FP17, band_name = "Total", numOrPerc = "perc", level = "National")
+```
+
+## Percentage of banded FP17s by ethnic group
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_charge_status(band = perc_band1, band_name = "Band 1", numOrPerc = "perc", level = "National")
+```
+
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_charge_status(band = perc_band2, band_name = "Band 2", numOrPerc = "perc", level = "National")
+```
+
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_charge_status(band = perc_band3, band_name = "Band 3", numOrPerc = "perc", level = "National")
+```
+
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_charge_status(band = perc_urgent, band_name = "Urgent", numOrPerc = "perc", level = "National")
+```
+
+
+
+
+## Total FP17s by age group
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_age(band = total_FP17, band_name = "Total", numOrPerc = "num", level = "National")
+```
+
+## Banded FP17s by patient age group
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_age(band = band1, band_name = "Band 1", numOrPerc = "num", level = "National")
+```
+
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_age(band = band2, band_name = "Band 2", numOrPerc = "num", level = "National")
+```
+
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_age(band = band3, band_name = "Band 3", numOrPerc = "num", level = "National")
+```
+
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_age(band = urgent, band_name = "Urgent", numOrPerc = "num", level = "National")
+```
+
+## Percentage of total FP17s by age group
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_age(band = perc_total_FP17, band_name = "Total", numOrPerc = "perc", level = "National")
+```
+
+## Percentage of banded FP17s by age group
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_age(band = perc_band1, band_name = "Band 1", numOrPerc = "perc", level = "National")
+```
+
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_age(band = perc_band2, band_name = "Band 2", numOrPerc = "perc", level = "National")
+```
+
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_age(band = perc_band3, band_name = "Band 3", numOrPerc = "perc", level = "National")
+```
+
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_age(band = perc_urgent, band_name = "Urgent", numOrPerc = "perc", level = "National")
+```
+
+
+## Regional Level
+
+## East of England
+## London
+## Midlands
+## North East and Yorkshire
+## North West
+## South East
+## South West
+

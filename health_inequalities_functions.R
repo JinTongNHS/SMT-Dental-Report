@@ -1,7 +1,11 @@
 #functions to create dental health inequalities plots
 
+#supress summarise info
+options(dplyr.summarise.inform = FALSE)
+
 #function to plot percentage of FP17 forms that are band 2 or have flouride varnish for 3-13 year olds
 plot_child_band2_FV <- function(data = child_band2_FV){
+  
   
   #melt data into long format
   data <- reshape2::melt(child_band2_FV)
@@ -38,7 +42,7 @@ plot_child_band2_FV <- function(data = child_band2_FV){
     #          label = round(data$perc_of_UDA_UOA_target_delivered, 2), 
     #          size = 3) +
     scale_fill_manual(labels = c("Band 2", "Flouride Varnish"), values = c("red", "blue")) +
-    labs(title = "Percentage of FP17 forms for 3-16 year olds that included a \nBand 2 treatment or Flouride Varnish treatment", 
+    labs(title = "Percentage of FP17 forms for 3-16 year olds that included a \nBand 2 treatment or Flouride Varnish treatment",
          x = "Financial year", 
          y = "Percentage of FP17 forms",
          fill = "Treatment type")
@@ -82,7 +86,23 @@ clean_HE_data <- function(data = monthly_HE){
 ################################################################################
 #function to plot ethnicity health inequality line chart
 #2018-08 to 2021-07
-plot_HE_ethnicity <- function(data = monthly_HE, band = band1, band_name = "Band 1", numOrPerc = "num"){
+plot_HE_ethnicity <- function(data = monthly_HE, band = band1, band_name = "Band 1", numOrPerc = "num", 
+                              level = "National", 
+                              region = NULL, 
+                              STP = NULL){
+  
+  #filter data based on region or STP
+  if(level == "Regional"){
+    data <- data %>%
+      filter(region_name == region)
+    subtitle <- region
+  }else if(level == "STP"){
+    data <- data %>%
+      filter(commissioner_name == STP)
+    subtitle <- STP
+  }else{
+    subtitle <- "England"
+  }
   
   #avoid standard form
   options(scipen = 999)
@@ -112,9 +132,13 @@ plot_HE_ethnicity <- function(data = monthly_HE, band = band1, band_name = "Band
     mutate(total_band1 = sum(band1),
            total_band2 = sum(band2),
            total_band3 = sum(band3),
-           total_urgent = sum(urgent)) %>%
+           total_urgent = sum(urgent),
+           total_total_FP17 = sum(total_FP17)) %>%
     mutate(perc_band1 = band1 * 100 / total_band1,
-          perc_band2 = band2 * 100 / total_band2)
+           perc_band2 = band2 * 100 / total_band2,
+           perc_band3 = band3 * 100 / total_band3,
+           perc_urgent = urgent * 100 / total_urgent,
+           perc_total_FP17 = total_FP17 * 100 / total_total_FP17)
   
   #set correct title
   if(numOrPerc == "num"){
@@ -127,6 +151,11 @@ plot_HE_ethnicity <- function(data = monthly_HE, band = band1, band_name = "Band
     ytitle <- paste("Percentage of", band_name, "FP17 forms")
     limits <- c(0, 100)
     breaks <- seq(0, 100, by = 20)
+  }else{
+    title <- paste("Monthly number of", band_name, "forms by ethnic group")
+    ytitle <- "Number of FP17 forms"
+    limits <- c(0, max(data$total_FP17, na.rm = T))
+    breaks <- seq(0, max(data$total_FP17, na.rm = T),by = 200000)
   }
 
   
@@ -157,7 +186,7 @@ plot_HE_ethnicity <- function(data = monthly_HE, band = band1, band_name = "Band
                                    "N/A"), 
                         values = c("coral3",
                                    "orange",
-                                   "yellow",
+                                   "yellow3",
                                    "green",
                                    "blue",
                                    "blueviolet",
@@ -166,17 +195,16 @@ plot_HE_ethnicity <- function(data = monthly_HE, band = band1, band_name = "Band
     scale_x_date(date_breaks = "1 month", 
                  date_labels = "%b-%y") +
     scale_y_continuous(label = scales::comma,
-                       # limits = c(0, max(data$band1, na.rm = T)),
-                       # breaks = seq(0, max(data$band1, na.rm = T),by = 200000)
                        limits = limits,
-                       breaks = breaks
+                       breaks = scales::pretty_breaks()
                        ) +
     theme_bw() +
     theme(axis.text.x = element_text(angle = 90)) +
     labs(title = title, 
          x = "Month", 
          y = ytitle,
-         colour = "Ethnic group") 
+         colour = "Ethnic group",
+         subtitle = subtitle) 
 
 }
 
@@ -184,7 +212,23 @@ plot_HE_ethnicity <- function(data = monthly_HE, band = band1, band_name = "Band
 
 ################################################################################
 #function to plot gender health inequality line chart
-plot_HE_gender <- function(data = monthly_HE, band = band1, band_name = "Band 1"){
+plot_HE_gender <- function(data = monthly_HE, band = band1, band_name = "Band 1", numOrPerc = "num", 
+                           level = "National", 
+                           region = NULL, 
+                           STP = NULL){
+  
+  #filter data based on region or STP
+  if(level == "Regional"){
+    data <- data %>%
+      filter(region_name == region)
+    subtitle <- region
+  }else if(level == "STP"){
+    data <- data %>%
+      filter(commissioner_name == STP)
+    subtitle <- STP
+  }else{
+    subtitle <- "England"
+  }
   
   #avoid standard form
   options(scipen = 999)
@@ -198,7 +242,36 @@ plot_HE_gender <- function(data = monthly_HE, band = band1, band_name = "Band 1"
               band2 = sum(band2), 
               band3 = sum(band3), 
               urgent = sum(urgent), 
-              total_FP17 = sum(total_FP17, na.rm = T))
+              total_FP17 = sum(total_FP17, na.rm = T)) %>%
+    group_by(date) %>%
+    mutate(total_band1 = sum(band1),
+           total_band2 = sum(band2),
+           total_band3 = sum(band3),
+           total_urgent = sum(urgent),
+           total_total_FP17 = sum(total_FP17)) %>%
+    mutate(perc_band1 = band1 * 100 / total_band1,
+           perc_band2 = band2 * 100 / total_band2,
+           perc_band3 = band3 * 100 / total_band3,
+           perc_urgent = urgent * 100 / total_urgent,
+           perc_total_FP17 = total_FP17 * 100 / total_total_FP17)
+  
+  #set correct title
+  if(numOrPerc == "num"){
+    title <- paste("Monthly number of", band_name, "forms by gender")
+    ytitle <- "Number of FP17 forms"
+    limits <- c(0, max(data$band1, na.rm = T))
+    breaks <- seq(0, max(data$band1, na.rm = T),by = 200000)
+  }else if(numOrPerc == "perc"){
+    title <- paste("Monthly percentage of", band_name, "forms by gender")
+    ytitle <- paste("Percentage of", band_name, "FP17 forms")
+    limits <- c(0, 100)
+    breaks <- seq(0, 100, by = 20)
+  }else{
+    title <- paste("Monthly number of", band_name, "forms by gender")
+    ytitle <- "Number of FP17 forms"
+    limits <- c(0, max(data$total_FP17, na.rm = T))
+    breaks <- seq(0, max(data$total_FP17, na.rm = T),by = 200000)
+  }
   
 
   #plot_code
@@ -215,17 +288,16 @@ plot_HE_gender <- function(data = monthly_HE, band = band1, band_name = "Band 1"
                                    "coral3"
                                    )
     ) +
-    labs(title = paste("Monthly number of", band_name, "forms by gender"), 
+    labs(title = title, 
          x = "Month", 
-         y = "Number of FP17 forms",
-         colour = "Gender") +
+         y = ytitle,
+         colour = "Gender",
+         subtitle = subtitle) +
     scale_x_date(date_breaks = "1 month", 
                  date_labels = "%b-%y") +
     scale_y_continuous(label = scales::comma,
-                       limits = c(0, max(data$band1, na.rm = T)),
-                       breaks = seq(0, 
-                                    max(data$band1, na.rm = T),
-                                    by = 200000)
+                       limits = limits,
+                       breaks = scales::breaks_pretty()
     ) +
     theme_bw() +
     theme(axis.text.x = element_text(angle = 90)) 
@@ -234,8 +306,24 @@ plot_HE_gender <- function(data = monthly_HE, band = band1, band_name = "Band 1"
 
 
 ################################################################################
-#function to plot charge staus health inequality line chart
-plot_HE_charge_status <- function(data = monthly_HE, band = band1, band_name = "Band 1"){
+#function to plot charge status health inequality line chart
+plot_HE_charge_status <- function(data = monthly_HE, band = band1, band_name = "Band 1", numOrPerc = "num", 
+                                  level = "National", 
+                                  region = NULL, 
+                                  STP = NULL){
+  
+  #filter data based on region or STP
+  if(level == "Regional"){
+    data <- data %>%
+      filter(region_name == region)
+    subtitle <- region
+  }else if(level == "STP"){
+    data <- data %>%
+      filter(commissioner_name == STP)
+    subtitle <- STP
+  }else{
+    subtitle <- "England"
+  }
   
   #avoid standard form
   options(scipen = 999)
@@ -249,7 +337,36 @@ plot_HE_charge_status <- function(data = monthly_HE, band = band1, band_name = "
               band2 = sum(band2), 
               band3 = sum(band3), 
               urgent = sum(urgent), 
-              total_FP17 = sum(total_FP17, na.rm = T))
+              total_FP17 = sum(total_FP17, na.rm = T)) %>%
+    group_by(date) %>%
+    mutate(total_band1 = sum(band1),
+           total_band2 = sum(band2),
+           total_band3 = sum(band3),
+           total_urgent = sum(urgent),
+           total_total_FP17 = sum(total_FP17)) %>%
+    mutate(perc_band1 = band1 * 100 / total_band1,
+           perc_band2 = band2 * 100 / total_band2,
+           perc_band3 = band3 * 100 / total_band3,
+           perc_urgent = urgent * 100 / total_urgent,
+           perc_total_FP17 = total_FP17 * 100 / total_total_FP17)
+  
+  #set correct title
+  if(numOrPerc == "num"){
+    title <- paste("Monthly number of", band_name, "forms by patient charge status")
+    ytitle <- "Number of FP17 forms"
+    limits <- c(0, max(data$band1, na.rm = T))
+    breaks <- seq(0, max(data$band1, na.rm = T),by = 200000)
+  }else if(numOrPerc == "perc"){
+    title <- paste("Monthly percentage of", band_name, "forms by patient charge status")
+    ytitle <- paste("Percentage of", band_name, "FP17 forms")
+    limits <- c(0, 100)
+    breaks <- seq(0, 100, by = 20)
+  }else{
+    title <- paste("Monthly number of", band_name, "forms by patient charge status")
+    ytitle <- "Number of FP17 forms"
+    limits <- c(0, max(data$total_FP17, na.rm = T))
+    breaks <- seq(0, max(data$total_FP17, na.rm = T),by = 200000)
+  }
   
   
   #plot_code
@@ -268,17 +385,16 @@ plot_HE_charge_status <- function(data = monthly_HE, band = band1, band_name = "
                "royalblue"
     )
     ) +
-    labs(title = paste("Monthly number of", band_name, "forms by patient charge staus"), 
+    labs(title = title, 
          x = "Month", 
-         y = "Number of FP17 forms",
-         colour = "Patient charge staus") +
+         y = ytitle,
+         colour = "Patient charge status",
+         subtitle = subtitle) +
     scale_x_date(date_breaks = "1 month", 
                  date_labels = "%b-%y") +
     scale_y_continuous(label = scales::comma,
-                       limits = c(0, max(data$band1, na.rm = T)),
-                       breaks = seq(0, 
-                                    max(data$band1, na.rm = T),
-                                    by = 200000)
+                       limits = limits,
+                       breaks = scales::breaks_pretty()
     ) +
     theme_bw() +
     theme(axis.text.x = element_text(angle = 90)) 
@@ -288,7 +404,23 @@ plot_HE_charge_status <- function(data = monthly_HE, band = band1, band_name = "
 
 ################################################################################
 #function to plot age health inequality line chart
-plot_HE_age <- function(data = monthly_HE, band = band1, band_name = "Band 1"){
+plot_HE_age <- function(data = monthly_HE, band = band1, band_name = "Band 1", numOrPerc = "num", 
+                        level = "National", 
+                        region = NULL, 
+                        STP = NULL){
+  
+  #filter data based on region or STP
+  if(level == "Regional"){
+    data <- data %>%
+      filter(region_name == region)
+    subtitle <- region
+  }else if(level == "STP"){
+    data <- data %>%
+      filter(commissioner_name == STP)
+    subtitle <- STP
+  }else{
+    subtitle <- "England"
+  }
   
   #avoid standard form
   options(scipen = 999)
@@ -302,7 +434,36 @@ plot_HE_age <- function(data = monthly_HE, band = band1, band_name = "Band 1"){
               band2 = sum(band2), 
               band3 = sum(band3), 
               urgent = sum(urgent), 
-              total_FP17 = sum(total_FP17, na.rm = T))
+              total_FP17 = sum(total_FP17, na.rm = T)) %>%
+    group_by(date) %>%
+    mutate(total_band1 = sum(band1),
+           total_band2 = sum(band2),
+           total_band3 = sum(band3),
+           total_urgent = sum(urgent),
+           total_total_FP17 = sum(total_FP17)) %>%
+    mutate(perc_band1 = band1 * 100 / total_band1,
+           perc_band2 = band2 * 100 / total_band2,
+           perc_band3 = band3 * 100 / total_band3,
+           perc_urgent = urgent * 100 / total_urgent,
+           perc_total_FP17 = total_FP17 * 100 / total_total_FP17)
+  
+  #set correct title
+  if(numOrPerc == "num"){
+    title <- paste("Monthly number of", band_name, "forms by age group")
+    ytitle <- "Number of FP17 forms"
+    limits <- c(0, max(data$band1, na.rm = T))
+    breaks <- seq(0, max(data$band1, na.rm = T),by = 200000)
+  }else if(numOrPerc == "perc"){
+    title <- paste("Monthly percentage of", band_name, "forms by age group")
+    ytitle <- paste("Percentage of", band_name, "FP17 forms")
+    limits <- c(0, 100)
+    breaks <- seq(0, 100, by = 20)
+  }else{
+    title <- paste("Monthly number of", band_name, "forms by age group")
+    ytitle <- "Number of FP17 forms"
+    limits <- c(0, max(data$total_FP17, na.rm = T))
+    breaks <- seq(0, max(data$total_FP17, na.rm = T),by = 200000)
+  }
   
   #order ethnic groups 
   data$age_group <- factor(data$age_group, 
@@ -331,25 +492,31 @@ plot_HE_age <- function(data = monthly_HE, band = band1, band_name = "Band 1"){
                                    "Other"), 
                         values = c("coral3",
                                    "orange",
-                                   "yellow",
+                                   "yellow3",
                                    "green",
                                    "blue",
                                    "blueviolet",
                                    "grey45")
     ) +
-    labs(title = paste("Monthly number of", band_name, "forms by age group"), 
+    labs(title = title, 
          x = "Month", 
-         y = "Number of FP17 forms",
-         colour = "Age group") +
+         y = ytitle,
+         colour = "Age group",
+         subtitle = subtitle) +
     scale_x_date(date_breaks = "1 month", 
                  date_labels = "%b-%y") +
     scale_y_continuous(label = scales::comma,
-                       limits = c(0, max(data$band1, na.rm = T)),
-                       breaks = seq(0, 
-                                    max(data$band1, na.rm = T),
-                                    by = 100000)
+                       limits = limits,
+                       breaks = scales::breaks_pretty()
     ) +
     theme_bw() +
     theme(axis.text.x = element_text(angle = 90)) 
   
 }
+
+
+
+
+
+
+
