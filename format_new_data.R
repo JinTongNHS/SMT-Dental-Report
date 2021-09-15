@@ -89,7 +89,8 @@ get_into_slide4_format_calendar <- function(data = dental_data_combined_calendar
     #create not in function
     `%notin%` = Negate(`%in%`)
     data <- data %>%
-      filter(Contract.Number %notin% prototype_contracts$proto_contracts)
+      filter(Contract.Number %notin% prototype_contracts$proto_contracts) %>%
+      filter(Contract.Number %notin% UDAs_less_than_100$Contract.Number)
   }
 
   #group by month and sum UDAs delivered
@@ -114,7 +115,8 @@ get_into_slide6_format_calendar <- function(data = orthodontic_data_combined_cal
     #create not in function
     `%notin%` = Negate(`%in%`)
     data <- data %>%
-      filter(Contract.Number %in% prototype_contracts_orth$proto_contracts)
+      filter(Contract.Number %in% prototype_contracts_orth$proto_contracts) %>%
+      filter(Contract.Number %notin% UDAs_less_than_100$Contract.Number)
   }
   
   #group by month and sum UDAs delivered
@@ -141,7 +143,8 @@ get_into_slide5_format <- function(data = dental_data_combined, remove_prototype
     #create not in function
     `%notin%` = Negate(`%in%`)
     data <- data %>%
-      filter(Contract.Number %notin% prototype_contracts$proto_contracts)
+      filter(Contract.Number %notin% prototype_contracts$proto_contracts)%>%
+      filter(Contract.Number %notin% UDAs_less_than_100$Contract.Number)
   }
   
   #group by month and sum UDAs delivered
@@ -178,7 +181,8 @@ get_into_slide7_format <- function(data = orthodontic_data_combined, remove_prot
     #create not in function
     `%notin%` = Negate(`%in%`)
     data <- data %>%
-      filter(Contract.Number %in% prototype_contracts_orth$proto_contracts)
+      filter(Contract.Number %in% prototype_contracts_orth$proto_contracts)%>%
+      filter(Contract.Number %notin% UDAs_less_than_100$Contract.Number)
   }
   
   #group by month and sum UDAs delivered
@@ -210,7 +214,8 @@ get_into_slide8_format <- function(data = dental_data_combined, remove_prototype
     #create not in function
     `%notin%` = Negate(`%in%`)
     data <- data %>%
-      filter(Contract.Number %in% prototype_contracts_orth$proto_contracts)
+      filter(Contract.Number %in% prototype_contracts_orth$proto_contracts)%>%
+      filter(Contract.Number %notin% UDAs_less_than_100$Contract.Number)
   }
   
   #group by month and sum UDAs delivered
@@ -237,7 +242,8 @@ get_slide5_table <- function(data = dental_data_combined, remove_prototypes = F)
     #create not in function
     `%notin%` = Negate(`%in%`)
     data <- data %>%
-      filter(Contract.Number %notin% prototype_contracts$proto_contracts)
+      filter(Contract.Number %notin% prototype_contracts$proto_contracts) %>%
+      filter(Annual.contracted.UDA < 100)
   }
   
   #create column for 12 month scaled % of UDAs delivered and put into bands
@@ -288,7 +294,8 @@ get_slide7_table <- function(data = orthodontic_data_combined, remove_prototypes
     #create not in function
     `%notin%` = Negate(`%in%`)
     data <- data %>%
-      filter(Contract.Number %notin% prototype_contracts$proto_contracts)
+      filter(Contract.Number %notin% prototype_contracts$proto_contracts)%>%
+      filter(Contract.Number %notin% UDAs_less_than_100$Contract.Number)
   }
   
   #create column for 12 month scaled % of UDAs delivered and put into bands

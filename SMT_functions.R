@@ -376,3 +376,49 @@ get_adjusted_number_reaching_target <- function(){
   dental_data_combined_calendar_contracted5 <- mutate(dental_data_combined_calendar_contracted5, perc_contracted_delivered = UDA.Total * 100 / monthly_contracted_UDA)
   count(dental_data_combined_calendar_contracted5, perc_contracted_delivered >= 50)
 }
+
+
+
+
+################################################################################
+#function to plot the density of contracts based on performance 
+plot_density <- function(data = density_data){
+  
+  ggplot(data, 
+         aes(x = perc_performance_delivered)) +
+    geom_density(size = 1,
+                 aes(colour = timePeriod,
+                     fill = timePeriod),
+                 alpha = 0.1) +
+    geom_vline(xintercept = 45, 
+               size = 0.5, 
+               colour = "blue",
+               linetype = "dashed"
+    ) +
+    geom_vline(xintercept = 60, 
+               size = 0.5, 
+               colour = "red",
+               linetype = "dashed"
+    ) +
+    annotate(geom = "text", 
+             x = 40, 
+             y = 0, 
+             label = "45% target", 
+             size = 3,
+             colour = "blue") +
+    annotate(geom = "text", 
+             x = 65, 
+             y = 0, 
+             label = "60% target", 
+             size = 3,
+             colour = "red") +
+    scale_x_continuous(limits = c(0,150),
+                       breaks = seq(0,150, 10)) +
+    labs(title = "UDA performance distribution of contracts\nMarch 21 compared with Apr-Aug 2021",
+         x = "Percentage of contracted UDAs delivered in given time period",
+         y = "Density of contracts",
+         colour = "Time Period",
+         fill = "Time Period")
+  
+  
+}
