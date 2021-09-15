@@ -67,15 +67,22 @@ clean_HE_data <- function(data = monthly_HE){
     mutate(year = substring(year_month, 1, 4)) %>%
     mutate(month = substring(year_month, 5)) %>%
     mutate(date = as.Date(paste0(year,"-",month,"-","01")))
-    
   
+  #add columns for month totals
+  # data <- data %>%
+  #   group_by(date) %>%
+  #   mutate(total_band1 = sum(band1),
+  #          total_band2 = sum(band2),
+  #          total_band3 = sum(band3),
+  #          total_urgent = sum(urgent))
+
 }
 
 
 ################################################################################
 #function to plot ethnicity health inequality line chart
 #2018-08 to 2021-07
-plot_HE_ethnicity <- function(data = monthly_HE, band = band1, band_name = "Band 1"){
+plot_HE_ethnicity <- function(data = monthly_HE, band = band1, band_name = "Band 1", numOrPerc = "num"){
   
   #avoid standard form
   options(scipen = 999)
@@ -100,7 +107,28 @@ plot_HE_ethnicity <- function(data = monthly_HE, band = band1, band_name = "Band
               band2 = sum(band2), 
               band3 = sum(band3), 
               urgent = sum(urgent), 
-              total_FP17 = sum(total_FP17, na.rm = T))
+              total_FP17 = sum(total_FP17, na.rm = T)) %>%
+    group_by(date) %>%
+    mutate(total_band1 = sum(band1),
+           total_band2 = sum(band2),
+           total_band3 = sum(band3),
+           total_urgent = sum(urgent)) %>%
+    mutate(perc_band1 = band1 * 100 / total_band1,
+          perc_band2 = band2 * 100 / total_band2)
+  
+  #set correct title
+  if(numOrPerc == "num"){
+    title <- paste("Monthly number of", band_name, "forms by ethnic group")
+    ytitle <- "Number of FP17 forms"
+    limits <- c(0, max(data$band1, na.rm = T))
+    breaks <- seq(0, max(data$band1, na.rm = T),by = 200000)
+  }else if(numOrPerc == "perc"){
+    title <- paste("Monthly percentage of", band_name, "forms by ethnic group")
+    ytitle <- paste("Percentage of", band_name, "FP17 forms")
+    limits <- c(0, 100)
+    breaks <- seq(0, 100, by = 20)
+  }
+
   
   #order ethnic groups 
   data$ethnic_group <- factor(data$ethnic_group, 
@@ -134,29 +162,22 @@ plot_HE_ethnicity <- function(data = monthly_HE, band = band1, band_name = "Band
                                    "blue",
                                    "blueviolet",
                                    "grey45")
-                        # values = c("grey45", 
-                        #            "orange",
-                        #            "grey45",
-                        #            "grey45",
-                        #            "grey45",
-                        #            "grey45",
-                        #            "grey45")
                         ) +
-    labs(title = paste("Monthly number of", band_name, "forms by ethnic group"), 
-         x = "Month", 
-         y = "Number of FP17 forms",
-         colour = "Ethnic group") +
     scale_x_date(date_breaks = "1 month", 
                  date_labels = "%b-%y") +
     scale_y_continuous(label = scales::comma,
-                       limits = c(0, max(data$band1, na.rm = T)),
-                       breaks = seq(0, 
-                                    max(data$band1, na.rm = T),
-                                    by = 200000)
+                       # limits = c(0, max(data$band1, na.rm = T)),
+                       # breaks = seq(0, max(data$band1, na.rm = T),by = 200000)
+                       limits = limits,
+                       breaks = breaks
                        ) +
     theme_bw() +
-    theme(axis.text.x = element_text(angle = 90)) 
-  
+    theme(axis.text.x = element_text(angle = 90)) +
+    labs(title = title, 
+         x = "Month", 
+         y = ytitle,
+         colour = "Ethnic group") 
+
 }
 
 
