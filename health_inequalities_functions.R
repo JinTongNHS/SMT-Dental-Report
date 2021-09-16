@@ -71,14 +71,6 @@ clean_HE_data <- function(data = monthly_HE){
     mutate(year = substring(year_month, 1, 4)) %>%
     mutate(month = substring(year_month, 5)) %>%
     mutate(date = as.Date(paste0(year,"-",month,"-","01")))
-  
-  #add columns for month totals
-  # data <- data %>%
-  #   group_by(date) %>%
-  #   mutate(total_band1 = sum(band1),
-  #          total_band2 = sum(band2),
-  #          total_band3 = sum(band3),
-  #          total_urgent = sum(urgent))
 
 }
 
