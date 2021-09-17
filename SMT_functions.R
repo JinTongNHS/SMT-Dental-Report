@@ -5,9 +5,27 @@ library(tidyverse)
 
 #function to plot first chart on slide 4
 #old data source is in teams folder "Monthly performance data/April 21 to September 21 data/Calendar data/April to Jul UDA 2021-2022 by Treatment month.xlsx"
-#pass in raw data - either dental_data_combined_calendar or orthodontic_data_combined_calendar
-plot_UDA_UOA_to_target <- function(data = dental_data_combined_calendar, UDAorUOA = "UDA"){
+#pass in raw data - either UDA_calendar_data or orthodontic_data_combined_calendar
+plot_UDA_UOA_to_target <- function(data = UDA_calendar_data, UDAorUOA = "UDA", 
+                                   level = "National",
+                                   region = NULL,
+                                   STP = NULL){
   
+  #filter for region or STP
+  if(level == "Regional"){
+    data <- data %>% 
+      filter(region_name == region)
+    subtitle <- region
+  }else if(level == "STP"){
+    data <- data %>% 
+      filter(commissioner_name == STP)
+    subtitle <- STP
+  }else{
+    subtitle <- "England"
+  }
+  
+  
+  #change titles and colours for UDA or UOA
   if(UDAorUOA == "UDA"){
     septemberTarget <- 60
     title <- "Monthly % of Apr-Sept target (60%) UDAs delivered"
@@ -65,15 +83,33 @@ plot_UDA_UOA_to_target <- function(data = dental_data_combined_calendar, UDAorUO
                  date_labels = "%b-%y") +
     labs(title = title, 
          x = "Month", 
-         y = ylab)
+         y = ylab,
+         subtitle = subtitle)
 }
 
 ################################################################################
 #function to plot second chart on slide 4
 #old data source is in teams folder "Monthly performance data/April 21 to September 21 data/Calendar data/April to Jul UDA 2021-2022 by Treatment month.xlsx"
-#pass in raw data - either dental_data_combined_calendar or orthodontic_data_combined_calendar
-plot_cumulative_UDA_UOA_to_target <- function(data = dental_data_combined_calendar, UDAorUOA = "UDA"){
+#pass in raw data - either UDA_calendar_data or orthodontic_data_combined_calendar
+plot_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data, UDAorUOA = "UDA", 
+                                              level = "National",
+                                              region = NULL,
+                                              STP = NULL){
   
+  #filter for region or STP
+  if(level == "Regional"){
+    data <- data %>% 
+      filter(region_name == region)
+    subtitle <- region
+  }else if(level == "STP"){
+    data <- data %>% 
+      filter(commissioner_name == STP)
+    subtitle <- STP
+  }else{
+    subtitle <- "England"
+  }
+  
+  #change titles and colours for UDA or UOA
   if(UDAorUOA == "UDA"){
     septemberTarget <- 60 
     title <- "Year to date monthly % of Apr-Sept target (60%) UDAs delivered"
@@ -151,7 +187,8 @@ plot_cumulative_UDA_UOA_to_target <- function(data = dental_data_combined_calend
                  date_labels = "%b-%y") +
     labs(title = title, 
          x = "Month", 
-         y = ylab)
+         y = ylab,
+         subtitle = subtitle)
   
 }
 
@@ -284,10 +321,12 @@ plot_UDA_delivery_profile <- function(data = UDA_performance_bands){
              stat = "identity") +
     labs(title = "Proportion of contracts delivering in each performance band \nof total contracted UDA per month",
          x = "Month",
-         y = "Percentage of contracts delivering in this band") +
+         y = "Percentage of contracts delivering in this band",
+         fill = "Performance Band") +
     scale_x_datetime(breaks = data$month, 
                      labels = scales::date_format("%b-%y")) +
-    geom_vline(xintercept = as.Date("2020-07-01"), colour = "black", size = 5)
+    geom_vline(xintercept = as.Date("2020-07-01"), colour = "black", size = 5) +
+    theme_dark()
 }
 
 
