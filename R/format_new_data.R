@@ -67,7 +67,10 @@ get_into_slide6_format_calendar <- function(data = UOA_calendar_data,
 
 ################################################################################
 #function to get dental data into the right format for slide 4
-get_into_slide5_format <- function(data = UDA_scheduled_data, remove_prototypes = T){
+get_into_slide5_7_format <- function(data = UDA_scheduled_data, 
+                                   existing_data = slide5_UDA_delivery_historic, 
+                                   remove_prototypes = F,
+                                   UDAorUOA = "UDA"){
   
   #remove prototype contracts if specified
   if(remove_prototypes){
@@ -79,63 +82,35 @@ get_into_slide5_format <- function(data = UDA_scheduled_data, remove_prototypes 
   }
   
   #group by month and sum UDAs delivered
-  UDAs_delivered <- data %>%
+  UDA_UOAs_delivered <- data %>%
     group_by(month) %>%
-    summarise(monthly_UDA_UOAs_delivered = sum(UDA_delivered, na.rm = T))
+    summarise(monthly_UDA_UOAs_delivered = ifelse(UDAorUOA == "UDA", 
+                                                   sum(UDA_delivered, na.rm = T),
+                                                   sum(UOA_delivered, na.rm = T)))
   
   #group by month and sum contracted UDAs
-  UDAs_contracted <- data %>%
+  #filter down to latest month only
+  UDA_UOAs_contracted <- data %>%
     group_by(month) %>%
-    summarise(annual_contracted_UDA_UOA = sum(annual_contracted_UDA, na.rm = T))
+    summarise(annual_contracted_UDA_UOA = ifelse(UDAorUOA == "UDA",
+                                                  sum(annual_contracted_UDA, na.rm = T),
+                                                  sum(annual_contracted_UOA, na.rm = T)))
   
-  slide4_UDA <- full_join(UDAs_delivered, UDAs_contracted, by = "month")
-  # slide4_UDA <- slide4_UDA %>%
-  #   mutate(month = if_else(Year.Month == 202104, as.Date("2021-04-01"), 
-  #                          if_else(Year.Month == 202105, as.Date("2021-05-01"),
-  #                                  if_else(Year.Month == 202106, as.Date("2021-06-01"),
-  #                                          if_else(Year.Month == 202107, as.Date("2021-07-01"),
-  #                                                  if_else(Year.Month == 202108, as.Date("2021-08-01"),
-  #                                                          as.Date(NA))))))
-  #  )
+  new_data <- full_join(UDA_UOAs_delivered, UDA_UOAs_contracted, by = "month")
+  new_data <- new_data %>%
+    mutate(perc_UDA_UOA_delivered = round(monthly_UDA_UOAs_delivered * 12 * 100 / annual_contracted_UDA_UOA)) %>%
+    select(month, perc_UDA_UOA_delivered) %>%
+    filter(month == max(month))
+
+  #add latest month to existing data
+  data <- bind_rows(existing_data, new_data)
 }
 
 
-
 ################################################################################
-get_into_slide7_format <- function(data = UOA_scheduled_data, remove_prototypes = F){
-  
-  #remove spaces from column names
-  colnames(data) <- make.names(colnames(data), unique = T)
-  
-  #remove prototype contracts if specified
-  if(remove_prototypes){
-    #create not in function
-    `%notin%` = Negate(`%in%`)
-    data <- data %>%
-      filter(Contract.Number %in% prototype_contracts_orth$proto_contracts)%>%
-      filter(Contract.Number %notin% UDAs_less_than_100$Contract.Number)
-  }
-  
-  #group by month and sum UDAs delivered
-  UOAs_delivered <- data %>%
-    group_by(Year.Month) %>%
-    summarise(monthly_UDA_UOAs_delivered = sum(UOA, na.rm = T))
-  
-  #group by month and sum contracted UDAs
-  UOAs_contracted <- data %>%
-    group_by(Year.Month) %>%
-    summarise(annual_contracted_UDA_UOA = sum(Annual.contracted.UOA, na.rm = T))
-  
-  slide7_UOA <- full_join(UOAs_delivered, UOAs_contracted, by = "Year.Month")
-  slide7_UOA <- slide7_UOA %>%
-    rename(month = "Year.Month") %>%
-    mutate(perc_UDA_UOA_delivered = monthly_UDA_UOAs_delivered * 12 / annual_contracted_UDA_UOA)
-}
-
-
-
-################################################################################
-get_into_slide8_format <- function(data = UDA_scheduled_data, remove_prototypes = F){
+get_into_slide8_format <- function(data = UDA_scheduled_data, 
+                                   existing_data = slide8_banded_CoT_historic,
+                                   remove_prototypes = F){
   
   #remove prototype contracts if specified
   if(remove_prototypes){
@@ -147,14 +122,17 @@ get_into_slide8_format <- function(data = UDA_scheduled_data, remove_prototypes 
   }
   
   #group by month and sum UDAs delivered
-  UOAs_delivered <- data %>%
+  new_data <- data %>%
     group_by(month) %>%
     summarise(band1 = sum(FP17s_band_1, na.rm = T),
               band2 = sum(FP17s_band_2, na.rm = T),
               band3 = sum(FP17s_band_3, na.rm = T),
               other = sum(FP17s_band_other, na.rm = T),
               urgent = sum(FP17s_band_urgent, na.rm = T)
-              )
+              ) %>%
+    filter(month == max(month))
+  
+  data <- bind_rows(existing_data, new_data)
 }
 
 

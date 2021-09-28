@@ -198,7 +198,10 @@ plot_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data, UDAorUOA
 ################################################################################
 #function to create graph on slide 8
 #current data source: Dental activity annual running total.xlsx sent by email by Caroline
-plot_banded_CoT <- function(data = slide8_data){
+plot_banded_CoT <- function(data = UDA_scheduled_data, 
+                            existing_data = slide8_banded_CoT_historic){
+  
+  data <- get_into_slide8_format(data, existing_data, remove_prototypes = F)
   
   #get data into the right format  
   data <- reshape2::melt(data, id.vars = "month")
@@ -217,9 +220,17 @@ plot_banded_CoT <- function(data = slide8_data){
               size = 1) +
     scale_x_date(date_breaks = "1 month", 
                  date_labels = "%b-%y") +
+    scale_colour_manual(labels = c("Band 1", "Band 2", "Band 3", "Other", "Urgent"), 
+                        values = c("coral3",
+                                   "orange",
+                                   "yellow3",
+                                   "green",
+                                   "blue")
+                        ) +
     labs(title = "Banded Courses of Treatment 2019/20 to 2021/22", 
          x = "Month",
-         y = "Number of FP17 forms submitted")
+         y = "Number of FP17 forms submitted",
+         colour = "Band")
     
   
 }
@@ -230,13 +241,19 @@ plot_banded_CoT <- function(data = slide8_data){
 #function to create graph on slide 5
 #current data source: Dental activity annual running total.xlsx sent by email by Caroline
 #current data is in teams folder "Monthly performance data\April 21 to September 21 data\Scheduled data\April to Sept UDA 2020-2021 (May).xlsx"
-plot_UDA_UOA_delivery <- function(data = slide5_UDA, UDAorUOA = "UDA"){
+plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data, 
+                                  existing_data = slide5_UDA_delivery_historic,
+                                  UDAorUOA = "UDA"){
   
   if(UDAorUOA == "UDA"){
+    #get data into the right format
+    data <- get_into_slide5_7_format(data, existing_data, remove_prototypes = F, UDAorUOA = "UDA")
     title <- "Average percentage of contracted UDAs delivered \nscaled up to 12 months"
     ylab <- "% of contracted UDAs delivered"
     lineCol <- "coral"
   }else{
+    #get data into the right format
+    data <- get_into_slide5_7_format(data, existing_data, remove_prototypes = F, UDAorUOA = "UOA")
     title <- "Average percentage of contracted UOAs delivered \nscaled up to 12 months"
     ylab <- "% of contracted UOAs delivered"
     lineCol <- "seagreen3"
@@ -245,7 +262,7 @@ plot_UDA_UOA_delivery <- function(data = slide5_UDA, UDAorUOA = "UDA"){
   #get data in the right format
   data <- data %>%
     mutate(month = as.Date(month)) %>%
-    mutate(perc_UDA_UOA_delivered = perc_UDA_UOA_delivered * 100)
+    mutate(perc_UDA_UOA_delivered = perc_UDA_UOA_delivered)
   
   #plot code
   ggplot(data) +
@@ -273,7 +290,10 @@ plot_UDA_UOA_delivery <- function(data = slide5_UDA, UDAorUOA = "UDA"){
 ################################################################################
 #function to create graph on slide 9
 #current data source: Dental activity annual running total.xlsx sent by email by Caroline
-plot_urgent_form_submissions <- function(data = slide8_data){
+plot_urgent_form_submissions <- function(data = UDA_scheduled_data, 
+                                         existing_data = slide8_banded_CoT_historic){
+  
+  data <- get_into_slide8_format(data, existing_data, remove_prototypes = F)
   
   #get data in the right format
   data <- data %>%

@@ -4,6 +4,6 @@ rmarkdown::render(input = "SMT-Dental-Report-Slides.Rmd",
 
 
 
-rmarkdown::render(input = "SMT-Dental-Report-Slides.Rmd",
+rmarkdown::render(input = "rmarkdown/SMT-Dental-Report-Slides.Rmd",
                   output_format = "beamer_presentation",
-                  output_file = paste0("reports/SMT-Dental-Report-",Sys.Date(),".pdf"))
+                  output_file = paste0("~/R-Projects/SMT-Dental-Report/reports/SMT-Dental-Report-",Sys.Date(),".pdf"))
