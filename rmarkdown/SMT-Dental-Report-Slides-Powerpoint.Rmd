@@ -12,7 +12,7 @@ library(readxl)
 source("../R/SMT_functions.R")
 source("../R/format_new_data.R")
 
-#load in raw data
+#load in raw data (will be NCDR)
 UDA_calendar_data <- readRDS("~/R-Projects/SMT-Dental-Report/data/cleaned_data_up_to_august/UDA_calendar_data.rds")
 UOA_calendar_data <- readRDS("~/R-Projects/SMT-Dental-Report/data/cleaned_data_up_to_august/UOA_calendar_data.rds")
 UDA_scheduled_data <- readRDS("~/R-Projects/SMT-Dental-Report/data/cleaned_data_up_to_august/UDA_scheduled_data.rds")
