@@ -1,3 +1,5 @@
+library(tidyverse)
+
 #functions to create dental health inequalities plots
 
 #supress summarise info
