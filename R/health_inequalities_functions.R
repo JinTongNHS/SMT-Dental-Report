@@ -57,7 +57,7 @@ clean_HE_data <- function(data = monthly_HE){
   #convert characters to numerics and convert dates
   data <- data %>%
     rename(year_month = month) %>%
-    rename(ethnic_group = ethinc_group) %>%
+    #rename(ethnic_group = ethinc_group) %>%
     mutate(band1 = if_else(band1 == "<5", "5", band1)) %>%
     mutate(band2 = if_else(band2 == "<5", "5", band2)) %>%
     mutate(band3 = if_else(band3 == "<5", "5", band3)) %>%
@@ -81,7 +81,9 @@ clean_HE_data <- function(data = monthly_HE){
 plot_HE_ethnicity <- function(data = monthly_HE, band = band1, band_name = "Band 1", numOrPerc = "num", 
                               level = "National", 
                               region = NULL, 
-                              STP = NULL){
+                              STP = NULL,
+                              override_subtitle = NULL,
+                              caption = NULL){
   
   #filter data based on region or STP
   if(level == "Regional"){
@@ -96,19 +98,24 @@ plot_HE_ethnicity <- function(data = monthly_HE, band = band1, band_name = "Band
     subtitle <- "England"
   }
   
+  #override subtitle if specified
+  if(!is.null(override_subtitle) & override_subtitle == "Grouped top 20 most deprived local authorities by contract*"){
+    subtitle <- override_subtitle
+    caption <- 
+      "*Contracts that fall within the following Local Authorities based on 2019 deprivation data: 
+    Middlesbrough, Liverpool, Knowsley, Kingdton upon Hull, Manchester, Blackpool, Birmingham, 
+    Burnley, Blackburn with Darwen, Hartlepool, Bradford, Stoke-on-Trent,Halton, Pendle, 
+    Nottingham, Oldham, North East Lincolnshire, Hastings, Salford, Rochdale."
+  }else{
+    subtitle <- override_subtitle
+    caption <- "*Patients resident within the following Local Authorities based on 2019 deprivation data: 
+    Middlesbrough, Liverpool, Knowsley, Kingdton upon Hull, Manchester, Blackpool, Birmingham, 
+    Burnley, Blackburn with Darwen, Hartlepool, Bradford, Stoke-on-Trent,Halton, Pendle, 
+    Nottingham, Oldham, North East Lincolnshire, Hastings, Salford, Rochdale."
+  }
+  
   #avoid standard form
   options(scipen = 999)
-  
-  #ethnicity proportions in england
-  #https://www.ethnicity-facts-figures.service.gov.uk/uk-population-by-ethnicity/national-and-regional-populations/population-of-england-and-wales/latest
-  white_prop <- 0.86
-  black_prop <- 0.033
-  asian_prop <- 0.075
-  mixed_prop <- 0.022
-  other_prop <- 0.01
-  
-  #population
-  england_pop <- 55.98 * 1000000
   
   #get data in the right format to plot
   data <- clean_HE_data(data)
@@ -137,17 +144,14 @@ plot_HE_ethnicity <- function(data = monthly_HE, band = band1, band_name = "Band
     title <- paste("Monthly number of", band_name, "forms by ethnic group")
     ytitle <- "Number of FP17 forms"
     limits <- c(0, max(data$band1, na.rm = T))
-    breaks <- seq(0, max(data$band1, na.rm = T),by = 200000)
   }else if(numOrPerc == "perc"){
     title <- paste("Monthly percentage of", band_name, "forms by ethnic group")
     ytitle <- paste("Percentage of", band_name, "FP17 forms")
     limits <- c(0, 100)
-    breaks <- seq(0, 100, by = 20)
   }else{
     title <- paste("Monthly number of", band_name, "forms by ethnic group")
     ytitle <- "Number of FP17 forms"
     limits <- c(0, max(data$total_FP17, na.rm = T))
-    breaks <- seq(0, max(data$total_FP17, na.rm = T),by = 200000)
   }
 
   
@@ -196,7 +200,8 @@ plot_HE_ethnicity <- function(data = monthly_HE, band = band1, band_name = "Band
          x = "Month", 
          y = ytitle,
          colour = "Ethnic group",
-         subtitle = subtitle) 
+         subtitle = subtitle, 
+         caption = caption) 
 
 }
 
@@ -207,7 +212,9 @@ plot_HE_ethnicity <- function(data = monthly_HE, band = band1, band_name = "Band
 plot_HE_gender <- function(data = monthly_HE, band = band1, band_name = "Band 1", numOrPerc = "num", 
                            level = "National", 
                            region = NULL, 
-                           STP = NULL){
+                           STP = NULL,                               
+                           override_subtitle= NULL,                               
+                           caption = NULL){
   
   #filter data based on region or STP
   if(level == "Regional"){
@@ -220,6 +227,22 @@ plot_HE_gender <- function(data = monthly_HE, band = band1, band_name = "Band 1"
     subtitle <- STP
   }else{
     subtitle <- "England"
+  }
+  
+  #override subtitle if specified
+  if(!is.null(override_subtitle) & override_subtitle == "Grouped top 20 most deprived local authorities by contract*"){
+    subtitle <- override_subtitle
+    caption <- 
+      "*Contracts that fall within the following Local Authorities based on 2019 deprivation data: 
+    Middlesbrough, Liverpool, Knowsley, Kingdton upon Hull, Manchester, Blackpool, Birmingham, 
+    Burnley, Blackburn with Darwen, Hartlepool, Bradford, Stoke-on-Trent,Halton, Pendle, 
+    Nottingham, Oldham, North East Lincolnshire, Hastings, Salford, Rochdale."
+  }else{
+    subtitle <- override_subtitle
+    caption <- "*Patients resident within the following Local Authorities based on 2019 deprivation data: 
+    Middlesbrough, Liverpool, Knowsley, Kingdton upon Hull, Manchester, Blackpool, Birmingham, 
+    Burnley, Blackburn with Darwen, Hartlepool, Bradford, Stoke-on-Trent,Halton, Pendle, 
+    Nottingham, Oldham, North East Lincolnshire, Hastings, Salford, Rochdale."
   }
   
   #avoid standard form
@@ -284,7 +307,8 @@ plot_HE_gender <- function(data = monthly_HE, band = band1, band_name = "Band 1"
          x = "Month", 
          y = ytitle,
          colour = "Gender",
-         subtitle = subtitle) +
+         subtitle = subtitle,
+         caption = caption) +
     scale_x_date(date_breaks = "1 month", 
                  date_labels = "%b-%y") +
     scale_y_continuous(label = scales::comma,
@@ -302,7 +326,9 @@ plot_HE_gender <- function(data = monthly_HE, band = band1, band_name = "Band 1"
 plot_HE_charge_status <- function(data = monthly_HE, band = band1, band_name = "Band 1", numOrPerc = "num", 
                                   level = "National", 
                                   region = NULL, 
-                                  STP = NULL){
+                                  STP = NULL,                               
+                                  override_subtitle= NULL,                               
+                                  caption = NULL){
   
   #filter data based on region or STP
   if(level == "Regional"){
@@ -315,6 +341,22 @@ plot_HE_charge_status <- function(data = monthly_HE, band = band1, band_name = "
     subtitle <- STP
   }else{
     subtitle <- "England"
+  }
+  
+  #override subtitle if specified
+  if(!is.null(override_subtitle) & override_subtitle == "Grouped top 20 most deprived local authorities by contract*"){
+    subtitle <- override_subtitle
+    caption <- 
+      "*Contracts that fall within the following Local Authorities based on 2019 deprivation data: 
+    Middlesbrough, Liverpool, Knowsley, Kingdton upon Hull, Manchester, Blackpool, Birmingham, 
+    Burnley, Blackburn with Darwen, Hartlepool, Bradford, Stoke-on-Trent,Halton, Pendle, 
+    Nottingham, Oldham, North East Lincolnshire, Hastings, Salford, Rochdale."
+  }else{
+    subtitle <- override_subtitle
+    caption <- "*Patients resident within the following Local Authorities based on 2019 deprivation data: 
+    Middlesbrough, Liverpool, Knowsley, Kingdton upon Hull, Manchester, Blackpool, Birmingham, 
+    Burnley, Blackburn with Darwen, Hartlepool, Bradford, Stoke-on-Trent,Halton, Pendle, 
+    Nottingham, Oldham, North East Lincolnshire, Hastings, Salford, Rochdale."
   }
   
   #avoid standard form
@@ -381,7 +423,8 @@ plot_HE_charge_status <- function(data = monthly_HE, band = band1, band_name = "
          x = "Month", 
          y = ytitle,
          colour = "Patient charge status",
-         subtitle = subtitle) +
+         subtitle = subtitle,
+         caption = caption) +
     scale_x_date(date_breaks = "1 month", 
                  date_labels = "%b-%y") +
     scale_y_continuous(label = scales::comma,
@@ -399,7 +442,9 @@ plot_HE_charge_status <- function(data = monthly_HE, band = band1, band_name = "
 plot_HE_age <- function(data = monthly_HE, band = band1, band_name = "Band 1", numOrPerc = "num", 
                         level = "National", 
                         region = NULL, 
-                        STP = NULL){
+                        STP = NULL,                               
+                        override_subtitle= NULL,                               
+                        caption = NULL){
   
   #filter data based on region or STP
   if(level == "Regional"){
@@ -412,6 +457,22 @@ plot_HE_age <- function(data = monthly_HE, band = band1, band_name = "Band 1", n
     subtitle <- STP
   }else{
     subtitle <- "England"
+  }
+  
+  #override subtitle if specified
+  if(!is.null(override_subtitle) & override_subtitle == "Grouped top 20 most deprived local authorities by contract*"){
+    subtitle <- override_subtitle
+    caption <- 
+    "*Contracts that fall within the following Local Authorities based on 2019 deprivation data: 
+    Middlesbrough, Liverpool, Knowsley, Kingdton upon Hull, Manchester, Blackpool, Birmingham, 
+    Burnley, Blackburn with Darwen, Hartlepool, Bradford, Stoke-on-Trent,Halton, Pendle, 
+    Nottingham, Oldham, North East Lincolnshire, Hastings, Salford, Rochdale."
+  }else{
+    subtitle <- override_subtitle
+    caption <- "*Patients resident within the following Local Authorities based on 2019 deprivation data: 
+    Middlesbrough, Liverpool, Knowsley, Kingdton upon Hull, Manchester, Blackpool, Birmingham, 
+    Burnley, Blackburn with Darwen, Hartlepool, Bradford, Stoke-on-Trent,Halton, Pendle, 
+    Nottingham, Oldham, North East Lincolnshire, Hastings, Salford, Rochdale."
   }
   
   #avoid standard form
@@ -494,7 +555,8 @@ plot_HE_age <- function(data = monthly_HE, band = band1, band_name = "Band 1", n
          x = "Month", 
          y = ytitle,
          colour = "Age group",
-         subtitle = subtitle) +
+         subtitle = subtitle,
+         caption = caption) +
     scale_x_date(date_breaks = "1 month", 
                  date_labels = "%b-%y") +
     scale_y_continuous(label = scales::comma,
