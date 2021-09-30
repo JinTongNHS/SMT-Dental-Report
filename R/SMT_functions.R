@@ -91,7 +91,8 @@ plot_UDA_UOA_to_target <- function(data = UDA_calendar_data, UDAorUOA = "UDA",
 #function to plot second chart on slide 4
 #old data source is in teams folder "Monthly performance data/April 21 to September 21 data/Calendar data/April to Jul UDA 2021-2022 by Treatment month.xlsx"
 #pass in raw data - either UDA_calendar_data or orthodontic_data_combined_calendar
-plot_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data, UDAorUOA = "UDA", 
+plot_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data, 
+                                              UDAorUOA = "UDA", 
                                               level = "National",
                                               region = NULL,
                                               STP = NULL){
@@ -326,27 +327,71 @@ plot_urgent_form_submissions <- function(data = UDA_scheduled_data,
 
 ################################################################################
 #function to plt delivery profile month by month 
-plot_UDA_delivery_profile <- function(data = UDA_performance_bands){
+plot_UDA_UOA_delivery_profile <- function(data = UDA_scheduled_data, 
+                                          calendar_data = UDA_calendar_data,
+                                          UDAorUOA = "UDA",
+                                          level = "National",
+                                          region = NULL,
+                                          STP = NULL){
   
-  data$performance_band <- factor(data$performance_band, levels = c("0-9%","10% to 19%", 
-                                      "20% to 29%", "30% to 39%", "40% to 49%", "50 to 59%",
-                                      "60% to 69%", "70% to 79%", "80% to 89%", "90% to 99%",
+  #add a region column to the data
+  region_STP_lookup <- calendar_data %>%
+    select(contract_number, name_or_company_name, commissioner_name, region_name) %>%
+    distinct()
+  
+  data <- left_join(data, region_STP_lookup, by = c("contract_number", "name_or_company_name", "commissioner_name"))
+  
+  #filter for STP or region
+  if(level == "Regional"){
+    data <- data %>% 
+      filter(region_name == region)
+    subtitle <- region
+  }else if(level == "STP"){
+    data <- data %>% 
+      filter(commissioner_name == STP)
+    subtitle <- STP
+  }else{
+    subtitle <- "England"
+  }
+  
+  #get data into the right format
+  data <- get_slide5_table(data = data, UDAorUOA = UDAorUOA, remove_prototypes = F)
+  
+  #change title for UDA or UOA
+  if(UDAorUOA == "UDA"){
+    title <- "Proportion of contracts delivering in each performance band \nof total contracted UDA per month"
+    legTitle <- "Performance band of \nUDA delivery"
+  }else{
+    title <- "Proportion of contracts delivering in each performance band \nof total contracted UOA per month"
+    legTitle <- "Performance band of \nUOA delivery"
+  }
+  
+  #get bars in the correct order
+  data$performance_band <- factor(data$performance_band, levels = c("0-9%","10-19%", 
+                                      "20-29%", "30-39%", "40-49%", "50-59%",
+                                      "60-69%", "70-79%", "80-89%", "90-99%",
                                       "100% +"))
+  #colour blind friendly palette
+  cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7",
+                 "#52854C", "#4E84C4", "#293352", "#FFDB6D")
   
+  #plot code
   ggplot(data, 
          aes(fill = performance_band, 
-             y = perc_of_contracts*100, 
+             y = perc_of_contracts, 
              x = month)) +
     geom_bar(position = "dodge", 
              stat = "identity") +
-    labs(title = "Proportion of contracts delivering in each performance band \nof total contracted UDA per month",
+    labs(title = title,
          x = "Month",
          y = "Percentage of contracts delivering in this band",
-         fill = "Performance Band") +
+         fill = legTitle,
+         subtitle = subtitle) +
+    #scale_fill_manual(values = cbPalette) +
     scale_x_datetime(breaks = data$month, 
                      labels = scales::date_format("%b-%y")) +
     geom_vline(xintercept = as.Date("2020-07-01"), colour = "black", size = 5) +
-    theme_dark()
+    theme_bw()
 }
 
 
@@ -480,4 +525,31 @@ plot_density <- function(data = density_data){
          fill = "Time Period")
   
   
+}
+
+################################################################################
+get_number_of_contracts <- function(data = UDA_calendar_data, 
+                                    remove_prototypes = T,
+                                    scheduled_data = UDA_scheduled_data){
+  
+  #join in contracted UDAs from scheduled data
+  contracted_UDAs <- scheduled_data %>%
+    select(month, contract_number, annual_contracted_UDA)
+  
+  data <- data %>%
+    left_join(contracted_UDAs, by = c("month", "contract_number"))
+  
+  #remove prototype contracts if specified
+  if(remove_prototypes){
+    #create not in function
+    `%notin%` = Negate(`%in%`)
+    data <- data %>%
+      filter(contract_number %notin% prototype_contracts$proto_contracts)%>%
+      filter(annual_contracted_UDA > 100)
+  }
+  
+  data <- data %>%
+    filter(month == max(data$month))
+  
+  nrow(data)
 }

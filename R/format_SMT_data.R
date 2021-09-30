@@ -137,7 +137,9 @@ get_into_slide8_format <- function(data = UDA_scheduled_data,
 
 
 ################################################################################
-get_slide5_table <- function(data = UDA_scheduled_data, remove_prototypes = F){
+get_slide5_table <- function(data = UDA_scheduled_data,
+                             UDAorUOA = "UDA",
+                             remove_prototypes = F){
   
   #remove prototype contracts if specified
   if(remove_prototypes){
@@ -148,10 +150,18 @@ get_slide5_table <- function(data = UDA_scheduled_data, remove_prototypes = F){
       filter(annual_contracted_UDA < 100)
   }
   
-  #create column for 12 month scaled % of UDAs delivered and put into bands
-  #then sum across these bands by month
-  performance_table <- data %>%
-    mutate(monthly_perc_scaled = UDA_delivered * 12 * 100/ annual_contracted_UDA) %>%
+  if(UDAorUOA == "UDA"){
+    #create column for 12 month scaled % of UDAs delivered 
+    performance_table <- data %>%
+      mutate(monthly_perc_scaled = UDA_delivered * 12 * 100/ annual_contracted_UDA)
+  }else{
+    #create column for 12 month scaled % of UOAs delivered 
+    performance_table <- data %>%
+      mutate(monthly_perc_scaled = UOA_delivered * 12 * 100/ annual_contracted_UOA)
+  }
+    
+  #put into bands then sum across these bands by month
+  performance_table <- performance_table %>%  
     mutate(performance_band = if_else(monthly_perc_scaled >= 0 & monthly_perc_scaled <10, "0-9%",
                                       if_else(monthly_perc_scaled >= 10 & monthly_perc_scaled <20, "10-19%",
                                               if_else(monthly_perc_scaled >= 20 & monthly_perc_scaled <30, "20-29%",
@@ -180,7 +190,8 @@ get_slide5_table <- function(data = UDA_scheduled_data, remove_prototypes = F){
     count(performance_band) %>%
     mutate(no_of_contracts = sum(n)) %>%
     ungroup() %>%
-    mutate(perc_contracts_in_band = n * 100 / no_of_contracts)
+    mutate(perc_of_contracts = n * 100 / no_of_contracts) %>%
+    mutate(month = as.POSIXct(month))
 
 }
 

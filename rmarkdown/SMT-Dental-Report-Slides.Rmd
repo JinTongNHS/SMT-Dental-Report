@@ -1,19 +1,22 @@
 ---
-title: SMT Dental Data Report 
-date: "`r format(Sys.time(), '%d %B, %Y')`"
-author: NHS England and Improvement
+title: Dental Data Pack 
+author: |
+  ![](footer.jpg){width=12cm} 
+date:  "`r format(Sys.time(), '%d %B, %Y')`"
 output:
   beamer_presentation:
-    latex_engine: xelatex
+    includes:
+      in_header: slide_format.tex
 sansfont: Calibri Light
-fontsize: 9pt
+fontsize: 8pt
+classoption: aspectratio = 169
 ---
 
 ```{r include = FALSE}
 library(tidyverse)
 library(readxl)
 source("../R/SMT_functions.R")
-source("../R/format_new_data.R")
+source("../R/format_SMT_data.R")
 
 #load in raw data
 UDA_calendar_data <- readRDS("~/R-Projects/SMT-Dental-Report/data/cleaned_data_up_to_august/UDA_calendar_data.rds")
@@ -38,22 +41,22 @@ knitr::opts_chunk$set(echo = FALSE)
 
 #### Calendar data 2021/2022 (explanation slide 3)
 ###### April to September data only:
-* UDA contracts achieving 60% (4)
-* UOA contracts achieving 80% (6)
+* UDA contracts achieving 60% (4 and 5)
+* UOA contracts achieving 80% (8 and 9)
 
 #### Scheduled data activity slides (explanation slide 3)
-* Total UDA activity scales up by 12 (5)
-* Total UOA activity scaled up by 12 (7)
-* Historic banded Courses of Treatment comparison (8)
-* Total urgent FP17 form count 2019/2020 to 2020/2021 (9)  
+* Total UDA activity scaled up by 12 (6)
+* Total UOA activity scaled up by 12 (10)
+* Historic banded Courses of Treatment comparison (12)
+* Total urgent FP17 form count 2019/2020 to 2020/2021 (13)  
 
-*Please Note: Slides 4 and 6 use calendar data as a measure of activity for the first half of the 2021-2022 year.*
-*Slides 5, 7 and 8-9 use scheduled data, as per previous SMT data packs.*
-*The scheduled data is from 16th June – 16th July and is fixed.*
+*Please Note: Slides 4, 5, 8 and 9 use calendar data as a measure of activity for the first half of the 2021-2022 year.*
+*Slides 6, 7, 10-13 use scheduled data, as per previous SMT data packs.*
+*The scheduled data is from 16th June - 16th July and is fixed.*
 
-## Calendar data explanation {data-background="slide-backgrounds\NHS_background.JPG"}
+## Calendar data explanation 
 
-* Slides 4 & 6 are based on calendar month data
+* Slides 4, 5, 8 and 9 are based on calendar month data
 * Calendar data is based on courses of treatment completed within an entire month, for example 1st February to 28th Feb
 * For calendar data if a COT was completed in February but not declared till March, that activity would still be registered as
 occurring in February.
@@ -62,7 +65,7 @@ is now based on total number of UDA/Os delivered as a % of the total number of U
 threshold).
 
 ### Scheduled data explanation
-* Slides 5,7, 8 and 9 are based on scheduled data
+* Slides 6, 7, 10-13 are based on scheduled data
 * The scheduling time period is usually between the 20th of one month and the 20th of the next month i.e., 21st April to the
 19th May. That means that any Mandatory contract COT completed after this period will not be included in the May
 scheduled data. However, if for example a COT was completed on May 1st, but reported to the BSA after the end of the
@@ -75,14 +78,14 @@ scheduling period can be considered fixed.
 plot_UDA_UOA_to_target(data = UDA_calendar_data, UDAorUOA = "UDA", level = "National")
 ```
 
-* This chart shows the average monthly performance of
-the 6851 GDS/PDS/PDS+ contracts (with annual contracted UDAs
-of greater than or equal to 100) measured against the minimum
-activity required (16.7%) to reach the 60% threshold by
-September. 
-* In the month of July 3089 contracts (45%) achieved at least 16.7%
-towards their 60% threshold (if they achieved this each month then
-they would reach 60% in September)
+* This graph shows the average monthly performance of the *6,851* GDS/PDS/PDS+ contracts 
+(with annual contracted UDAs of greater than or equal to 100) measured against the minimum monthly 
+activity required (16.7%) to reach the 60% cumulative target threshold by September.  
+* N.B. Last month's delivery may be marginally different to what was reported last month 
+due to COTs not being registered within the calendar month. See slide 3 for more detail 
+on scheduled and calendar 
+data.
+
 
 
 ## UDA cumulative activity data for 2021/2022
@@ -91,16 +94,16 @@ they would reach 60% in September)
 plot_cumulative_UDA_UOA_to_target(data = UDA_calendar_data, UDAorUOA = "UDA", level = "National")
 ```
 
-* This chart shows the cumulative (Year-to-date) activity
-of the 6851 GDS/PDS/PDS+ contracts) measured against the
-expected monthly total activity to achieve the 60% threshold by
-September. The graph measures the total cumulative UDAs
-performed divided by the total expected activity of the 60%
-threshold.
-* From April to July 4282 contracts (62%) are at least two thirds
-towards delivering the 60% threshold.
+* This graph shows the cumulative (Year-to-date) activity of the *6,867* GDS/PDS/PDS+ 
+contracts measured against the expected monthly total activity to achieve the H1 2021/22 
+activity threshold by September. The graph measures the total cumulative UDAs performed
+divided by the total expected activity.
 
-## UDA delivery July-20 to July-21
+* From *April to  August* *4,297* contracts (out of *6,867* - *63%*) have delivered 
+the required UDAs or more towards the H1 2021/22 activity threshold by September.
+
+
+## UDA delivery 
 
 ```{r echo = FALSE, warning = FALSE, fig.height=4}
 plot_UDA_UOA_delivery(data = UDA_scheduled_data, existing_data = slide5_UDA_delivery_historic, UDAorUOA = "UDA")
@@ -109,12 +112,22 @@ plot_UDA_UOA_delivery(data = UDA_scheduled_data, existing_data = slide5_UDA_deli
 * This graph shows the average UDA delivery as a % of
 contracted activity when each month has been scaled up to
 12 months. The graph uses scheduled data to measure the
-activity
-* The table below shows the proportion of practices delivering
-between a certain % group of contracted UDA activity from
-July 2020 to July 2021 if performance for that
-month is annualised. As with the graph the table uses
-scheduled data.
+activity.
+
+## UDA delivery profile July-20 to July-21
+
+```{r echo = FALSE, warning = FALSE, fig.height=4}
+plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
+                          calendar_data = UDA_calendar_data,
+                          UDAorUOA = "UDA",
+                          level = "National",
+                          region = NULL,
+                          STP = NULL)
+```
+
+* The graph shows the proportion of practices delivering
+between a certain % group of contracted UDA activity if performance for that
+month is annualised. This uses scheduled data.
 
 ## UOA activity data for 2021/2022
 
@@ -123,10 +136,10 @@ plot_UDA_UOA_to_target(data = UOA_calendar_data, UDAorUOA = "UOA", level = "Nati
 ```
 
 * This chart shows the average monthly performance of
-the 757 GDS/PDS contracts (with annual contracted UDAs of
+the *757* GDS/PDS contracts (with annual contracted UDAs of
 greater than or equal to 100) measured against the minimum
 activity required (16.7%) to reach the 80% threshold by September
-* In the month of July 230 contracts (30%) achieved at least 16.7%
+* In the month of July *230* contracts (*30%*) achieved at least 16.7%
 towards their 80% threshold (if they achieved this each month then
 they would reach 80% in September)
 
@@ -137,13 +150,13 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_calendar_data, UDAorUOA = "UOA", le
 ```
 
 * This chart shows the cumulative (Year-to-date) average
-activity of the 757 GDS/PDS contracts) measured against the
+activity of the *757* GDS/PDS contracts) measured against the
 expected monthly activity to achieve the 80% threshold by
 September. The graph measures the total cumulative UOAs
 performed divided by the total expected activity of the 80%
 threshold.
-* From April to July 359 contracts (47%) are at least two thirds
-towards delivering the 80% threshold
+* From *April to August* *359* contracts (*47*%) have delivered 
+the required UDAs or more towards the 80% threshold.
 
 ## UOA delivery July-20 to July-21
 
@@ -154,13 +167,25 @@ plot_UDA_UOA_delivery(data = UOA_scheduled_data, existing_data = slide7_UOA_deli
 * This graph shows the average UOA delivery as a % of contracted
 activity when each month has been scaled up to 12 months. The
 graph uses scheduled data to measure the activity. 
-* The table below shows the proportion of practices delivering
-between a certain % group of contracted UOA activity from July
-2020 to July 2021 if performance for that month is annualised. As
-with the graph the table uses scheduled data. 
+
+## UOA delivery profile July-20 to July-21
+
+```{r echo = FALSE, warning = FALSE, fig.height=4}
+plot_UDA_UOA_delivery_profile(data = UOA_scheduled_data,
+                          calendar_data = UOA_calendar_data,
+                          UDAorUOA = "UOA",
+                          level = "National",
+                          region = NULL,
+                          STP = NULL)
+```
+
+* The graph shows the proportion of practices delivering
+between a certain % group of contracted UOA activity if performance for that 
+month is annualised. 
+This uses scheduled data. 
 
 ## Time series of banded Courses of Treatment 2019-20 to 2021-22
-```{r echo = FALSE, warning = FALSE}
+```{r echo = FALSE, warning = FALSE, fig.height=5}
 plot_banded_CoT(data = UDA_scheduled_data, existing_data = slide8_banded_CoT_historic)
 ```
 
@@ -171,10 +196,8 @@ plot_urgent_form_submissions(data = UDA_scheduled_data, existing_data = slide8_b
 ```
 
 * This graph shows the number of urgent treatment forms
-declared per month from April to March in both
-2019/2020 and 2020/2021, and just for April to July in
-2021/2022. 
-* The urgent treatment form count in July 2021 was
-356,885, whilst in July 2019-20 this number was
-395,931, which is a 10% decrease from the pre-COVID
+declared per month across financial years.
+* The urgent treatment form count in *July 2021* was
+*356,885*, whilst in *July 2019-20* this number was
+*395,931*, which is a *10%* *decrease* from the pre-COVID
 world. 

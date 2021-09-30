@@ -1,10 +1,20 @@
 ---
-title: "SMT Dental Data Pack - changes"
+title: "SMT Dental Data Pack"
 author: "NHS England and NHS Improvement"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: 
   powerpoint_presentation
+fontsize: 9pt
 ---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  warning = FALSE, 
+  fig.height=4, 
+  fig.width=7
+  )
+```
 
 ```{r include = FALSE}
 library(tidyverse)
@@ -12,23 +22,19 @@ library(readxl)
 source("../R/SMT_functions.R")
 source("../R/format_new_data.R")
 
-#load in raw data (will be NCDR)
+#load in raw data
 UDA_calendar_data <- readRDS("~/R-Projects/SMT-Dental-Report/data/cleaned_data_up_to_august/UDA_calendar_data.rds")
 UOA_calendar_data <- readRDS("~/R-Projects/SMT-Dental-Report/data/cleaned_data_up_to_august/UOA_calendar_data.rds")
 UDA_scheduled_data <- readRDS("~/R-Projects/SMT-Dental-Report/data/cleaned_data_up_to_august/UDA_scheduled_data.rds")
 UOA_scheduled_data <- readRDS("~/R-Projects/SMT-Dental-Report/data/cleaned_data_up_to_august/UOA_scheduled_data.rds")
 
-#load in historic data not available in raw (may need to update)
+#load in historic data not available in raw
 slide5_UDA_delivery_historic <- readRDS("~/R-Projects/SMT-Dental-Report/data/cleaned_data_up_to_august/slide5_UDA_delivery_historic.rds")
 slide7_UOA_delivery_historic <- readRDS("~/R-Projects/SMT-Dental-Report/data/cleaned_data_up_to_august/slide7_UOA_delivery_historic.rds")
 slide8_banded_CoT_historic <- readRDS("~/R-Projects/SMT-Dental-Report/data/cleaned_data_up_to_august/slide8_banded_CoT_historic.rds")
 
 prototype_contracts <- read_excel("~/R-Projects/SMT-Dental-Report/data/prototype_contracts.xls")
 
-```
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
 ```
 
 ## Contents 
@@ -68,7 +74,7 @@ scheduling period can be considered fixed.
 
 
 ## UDA activity data for 2021/2022
-```{r echo = FALSE, warning = FALSE, fig.height=4}
+```{r echo = FALSE, warning = FALSE, fig.height=4, fig.width=7}
 plot_UDA_UOA_to_target(data = UDA_calendar_data, UDAorUOA = "UDA", level = "National")
 ```
 
@@ -84,7 +90,7 @@ they would reach 60% in September)
 
 ## UDA cumulative activity data for 2021/2022
 
-```{r echo = FALSE, warning = FALSE, fig.height=4}
+```{r echo = FALSE, warning = FALSE, fig.height=4, fig.width=7}
 plot_cumulative_UDA_UOA_to_target(data = UDA_calendar_data, UDAorUOA = "UDA", level = "National")
 ```
 
@@ -99,7 +105,7 @@ towards delivering the 60% threshold.
 
 ## UDA delivery July-20 to July-21
 
-```{r echo = FALSE, warning = FALSE, fig.height=4}
+```{r echo = FALSE, warning = FALSE, fig.height=4, fig.width=7}
 plot_UDA_UOA_delivery(data = UDA_scheduled_data, existing_data = slide5_UDA_delivery_historic, UDAorUOA = "UDA")
 ```
 
@@ -115,7 +121,7 @@ scheduled data.
 
 ## UOA activity data for 2021/2022
 
-```{r echo = FALSE, warning = FALSE, fig.height=4}
+```{r echo = FALSE, warning = FALSE, fig.height=4, fig.width=7}
 plot_UDA_UOA_to_target(data = UOA_calendar_data, UDAorUOA = "UOA", level = "National")
 ```
 
@@ -129,7 +135,7 @@ they would reach 80% in September)
 
 ## UOA cumulative activity data for 2021/2022
 
-```{r echo = FALSE, warning = FALSE, fig.height=4}
+```{r echo = FALSE, warning = FALSE, fig.height=4, fig.width=7}
 plot_cumulative_UDA_UOA_to_target(data = UOA_calendar_data, UDAorUOA = "UOA", level = "National")
 ```
 
@@ -144,7 +150,7 @@ towards delivering the 80% threshold
 
 ## UOA delivery July-20 to July-21
 
-```{r echo = FALSE, warning = FALSE, fig.height=4}
+```{r echo = FALSE, warning = FALSE, fig.height=4, fig.width=7}
 plot_UDA_UOA_delivery(data = UOA_scheduled_data, existing_data = slide7_UOA_delivery_historic, UDAorUOA = "UOA")
 ```
 
@@ -163,7 +169,7 @@ plot_banded_CoT(data = UDA_scheduled_data, existing_data = slide8_banded_CoT_his
 
 ## Urgent treatment form submissions in July 2021 saw an increase from June 2021
 
-```{r echo = FALSE, warning = FALSE, fig.height=4}
+```{r echo = FALSE, warning = FALSE, fig.height=4, fig.width=7}
 plot_urgent_form_submissions(data = UDA_scheduled_data, existing_data = slide8_banded_CoT_historic)
 ```
 
