@@ -1,9 +1,9 @@
 ---
-title: Dental Data Pack 
-author: |
-  ![](footer.jpg){width=12cm} 
-date:  "`r format(Sys.time(), '%d %B, %Y')`"
+title: "Dental Data Pack"
+author: "![](footer.jpg){width=12cm}"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
+  slidy_presentation: default
   beamer_presentation:
     includes:
       in_header: slide_format.tex
@@ -19,10 +19,10 @@ source("../R/SMT_functions.R")
 source("../R/format_SMT_data.R")
 
 #load in raw data
-UDA_calendar_data <- readRDS("~/R-Projects/SMT-Dental-Report/data/cleaned_data_up_to_august/UDA_calendar_data.rds")
-UOA_calendar_data <- readRDS("~/R-Projects/SMT-Dental-Report/data/cleaned_data_up_to_august/UOA_calendar_data.rds")
-UDA_scheduled_data <- readRDS("~/R-Projects/SMT-Dental-Report/data/cleaned_data_up_to_august/UDA_scheduled_data.rds")
-UOA_scheduled_data <- readRDS("~/R-Projects/SMT-Dental-Report/data/cleaned_data_up_to_august/UOA_scheduled_data.rds")
+UDA_calendar_data <- readRDS("~/R-Projects/SMT-Dental-Report/data/cleaned_data_up_to_september/UDA_calendar_data.rds")
+UOA_calendar_data <- readRDS("~/R-Projects/SMT-Dental-Report/data/cleaned_data_up_to_september/UOA_calendar_data.rds")
+UDA_scheduled_data <- readRDS("~/R-Projects/SMT-Dental-Report/data/cleaned_data_up_to_september/UDA_scheduled_data.rds")
+UOA_scheduled_data <- readRDS("~/R-Projects/SMT-Dental-Report/data/cleaned_data_up_to_september/UOA_scheduled_data.rds")
 
 #load in historic data not available in raw
 slide5_UDA_delivery_historic <- readRDS("~/R-Projects/SMT-Dental-Report/data/cleaned_data_up_to_august/slide5_UDA_delivery_historic.rds")
@@ -54,7 +54,8 @@ knitr::opts_chunk$set(echo = FALSE)
 *Slides 6, 7, 10-13 use scheduled data, as per previous SMT data packs.*
 *The scheduled data is from 16th June - 16th July and is fixed.*
 
-## Calendar data explanation 
+## Calendar and scheduled data 
+### Calendar data explanation 
 
 * Slides 4, 5, 8 and 9 are based on calendar month data
 * Calendar data is based on courses of treatment completed within an entire month, for example 1st February to 28th Feb
@@ -78,7 +79,7 @@ scheduling period can be considered fixed.
 plot_UDA_UOA_to_target(data = UDA_calendar_data, UDAorUOA = "UDA", level = "National")
 ```
 
-* This graph shows the average monthly performance of the *6,851* GDS/PDS/PDS+ contracts 
+* This graph shows the average monthly performance of the **`r get_num_contracts()`** GDS/PDS/PDS+ contracts 
 (with annual contracted UDAs of greater than or equal to 100) measured against the minimum monthly 
 activity required (16.7%) to reach the 60% cumulative target threshold by September.  
 * N.B. Last month's delivery may be marginally different to what was reported last month 
@@ -94,13 +95,14 @@ data.
 plot_cumulative_UDA_UOA_to_target(data = UDA_calendar_data, UDAorUOA = "UDA", level = "National")
 ```
 
-* This graph shows the cumulative (Year-to-date) activity of the *6,867* GDS/PDS/PDS+ 
+* This graph shows the cumulative (Year-to-date) activity of the **`r get_num_contracts()`** GDS/PDS/PDS+ 
 contracts measured against the expected monthly total activity to achieve the H1 2021/22 
 activity threshold by September. The graph measures the total cumulative UDAs performed
 divided by the total expected activity.
 
-* From *April to  August* *4,297* contracts (out of *6,867* - *63%*) have delivered 
-the required UDAs or more towards the H1 2021/22 activity threshold by September.
+* From April to `r format(Sys.Date() - lubridate::month(1), "%B")` **`r get_num_contracts_on_target()`** 
+contracts (**`r round(get_num_contracts_on_target()*100/get_num_contracts())`%**) 
+have delivered the required UDAs or more towards the H1 2021/22 activity threshold by the end of September.
 
 
 ## UDA delivery 
@@ -136,12 +138,14 @@ plot_UDA_UOA_to_target(data = UOA_calendar_data, UDAorUOA = "UOA", level = "Nati
 ```
 
 * This chart shows the average monthly performance of
-the *757* GDS/PDS contracts (with annual contracted UDAs of
+the **`r get_num_contracts(data = UOA_calendar_data, remove_prototypes = T, scheduled_data = UOA_scheduled_data, UDAorUOA = "UOA")`** 
+GDS/PDS contracts (with annual contracted UOAs of
 greater than or equal to 100) measured against the minimum
-activity required (16.7%) to reach the 80% threshold by September
-* In the month of July *230* contracts (*30%*) achieved at least 16.7%
-towards their 80% threshold (if they achieved this each month then
-they would reach 80% in September)
+activity required (16.7%) to reach the 80% threshold by September.
+* N.B. Last month's delivery may be marginally different to what was reported last month 
+due to COTs not being registered within the calendar month. See slide 3 for more detail 
+on scheduled and calendar 
+data.
 
 ## UOA cumulative activity data for 2021/2022
 
@@ -150,12 +154,13 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_calendar_data, UDAorUOA = "UOA", le
 ```
 
 * This chart shows the cumulative (Year-to-date) average
-activity of the *757* GDS/PDS contracts) measured against the
+activity of the **`r get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA")`** 
+GDS/PDS contracts) measured against the
 expected monthly activity to achieve the 80% threshold by
 September. The graph measures the total cumulative UOAs
 performed divided by the total expected activity of the 80%
 threshold.
-* From *April to August* *359* contracts (*47*%) have delivered 
+* From April to `r format(Sys.Date() - lubridate::month(1), "%B")` **`r get_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA")`** contracts (**`r round(get_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA")*100/get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA"))`%**) have delivered 
 the required UDAs or more towards the 80% threshold.
 
 ## UOA delivery July-20 to July-21
@@ -197,7 +202,7 @@ plot_urgent_form_submissions(data = UDA_scheduled_data, existing_data = slide8_b
 
 * This graph shows the number of urgent treatment forms
 declared per month across financial years.
-* The urgent treatment form count in *July 2021* was
-*356,885*, whilst in *July 2019-20* this number was
-*395,931*, which is a *10%* *decrease* from the pre-COVID
+* The urgent treatment form count in **`r format(Sys.Date() - lubridate::month(1), "%B")` 2021** was
+**`r get_num_urgent_forms()`**, whilst in **`r format(Sys.Date() - lubridate::month(1), "%B")` 2019** this number was
+**`r get_num_urgent_forms_2019()`**, which is a **`r round((get_num_urgent_forms() - get_num_urgent_forms_2019()) *100 / get_num_urgent_forms_2019())`%** change from the pre-COVID
 world. 

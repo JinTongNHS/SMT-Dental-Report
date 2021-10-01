@@ -147,7 +147,7 @@ import_and_clean_scheduled_UOA_data <- function(data_path = "data/raw_data/dashb
 ################################################################################
 #function to import and clean data
 #N.B. this assumes that the columns are in the same order each time!
-import_and_clean_calendar_UDA_data <- function(data_path = "data/raw_data/dashboard_raw_data/UDA_calendar_raw_data/UDA_calcendar_Apr_Aug21.xlsx"){
+import_and_clean_calendar_UDA_data <- function(data_path = "data/raw_data/dashboard_raw_data/UDA_calendar_raw_data/UDA_calendar_Apr_Aug21.xlsx"){
   
   #read in data with correct types and removing top 6 rows and renaming columns 
   data <- read_excel(data_path,
@@ -304,7 +304,36 @@ import_and_clean_calendar_UDA_data <- function(data_path = "data/raw_data/dashbo
            total_other_FP17s = X__68
     )
   
-  UDA_calendar_data <- bind_rows(data_apr, data_may, data_jun, data_jul, data_aug)
+  #add column for date and rename columns, split data for just september
+  data_sep <- data %>%
+    mutate(month = as.Date("2021-09-01")) %>%
+    select(month, X__1, X__2, X__3, X__4, X__5, X__6, X__7, X__8, 
+           X__69, X__70, X__71, X__72, X__73, X__74, X__75, X__76, X__77, X__78,
+           X__79, X__80) %>%
+    rename(contract_number = X__1,
+           latest_contract_type = X__2,
+           name_or_company_name = X__3,
+           commissioner_name = X__4,
+           region_name = X__5,
+           paid_by_BSA = X__6,
+           contract_start_date = X__7, 
+           contract_end_date = X__8, 
+           
+           UDA_total = X__69, 
+           UDA_band_1_total = X__70,
+           UDA_band_2_total = X__71,
+           UDA_band_3_total = X__72, 
+           UDA_urgent_total = X__73, 
+           UDA_other_total = X__74, 
+           total_FP17s = X__75, 
+           total_band_1_FP17s  = X__76,
+           total_band_2_FP17s = X__77,
+           total_band_3_FP17s = X__78,
+           total_urgent_FP17s = X__79,
+           total_other_FP17s = X__80
+    )
+  
+  UDA_calendar_data <- bind_rows(data_apr, data_may, data_jun, data_jul, data_aug, data_sep)
   
 }
 
@@ -320,6 +349,9 @@ import_and_clean_calendar_UOA_data <- function(data_path = "data/raw_data/dashbo
                      col_names = FALSE, 
                      skip = 6,
                      .name_repair = ~ paste0("X__", seq_along(.x)))
+  
+  #remove last 4 rows with eDen source
+  data <- data[1:(nrow(data) - 4),]
   
   #convert date column into dates
   data <- data %>%
@@ -415,8 +447,26 @@ import_and_clean_calendar_UOA_data <- function(data_path = "data/raw_data/dashbo
            total_orthodontic_starts = X__18
     ) 
   
+  #add column for date and rename columns, split data for just sep
+  data_sep <- data %>%
+    mutate(month = as.Date("2021-09-01")) %>%
+    select(month, X__1, X__2, X__3, X__4, X__5, X__6, X__7, X__8, 
+           X__19, X__20) %>%
+    rename(contract_number = X__1,
+           contract_type = X__2,
+           name_or_company_name = X__3,
+           commissioner_name = X__4,
+           region_name = X__5,
+           paid_by_BSA = X__6,
+           contract_start_date = X__7, 
+           contract_end_date = X__8, 
+           
+           UOA_total = X__19, 
+           total_orthodontic_starts = X__20
+    )
   
-  UOA_calendar_data <- bind_rows(data_apr, data_may, data_jun, data_jul, data_aug)
+  
+  UOA_calendar_data <- bind_rows(data_apr, data_may, data_jun, data_jul, data_aug, data_sep)
   
 }
 

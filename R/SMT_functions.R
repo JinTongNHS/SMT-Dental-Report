@@ -319,7 +319,8 @@ plot_urgent_form_submissions <- function(data = UDA_scheduled_data,
     scale_y_continuous(breaks = seq(0, 550000, 50000)) +
     labs(title = "Urgent treatment form submissions",
          x = "Month",
-         y = "Number of urgent FP17 forms submitted")
+         y = "Number of urgent FP17 forms submitted",
+         colour = "Financial year")
     
     
 }
@@ -528,24 +529,37 @@ plot_density <- function(data = density_data){
 }
 
 ################################################################################
-get_number_of_contracts <- function(data = UDA_calendar_data, 
+get_num_contracts <- function(data = UDA_calendar_data, 
                                     remove_prototypes = T,
-                                    scheduled_data = UDA_scheduled_data){
+                                    scheduled_data = UDA_scheduled_data,
+                                    UDAorUOA = "UDA"){
   
-  #join in contracted UDAs from scheduled data
-  contracted_UDAs <- scheduled_data %>%
-    select(month, contract_number, annual_contracted_UDA)
+  if(UDAorUOA == "UDA"){
+    #get contracted UDAs
+    contracted_UDA_UOAs <- scheduled_data %>%
+      select(month, contract_number, annual_contracted_UDA)
+  }else{
+    #get contracted UOAs
+    contracted_UDA_UOAs <- scheduled_data %>%
+      select(month, contract_number, annual_contracted_UOA)
+  }
   
+  #join in contracted UDA/UOAs from scheduled data
   data <- data %>%
-    left_join(contracted_UDAs, by = c("month", "contract_number"))
+    left_join(contracted_UDA_UOAs, by = c("month", "contract_number"))
+  
+  #create not in function
+  `%notin%` = Negate(`%in%`)
   
   #remove prototype contracts if specified
-  if(remove_prototypes){
-    #create not in function
-    `%notin%` = Negate(`%in%`)
+  if(remove_prototypes & UDAorUOA == "UDA"){
     data <- data %>%
       filter(contract_number %notin% prototype_contracts$proto_contracts)%>%
       filter(annual_contracted_UDA > 100)
+  }else if(remove_prototypes & UDAorUOA == "UOA"){
+    data <- data %>%
+      #filter(contract_number %notin% prototype_contracts$proto_contracts)%>%
+      filter(annual_contracted_UOA > 100)
   }
   
   data <- data %>%
@@ -553,3 +567,103 @@ get_number_of_contracts <- function(data = UDA_calendar_data,
   
   nrow(data)
 }
+
+################################################################################
+get_num_contracts_on_target <- function(data = UDA_calendar_data, 
+                                       remove_prototypes = T,
+                                       scheduled_data = UDA_scheduled_data,
+                                       UDAorUOA = "UDA"){
+  if(UDAorUOA == "UDA"){
+    #get contracted UDAs
+    contracted_UDA_UOAs <- scheduled_data %>%
+      select(month, contract_number, annual_contracted_UDA, UDA_target_60_for_Apr_to_Sept)
+  }else{
+    #get contracted UOAs
+    contracted_UDA_UOAs <- scheduled_data %>%
+      select(month, contract_number, annual_contracted_UOA, UOA_target_80_for_Apr_to_Sept)
+  }
+  
+  
+  
+  #join in contracted UDA/UOAs from scheduled data
+  data <- data %>%
+    left_join(contracted_UDA_UOAs, by = c("month", "contract_number")) 
+  
+  #create not in function
+  `%notin%` = Negate(`%in%`)
+  
+  #remove prototype contracts if specified
+  if(remove_prototypes & UDAorUOA == "UDA"){
+    data <- data %>%
+      filter(contract_number %notin% prototype_contracts$proto_contracts)%>%
+      filter(annual_contracted_UDA > 100)
+  }else if(remove_prototypes & UDAorUOA == "UOA"){
+    data <- data %>%
+      #filter(contract_number %notin% prototype_contracts$proto_contracts)%>%
+      filter(annual_contracted_UOA > 100)
+  }
+
+  if(UDAorUOA == "UDA"){
+    #count number of contracts meeting target
+    data <- data %>%
+      group_by(contract_number) %>%
+      summarise(mean_annual_contracted_UDA = mean(annual_contracted_UDA),
+                mean_UDA_target_60_for_Apr_to_Sept = mean(UDA_target_60_for_Apr_to_Sept),
+                YTD_UDA_delivered = sum(UDA_total)) %>%
+      count(YTD_UDA_delivered >= (mean_UDA_target_60_for_Apr_to_Sept))
+  }else{
+    #count number of contracts meeting target
+    data <- data %>%
+      group_by(contract_number) %>%
+      summarise(mean_annual_contracted_UOA = mean(annual_contracted_UOA),
+                mean_UOA_target_80_for_Apr_to_Sept = mean(UOA_target_80_for_Apr_to_Sept),
+                YTD_UOA_delivered = sum(UOA_total)) %>%
+      count(YTD_UOA_delivered >= (mean_UOA_target_80_for_Apr_to_Sept))
+  }
+  
+  
+  no_on_target <- data[2, "n"]
+  as.integer(no_on_target)
+
+}
+
+
+################################################################################
+get_num_urgent_forms <- function(data = UDA_scheduled_data, 
+                                 existing_data = slide8_banded_CoT_historic,
+                                 remove_prototypes = F){
+  
+  data <- get_into_slide8_format(data, 
+                                 existing_data,
+                                 remove_prototypes)
+  
+  data <- data %>% 
+    filter(month == max(data$month))
+  
+  num_urgent_forms <- data[1, "urgent"]
+  as.integer(num_urgent_forms)
+  
+}
+
+################################################################################
+get_num_urgent_forms_2019 <- function(data = UDA_scheduled_data, 
+                                 existing_data = slide8_banded_CoT_historic,
+                                 remove_prototypes = F){
+  
+  data <- get_into_slide8_format(data, 
+                                 existing_data,
+                                 remove_prototypes)
+  
+  data <- data %>% 
+    filter(month == max(data$month) - lubridate::years(2))
+  
+  num_urgent_forms <- data[1, "urgent"]
+  as.integer(num_urgent_forms)
+  
+}
+
+  
+    
+  
+  
+  

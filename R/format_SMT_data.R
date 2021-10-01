@@ -100,7 +100,7 @@ get_into_slide5_7_format <- function(data = UDA_scheduled_data,
   new_data <- new_data %>%
     mutate(perc_UDA_UOA_delivered = round(monthly_UDA_UOAs_delivered * 12 * 100 / annual_contracted_UDA_UOA)) %>%
     select(month, perc_UDA_UOA_delivered) %>%
-    filter(month == max(month))
+    filter(month == as.Date("2021-08-01") | month == as.Date("2021-09-01"))
 
   #add latest month to existing data
   data <- bind_rows(existing_data, new_data)
