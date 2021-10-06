@@ -8,18 +8,17 @@ library(tidyverse)
 #pass in raw data - either UDA_calendar_data or orthodontic_data_combined_calendar
 plot_UDA_UOA_to_target <- function(data = UDA_calendar_data, UDAorUOA = "UDA", 
                                    level = "National",
-                                   region = NULL,
-                                   STP = NULL){
+                                   region_STP_name = NULL){
   
   #filter for region or STP
   if(level == "Regional"){
     data <- data %>% 
-      filter(region_name == region)
-    subtitle <- region
+      filter(region_name == region_STP_name)
+    subtitle <- region_STP_name
   }else if(level == "STP"){
     data <- data %>% 
-      filter(commissioner_name == STP)
-    subtitle <- STP
+      filter(commissioner_name == region_STP_name)
+    subtitle <- region_STP_name
   }else{
     subtitle <- "England"
   }
@@ -94,18 +93,17 @@ plot_UDA_UOA_to_target <- function(data = UDA_calendar_data, UDAorUOA = "UDA",
 plot_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data, 
                                               UDAorUOA = "UDA", 
                                               level = "National",
-                                              region = NULL,
-                                              STP = NULL){
+                                              region_STP_name = NULL){
   
   #filter for region or STP
   if(level == "Regional"){
     data <- data %>% 
-      filter(region_name == region)
-    subtitle <- region
+      filter(region_name == region_STP_name )
+    subtitle <- region_STP_name 
   }else if(level == "STP"){
     data <- data %>% 
-      filter(commissioner_name == STP)
-    subtitle <- STP
+      filter(commissioner_name == region_STP_name)
+    subtitle <- region_STP_name
   }else{
     subtitle <- "England"
   }
@@ -332,8 +330,7 @@ plot_UDA_UOA_delivery_profile <- function(data = UDA_scheduled_data,
                                           calendar_data = UDA_calendar_data,
                                           UDAorUOA = "UDA",
                                           level = "National",
-                                          region = NULL,
-                                          STP = NULL){
+                                          region_STP_name = NULL){
   
   #add a region column to the data
   region_STP_lookup <- calendar_data %>%
@@ -345,12 +342,12 @@ plot_UDA_UOA_delivery_profile <- function(data = UDA_scheduled_data,
   #filter for STP or region
   if(level == "Regional"){
     data <- data %>% 
-      filter(region_name == region)
-    subtitle <- region
+      filter(region_name == region_STP_name )
+    subtitle <- region_STP_name 
   }else if(level == "STP"){
     data <- data %>% 
-      filter(commissioner_name == STP)
-    subtitle <- STP
+      filter(commissioner_name == region_STP_name)
+    subtitle <- region_STP_name
   }else{
     subtitle <- "England"
   }

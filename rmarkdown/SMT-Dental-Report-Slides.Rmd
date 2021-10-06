@@ -1,15 +1,18 @@
 ---
 title: "Dental Data Pack"
-author: "![](footer.jpg){width=12cm}"
-date: "`r format(Sys.time(), '%d %B, %Y')`"
+subtitle: "National"
+author: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
   slidy_presentation: default
   beamer_presentation:
     includes:
-      in_header: slide_format.tex
+      in_header: slide_format2.tex
 sansfont: Calibri Light
 fontsize: 8pt
 classoption: aspectratio = 169
+params:
+  level: "National"
+  region_STP_name: "England" 
 ---
 
 ```{r include = FALSE}
@@ -76,7 +79,10 @@ scheduling period can be considered fixed.
 
 ## UDA activity data for 2021/2022
 ```{r echo = FALSE, warning = FALSE, fig.height=4}
-plot_UDA_UOA_to_target(data = UDA_calendar_data, UDAorUOA = "UDA", level = "National")
+plot_UDA_UOA_to_target(data = UDA_calendar_data, 
+                       UDAorUOA = "UDA", 
+                       level = params$level, 
+                       region_STP_name = params$region_STP_name)
 ```
 
 * This graph shows the average monthly performance of the **`r get_num_contracts()`** GDS/PDS/PDS+ contracts 
@@ -92,7 +98,10 @@ data.
 ## UDA cumulative activity data for 2021/2022
 
 ```{r echo = FALSE, warning = FALSE, fig.height=4}
-plot_cumulative_UDA_UOA_to_target(data = UDA_calendar_data, UDAorUOA = "UDA", level = "National")
+plot_cumulative_UDA_UOA_to_target(data = UDA_calendar_data, 
+                                  UDAorUOA = "UDA", 
+                                  level = params$level, 
+                                  region_STP_name = params$region_STP_name)
 ```
 
 * This graph shows the cumulative (Year-to-date) activity of the **`r get_num_contracts()`** GDS/PDS/PDS+ 
@@ -122,9 +131,8 @@ activity.
 plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
                           calendar_data = UDA_calendar_data,
                           UDAorUOA = "UDA",
-                          level = "National",
-                          region = NULL,
-                          STP = NULL)
+                          level = params$level, 
+                          region_STP_name = params$region_STP_name)
 ```
 
 * The graph shows the proportion of practices delivering
@@ -134,7 +142,10 @@ month is annualised. This uses scheduled data.
 ## UOA activity data for 2021/2022
 
 ```{r echo = FALSE, warning = FALSE, fig.height=4}
-plot_UDA_UOA_to_target(data = UOA_calendar_data, UDAorUOA = "UOA", level = "National")
+plot_UDA_UOA_to_target(data = UOA_calendar_data, 
+                       UDAorUOA = "UOA", 
+                       level = params$level, 
+                       region_STP_name = params$region_STP_name)
 ```
 
 * This chart shows the average monthly performance of
@@ -150,7 +161,10 @@ data.
 ## UOA cumulative activity data for 2021/2022
 
 ```{r echo = FALSE, warning = FALSE, fig.height=4}
-plot_cumulative_UDA_UOA_to_target(data = UOA_calendar_data, UDAorUOA = "UOA", level = "National")
+plot_cumulative_UDA_UOA_to_target(data = UOA_calendar_data, 
+                                  UDAorUOA = "UOA", 
+                                  level = params$level, 
+                                  region_STP_name = params$region_STP_name)
 ```
 
 * This chart shows the cumulative (Year-to-date) average
@@ -166,7 +180,9 @@ the required UDAs or more towards the 80% threshold.
 ## UOA delivery July-20 to July-21
 
 ```{r echo = FALSE, warning = FALSE, fig.height=4}
-plot_UDA_UOA_delivery(data = UOA_scheduled_data, existing_data = slide7_UOA_delivery_historic, UDAorUOA = "UOA")
+plot_UDA_UOA_delivery(data = UOA_scheduled_data, 
+                      existing_data = slide7_UOA_delivery_historic, 
+                      UDAorUOA = "UOA")
 ```
 
 * This graph shows the average UOA delivery as a % of contracted
@@ -179,9 +195,8 @@ graph uses scheduled data to measure the activity.
 plot_UDA_UOA_delivery_profile(data = UOA_scheduled_data,
                           calendar_data = UOA_calendar_data,
                           UDAorUOA = "UOA",
-                          level = "National",
-                          region = NULL,
-                          STP = NULL)
+                          level = params$level, 
+                          region_STP_name = params$region_STP_name)
 ```
 
 * The graph shows the proportion of practices delivering
@@ -191,13 +206,15 @@ This uses scheduled data.
 
 ## Time series of banded Courses of Treatment 2019-20 to 2021-22
 ```{r echo = FALSE, warning = FALSE, fig.height=5}
-plot_banded_CoT(data = UDA_scheduled_data, existing_data = slide8_banded_CoT_historic)
+plot_banded_CoT(data = UDA_scheduled_data, 
+                existing_data = slide8_banded_CoT_historic)
 ```
 
 ## Urgent treatment form submissions in July 2021 saw an increase from June 2021
 
 ```{r echo = FALSE, warning = FALSE, fig.height=4}
-plot_urgent_form_submissions(data = UDA_scheduled_data, existing_data = slide8_banded_CoT_historic)
+plot_urgent_form_submissions(data = UDA_scheduled_data, 
+                             existing_data = slide8_banded_CoT_historic)
 ```
 
 * This graph shows the number of urgent treatment forms
