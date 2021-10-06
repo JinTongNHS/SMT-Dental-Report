@@ -267,8 +267,10 @@ plot_banded_CoT <- function(data = UDA_scheduled_data,
          y = "Number of FP17* forms submitted",
          colour = "Band",
          subtitle = subtitle,
-         caption = "*UDA to FP17 conversion has been done assuming a band 1 FP17 is equivalent to 1 UDA, a band 2 FP17 = 3 UDAs, 
-         a band 3 FP17 = 12 UDAs, an urgent FP17 = 1.2 UDAs and an 'other' FP17 = 0.6 UDAs.")
+         caption = "*UDA to FP17 conversion has been done assuming a band 1 FP17 
+         is equivalent to 1 UDA, a band 2 FP17 = 3 UDAs, 
+         a band 3 FP17 = 12 UDAs, an urgent FP17 = 1.2 
+         UDAs and an 'other' FP17 = 0.6 UDAs.")
   
 }
 
@@ -393,8 +395,10 @@ plot_urgent_form_submissions <- function(data = UDA_scheduled_data,
          y = "Number of urgent FP17* forms submitted",
          colour = "Financial year",
          subtitle = subtitle,
-         caption = "*UDA to FP17 conversion has been done assuming a band 1 FP17 is equivalent to 1 UDA, a band 2 FP17 = 3 UDAs,
-         a band 3 FP17 = 12 UDAs, an urgent FP17 = 1.2 UDAs and an 'other' FP17 = 0.6 UDAs.")
+         caption = "*UDA to FP17 conversion has been done assuming a band 1 FP17 
+         is equivalent to 1 UDA, a band 2 FP17 = 3 UDAs, 
+         a band 3 FP17 = 12 UDAs, an urgent FP17 = 1.2 
+         UDAs and an 'other' FP17 = 0.6 UDAs.")
     
     
 }

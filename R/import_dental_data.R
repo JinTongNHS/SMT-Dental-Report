@@ -540,11 +540,11 @@ import_and_clean_historical_scheduled_data <- function(data_path = "data/raw_dat
     select(month, X__1, 
            X__2, X__3, X__4, X__5, X__6) %>%
     rename(contract_number = X__1,
-           band1 = X__2,
-           band2 = X__3,
-           band3 = X__4,
-           other = X__5,
-           urgent = X__6
+           band1_FP17 = X__2,
+           band2_FP17 = X__3,
+           band3_FP17 = X__4,
+           other_FP17 = X__5,
+           urgent_FP17 = X__6
     ) 
   
   #add column for date and rename columns, split data for just may
@@ -553,11 +553,11 @@ import_and_clean_historical_scheduled_data <- function(data_path = "data/raw_dat
     select(month, X__1, 
            X__7, X__8, X__9, X__10, X__11) %>%
     rename(contract_number = X__1,
-           band1 = X__7,
-           band2 = X__8,
-           band3 = X__9,
-           other = X__10,
-           urgent = X__11
+           band1_FP17 = X__7,
+           band2_FP17 = X__8,
+           band3_FP17 = X__9,
+           other_FP17 = X__10,
+           urgent_FP17 = X__11
     )
   
   #add column for date and rename columns, split data for just june
@@ -566,11 +566,11 @@ import_and_clean_historical_scheduled_data <- function(data_path = "data/raw_dat
     select(month, X__1, 
            X__12, X__13, X__14, X__15, X__16) %>%
     rename(contract_number = X__1,
-           band1 = X__12,
-           band2 = X__13,
-           band3 = X__14,
-           other = X__15,
-           urgent = X__16
+           band1_FP17 = X__12,
+           band2_FP17 = X__13,
+           band3_FP17 = X__14,
+           other_FP17 = X__15,
+           urgent_FP17 = X__16
     )
   
   #add column for date and rename columns, split data for just july
@@ -579,11 +579,11 @@ import_and_clean_historical_scheduled_data <- function(data_path = "data/raw_dat
     select(month, X__1, 
            X__17, X__18, X__19, X__20, X__21) %>%
     rename(contract_number = X__1,
-           band1 = X__17,
-           band2 = X__18,
-           band3 = X__19,
-           other = X__20,
-           urgent = X__21
+           band1_FP17 = X__17,
+           band2_FP17 = X__18,
+           band3_FP17 = X__19,
+           other_FP17 = X__20,
+           urgent_FP17 = X__21
     )
   
   #add column for date and rename columns, split data for just august
@@ -592,11 +592,11 @@ import_and_clean_historical_scheduled_data <- function(data_path = "data/raw_dat
     select(month, X__1, 
            X__22, X__23, X__24, X__25, X__26) %>%
     rename(contract_number = X__1,
-           band1 = X__22,
-           band2 = X__23,
-           band3 = X__24,
-           other = X__25,
-           urgent = X__26
+           band1_FP17 = X__22,
+           band2_FP17 = X__23,
+           band3_FP17 = X__24,
+           other_FP17 = X__25,
+           urgent_FP17 = X__26
     )
   
   #add column for date and rename columns, split data for just september
@@ -605,11 +605,11 @@ import_and_clean_historical_scheduled_data <- function(data_path = "data/raw_dat
     select(month, X__1, 
            X__27, X__28, X__29, X__30, X__31) %>%
     rename(contract_number = X__1,
-           band1 = X__27,
-           band2 = X__28,
-           band3 = X__29,
-           other = X__30,
-           urgent = X__31
+           band1_FP17 = X__27,
+           band2_FP17 = X__28,
+           band3_FP17 = X__29,
+           other_FP17 = X__30,
+           urgent_FP17 = X__31
     )
   
   #add column for date and rename columns, split data for just october
@@ -618,11 +618,11 @@ import_and_clean_historical_scheduled_data <- function(data_path = "data/raw_dat
     select(month, X__1, 
            X__32, X__33, X__34, X__35, X__36) %>%
     rename(contract_number = X__1,
-           band1 = X__32,
-           band2 = X__33,
-           band3 = X__34,
-           other = X__35,
-           urgent = X__36
+           band1_FP17 = X__32,
+           band2_FP17 = X__33,
+           band3_FP17 = X__34,
+           other_FP17 = X__35,
+           urgent_FP17 = X__36
     )
   
   #add column for date and rename columns, split data for just november
@@ -631,11 +631,11 @@ import_and_clean_historical_scheduled_data <- function(data_path = "data/raw_dat
     select(month, X__1, 
            X__37, X__38, X__39, X__40, X__41) %>%
     rename(contract_number = X__1,
-           band1 = X__37,
-           band2 = X__38,
-           band3 = X__39,
-           other = X__40,
-           urgent = X__41
+           band1_FP17 = X__37,
+           band2_FP17 = X__38,
+           band3_FP17 = X__39,
+           other_FP17 = X__40,
+           urgent_FP17 = X__41
     )
   hisptorical_UDA_scheduled_data <- bind_rows(data_apr, data_may, data_jun, data_jul, data_aug, 
                                               data_sep, data_oct, data_nov)

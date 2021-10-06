@@ -11,8 +11,8 @@ sansfont: Calibri Light
 fontsize: 8pt
 classoption: aspectratio = 169
 params:
-  level: "STP"
-  region_STP_name: "Cheshire and Merseyside STP" 
+  level: "National"
+  region_STP_name: NULL
 ---
 
 ```{r include = FALSE}

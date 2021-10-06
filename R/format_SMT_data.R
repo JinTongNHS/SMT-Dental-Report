@@ -130,7 +130,7 @@ get_into_slide8_format <- function(data = UDA_scheduled_data,
     #create not in function
     `%notin%` = Negate(`%in%`)
     data <- data %>%
-      filter(contract_number %in% prototype_contracts_orth$proto_contracts)%>%
+      filter(contract_number %notin% prototype_contracts_orth$proto_contracts)%>%
       filter(annual_contracted_UDA > 100)
   }
   
