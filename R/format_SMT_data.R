@@ -110,7 +110,20 @@ get_into_slide5_7_format <- function(data = UDA_scheduled_data,
 ################################################################################
 get_into_slide8_format <- function(data = UDA_scheduled_data, 
                                    existing_data = slide8_banded_CoT_historic,
+                                   historic_data = historical_UDA_scheduled_data,
                                    remove_prototypes = F){
+  
+  #bind old data to new data 
+  data <- data %>%
+    rename(total_FP17s = general_FP17s, band1_UDA = UDA_band_1, band2_UDA = UDA_band_2, 
+           band3_UDA = UDA_band_3, urgent_UDA = UDA_urgent, other_UDA = UDA_other, band1_FP17 = FP17s_band_1, 
+           band2_FP17 = FP17s_band_2, band3_FP17 = FP17s_band_3, urgent_FP17 = FP17s_band_urgent, 
+           other_FP17 = FP17s_band_other) %>%
+    select(month, contract_number, total_FP17s, band1_UDA, band2_UDA, band3_UDA, 
+           urgent_UDA, other_UDA, band1_FP17, band2_FP17, band3_FP17, urgent_FP17, other_FP17) %>%
+    mutate(total_UDAs = band1_UDA + band2_UDA + band3_UDA + other_UDA + urgent_UDA)
+  
+  data <- bind_rows(data, historic_data)
   
   #remove prototype contracts if specified
   if(remove_prototypes){
@@ -124,15 +137,15 @@ get_into_slide8_format <- function(data = UDA_scheduled_data,
   #group by month and sum UDAs delivered
   new_data <- data %>%
     group_by(month) %>%
-    summarise(band1 = sum(FP17s_band_1, na.rm = T),
-              band2 = sum(FP17s_band_2, na.rm = T),
-              band3 = sum(FP17s_band_3, na.rm = T),
-              other = sum(FP17s_band_other, na.rm = T),
-              urgent = sum(FP17s_band_urgent, na.rm = T)
-              ) %>%
-    filter(month == max(month))
+    summarise(band1 = sum(band1_FP17, na.rm = T),
+              band2 = sum(band2_FP17, na.rm = T),
+              band3 = sum(band3_FP17, na.rm = T),
+              other = sum(other_FP17, na.rm = T),
+              urgent = sum(urgent_FP17, na.rm = T)
+              ) #%>%
+    #filter(month == max(month))
   
-  data <- bind_rows(existing_data, new_data)
+  #data <- bind_rows(existing_data, new_data)
 }
 
 

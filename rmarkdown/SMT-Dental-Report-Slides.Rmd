@@ -11,8 +11,8 @@ sansfont: Calibri Light
 fontsize: 8pt
 classoption: aspectratio = 169
 params:
-  level: "National"
-  region_STP_name: "England" 
+  level: "STP"
+  region_STP_name: "Cheshire and Merseyside STP" 
 ---
 
 ```{r include = FALSE}
@@ -22,17 +22,18 @@ source("../R/SMT_functions.R")
 source("../R/format_SMT_data.R")
 
 #load in raw data
-UDA_calendar_data <- readRDS("~/R-Projects/SMT-Dental-Report/data/cleaned_data_up_to_september/UDA_calendar_data.rds")
-UOA_calendar_data <- readRDS("~/R-Projects/SMT-Dental-Report/data/cleaned_data_up_to_september/UOA_calendar_data.rds")
-UDA_scheduled_data <- readRDS("~/R-Projects/SMT-Dental-Report/data/cleaned_data_up_to_september/UDA_scheduled_data.rds")
-UOA_scheduled_data <- readRDS("~/R-Projects/SMT-Dental-Report/data/cleaned_data_up_to_september/UOA_scheduled_data.rds")
+UDA_calendar_data <- readRDS("../data/cleaned_data_up_to_september/UDA_calendar_data.rds")
+UOA_calendar_data <- readRDS("../data/cleaned_data_up_to_september/UOA_calendar_data.rds")
+UDA_scheduled_data <- readRDS("../data/cleaned_data_up_to_september/UDA_scheduled_data.rds")
+UOA_scheduled_data <- readRDS("../data/cleaned_data_up_to_september/UOA_scheduled_data.rds")
+historical_UDA_scheduled_data <- readRDS("../data/cleaned_data_up_to_september/historical_UDA_scheduled_data.rds")
 
 #load in historic data not available in raw
-slide5_UDA_delivery_historic <- readRDS("~/R-Projects/SMT-Dental-Report/data/cleaned_data_up_to_august/slide5_UDA_delivery_historic.rds")
-slide7_UOA_delivery_historic <- readRDS("~/R-Projects/SMT-Dental-Report/data/cleaned_data_up_to_august/slide7_UOA_delivery_historic.rds")
-slide8_banded_CoT_historic <- readRDS("~/R-Projects/SMT-Dental-Report/data/cleaned_data_up_to_august/slide8_banded_CoT_historic.rds")
+slide5_UDA_delivery_historic <- readRDS("../data/cleaned_data_up_to_august/slide5_UDA_delivery_historic.rds")
+slide7_UOA_delivery_historic <- readRDS("../data/cleaned_data_up_to_august/slide7_UOA_delivery_historic.rds")
+slide8_banded_CoT_historic <- readRDS("../data/cleaned_data_up_to_august/slide8_banded_CoT_historic.rds")
 
-prototype_contracts <- read_excel("~/R-Projects/SMT-Dental-Report/data/prototype_contracts.xls")
+prototype_contracts <- read_excel("../data/prototype_contracts.xls")
 
 ```
 
@@ -77,7 +78,7 @@ reporting period (April 21st – May 19th), that activity would go into the foll
 scheduling period can be considered fixed.
 
 
-## UDA activity data for 2021/2022
+## UDA activity data 
 ```{r echo = FALSE, warning = FALSE, fig.height=4}
 plot_UDA_UOA_to_target(data = UDA_calendar_data, 
                        UDAorUOA = "UDA", 
@@ -95,7 +96,7 @@ data.
 
 
 
-## UDA cumulative activity data for 2021/2022
+## UDA cumulative activity data
 
 ```{r echo = FALSE, warning = FALSE, fig.height=4}
 plot_cumulative_UDA_UOA_to_target(data = UDA_calendar_data, 
@@ -125,7 +126,7 @@ contracted activity when each month has been scaled up to
 12 months. The graph uses scheduled data to measure the
 activity.
 
-## UDA delivery profile July-20 to July-21
+## UDA delivery profile 
 
 ```{r echo = FALSE, warning = FALSE, fig.height=4}
 plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
@@ -139,7 +140,7 @@ plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
 between a certain % group of contracted UDA activity if performance for that
 month is annualised. This uses scheduled data.
 
-## UOA activity data for 2021/2022
+## UOA activity data 
 
 ```{r echo = FALSE, warning = FALSE, fig.height=4}
 plot_UDA_UOA_to_target(data = UOA_calendar_data, 
@@ -158,7 +159,7 @@ due to COTs not being registered within the calendar month. See slide 3 for more
 on scheduled and calendar 
 data.
 
-## UOA cumulative activity data for 2021/2022
+## UOA cumulative activity data 
 
 ```{r echo = FALSE, warning = FALSE, fig.height=4}
 plot_cumulative_UDA_UOA_to_target(data = UOA_calendar_data, 
@@ -177,7 +178,7 @@ threshold.
 * From April to `r format(Sys.Date() - lubridate::month(1), "%B")` **`r get_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA")`** contracts (**`r round(get_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA")*100/get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA"))`%**) have delivered 
 the required UDAs or more towards the 80% threshold.
 
-## UOA delivery July-20 to July-21
+## UOA delivery 
 
 ```{r echo = FALSE, warning = FALSE, fig.height=4}
 plot_UDA_UOA_delivery(data = UOA_scheduled_data, 
@@ -189,7 +190,7 @@ plot_UDA_UOA_delivery(data = UOA_scheduled_data,
 activity when each month has been scaled up to 12 months. The
 graph uses scheduled data to measure the activity. 
 
-## UOA delivery profile July-20 to July-21
+## UOA delivery profile
 
 ```{r echo = FALSE, warning = FALSE, fig.height=4}
 plot_UDA_UOA_delivery_profile(data = UOA_scheduled_data,
@@ -204,17 +205,23 @@ between a certain % group of contracted UOA activity if performance for that
 month is annualised. 
 This uses scheduled data. 
 
-## Time series of banded Courses of Treatment 2019-20 to 2021-22
+## Time series of banded Courses of Treatment 
 ```{r echo = FALSE, warning = FALSE, fig.height=5}
 plot_banded_CoT(data = UDA_scheduled_data, 
-                existing_data = slide8_banded_CoT_historic)
+                calendar_data = UDA_calendar_data,
+                historic_data = historical_UDA_scheduled_data,
+                level = params$level, 
+                region_STP_name = params$region_STP_name)
 ```
 
-## Urgent treatment form submissions in July 2021 saw an increase from June 2021
+## Urgent treatment form submissions 
 
 ```{r echo = FALSE, warning = FALSE, fig.height=4}
 plot_urgent_form_submissions(data = UDA_scheduled_data, 
-                             existing_data = slide8_banded_CoT_historic)
+                calendar_data = UDA_calendar_data,
+                historic_data = historical_UDA_scheduled_data,
+                level = params$level, 
+                region_STP_name = params$region_STP_name)
 ```
 
 * This graph shows the number of urgent treatment forms

@@ -198,11 +198,46 @@ plot_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data,
 #function to create graph on slide 8
 #current data source: Dental activity annual running total.xlsx sent by email by Caroline
 plot_banded_CoT <- function(data = UDA_scheduled_data, 
-                            existing_data = slide8_banded_CoT_historic){
+                            calendar_data = UDA_calendar_data,
+                            #existing_data = slide8_banded_CoT_historic,
+                            historic_data = historical_UDA_scheduled_data, 
+                            level = "National",
+                            region_STP_name = NULL){
   
-  data <- get_into_slide8_format(data, existing_data, remove_prototypes = F)
+  #avoid standard form on axes
+  options(scipen = 100)
+
+  #add a region column to the data
+  region_STP_lookup <- calendar_data %>%
+    select(contract_number, name_or_company_name, commissioner_name, region_name) %>%
+    distinct()
   
-  #get data into the right format  
+  data <- left_join(data, region_STP_lookup, by = c("contract_number", "name_or_company_name", "commissioner_name"))
+  
+  #add a region column to the historic data
+  historic_data <- left_join(historic_data, region_STP_lookup, by = c("contract_number"))
+  
+  #toggle subtitle
+  if(level == "Regional"){
+    #filter for region or STP
+    data <- data %>% 
+      filter(region_name == region_STP_name )
+    historic_data <- historic_data %>% 
+      filter(region_name == region_STP_name )
+    subtitle <- region_STP_name 
+  }else if(level == "STP"){
+    #filter for region or STP
+    data <- data %>% 
+      filter(commissioner_name == region_STP_name )
+    historic_data <- historic_data %>% 
+      filter(commissioner_name == region_STP_name )
+    subtitle <- region_STP_name
+  }else{
+    subtitle <- "England"
+  }
+
+  #get data into the right format
+  data <- get_into_slide8_format(data, historic_data = historic_data, remove_prototypes = F)
   data <- reshape2::melt(data, id.vars = "month")
   data <- data %>%
     mutate(month = as.Date(month)) %>%
@@ -226,11 +261,14 @@ plot_banded_CoT <- function(data = UDA_scheduled_data,
                                    "green",
                                    "blue")
                         ) +
-    labs(title = "Banded Courses of Treatment 2019/20 to 2021/22", 
+    scale_y_continuous(breaks = scales::breaks_pretty()) +
+    labs(title = "Banded Courses of Treatment", 
          x = "Month",
-         y = "Number of FP17 forms submitted",
-         colour = "Band")
-    
+         y = "Number of FP17* forms submitted",
+         colour = "Band",
+         subtitle = subtitle,
+         caption = "*UDA to FP17 conversion has been done assuming a band 1 FP17 is equivalent to 1 UDA, a band 2 FP17 = 3 UDAs, 
+         a band 3 FP17 = 12 UDAs, an urgent FP17 = 1.2 UDAs and an 'other' FP17 = 0.6 UDAs.")
   
 }
 
@@ -290,35 +328,73 @@ plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
 #function to create graph on slide 9
 #current data source: Dental activity annual running total.xlsx sent by email by Caroline
 plot_urgent_form_submissions <- function(data = UDA_scheduled_data, 
-                                         existing_data = slide8_banded_CoT_historic){
+                                         #existing_data = slide8_banded_CoT_historic,
+                                         calendar_data = UDA_calendar_data,
+                                         historic_data = historical_UDA_scheduled_data, 
+                                         level = "National",
+                                         region_STP_name = "Cheshire and Merseyside STP"){
   
-  data <- get_into_slide8_format(data, existing_data, remove_prototypes = F)
+  #avoid standard form on axes
+  options(scipen = 100)
   
+  #add a region column to the data
+  region_STP_lookup <- calendar_data %>%
+    select(contract_number, name_or_company_name, commissioner_name, region_name) %>%
+    distinct()
+  
+  data <- left_join(data, region_STP_lookup, by = c("contract_number", "name_or_company_name", "commissioner_name"))
+  
+  #add a region column to the historic data
+  historic_data <- left_join(historic_data, region_STP_lookup, by = c("contract_number"))
+  
+  #toggle subtitle
+  if(level == "Regional"){
+    #filter for region or STP
+    data <- data %>%
+      filter(region_name == region_STP_name )
+    historic_data <- historic_data %>%
+      filter(region_name == region_STP_name )
+    subtitle <- region_STP_name
+  }else if(level == "STP"){
+    #filter for region or STP
+    data <- data %>%
+      filter(commissioner_name == region_STP_name )
+    historic_data <- historic_data %>%
+      filter(commissioner_name == region_STP_name )
+    subtitle <- region_STP_name
+  }else{
+    subtitle <- "England"
+  }
+
   #get data in the right format
+  data <- get_into_slide8_format(data, historic_data = historic_data, remove_prototypes = F)
   data <- data %>%
     mutate(date = as.Date(month)) %>%
     mutate(financial_year = if_else(month >= as.Date("2019-04-01") & month < as.Date("2020-04-01"),
-                                    "2019/20", 
+                                    "2019/20",
                                     if_else(month >= as.Date("2020-04-01") & month < as.Date("2021-04-01"),
                                             "2020/21",
-                                            "2021/22"))) 
-  
-  
+                                            "2021/22")))
+
+
   #plot code
   ggplot(data) +
     theme_bw() +
     theme(legend.title = element_blank()) +
-    geom_line(aes(x = factor(lubridate::month(date, label=TRUE, abbr=TRUE), 
-                             levels = c("Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar")), 
-                  y = urgent, 
+    geom_line(aes(x = factor(lubridate::month(date, label=TRUE, abbr=TRUE),
+                             levels = c("Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar")),
+                  y = urgent,
                   group = factor(financial_year),
-                  colour = factor(financial_year)), 
+                  colour = factor(financial_year)),
               size = 1) +
-    scale_y_continuous(breaks = seq(0, 550000, 50000)) +
+    scale_y_continuous(breaks = scales::breaks_pretty()) +
     labs(title = "Urgent treatment form submissions",
          x = "Month",
-         y = "Number of urgent FP17 forms submitted",
-         colour = "Financial year")
+         y = "Number of urgent FP17* forms submitted",
+         colour = "Financial year",
+         subtitle = subtitle,
+         caption = "*UDA to FP17 conversion has been done assuming a band 1 FP17 is equivalent to 1 UDA, a band 2 FP17 = 3 UDAs,
+         a band 3 FP17 = 12 UDAs, an urgent FP17 = 1.2 UDAs and an 'other' FP17 = 0.6 UDAs.")
     
     
 }
