@@ -1,7 +1,7 @@
 ---
 title: "Dental Data Pack"
-subtitle: "National"
-author: "`r format(Sys.time(), '%d %B, %Y')`"
+subtitle: "`r params$region_STP_name`"
+author: "`r format(Sys.time(), '%B, %Y')`"
 output:
   slidy_presentation: default
   beamer_presentation:
@@ -12,7 +12,7 @@ fontsize: 8pt
 classoption: aspectratio = 169
 params:
   level: "National"
-  region_STP_name: NULL
+  region_STP_name: "National"
 ---
 
 ```{r include = FALSE}
@@ -86,7 +86,7 @@ plot_UDA_UOA_to_target(data = UDA_calendar_data,
                        region_STP_name = params$region_STP_name)
 ```
 
-* This graph shows the average monthly performance of the **`r get_num_contracts()`** GDS/PDS/PDS+ contracts 
+* This graph shows the average monthly performance of the **`r get_num_contracts(level = params$level, region_STP_name = params$region_STP_name)`** GDS/PDS/PDS+ contracts 
 (with annual contracted UDAs of greater than or equal to 100) measured against the minimum monthly 
 activity required (16.7%) to reach the 60% cumulative target threshold by September.  
 * N.B. Last month's delivery may be marginally different to what was reported last month 
@@ -105,20 +105,22 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
                                   region_STP_name = params$region_STP_name)
 ```
 
-* This graph shows the cumulative (Year-to-date) activity of the **`r get_num_contracts()`** GDS/PDS/PDS+ 
+* This graph shows the cumulative (Year-to-date) activity of the **`r get_num_contracts(level = params$level, region_STP_name = params$region_STP_name)`** GDS/PDS/PDS+ 
 contracts measured against the expected monthly total activity to achieve the H1 2021/22 
 activity threshold by September. The graph measures the total cumulative UDAs performed
 divided by the total expected activity.
 
-* From April to `r format(Sys.Date() - lubridate::month(1), "%B")` **`r get_num_contracts_on_target()`** 
-contracts (**`r round(get_num_contracts_on_target()*100/get_num_contracts())`%**) 
+* From April to `r format(Sys.Date() - lubridate::month(1), "%B")` **`r get_num_contracts_on_target(level = params$level, region_STP_name = params$region_STP_name)`** 
+contracts (**`r round(get_num_contracts_on_target(level = params$level, region_STP_name = params$region_STP_name)*100/get_num_contracts(level = params$level, region_STP_name = params$region_STP_name))`%**) 
 have delivered the required UDAs or more towards the H1 2021/22 activity threshold by the end of September.
 
 
 ## UDA delivery 
 
 ```{r echo = FALSE, warning = FALSE, fig.height=4}
-plot_UDA_UOA_delivery(data = UDA_scheduled_data, existing_data = slide5_UDA_delivery_historic, UDAorUOA = "UDA")
+plot_UDA_UOA_delivery(data = UDA_scheduled_data, existing_data = slide5_UDA_delivery_historic, UDAorUOA = "UDA", 
+                                  level = params$level, 
+                                  region_STP_name = params$region_STP_name)
 ```
 
 * This graph shows the average UDA delivery as a % of
@@ -150,7 +152,7 @@ plot_UDA_UOA_to_target(data = UOA_calendar_data,
 ```
 
 * This chart shows the average monthly performance of
-the **`r get_num_contracts(data = UOA_calendar_data, remove_prototypes = T, scheduled_data = UOA_scheduled_data, UDAorUOA = "UOA")`** 
+the **`r get_num_contracts(data = UOA_calendar_data, remove_prototypes = T, scheduled_data = UOA_scheduled_data, UDAorUOA = "UOA", level = params$level, region_STP_name = params$region_STP_name)`** 
 GDS/PDS contracts (with annual contracted UOAs of
 greater than or equal to 100) measured against the minimum
 activity required (16.7%) to reach the 80% threshold by September.
@@ -169,13 +171,13 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
 ```
 
 * This chart shows the cumulative (Year-to-date) average
-activity of the **`r get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA")`** 
+activity of the **`r get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = params$level, region_STP_name = params$region_STP_name)`** 
 GDS/PDS contracts) measured against the
 expected monthly activity to achieve the 80% threshold by
 September. The graph measures the total cumulative UOAs
 performed divided by the total expected activity of the 80%
 threshold.
-* From April to `r format(Sys.Date() - lubridate::month(1), "%B")` **`r get_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA")`** contracts (**`r round(get_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA")*100/get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA"))`%**) have delivered 
+* From April to `r format(Sys.Date() - lubridate::month(1), "%B")` **`r get_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = params$level, region_STP_name = params$region_STP_name)`** contracts (**`r round(get_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = params$level, region_STP_name = params$region_STP_name)*100/get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = params$level, region_STP_name = params$region_STP_name))`%**) have delivered 
 the required UDAs or more towards the 80% threshold.
 
 ## UOA delivery 
@@ -183,7 +185,9 @@ the required UDAs or more towards the 80% threshold.
 ```{r echo = FALSE, warning = FALSE, fig.height=4}
 plot_UDA_UOA_delivery(data = UOA_scheduled_data, 
                       existing_data = slide7_UOA_delivery_historic, 
-                      UDAorUOA = "UOA")
+                      UDAorUOA = "UOA", 
+                                  level = params$level, 
+                                  region_STP_name = params$region_STP_name)
 ```
 
 * This graph shows the average UOA delivery as a % of contracted
@@ -227,6 +231,6 @@ plot_urgent_form_submissions(data = UDA_scheduled_data,
 * This graph shows the number of urgent treatment forms
 declared per month across financial years.
 * The urgent treatment form count in **`r format(Sys.Date() - lubridate::month(1), "%B")` 2021** was
-**`r get_num_urgent_forms()`**, whilst in **`r format(Sys.Date() - lubridate::month(1), "%B")` 2019** this number was
-**`r get_num_urgent_forms_2019()`**, which is a **`r round((get_num_urgent_forms() - get_num_urgent_forms_2019()) *100 / get_num_urgent_forms_2019())`%** change from the pre-COVID
+**`r get_num_urgent_forms(level = params$level, region_STP_name = params$region_STP_name)`**, whilst in **`r format(Sys.Date() - lubridate::month(1), "%B")` 2019** this number was
+**`r get_num_urgent_forms_2019(level = params$level, region_STP_name = params$region_STP_name)`**, which is a **`r round((get_num_urgent_forms(level = params$level, region_STP_name = params$region_STP_name) - get_num_urgent_forms_2019(level = params$level, region_STP_name = params$region_STP_name)) *100 / get_num_urgent_forms_2019(level = params$level, region_STP_name = params$region_STP_name))`%** change from the pre-COVID
 world. 

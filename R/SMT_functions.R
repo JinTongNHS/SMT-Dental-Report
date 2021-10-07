@@ -282,7 +282,30 @@ plot_banded_CoT <- function(data = UDA_scheduled_data,
 #current data is in teams folder "Monthly performance data\April 21 to September 21 data\Scheduled data\April to Sept UDA 2020-2021 (May).xlsx"
 plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data, 
                                   existing_data = slide5_UDA_delivery_historic,
-                                  UDAorUOA = "UDA"){
+                                  calendar_data = UDA_calendar_data,
+                                  UDAorUOA = "UDA",
+                                  level = "National",
+                                  region_STP_name = NULL){
+  
+  #add a region column to the data
+  region_STP_lookup <- calendar_data %>%
+    select(contract_number, name_or_company_name, commissioner_name, region_name) %>%
+    distinct()
+  
+  data <- left_join(data, region_STP_lookup, by = c("contract_number", "name_or_company_name", "commissioner_name"))
+  
+  #filter for STP or region
+  if(level == "Regional"){
+    data <- data %>% 
+      filter(region_name == region_STP_name )
+    subtitle <- region_STP_name
+  }else if(level == "STP"){
+    data <- data %>% 
+      filter(commissioner_name == region_STP_name)
+    subtitle <- region_STP_name
+  }else{
+    subtitle <- "England"
+  }
   
   if(UDAorUOA == "UDA"){
     #get data into the right format
@@ -315,7 +338,8 @@ plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
     scale_y_continuous(limits = c(0, max(data$perc_UDA_UOA_delivered, na.rm = T) + 5)) +
     labs(title = title, 
          x = "Month",
-         y = ylab) +
+         y = ylab, 
+         subtitle = subtitle) +
     annotate(geom = "text", 
              x = data$month, 
              y = data$perc_UDA_UOA_delivered + 1, 
@@ -609,7 +633,19 @@ plot_density <- function(data = density_data){
 get_num_contracts <- function(data = UDA_calendar_data, 
                                     remove_prototypes = T,
                                     scheduled_data = UDA_scheduled_data,
-                                    UDAorUOA = "UDA"){
+                                    UDAorUOA = "UDA",
+                              level = "National",
+                              region_STP_name = NULL){
+  
+  #filter for STP or region
+  if(level == "Regional"){
+    data <- data %>% 
+      filter(region_name == region_STP_name )
+  }else if(level == "STP"){
+    data <- data %>% 
+      filter(commissioner_name == region_STP_name)
+    subtitle <- region_STP_name
+  }
   
   if(UDAorUOA == "UDA"){
     #get contracted UDAs
@@ -649,7 +685,20 @@ get_num_contracts <- function(data = UDA_calendar_data,
 get_num_contracts_on_target <- function(data = UDA_calendar_data, 
                                        remove_prototypes = T,
                                        scheduled_data = UDA_scheduled_data,
-                                       UDAorUOA = "UDA"){
+                                       UDAorUOA = "UDA",
+                                       level = "National",
+                                       region_STP_name = NULL){
+  
+  #filter for STP or region
+  if(level == "Regional"){
+    data <- data %>% 
+      filter(region_name == region_STP_name )
+  }else if(level == "STP"){
+    data <- data %>% 
+      filter(commissioner_name == region_STP_name)
+    subtitle <- region_STP_name
+  }
+  
   if(UDAorUOA == "UDA"){
     #get contracted UDAs
     contracted_UDA_UOAs <- scheduled_data %>%
@@ -708,11 +757,32 @@ get_num_contracts_on_target <- function(data = UDA_calendar_data,
 ################################################################################
 get_num_urgent_forms <- function(data = UDA_scheduled_data, 
                                  existing_data = slide8_banded_CoT_historic,
-                                 remove_prototypes = F){
+                                 historic_data = historical_UDA_scheduled_data,
+                                 calendar_data = UDA_calendar_data,
+                                 remove_prototypes = F,
+                                 level = "National",
+                                 region_STP_name = NULL){
   
-  data <- get_into_slide8_format(data, 
-                                 existing_data,
-                                 remove_prototypes)
+  #add a region column to the data
+  region_STP_lookup <- calendar_data %>%
+    select(contract_number, name_or_company_name, commissioner_name, region_name) %>%
+    distinct()
+  
+  data <- left_join(data, region_STP_lookup, by = c("contract_number", "name_or_company_name", "commissioner_name"))
+  
+  #filter for STP or region
+  if(level == "Regional"){
+    data <- data %>% 
+      filter(region_name == region_STP_name )
+  }else if(level == "STP"){
+    data <- data %>% 
+      filter(commissioner_name == region_STP_name)
+  }
+  
+  data <- get_into_slide8_format(data = data, 
+                                 existing_data = existing_data,
+                                 historic_data = historic_data,
+                                 remove_prototypes = remove_prototypes)
   
   data <- data %>% 
     filter(month == max(data$month))
@@ -723,17 +793,80 @@ get_num_urgent_forms <- function(data = UDA_scheduled_data,
 }
 
 ################################################################################
+# get_num_urgent_forms_2019 <- function(data = UDA_scheduled_data, 
+#                                  existing_data = slide8_banded_CoT_historic,
+#                                  historic_data = historical_UDA_scheduled_data,
+#                                  calendar_data = UDA_calendar_data,
+#                                  remove_prototypes = F,
+#                                  level = "National",
+#                                  region_STP_name = NULL){
+#   
+#   #add a region column to the data
+#   region_STP_lookup <- calendar_data %>%
+#     select(contract_number, name_or_company_name, commissioner_name, region_name) %>%
+#     distinct()
+#   
+#   data <- left_join(data, region_STP_lookup, by = c("contract_number", "name_or_company_name", "commissioner_name"))
+#   
+#   #filter for STP or region
+#   if(level == "Regional"){
+#     data <- data %>% 
+#       filter(region_name == region_STP_name )
+#   }else if(level == "STP"){
+#     data <- data %>% 
+#       filter(commissioner_name == region_STP_name)
+#   }
+#   
+#   data <- get_into_slide8_format(data, 
+#                                  existing_data = existing_data,
+#                                  historic_data = historic_data,
+#                                  remove_prototypes = remove_prototypes)
+#   
+#   data <- data %>% 
+#     filter(month == max(data$month) - lubridate::years(2))
+#   
+#   num_urgent_forms <- data[1, "urgent"]
+#   as.integer(num_urgent_forms)
+#   
+# }
+
 get_num_urgent_forms_2019 <- function(data = UDA_scheduled_data, 
                                  existing_data = slide8_banded_CoT_historic,
-                                 remove_prototypes = F){
+                                 historic_data = historical_UDA_scheduled_data,
+                                 calendar_data = UDA_calendar_data,
+                                 remove_prototypes = F,
+                                 level = "National",
+                                 region_STP_name = NULL){
   
-  data <- get_into_slide8_format(data, 
-                                 existing_data,
-                                 remove_prototypes)
+  #add a region column to the data
+  region_STP_lookup <- calendar_data %>%
+    select(contract_number, name_or_company_name, commissioner_name, region_name) %>%
+    distinct()
   
-  data <- data %>% 
+  data <- left_join(data, region_STP_lookup, by = c("contract_number", "name_or_company_name", "commissioner_name"))
+  historic_data <- left_join(historic_data, region_STP_lookup, by = c("contract_number"))
+  
+  #filter for STP or region
+  if(level == "Regional"){
+    data <- data %>% 
+      filter(region_name == region_STP_name )
+    historic_data <- historic_data %>% 
+      filter(region_name == region_STP_name )
+  }else if(level == "STP"){
+    data <- data %>% 
+      filter(commissioner_name == region_STP_name)
+    historic_data <- historic_data %>% 
+      filter(commissioner_name == region_STP_name )
+  }
+  
+  data <- get_into_slide8_format(data = data, 
+                                 existing_data = existing_data,
+                                 historic_data = historic_data,
+                                 remove_prototypes = remove_prototypes)
+  
+  data <- data %>%
     filter(month == max(data$month) - lubridate::years(2))
-  
+
   num_urgent_forms <- data[1, "urgent"]
   as.integer(num_urgent_forms)
   
