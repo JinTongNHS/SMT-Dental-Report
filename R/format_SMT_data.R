@@ -28,8 +28,10 @@ get_into_slide4_format_calendar <- function(data = UDA_calendar_data,
     group_by(month) %>%
     summarise(monthly_UDA_UOAs_delivered = sum(UDA_total, na.rm = T),
               total_annual_UDA_UOAs_contracted = sum(annual_contracted_UDA)) %>%
-    mutate(target_UDA_UOAs_delivered_by_sept = total_annual_UDA_UOAs_contracted * 0.6 / 2) #%>%
-    #mutate(target_UDA_UOAs_delivered_by_sept = 25313404)
+    mutate(financial_half_target_perc = if_else(month >= as.Date("2021-04-01") & month < as.Date("2021-10-01"),
+                                                0.6,
+                                                0.65)) %>%
+    mutate(target_UDA_UOAs_delivered_in_financial_half = total_annual_UDA_UOAs_contracted * financial_half_target_perc / 2) 
   
 }
 
@@ -59,8 +61,10 @@ get_into_slide6_format_calendar <- function(data = UOA_calendar_data,
     group_by(month) %>%
     summarise(monthly_UDA_UOAs_delivered = sum(UOA_total, na.rm = T),
               total_annual_UDA_UOAs_contracted = sum(annual_contracted_UOA, na.rm = T)) %>%
-    mutate(target_UDA_UOAs_delivered_by_sept = total_annual_UDA_UOAs_contracted * 0.8 / 2) #%>%
-    #mutate(target_UDA_UOAs_delivered_by_sept = 1661898)
+    mutate(financial_half_target_perc = if_else(month >= as.Date("2021-04-01") & month < as.Date("2021-10-01"),
+                                                0.8,
+                                                0.85)) %>%
+    mutate(target_UDA_UOAs_delivered_in_financial_half = total_annual_UDA_UOAs_contracted * financial_half_target_perc / 2)
 }
 
 

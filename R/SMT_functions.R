@@ -27,7 +27,7 @@ plot_UDA_UOA_to_target <- function(data = UDA_calendar_data, UDAorUOA = "UDA",
   #change titles and colours for UDA or UOA
   if(UDAorUOA == "UDA"){
     septemberTarget <- 60
-    title <- "Monthly % of Apr-Sept target (60%) UDAs delivered"
+    title <- "Monthly % of Apr21-Sept21 target (60%) and Oct21-Mar22 target (65%) UDAs delivered"
     ylab <- "% of target UDAs delivered"
     barCol <- "coral"
     
@@ -36,7 +36,7 @@ plot_UDA_UOA_to_target <- function(data = UDA_calendar_data, UDAorUOA = "UDA",
     
   }else{
     septemberTarget <- 80
-    title <- "Monthly % of Apr-Sept target (80%) UOAs delivered"
+    title <- "Monthly % of Apr21-Sept21 target (80%) and Oct21-Mar22 target (85%) UOAs delivered"
     ylab <- "% of target UOAs delivered"
     barCol <- "seagreen3"
     
@@ -47,7 +47,7 @@ plot_UDA_UOA_to_target <- function(data = UDA_calendar_data, UDAorUOA = "UDA",
   #get data in the right format
   data <- data %>%
     mutate(month = as.Date(month)) %>%
-    mutate(perc_of_UDA_UOA_target_delivered = monthly_UDA_UOAs_delivered * 100 / target_UDA_UOAs_delivered_by_sept) %>%
+    mutate(perc_of_UDA_UOA_target_delivered = monthly_UDA_UOAs_delivered * 100 / target_UDA_UOAs_delivered_in_financial_half) %>%
     mutate(perc_of_UDA_UOA_target_delivered = round(perc_of_UDA_UOA_target_delivered, 1))
   
   #ensures months with no data are still shown
@@ -71,7 +71,7 @@ plot_UDA_UOA_to_target <- function(data = UDA_calendar_data, UDAorUOA = "UDA",
     annotate(geom = "text", 
              x = as.Date("2021-09-01"),
              y = 17.7, 
-             label = "16.7% target", 
+             label = "Monthly expected delivery to reach target", 
              size = 3) +
     annotate(geom = "text", 
              x = data$month, 
@@ -111,8 +111,8 @@ plot_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data,
   #change titles and colours for UDA or UOA
   if(UDAorUOA == "UDA"){
     septemberTarget <- 60 
-    title <- "Year to date monthly % of Apr-Sept target (60%) UDAs delivered"
-    ylab <- "Cumulative % of target UDAs delivered \nfrom Apr-21"
+    title <- "Cumulative monthly % of Apr21-Sept21 target (60%) and Oct21-Mar22 target (65%) UDAs delivered for H1 and H2"
+    ylab <- "Cumulative % of target UDAs delivered \nfrom Apr-21 and from Oct-22"
     barCol <- "coral"
     
     #get raw data into the right format
@@ -120,7 +120,7 @@ plot_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data,
     
   }else{
     septemberTarget <- 80
-    title <- "Year to date monthly % of Apr-Sept target (80%) UOAs delivered"
+    title <- "Cumulative monthly % of Apr21-Sept21 target (80%) and Oct21-Mar22 target (85%) UOAs delivered for H1 and H2"
     ylab <- "Cumulative % of target UOAs delivered \nfrom Apr-21"
     barCol <- "seagreen3"
     
@@ -129,19 +129,43 @@ plot_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data,
     
   }
   
-  if(nrow(data) < 6){
-    data <- data %>% add_row(month = as.Date("2021-09-01"))
+  #add blanks for future dates
+  if(nrow(data) < 12){
+    if(!(as.Date("2021-09-01") %in% data$month)){
+      data <- data %>% add_row(month = as.Date("2021-09-01"))
+    }
+    if(!(as.Date("2021-10-01") %in% data$month)){
+      data <- data %>% add_row(month = as.Date("2021-10-01"))
+    }
+    if(!(as.Date("2021-11-01") %in% data$month)){
+      data <- data %>% add_row(month = as.Date("2021-11-01"))
+    }
+    if(!(as.Date("2021-12-01") %in% data$month)){
+      data <- data %>% add_row(month = as.Date("2021-12-01"))
+    }
+    if(!(as.Date("2022-01-01") %in% data$month)){
+      data <- data %>% add_row(month = as.Date("2022-01-01"))
+    }
+    if(!(as.Date("2022-02-01") %in% data$month)){
+      data <- data %>% add_row(month = as.Date("2022-02-01"))
+    }
+    if(!(as.Date("2022-03-01") %in% data$month)){
+      data <- data %>% add_row(month = as.Date("2022-03-01"))
+    }
   }
   
   #get data in the right format
   data <- data %>%
     mutate(month = as.Date(month)) %>%
-    mutate(perc_of_UDA_UOA_target_delivered = monthly_UDA_UOAs_delivered * 100 / target_UDA_UOAs_delivered_by_sept) %>%
+    mutate(perc_of_UDA_UOA_target_delivered = monthly_UDA_UOAs_delivered * 100 / target_UDA_UOAs_delivered_in_financial_half) %>%
     mutate(perc_of_UDA_UOA_target_delivered = round(perc_of_UDA_UOA_target_delivered, 1))
   
   #cumulative sum column
-  data <- data %>%
-    mutate(cumulative_perc_of_UDA_UOA_target_delivered = cumsum(perc_of_UDA_UOA_target_delivered)) 
+  data <- data  %>%
+    mutate(financial_half = if_else(month < as.Date("2021-10-01"), "Apr-Sept (H1)", "Oct-Mar (H2)")) %>%
+    group_by(financial_half) %>%
+    mutate(cumulative_perc_of_UDA_UOA_target_delivered = cumsum(perc_of_UDA_UOA_target_delivered)) %>%
+    ungroup()
   
   #ensures months with no data are still shown
   #done as separate dataframe so that annotations are not shown for months with no data
@@ -149,7 +173,8 @@ plot_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data,
     mutate(cumulative_perc_of_UDA_UOA_target_delivered = if_else(is.na(monthly_UDA_UOAs_delivered),
                                                              0, 
                                                              cumulative_perc_of_UDA_UOA_target_delivered)) %>%
-    mutate(target = seq(from = 16.7, to = 100, length.out = 6))
+    mutate(target = rep(seq(from = 16.7, to = 100, length.out = 6), 2)) 
+    #mutate(target_Oct_Mar = c(rep(NA,6), seq(from = 16.7, to = 100, length.out = 6))) 
   
   
   #plot code
@@ -161,12 +186,12 @@ plot_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data,
              fill = barCol, 
              width = 10) +
     geom_line(aes(x = month, 
-                  y = target), 
-              colour = "blue", 
+                  y = target,
+                  colour = financial_half), 
               linetype = "dashed") +
     geom_point(aes(x = month, 
-                   y = target), 
-               colour = "blue", 
+                   y = target,
+                   colour = financial_half), 
                shape = 4, 
                size = 2) +
     geom_hline(yintercept = 100, 
@@ -184,10 +209,12 @@ plot_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data,
              size = 3) +
     scale_x_date(date_breaks = "1 month", 
                  date_labels = "%b-%y") +
+    scale_colour_manual(labels = c("H1 Apr21-Sept21 target - 60%", "H1 Oct21-Mar target - 65%"), values = c("green", "blue")) + 
     labs(title = title, 
          x = "Month", 
          y = ylab,
-         subtitle = subtitle)
+         subtitle = subtitle,
+         colour = "Expected cumulative delivery to \nreach financial half target")
   
 }
 

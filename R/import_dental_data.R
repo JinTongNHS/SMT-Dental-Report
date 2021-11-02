@@ -49,7 +49,7 @@ import_and_clean_scheduled_UDA_data <- function(data_path = "data/raw_data/dashb
            contract_end_date = X__7,
            annual_contracted_UDA = X__8,
            annual_contracted_UOA = X__9,
-           UDA_target_60_for_Apr_to_Sept = X__10, #may need to remove this
+           UDA_financial_half_target = X__10, #may need to remove this
            UDA_delivered = X__11,
            general_FP17s = X__12,
            UDA_delivered_prev_year = X__13, #remove
@@ -86,7 +86,9 @@ import_and_clean_scheduled_UDA_data <- function(data_path = "data/raw_data/dashb
            FP17s_band_3_prev_2_year = X__44, #remove
            FP17s_urgent_prev_2_year = X__45, #remove
            FP17s_other_prev_2_year = X__46  #remove
-    )
+    ) %>%
+    #incorporate target change
+    mutate(UDA_financial_half_target = if_else(month >= as.Date("2021-10-01"), annual_contracted_UDA * 0.65 /2, UDA_financial_half_target))
   
 }
 
@@ -130,7 +132,7 @@ import_and_clean_scheduled_UOA_data <- function(data_path = "data/raw_data/dashb
            contract_end_date = X__7,
            annual_contracted_UOA = X__8,
            annual_contracted_UDA = X__9,
-           UOA_target_80_for_Apr_to_Sept = X__10, #may need to remove this
+           UOA_financial_half_target = X__10, #may need to remove this
            UOA_delivered = X__11,
            UOA_delivered_prev_year = X__12, #may need to remove
            UOA_delivered_prev_2_year = X__13, #may need to remove
@@ -139,7 +141,9 @@ import_and_clean_scheduled_UOA_data <- function(data_path = "data/raw_data/dashb
            orthodontic_FP17s_prev_2_year = X__16, #remove
            orthodontic_starts = X__17,
            orthodontic_completions = X__18 
-    )
+    )%>%
+    #incorporate target change
+    mutate(UOA_financial_half_target = if_else(month >= as.Date("2021-10-01"), annual_contracted_UOA * 0.65 /2, UOA_financial_half_target))
   
 }
 
@@ -333,7 +337,37 @@ import_and_clean_calendar_UDA_data <- function(data_path = "data/raw_data/dashbo
            total_other_FP17s = X__80
     )
   
-  UDA_calendar_data <- bind_rows(data_apr, data_may, data_jun, data_jul, data_aug, data_sep)
+  #add column for date and rename columns, split data for just october
+  data_oct <- data %>%
+    mutate(month = as.Date("2021-10-01")) %>%
+    select(month, X__1, X__2, X__3, X__4, X__5, X__6, X__7, X__8, 
+           X__81, X__82, X__83, X__84, X__85, X__86, X__87, X__88, X__89, X__90,
+           X__91, X__92) %>%
+    rename(contract_number = X__1,
+           latest_contract_type = X__2,
+           name_or_company_name = X__3,
+           commissioner_name = X__4,
+           region_name = X__5,
+           paid_by_BSA = X__6,
+           contract_start_date = X__7, 
+           contract_end_date = X__8, 
+           
+           UDA_total = X__81, 
+           UDA_band_1_total = X__82,
+           UDA_band_2_total = X__83,
+           UDA_band_3_total = X__84, 
+           UDA_urgent_total = X__85, 
+           UDA_other_total = X__86, 
+           total_FP17s = X__87, 
+           total_band_1_FP17s  = X__88,
+           total_band_2_FP17s = X__89,
+           total_band_3_FP17s = X__90,
+           total_urgent_FP17s = X__91,
+           total_other_FP17s = X__92
+    )
+  
+  UDA_calendar_data <- bind_rows(data_apr, data_may, data_jun, data_jul, data_aug, 
+                                 data_sep, data_oct)
   
 }
 
@@ -465,8 +499,27 @@ import_and_clean_calendar_UOA_data <- function(data_path = "data/raw_data/dashbo
            total_orthodontic_starts = X__20
     )
   
+  #add column for date and rename columns, split data for just oct
+  data_oct <- data %>%
+    mutate(month = as.Date("2021-10-01")) %>%
+    select(month, X__1, X__2, X__3, X__4, X__5, X__6, X__7, X__8, 
+           X__21, X__22) %>%
+    rename(contract_number = X__1,
+           contract_type = X__2,
+           name_or_company_name = X__3,
+           commissioner_name = X__4,
+           region_name = X__5,
+           paid_by_BSA = X__6,
+           contract_start_date = X__7, 
+           contract_end_date = X__8, 
+           
+           UOA_total = X__21, 
+           total_orthodontic_starts = X__22
+    )
   
-  UOA_calendar_data <- bind_rows(data_apr, data_may, data_jun, data_jul, data_aug, data_sep)
+  
+  UOA_calendar_data <- bind_rows(data_apr, data_may, data_jun, data_jul, data_aug, 
+                                 data_sep, data_oct)
   
 }
 
@@ -508,7 +561,7 @@ import_and_clean_scheduled_UOA_data <- function(data_path = "data/raw_data/dashb
            contract_end_date = X__7,
            annual_contracted_UOA = X__8,
            annual_contracted_UDA = X__9,
-           UOA_target_80_for_Apr_to_Sept = X__10, #may need to remove this
+           UOA_financial_half_target = X__10, #may need to remove this
            UOA_delivered = X__11,
            UOA_delivered_prev_year = X__12, #may need to remove
            UOA_delivered_prev_2_year = X__13, #may need to remove

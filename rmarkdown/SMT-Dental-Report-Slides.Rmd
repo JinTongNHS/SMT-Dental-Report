@@ -22,16 +22,16 @@ source("../R/SMT_functions.R")
 source("../R/format_SMT_data.R")
 
 #load in raw data
-UDA_calendar_data <- readRDS("../data/cleaned_data_up_to_september/UDA_calendar_data.rds")
-UOA_calendar_data <- readRDS("../data/cleaned_data_up_to_september/UOA_calendar_data.rds")
-UDA_scheduled_data <- readRDS("../data/cleaned_data_up_to_september/UDA_scheduled_data.rds")
-UOA_scheduled_data <- readRDS("../data/cleaned_data_up_to_september/UOA_scheduled_data.rds")
+UDA_calendar_data <- readRDS("../data/cleaned_data_up_to_october/UDA_calendar_data.rds")
+UOA_calendar_data <- readRDS("../data/cleaned_data_up_to_october/UOA_calendar_data.rds")
+UDA_scheduled_data <- readRDS("../data/cleaned_data_up_to_october/UDA_scheduled_data.rds")
+UOA_scheduled_data <- readRDS("../data/cleaned_data_up_to_october/UOA_scheduled_data.rds")
 historical_UDA_scheduled_data <- readRDS("../data/cleaned_data_up_to_september/historical_UDA_scheduled_data.rds")
 
 #load in historic data not available in raw
-slide5_UDA_delivery_historic <- readRDS("../data/cleaned_data_up_to_august/slide5_UDA_delivery_historic.rds")
-slide7_UOA_delivery_historic <- readRDS("../data/cleaned_data_up_to_august/slide7_UOA_delivery_historic.rds")
-slide8_banded_CoT_historic <- readRDS("../data/cleaned_data_up_to_august/slide8_banded_CoT_historic.rds")
+# slide5_UDA_delivery_historic <- readRDS("../data/cleaned_data_up_to_august/slide5_UDA_delivery_historic.rds")
+# slide7_UOA_delivery_historic <- readRDS("../data/cleaned_data_up_to_august/slide7_UOA_delivery_historic.rds")
+# slide8_banded_CoT_historic <- readRDS("../data/cleaned_data_up_to_august/slide8_banded_CoT_historic.rds")
 
 prototype_contracts <- read_excel("../data/prototype_contracts.xls")
 
