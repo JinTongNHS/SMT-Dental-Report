@@ -28,8 +28,8 @@ plot_UDA_UOA_to_target <- function(data = UDA_calendar_data, UDAorUOA = "UDA",
   if(UDAorUOA == "UDA"){
     septemberTarget <- 60
     marchTarget <- 65
-    title <- "Monthly % of Apr21-Sept21 target (60%) and \nOct21-Mar22 target (65%) UDAs delivered"
-    ylab <- "% of target UDAs delivered"
+    title <- "Monthly % of contracted UDAs delivered per financial half"
+    ylab <- "% of contracted UDAs for each financial half delivered"
     barCol <- "coral"
     
     #get raw data into the right format
@@ -38,7 +38,7 @@ plot_UDA_UOA_to_target <- function(data = UDA_calendar_data, UDAorUOA = "UDA",
   }else{
     septemberTarget <- 80
     marchTarget <- 85
-    title <- "Monthly % of Apr21-Sept21 target (80%) and \nOct21-Mar22 target (85%) UOAs delivered"
+    title <- "Monthly % of Contracted UOAs delivered"
     ylab <- "% of target UOAs delivered"
     barCol <- "seagreen3"
     
@@ -76,20 +76,21 @@ plot_UDA_UOA_to_target <- function(data = UDA_calendar_data, UDAorUOA = "UDA",
     mutate(month = as.Date(month)) %>%
     mutate(perc_of_UDA_UOA_target_delivered = monthly_UDA_UOAs_delivered * 100 / target_UDA_UOAs_delivered_in_financial_half) %>%
     mutate(perc_of_UDA_UOA_target_delivered = round(perc_of_UDA_UOA_target_delivered, 1)) %>%
+    mutate(perc_of_contracted_UDA_UOAs_delivered = monthly_UDA_UOAs_delivered * 100 * 2/ total_annual_UDA_UOAs_contracted) %>%
     mutate(financial_half = if_else(month < as.Date("2021-10-01"), "Apr-Sept (H1)", "Oct-Mar (H2)"))
   
   #ensures months with no data are still shown
   #done as separate dataframe so that annotations are not shown for months with no data
   data_to_plot <- data %>%
-    mutate(perc_of_UDA_UOA_target_delivered = if_else(is.na(perc_of_UDA_UOA_target_delivered)
+    mutate(perc_of_contracted_UDA_UOAs_delivered = if_else(is.na(perc_of_contracted_UDA_UOAs_delivered)
                                                   , 0, 
-                                                  perc_of_UDA_UOA_target_delivered)) %>%
-    mutate(target = 16.7) 
+                                                  perc_of_contracted_UDA_UOAs_delivered)) %>%
+    mutate(target = if_else(financial_half == "Apr-Sept (H1)", 60/6, 65/6)) 
   
   #plot code
   ggplot(data_to_plot, 
          aes(x = month, 
-             y = perc_of_UDA_UOA_target_delivered)) +
+             y = perc_of_contracted_UDA_UOAs_delivered)) +
     geom_bar(stat = "identity", 
              fill = barCol, 
              width = 10) +
@@ -104,43 +105,50 @@ plot_UDA_UOA_to_target <- function(data = UDA_calendar_data, UDAorUOA = "UDA",
                size = 2) +
     geom_vline(xintercept = as.Date("2021-09-01") + lubridate::days(15),
                linetype = "dotted") +
-    geom_segment(aes(x = as.Date("2021-09-01") + lubridate::days(15),
-                     y = 24, 
-                     xend = as.Date("2021-10-01") + lubridate::days(15), 
-                     yend = 24),
-                 arrow = arrow(length = unit(0.15, "cm"))) +
-    annotate(geom = "text",
-             x = as.Date("2021-10-01") + lubridate::days(12),
-             y = 22.5,
-             label = paste0("H2 (", marchTarget,"% target)"),
-             size = 3) +
-    geom_segment(aes(x = as.Date("2021-09-01") + lubridate::days(15),
-                     y = 25, 
-                     xend = as.Date("2021-09-01") - lubridate::days(15), 
-                     yend = 25),
-                 arrow = arrow(length = unit(0.15, "cm"))) +
-    annotate(geom = "text",
-             x = as.Date("2021-09-01") - lubridate::days(12),
-             y = 27,
-             label = paste0("H1 (", septemberTarget,"% target)"),
-             size = 3) +
+    # geom_segment(aes(x = as.Date("2021-09-01") + lubridate::days(15),
+    #                  y = 14, 
+    #                  xend = as.Date("2021-10-01") + lubridate::days(15), 
+    #                  yend = 14),
+    #              arrow = arrow(length = unit(0.15, "cm"))) +
+    # annotate(geom = "text",
+    #          x = as.Date("2021-10-01") + lubridate::days(12),
+    #          y = 12.5,
+    #          label = paste0("H2"),
+    #          size = 3) +
+    # geom_segment(aes(x = as.Date("2021-09-01") + lubridate::days(15),
+    #                  y = 15, 
+    #                  xend = as.Date("2021-09-01") - lubridate::days(15), 
+    #                  yend = 15),
+    #              arrow = arrow(length = unit(0.15, "cm"))) +
+    # annotate(geom = "text",
+    #          x = as.Date("2021-09-01") - lubridate::days(12),
+    #          y = 17,
+    #          label = paste0("H1"),
+    #          size = 3) +
     theme_bw() +
     annotate(geom = "text", 
              x = data$month, 
-             y = data$perc_of_UDA_UOA_target_delivered + 1, 
-             label = format(round(data$perc_of_UDA_UOA_target_delivered, 2), nsmall = 1), 
+             y = data$perc_of_contracted_UDA_UOAs_delivered + 1, 
+             label = format(round(data$perc_of_contracted_UDA_UOAs_delivered, 1), nsmall = 1), 
              size = 3) +
     scale_x_date(date_breaks = "1 month", 
                  date_labels = "%b-%y") +
-    scale_colour_manual(labels = c(paste("Expected monthly delivery to \nreach H1 target of", septemberTarget,"%"),
-                                   paste("Expected monthly delivery to \nreach H2 target of", marchTarget,"%")),
+    scale_colour_manual(labels = c(paste("Expected monthly delivery to \nreach H1 target of", septemberTarget,"% by Sep-21*"),
+                                   paste("Expected monthly delivery to \nreach H2 target of", marchTarget,"% by Mar-22*")),
                         values = c("darkred", "blue")) + 
       labs(title = title, 
            x = "Month", 
            y = ylab,
            subtitle = subtitle,
-           colour = "") +
-    theme(legend.position = "bottom")
+           #colour = "",
+           caption = "*expected monthly delivery to meet target is caluclated by assuming equal delivery across the 6 month period.
+           For Apr-Sep the monthly expected delivery is 60/6 = 10%, for Oct-Mar the monthly expected delivery is 65/6 = 10.8%") +
+    theme(legend.position = "bottom", 
+          legend.title = element_blank(),
+          plot.caption = element_text(hjust = 0.5, 
+                                      face= "italic"),
+          plot.caption.position =  "plot"
+          )
 
 }
 
