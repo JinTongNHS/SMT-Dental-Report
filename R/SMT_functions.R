@@ -955,18 +955,19 @@ get_num_contracts_on_target <- function(data = UDA_calendar_data,
   if(UDAorUOA == "UDA"){
     #get contracted UDAs
     contracted_UDA_UOAs <- scheduled_data %>%
-      select(month, contract_number, annual_contracted_UDA, UDA_target_60_for_Apr_to_Sept)
+      select(month, contract_number, annual_contracted_UDA, UDA_financial_half_target)
   }else{
     #get contracted UOAs
     contracted_UDA_UOAs <- scheduled_data %>%
-      select(month, contract_number, annual_contracted_UOA, UOA_target_80_for_Apr_to_Sept)
+      select(month, contract_number, annual_contracted_UOA, UOA_financial_half_target)
   }
   
   
   
   #join in contracted UDA/UOAs from scheduled data
   data <- data %>%
-    left_join(contracted_UDA_UOAs, by = c("month", "contract_number")) 
+    left_join(contracted_UDA_UOAs, by = c("month", "contract_number")) %>%
+    filter(month < as.Date("2021-10-01"))
   
   #create not in function
   `%notin%` = Negate(`%in%`)
@@ -987,17 +988,17 @@ get_num_contracts_on_target <- function(data = UDA_calendar_data,
     data <- data %>%
       group_by(contract_number) %>%
       summarise(mean_annual_contracted_UDA = mean(annual_contracted_UDA),
-                mean_UDA_target_60_for_Apr_to_Sept = mean(UDA_target_60_for_Apr_to_Sept),
+                mean_UDA_financial_half_target = mean(UDA_financial_half_target),
                 YTD_UDA_delivered = sum(UDA_total)) %>%
-      count(YTD_UDA_delivered >= (mean_UDA_target_60_for_Apr_to_Sept))
+      count(YTD_UDA_delivered >= (mean_UDA_financial_half_target))
   }else{
     #count number of contracts meeting target
     data <- data %>%
       group_by(contract_number) %>%
       summarise(mean_annual_contracted_UOA = mean(annual_contracted_UOA),
-                mean_UOA_target_80_for_Apr_to_Sept = mean(UOA_target_80_for_Apr_to_Sept),
+                mean_UOA_financial_half_target = mean(UOA_financial_half_target),
                 YTD_UOA_delivered = sum(UOA_total)) %>%
-      count(YTD_UOA_delivered >= (mean_UOA_target_80_for_Apr_to_Sept))
+      count(YTD_UOA_delivered >= (mean_UOA_financial_half_target))
   }
   
   
