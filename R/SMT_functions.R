@@ -360,22 +360,24 @@ plot_H2_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data,
   data <- data %>%
     mutate(month = as.Date(month)) %>%
     mutate(perc_of_UDA_UOA_target_delivered = monthly_UDA_UOAs_delivered * 100 / target_UDA_UOAs_delivered_in_financial_half) %>%
-    mutate(perc_of_UDA_UOA_target_delivered = format(round(perc_of_UDA_UOA_target_delivered, 1), nsmall = 2))
+    mutate(perc_of_contracted_UDA_UOAs_delivered = monthly_UDA_UOAs_delivered * 100 * 2/ total_annual_UDA_UOAs_contracted) #%>%
+    #mutate(perc_of_contracted_UDA_UOAs_delivered = format(round(perc_of_contracted_UDA_UOAs_delivered, 1), nsmall = 2))
   
   #cumulative sum column
   data <- data  %>%
     mutate(financial_half = if_else(month < as.Date("2021-10-01"), "Apr-Sept (H1)", "Oct-Mar (H2)")) %>%
     group_by(financial_half) %>%
-    mutate(cumulative_perc_of_UDA_UOA_target_delivered = cumsum(perc_of_UDA_UOA_target_delivered)) %>%
+    mutate(cumulative_perc_of_contracted_UDA_UOAs_delivered = cumsum(perc_of_contracted_UDA_UOAs_delivered)) %>%
     ungroup()
   
   #ensures months with no data are still shown
   #done as separate dataframe so that annotations are not shown for months with no data
   data_to_plot <- data %>%
-    mutate(cumulative_perc_of_UDA_UOA_target_delivered = if_else(is.na(monthly_UDA_UOAs_delivered),
+    mutate(cumulative_perc_of_contracted_UDA_UOAs_delivered = if_else(is.na(monthly_UDA_UOAs_delivered),
                                                                  0, 
-                                                                 cumulative_perc_of_UDA_UOA_target_delivered)) %>%
-    mutate(target = rep(seq(from = 16.7, to = 100, length.out = 6), 2)) %>%
+                                                                 cumulative_perc_of_contracted_UDA_UOAs_delivered)) %>%
+    mutate(target = c(seq(from = septemberTarget/6, to = septemberTarget, length.out = 6), 
+                      seq(from = marchTarget/6, to = marchTarget, length.out = 6))) %>%
     filter(month >= as.Date("2021-09-01")) #%>%
     #mutate(month = format(month, "%b-%y")) %>%
     #mutate(month_name = if_else(month == "Sep-21","H1 - Apr21-Sep21", month))
@@ -388,7 +390,7 @@ plot_H2_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data,
   ggplot(data_to_plot) +
     theme_bw() +
     geom_bar(aes(x = month, 
-                 y = cumulative_perc_of_UDA_UOA_target_delivered),
+                 y = cumulative_perc_of_contracted_UDA_UOAs_delivered),
              stat = "identity", 
              fill = barCol, 
              width = 10) +
@@ -403,26 +405,26 @@ plot_H2_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data,
                size = 2) +
     geom_vline(xintercept = as.Date("2021-09-01") + lubridate::days(15),
                linetype = "dotted") +
-    geom_segment(aes(x = as.Date("2021-09-01") + lubridate::days(15),
-                     y = 115, 
-                     xend = as.Date("2021-10-01") + lubridate::days(15), 
-                     yend = 115),
-                 arrow = arrow(length = unit(0.15, "cm"))) +
-    annotate(geom = "text",
-             x = as.Date("2021-10-01") + lubridate::days(1),
-             y = 108,
-             label = paste0("H2 (", marchTarget,"% target)"),
-             size = 3) +
-    geom_segment(aes(x = as.Date("2021-09-01") + lubridate::days(15),
-                     y = 120, 
-                     xend = as.Date("2021-09-01") - lubridate::days(15), 
-                     yend = 120),
-                 arrow = arrow(length = unit(0.15, "cm"))) +
-    annotate(geom = "text",
-             x = as.Date("2021-09-01") - lubridate::days(1),
-             y = 130,
-             label = paste0("H1 (", septemberTarget,"% target)"),
-             size = 3) +
+    # geom_segment(aes(x = as.Date("2021-09-01") + lubridate::days(15),
+    #                  y = 115, 
+    #                  xend = as.Date("2021-10-01") + lubridate::days(15), 
+    #                  yend = 115),
+    #              arrow = arrow(length = unit(0.15, "cm"))) +
+    # annotate(geom = "text",
+    #          x = as.Date("2021-10-01") + lubridate::days(1),
+    #          y = 108,
+    #          label = paste0("H2 (", marchTarget,"% target)"),
+    #          size = 3) +
+    # geom_segment(aes(x = as.Date("2021-09-01") + lubridate::days(15),
+    #                  y = 120, 
+    #                  xend = as.Date("2021-09-01") - lubridate::days(15), 
+    #                  yend = 120),
+    #              arrow = arrow(length = unit(0.15, "cm"))) +
+    # annotate(geom = "text",
+    #          x = as.Date("2021-09-01") - lubridate::days(1),
+    #          y = 130,
+    #          label = paste0("H1 (", septemberTarget,"% target)"),
+    #          size = 3) +
     # geom_hline(yintercept = 100, 
     #            colour = "grey", 
     #            linetype = "dashed") +
@@ -433,15 +435,15 @@ plot_H2_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data,
     #          size = 3) +
     annotate(geom = "text", 
              x = data_to_plot$month, 
-             y = data_to_plot$cumulative_perc_of_UDA_UOA_target_delivered + 3, 
-             label = ifelse(data_to_plot$cumulative_perc_of_UDA_UOA_target_delivered != 0,
-                            round(data_to_plot$cumulative_perc_of_UDA_UOA_target_delivered, 2),
+             y = data_to_plot$cumulative_perc_of_contracted_UDA_UOAs_delivered + 3, 
+             label = ifelse(data_to_plot$cumulative_perc_of_contracted_UDA_UOAs_delivered != 0,
+                            format(round(data_to_plot$cumulative_perc_of_contracted_UDA_UOAs_delivered, 1), nsmall = 1),
                             ""), 
              size = 3) +
     scale_x_date(date_breaks = "1 month",
                  date_labels = "%b-%y") +
-    scale_colour_manual(labels = c(paste("Expected cumulative delivery to \nreach H1 target of", septemberTarget,"%"),
-                                   paste("Expected cumulative delivery to \nreach H2 target of", marchTarget,"%")),
+    scale_colour_manual(labels = c(paste("H1 target: ", septemberTarget,"%"),
+                                   paste("Expected cumulative delivery to \nreach H2 target of", marchTarget,"% by Mar-22")),
                         values = c("darkred", "blue")) +
     labs(title = title, 
          x = "Month", 
