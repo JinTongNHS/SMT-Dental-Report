@@ -28,8 +28,8 @@ plot_UDA_UOA_to_target <- function(data = UDA_calendar_data, UDAorUOA = "UDA",
   if(UDAorUOA == "UDA"){
     septemberTarget <- 60
     marchTarget <- 65
-    title <- "Monthly % of contracted UDAs delivered per financial half"
-    ylab <- "% of contracted UDAs for each financial half delivered"
+    title <- "Monthly % of H1 and H2 contracted UDAs delivered"
+    ylab <- "% of H1 and H2 contracted UDAs delivered"
     barCol <- "coral"
     
     #get raw data into the right format
@@ -38,8 +38,8 @@ plot_UDA_UOA_to_target <- function(data = UDA_calendar_data, UDAorUOA = "UDA",
   }else{
     septemberTarget <- 80
     marchTarget <- 85
-    title <- "Monthly % of Contracted UOAs delivered"
-    ylab <- "% of target UOAs delivered"
+    title <- "Monthly % of H1 and H2 contracted UOAs delivered"
+    ylab <- "% of H1 and H2 contracted UOAs delivered"
     barCol <- "seagreen3"
     
     #get raw data into fight format
@@ -85,7 +85,7 @@ plot_UDA_UOA_to_target <- function(data = UDA_calendar_data, UDAorUOA = "UDA",
     mutate(perc_of_contracted_UDA_UOAs_delivered = if_else(is.na(perc_of_contracted_UDA_UOAs_delivered)
                                                   , 0, 
                                                   perc_of_contracted_UDA_UOAs_delivered)) %>%
-    mutate(target = if_else(financial_half == "Apr-Sept (H1)", 60/6, 65/6)) 
+    mutate(target = if_else(financial_half == "Apr-Sept (H1)", septemberTarget/6, marchTarget/6)) 
   
   #plot code
   ggplot(data_to_plot, 
@@ -141,8 +141,8 @@ plot_UDA_UOA_to_target <- function(data = UDA_calendar_data, UDAorUOA = "UDA",
            y = ylab,
            subtitle = subtitle,
            #colour = "",
-           caption = "*expected monthly delivery to meet target is caluclated by assuming equal delivery across the 6 month period.
-           For Apr-Sep the monthly expected delivery is 60/6 = 10%, for Oct-Mar the monthly expected delivery is 65/6 = 10.8%") +
+           caption = paste0("*expected monthly delivery to meet target is caluclated by assuming equal delivery across the 6 month period.
+           For Apr-Sep the monthly expected delivery is ",septemberTarget,"/6 = ",round(septemberTarget/6,1),"%, for Oct-Mar the monthly expected delivery is ",marchTarget,"/6 = ",round(marchTarget/6,1),"%")) +
     theme(legend.position = "bottom", 
           legend.title = element_blank(),
           plot.caption = element_text(hjust = 0.5, 
@@ -312,8 +312,8 @@ plot_H2_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data,
   if(UDAorUOA == "UDA"){
     septemberTarget <- 60 
     marchTarget <- 65
-    title <- "Cumulative monthly % of Apr21-Sep21 target (60%) and \nOct21-Mar22 target (65%) UDAs delivered for H1 and H2"
-    ylab <- "Cumulative % of target UDAs delivered \nfrom Apr-21 and from Oct-22"
+    title <- "Cumulative monthly % of H1 and H2 contracted UDAs delivered"
+    ylab <- "Cumulative % of H1 and H2 contracted UDAs delivered \nfrom Apr-21 and from Oct-22"
     barCol <- "coral"
     
     #get raw data into the right format
@@ -322,8 +322,8 @@ plot_H2_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data,
   }else{
     septemberTarget <- 80
     marchTarget <- 85
-    title <- "Cumulative monthly % of Apr21-Sep21 target (80%) and \nOct21-Mar22 target (85%) UOAs delivered for H1 and H2"
-    ylab <- "Cumulative % of target UOAs delivered \nfrom Apr-21 and from Oct-22"
+    title <- "Cumulative monthly % of H1 and H2 contracted UOAs delivered"
+    ylab <- "Cumulative % of H1 and H2 contracted UOAs delivered \nfrom Apr-21 and from Oct-22"
     barCol <- "seagreen3"
     
     #get raw data into fight format
