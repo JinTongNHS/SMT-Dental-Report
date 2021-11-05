@@ -1229,6 +1229,24 @@ get_num_urgent_forms_2019 <- function(data = UDA_scheduled_data,
   
 }
 
+
+get_SOF_data <- function(data = UDA_scheduled_data){
+  SOF_data <- data %>%
+    select(month, contract_number, commissioner_name, annual_contracted_UDA, UDA_delivered) %>%
+    filter(annual_contracted_UDA > 100 & !(contract_number %in% prototype_contracts)) %>%
+    group_by(month, commissioner_name) %>%
+    summarise(annual_contracted_UDA = sum(annual_contracted_UDA, na.rm = T), UDA_delivered = sum(UDA_delivered, na.rm = T)) %>%
+    mutate(annual_contracted_UDA_scaled_monthly = annual_contracted_UDA / 12) %>%
+    #change names to match ICS names
+    mutate(commissioner_name = if_else(commissioner_name == "South East London STP", 
+                                       "OUR HEALTHIER SOUTH EAST LONDON ICS", 
+                                       commissioner_name)) %>%
+    mutate(commissioner_name = if_else(commissioner_name == "Lancashire and South Cumbria STP", 
+                                       "HEALTHIER LANCASHIRE AND SOUTH CUMBRIA ICS", 
+                                       commissioner_name))
+  
+  #write.csv(SOF_data, "SOF_data.csv", row.names = F)
+}
   
     
   
