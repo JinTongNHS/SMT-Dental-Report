@@ -51,6 +51,56 @@ plot_child_band2_FV <- function(data = child_band2_FV){
   
 }
 
+################################################################################
+#function to plot percentage of FP17 forms that are band 2 or have flouride varnish for 3-13 year olds
+plot_child_band2_FV_monthly <- function(data = child_band2_FV_monthly){
+  
+  data <- data %>%
+    group_by(date) %>%
+    summarise(band2_forms = sum(band2_forms), FV_forms = sum(FV_forms))
+  
+  #melt data into long format
+  data <- reshape2::melt(data, "date")
+  
+  # data[1,1] <- "2018/2019"
+  # data[2,1] <- "2019/2020"
+  # data[3,1] <- "2020/2021"
+  # data[4,1] <- "2021/2022"
+  # 
+  # data$financial_year <- factor(data$financial_year, levels = c("2018/2019", 
+  #                                                               "2019/2020",
+  #                                                               "2020/2021",
+  #                                                               "2021/2022"))
+  
+  #plot code
+  ggplot(data, 
+         aes(x = date,
+             y = value,
+             colour = variable
+         )) +
+    geom_line(size = 1
+    ) +
+    theme_bw() +
+    # annotate(geom = "text", 
+    #          x = as.Date("2021-09-01"),
+    #          y = 17.7, 
+    #          label = "16.7% target", 
+    #          size = 3) +
+    # annotate(geom = "text", 
+    #          x = data$month, 
+    #          y = data$perc_of_UDA_UOA_target_delivered + 1, 
+    #          label = round(data$perc_of_UDA_UOA_target_delivered, 2), 
+    #          size = 3) +
+    scale_colour_manual(labels = c("Band 2", "Flouride Varnish"), values = c("red", "blue")) +
+    scale_x_date(date_breaks = "3 month", 
+                 date_labels = "%b-%y") +
+    labs(title = "Percentage of FP17 forms for 3-16 year olds that included a \nBand 2 treatment or Flouride Varnish treatment",
+         x = "Month", 
+         y = "Percentage of FP17 forms",
+         colour = "Treatment type")
+  
+}
+
 
 ################################################################################
 #function to get monthly health inequality data into the right format
@@ -60,11 +110,11 @@ clean_HE_data <- function(data = monthly_HE){
   data <- data %>%
     rename(year_month = month) %>%
     #rename(ethnic_group = ethinc_group) %>%
-    mutate(band1 = if_else(band1 == "<5", "5", band1)) %>%
-    mutate(band2 = if_else(band2 == "<5", "5", band2)) %>%
-    mutate(band3 = if_else(band3 == "<5", "5", band3)) %>%
-    mutate(urgent = if_else(urgent == "<5", "5", urgent)) %>%
-    mutate(total_FP17 = if_else(total_FP17 == "<5", "5", total_FP17)) %>%
+    mutate(band1 = if_else(band1 == "<5", "3", band1)) %>%
+    mutate(band2 = if_else(band2 == "<5", "3", band2)) %>%
+    mutate(band3 = if_else(band3 == "<5", "3", band3)) %>%
+    mutate(urgent = if_else(urgent == "<5", "3", urgent)) %>%
+    mutate(total_FP17 = if_else(total_FP17 == "<5", "3", total_FP17)) %>%
     mutate(band1 = as.numeric(band1), 
            band2 = as.numeric(band2),
            band3 = as.numeric(band3),
@@ -74,6 +124,25 @@ clean_HE_data <- function(data = monthly_HE){
     mutate(month = substring(year_month, 5)) %>%
     mutate(date = as.Date(paste0(year,"-",month,"-","01")))
 
+}
+
+################################################################################
+#function to get monthly health inequality data into the right format
+clean_HE_data_band2_FV <- function(data = child_band2_FV_monthly){
+  
+  #convert characters to numerics and convert dates
+  data <- data %>%
+    rename(year_month = month) %>%
+    # mutate(band2_forms = if_else(band2_forms == "<5", "3", band2_forms)) %>%
+    # mutate(FV_forms = if_else(FV_forms == "<5", "3", FV_forms)) %>%
+    # mutate(total_forms_3_16 = if_else(total_forms_3_16 == "<5", "3", total_forms_3_16)) %>%
+    # mutate(band2_forms = as.numeric(band2_forms), 
+    #        FV_forms = as.numeric(FV_forms),
+    #        total_forms_3_16 = as.numeric(total_forms_3_16)) %>%
+    mutate(year = substring(year_month, 1, 4)) %>%
+    mutate(month = substring(year_month, 5)) %>%
+    mutate(date = as.Date(paste0(year,"-",month,"-","01")))
+  
 }
 
 
