@@ -8,8 +8,27 @@ library(tidyverse)
 #pass in raw data - either UDA_calendar_data or orthodontic_data_combined_calendar
 plot_UDA_UOA_to_target <- function(data = UDA_calendar_data, UDAorUOA = "UDA", 
                                    level = "National",
-                                   region_STP_name = NULL){
+                                   region_STP_name = NULL,
+                                   contractor_cats = contractor_catagories,
+                                   cat = NULL){
   
+  #join in MY categories
+  data <- data %>%
+    left_join(contractor_cats)
+
+  if(!is.null(cat)){
+    data <- filter(data, category_sub_type == cat)
+    
+    numOfCats <- count(contractor_cats, category_sub_type)
+    numOfCats <- numOfCats %>%
+      filter(category_sub_type == cat)
+    numOfCats <- numOfCats[1,2]
+    cat_sub <- paste0(" (", cat, " contracts only", " - ", numOfCats,"/6906)")
+    
+  }else{
+    cat_sub <- " (All categories)"
+  }
+
   #filter for region or STP
   if(level == "Regional"){
     data <- data %>% 
@@ -117,7 +136,7 @@ plot_UDA_UOA_to_target <- function(data = UDA_calendar_data, UDAorUOA = "UDA",
       labs(title = title, 
            x = "Month", 
            y = ylab,
-           subtitle = subtitle,
+           subtitle = paste0(subtitle, cat_sub),
            caption = paste0("*expected monthly delivery to meet threshold is caluclated by assuming equal delivery across the 3 month period.
            For Apr-Jun and Jul-Sep the monthly expected delivery is ",septemberTarget,"/3 = ",round(septemberTarget/3,1),"%, for Oct-Dec the monthly expected delivery is ",decemberTarget,"/3 = ",round(decemberTarget/3,1),"%")) +
     theme(legend.position = "bottom", 
