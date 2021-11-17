@@ -108,8 +108,21 @@ clean_HE_data <- function(data = monthly_HE){
   
   #convert characters to numerics and convert dates
   data <- data %>%
-    rename(year_month = month) %>%
-    #rename(ethnic_group = ethinc_group) %>%
+    rename(region_code = "Current Region Code",
+           region_name = "Current Region Name",
+           commissioner_code = "Current Commissioner Code",
+           commissioner_name = "Current Commissioner Name",
+           age_group = "Age Group",
+           gender = "Gender",
+           ethnic_group = "Ethnic Group Description Groupings",
+           patient_charge_status = "Patient Charge Status",
+           exemption_type = "Exemption/Remission Type",
+           band1 = "Forms With Band 1",
+           band2 = "Forms With Band 2",
+           band3 = "Forms With Band 3",
+           urgent = "Forms With Urgent Treatment",
+           total_FP17 = "Total FP17s",
+           year_month = "Year Month") %>%
     mutate(band1 = if_else(band1 == "<5", "3", band1)) %>%
     mutate(band2 = if_else(band2 == "<5", "3", band2)) %>%
     mutate(band3 = if_else(band3 == "<5", "3", band3)) %>%
@@ -122,8 +135,7 @@ clean_HE_data <- function(data = monthly_HE){
            total_FP17 = as.numeric(total_FP17)) %>%
     mutate(year = substring(year_month, 1, 4)) %>%
     mutate(month = substring(year_month, 5)) %>%
-    mutate(date = as.Date(paste0(year,"-",month,"-","01")))
-
+    mutate(date = as.Date(paste0(year,"-",month,"-","01"))) 
 }
 
 ################################################################################
@@ -169,27 +181,27 @@ plot_HE_ethnicity <- function(data = monthly_HE, band = band1, band_name = "Band
     subtitle <- "England"
   }
   
-  #override subtitle if specified
-  if(!is.null(override_subtitle) & override_subtitle == "Grouped top 20 most deprived local authorities by contract*"){
-    subtitle <- override_subtitle
-    caption <- 
-      "*Contracts that fall within the following Local Authorities based on 2019 deprivation data: 
-    Middlesbrough, Liverpool, Knowsley, Kingdton upon Hull, Manchester, Blackpool, Birmingham, 
-    Burnley, Blackburn with Darwen, Hartlepool, Bradford, Stoke-on-Trent,Halton, Pendle, 
-    Nottingham, Oldham, North East Lincolnshire, Hastings, Salford, Rochdale."
-  }else{
-    subtitle <- override_subtitle
-    caption <- "*Patients resident within the following Local Authorities based on 2019 deprivation data: 
-    Middlesbrough, Liverpool, Knowsley, Kingdton upon Hull, Manchester, Blackpool, Birmingham, 
-    Burnley, Blackburn with Darwen, Hartlepool, Bradford, Stoke-on-Trent,Halton, Pendle, 
-    Nottingham, Oldham, North East Lincolnshire, Hastings, Salford, Rochdale."
-  }
-  
+  # #override subtitle if specified
+  # if(!is.null(override_subtitle) & override_subtitle == "Grouped top 20 most deprived local authorities by contract*"){
+  #   subtitle <- override_subtitle
+  #   caption <- 
+  #     "*Contracts that fall within the following Local Authorities based on 2019 deprivation data: 
+  #   Middlesbrough, Liverpool, Knowsley, Kingdton upon Hull, Manchester, Blackpool, Birmingham, 
+  #   Burnley, Blackburn with Darwen, Hartlepool, Bradford, Stoke-on-Trent,Halton, Pendle, 
+  #   Nottingham, Oldham, North East Lincolnshire, Hastings, Salford, Rochdale."
+  # }else{
+  #   subtitle <- override_subtitle
+  #   caption <- "*Patients resident within the following Local Authorities based on 2019 deprivation data: 
+  #   Middlesbrough, Liverpool, Knowsley, Kingdton upon Hull, Manchester, Blackpool, Birmingham, 
+  #   Burnley, Blackburn with Darwen, Hartlepool, Bradford, Stoke-on-Trent,Halton, Pendle, 
+  #   Nottingham, Oldham, North East Lincolnshire, Hastings, Salford, Rochdale."
+  # }
+  # 
   #avoid standard form
   options(scipen = 999)
   
   #get data in the right format to plot
-  data <- clean_HE_data(data)
+  #data <- clean_HE_data(data)
   
   data <- data %>%
     group_by(date, ethnic_group) %>%
@@ -300,27 +312,27 @@ plot_HE_gender <- function(data = monthly_HE, band = band1, band_name = "Band 1"
     subtitle <- "England"
   }
   
-  #override subtitle if specified
-  if(!is.null(override_subtitle) & override_subtitle == "Grouped top 20 most deprived local authorities by contract*"){
-    subtitle <- override_subtitle
-    caption <- 
-      "*Contracts that fall within the following Local Authorities based on 2019 deprivation data: 
-    Middlesbrough, Liverpool, Knowsley, Kingdton upon Hull, Manchester, Blackpool, Birmingham, 
-    Burnley, Blackburn with Darwen, Hartlepool, Bradford, Stoke-on-Trent,Halton, Pendle, 
-    Nottingham, Oldham, North East Lincolnshire, Hastings, Salford, Rochdale."
-  }else{
-    subtitle <- override_subtitle
-    caption <- "*Patients resident within the following Local Authorities based on 2019 deprivation data: 
-    Middlesbrough, Liverpool, Knowsley, Kingdton upon Hull, Manchester, Blackpool, Birmingham, 
-    Burnley, Blackburn with Darwen, Hartlepool, Bradford, Stoke-on-Trent,Halton, Pendle, 
-    Nottingham, Oldham, North East Lincolnshire, Hastings, Salford, Rochdale."
-  }
+  # #override subtitle if specified
+  # if(!is.null(override_subtitle) & override_subtitle == "Grouped top 20 most deprived local authorities by contract*"){
+  #   subtitle <- override_subtitle
+  #   caption <- 
+  #     "*Contracts that fall within the following Local Authorities based on 2019 deprivation data: 
+  #   Middlesbrough, Liverpool, Knowsley, Kingdton upon Hull, Manchester, Blackpool, Birmingham, 
+  #   Burnley, Blackburn with Darwen, Hartlepool, Bradford, Stoke-on-Trent,Halton, Pendle, 
+  #   Nottingham, Oldham, North East Lincolnshire, Hastings, Salford, Rochdale."
+  # }else{
+  #   subtitle <- override_subtitle
+  #   caption <- "*Patients resident within the following Local Authorities based on 2019 deprivation data: 
+  #   Middlesbrough, Liverpool, Knowsley, Kingdton upon Hull, Manchester, Blackpool, Birmingham, 
+  #   Burnley, Blackburn with Darwen, Hartlepool, Bradford, Stoke-on-Trent,Halton, Pendle, 
+  #   Nottingham, Oldham, North East Lincolnshire, Hastings, Salford, Rochdale."
+  # }
   
   #avoid standard form
   options(scipen = 999)
   
   #get data in the right format to plot
-  data <- clean_HE_data(data)
+  #data <- clean_HE_data(data)
   
   data <- data %>%
     group_by(date, gender) %>%
@@ -414,27 +426,27 @@ plot_HE_charge_status <- function(data = monthly_HE, band = band1, band_name = "
     subtitle <- "England"
   }
   
-  #override subtitle if specified
-  if(!is.null(override_subtitle) & override_subtitle == "Grouped top 20 most deprived local authorities by contract*"){
-    subtitle <- override_subtitle
-    caption <- 
-      "*Contracts that fall within the following Local Authorities based on 2019 deprivation data: 
-    Middlesbrough, Liverpool, Knowsley, Kingdton upon Hull, Manchester, Blackpool, Birmingham, 
-    Burnley, Blackburn with Darwen, Hartlepool, Bradford, Stoke-on-Trent,Halton, Pendle, 
-    Nottingham, Oldham, North East Lincolnshire, Hastings, Salford, Rochdale."
-  }else{
-    subtitle <- override_subtitle
-    caption <- "*Patients resident within the following Local Authorities based on 2019 deprivation data: 
-    Middlesbrough, Liverpool, Knowsley, Kingdton upon Hull, Manchester, Blackpool, Birmingham, 
-    Burnley, Blackburn with Darwen, Hartlepool, Bradford, Stoke-on-Trent,Halton, Pendle, 
-    Nottingham, Oldham, North East Lincolnshire, Hastings, Salford, Rochdale."
-  }
+  # #override subtitle if specified
+  # if(!is.null(override_subtitle) & override_subtitle == "Grouped top 20 most deprived local authorities by contract*"){
+  #   subtitle <- override_subtitle
+  #   caption <- 
+  #     "*Contracts that fall within the following Local Authorities based on 2019 deprivation data: 
+  #   Middlesbrough, Liverpool, Knowsley, Kingdton upon Hull, Manchester, Blackpool, Birmingham, 
+  #   Burnley, Blackburn with Darwen, Hartlepool, Bradford, Stoke-on-Trent,Halton, Pendle, 
+  #   Nottingham, Oldham, North East Lincolnshire, Hastings, Salford, Rochdale."
+  # }else{
+  #   subtitle <- override_subtitle
+  #   caption <- "*Patients resident within the following Local Authorities based on 2019 deprivation data: 
+  #   Middlesbrough, Liverpool, Knowsley, Kingdton upon Hull, Manchester, Blackpool, Birmingham, 
+  #   Burnley, Blackburn with Darwen, Hartlepool, Bradford, Stoke-on-Trent,Halton, Pendle, 
+  #   Nottingham, Oldham, North East Lincolnshire, Hastings, Salford, Rochdale."
+  # }
   
   #avoid standard form
   options(scipen = 999)
   
   #get data in the right format to plot
-  data <- clean_HE_data(data)
+  #data <- clean_HE_data(data)
   
   data <- data %>%
     group_by(date, patient_charge_status) %>%
@@ -507,6 +519,107 @@ plot_HE_charge_status <- function(data = monthly_HE, band = band1, band_name = "
   
 }
 
+################################################################################
+#function to plot charge status health inequality line chart
+plot_HE_charge_status_levels <- function(data = monthly_HE, band = band1, band_name = "Band 1", numOrPerc = "num", 
+                                  level = "National", 
+                                  region = NULL, 
+                                  STP = NULL,                               
+                                  override_subtitle= NULL,                               
+                                  caption = NULL){
+  
+  #filter data based on region or STP
+  if(level == "Regional"){
+    data <- data %>%
+      filter(region_name == region)
+    subtitle <- region
+  }else if(level == "STP"){
+    data <- data %>%
+      filter(commissioner_name == STP)
+    subtitle <- STP
+  }else{
+    subtitle <- "England"
+  }
+  
+
+  #avoid standard form
+  options(scipen = 999)
+  
+  #get data in the right format to plot
+  #data <- clean_HE_data(data)
+  
+  data <- data %>%
+    group_by(date, exemption_type) %>%
+    summarise(band1 = sum(band1), 
+              band2 = sum(band2), 
+              band3 = sum(band3), 
+              urgent = sum(urgent), 
+              total_FP17 = sum(total_FP17, na.rm = T)) %>%
+    group_by(date) %>%
+    mutate(total_band1 = sum(band1),
+           total_band2 = sum(band2),
+           total_band3 = sum(band3),
+           total_urgent = sum(urgent),
+           total_total_FP17 = sum(total_FP17)) %>%
+    mutate(perc_band1 = band1 * 100 / total_band1,
+           perc_band2 = band2 * 100 / total_band2,
+           perc_band3 = band3 * 100 / total_band3,
+           perc_urgent = urgent * 100 / total_urgent,
+           perc_total_FP17 = total_FP17 * 100 / total_total_FP17) %>%
+    filter(exemption_type != "18+ in Further Education" & exemption_type != "Patient Under 18")
+  
+  #set correct title
+  if(numOrPerc == "num"){
+    title <- paste("Monthly number of", band_name, "forms by patient exemption/remission type")
+    ytitle <- "Number of FP17 forms"
+    limits <- c(0, max(data$band1, na.rm = T))
+    breaks <- seq(0, max(data$band1, na.rm = T),by = 200000)
+  }else if(numOrPerc == "perc"){
+    title <- paste("Monthly percentage of", band_name, "forms by patient exemption/remission type")
+    ytitle <- paste("Percentage of", band_name, "FP17 forms")
+    limits <- c(0, 20)
+    breaks <- seq(0, 20, by = 5)
+  }else{
+    title <- paste("Monthly number of", band_name, "forms by patient exemtion/remission type")
+    ytitle <- "Number of FP17 forms"
+    limits <- c(0, max(data$total_FP17, na.rm = T))
+    breaks <- seq(0, max(data$total_FP17, na.rm = T),by = 200000)
+  }
+  
+  
+  #plot_code
+  ggplot(data, 
+         aes(x = date,
+             y = {{ band }},
+             colour = exemption_type
+         )) +
+    geom_line(size = 1) +
+    # scale_colour_manual(labels = c("Child",
+    #                                "Exempt",
+    #                                "Non-Exempt"
+    # ), 
+    # values = c("seagreen4",
+    #            "violetred4",
+    #            "royalblue"
+    # )
+    # ) +
+    labs(title = title, 
+         x = "Month", 
+         y = ytitle,
+         colour = "Exemption/remission type",
+         subtitle = subtitle,
+         caption = caption) +
+    scale_x_date(date_breaks = "1 month", 
+                 date_labels = "%b-%y") +
+    scale_y_continuous(label = scales::comma,
+                       limits = limits,
+                       breaks = scales::breaks_pretty()
+    ) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 90)) 
+  
+}
+
 
 ################################################################################
 #function to plot age health inequality line chart
@@ -530,27 +643,27 @@ plot_HE_age <- function(data = monthly_HE, band = band1, band_name = "Band 1", n
     subtitle <- "England"
   }
   
-  #override subtitle if specified
-  if(!is.null(override_subtitle) & override_subtitle == "Grouped top 20 most deprived local authorities by contract*"){
-    subtitle <- override_subtitle
-    caption <- 
-    "*Contracts that fall within the following Local Authorities based on 2019 deprivation data: 
-    Middlesbrough, Liverpool, Knowsley, Kingdton upon Hull, Manchester, Blackpool, Birmingham, 
-    Burnley, Blackburn with Darwen, Hartlepool, Bradford, Stoke-on-Trent,Halton, Pendle, 
-    Nottingham, Oldham, North East Lincolnshire, Hastings, Salford, Rochdale."
-  }else{
-    subtitle <- override_subtitle
-    caption <- "*Patients resident within the following Local Authorities based on 2019 deprivation data: 
-    Middlesbrough, Liverpool, Knowsley, Kingdton upon Hull, Manchester, Blackpool, Birmingham, 
-    Burnley, Blackburn with Darwen, Hartlepool, Bradford, Stoke-on-Trent,Halton, Pendle, 
-    Nottingham, Oldham, North East Lincolnshire, Hastings, Salford, Rochdale."
-  }
+  # #override subtitle if specified
+  # if(!is.null(override_subtitle) & override_subtitle == "Grouped top 20 most deprived local authorities by contract*"){
+  #   subtitle <- override_subtitle
+  #   caption <- 
+  #   "*Contracts that fall within the following Local Authorities based on 2019 deprivation data: 
+  #   Middlesbrough, Liverpool, Knowsley, Kingdton upon Hull, Manchester, Blackpool, Birmingham, 
+  #   Burnley, Blackburn with Darwen, Hartlepool, Bradford, Stoke-on-Trent,Halton, Pendle, 
+  #   Nottingham, Oldham, North East Lincolnshire, Hastings, Salford, Rochdale."
+  # }else{
+  #   subtitle <- override_subtitle
+  #   caption <- "*Patients resident within the following Local Authorities based on 2019 deprivation data: 
+  #   Middlesbrough, Liverpool, Knowsley, Kingdton upon Hull, Manchester, Blackpool, Birmingham, 
+  #   Burnley, Blackburn with Darwen, Hartlepool, Bradford, Stoke-on-Trent,Halton, Pendle, 
+  #   Nottingham, Oldham, North East Lincolnshire, Hastings, Salford, Rochdale."
+  # }
   
   #avoid standard form
   options(scipen = 999)
   
   #get data in the right format to plot
-  data <- clean_HE_data(data)
+  #data <- clean_HE_data(data)
   
   data <- data %>%
     group_by(date, age_group) %>%
