@@ -19,7 +19,7 @@ get_into_slide4_format_calendar <- function(data = UDA_calendar_data,
     #create not in function
     `%notin%` = Negate(`%in%`)
     data <- data %>%
-      filter(contract_number %notin% prototype_contracts$proto_contracts) %>%
+      filter(contract_number %notin% prototype_contracts$prototype_contract_number) %>%
       filter(annual_contracted_UDA > 100)
   }
 
@@ -56,7 +56,7 @@ get_into_slide6_format_calendar <- function(data = UOA_calendar_data,
     #create not in function
     `%notin%` = Negate(`%in%`)
     data <- data %>%
-      filter(contract_number %in% prototype_contracts_orth$proto_contracts)
+      filter(contract_number %in% prototype_contracts_orth$prototype_contract_number)
   }
 
   #group by month and sum UDAs delivered
@@ -87,7 +87,7 @@ get_into_slide5_7_format <- function(data = UDA_scheduled_data,
     #create not in function•
     `%notin%` = Negate(`%in%`)
     data <- data %>%
-      filter(contract_number %notin% prototype_contracts$proto_contracts)%>%
+      filter(contract_number %notin% prototype_contracts$prototype_contract_number)%>%
       filter(annual_contracted_UDA > 100)
   }
   
@@ -143,7 +143,7 @@ get_into_slide8_format <- function(data = UDA_scheduled_data,
     #create not in function
     `%notin%` = Negate(`%in%`)
     data <- data %>%
-      filter(contract_number %notin% prototype_contracts_orth$proto_contracts)%>%
+      filter(contract_number %notin% prototype_contracts_orth$prototype_contract_number)%>%
       filter(annual_contracted_UDA > 100)
   }
   
@@ -172,7 +172,7 @@ get_slide5_table <- function(data = UDA_scheduled_data,
     #create not in function
     `%notin%` = Negate(`%in%`)
     data <- data %>%
-      filter(contract_number %notin% prototype_contracts$proto_contracts) %>%
+      filter(contract_number %notin% prototype_contracts$prototype_contract_number) %>%
       filter(annual_contracted_UDA > 100)
   }
   
@@ -237,7 +237,7 @@ get_slide7_table <- function(data = UOA_scheduled_data, remove_prototypes = F){
     #create not in function
     `%notin%` = Negate(`%in%`)
     data <- data %>%
-      filter(Contract.Number %notin% prototype_contracts$proto_contracts)%>%
+      filter(Contract.Number %notin% prototype_contracts$prototype_contract_number)%>%
       filter(Contract.Number %notin% UDAs_less_than_100$Contract.Number)
   }
   

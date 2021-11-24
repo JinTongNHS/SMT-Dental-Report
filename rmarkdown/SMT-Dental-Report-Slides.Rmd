@@ -32,7 +32,7 @@ dental_data_111 <- read_excel("../data/cleaned_data_up_to_october/111_dental_dat
                               col_types = c("date", "text", "text", 
                                             "text", "numeric"))
 
-prototype_contracts <- read_excel("../data/prototype_contracts.xls")
+prototype_contracts <- read_excel("../data/prototype_contracts.xlsx")
 contractor_categories <- readRDS("../data/cleaned_data_up_to_october/contractor_categories.RDS")
 
 ```

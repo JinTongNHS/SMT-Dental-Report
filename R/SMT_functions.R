@@ -406,13 +406,13 @@ plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
   if(UDAorUOA == "UDA"){
     #get data into the right format
     data <- get_into_slide5_7_format(data, existing_data, remove_prototypes = F, UDAorUOA = "UDA")
-    title <- "Average percentage of contracted UDAs delivered \nscaled up to 12 months*"
+    title <- "Monthly percentage of usual annual contracted UDAs \ndelivered across all contracts* scaled up to 12 months**"
     ylab <- "% of contracted UDAs delivered"
     lineCol <- "coral"
   }else{
     #get data into the right format
     data <- get_into_slide5_7_format(data, existing_data, remove_prototypes = F, UDAorUOA = "UOA")
-    title <- "Average percentage of contracted UOAs delivered \nscaled up to 12 months*"
+    title <- "Monthly percentage of usual annual contracted UOAs \ndelivered across all contracts* scaled up to 12 months**"
     ylab <- "% of contracted UOAs delivered"
     lineCol <- "seagreen3"
   }
@@ -452,7 +452,7 @@ plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
          x = "Month",
          y = ylab, 
          subtitle = subtitle,
-         caption = "*April data is for the reporting period 1st April - 21st April 
+         caption = "*Excluding prototype contracts and those with annual contracted UDA < 100\n**April data is for the reporting period 1st April - 21st April 
          therefore the April data has been scaled up by 18 instead of 12") +
     # annotate(geom = "text", 
     #          x = data$month, 
@@ -791,11 +791,11 @@ get_num_contracts <- function(data = UDA_calendar_data,
   #remove prototype contracts if specified
   if(remove_prototypes & UDAorUOA == "UDA"){
     data <- data %>%
-      filter(contract_number %notin% prototype_contracts$proto_contracts)%>%
+      filter(contract_number %notin% prototype_contracts$prototype_contract_number)%>%
       filter(annual_contracted_UDA > 100)
   }else if(remove_prototypes & UDAorUOA == "UOA"){
     data <- data %>%
-      #filter(contract_number %notin% prototype_contracts$proto_contracts)%>%
+      #filter(contract_number %notin% prototype_contracts$prototype_contract_number)%>%
       filter(annual_contracted_UOA > 100)
   }
   
@@ -847,11 +847,11 @@ get_Q3_num_contracts_on_target <- function(data = UDA_calendar_data,
   #remove prototype contracts if specified
   if(remove_prototypes & UDAorUOA == "UDA"){
     data <- data %>%
-      filter(contract_number %notin% prototype_contracts$proto_contracts)%>%
+      filter(contract_number %notin% prototype_contracts$prototype_contract_number)%>%
       filter(annual_contracted_UDA > 100)
   }else if(remove_prototypes & UDAorUOA == "UOA"){
     data <- data %>%
-      #filter(contract_number %notin% prototype_contracts$proto_contracts)%>%
+      #filter(contract_number %notin% prototype_contracts$prototype_contract_number)%>%
       filter(annual_contracted_UOA > 100)
   }
   
