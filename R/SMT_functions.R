@@ -422,6 +422,13 @@ plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
     mutate(month = as.Date(month)) %>%
     mutate(perc_UDA_UOA_delivered = perc_UDA_UOA_delivered)
   
+  # data <- data %>%
+  #   add_row(month = as.Date("2021-11-01")) %>%
+  #   add_row(month = as.Date("2021-12-01")) %>%
+  #   mutate(threshold = if_else(month <= as.Date("2021-09-01"),
+  #                              60,
+  #                              65))
+  
   #plot code
   ggplot(data) +
     theme_bw() +
@@ -429,10 +436,15 @@ plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
                   y = perc_UDA_UOA_delivered), 
               colour = lineCol, 
               size = 1) +
-    geom_segment(aes(x = as.Date("2021-04-01"), y = 60, xend = as.Date("2021-09-01"), yend = 60),
+    geom_point(aes(x = month, 
+                  y = perc_UDA_UOA_delivered), 
+              colour = lineCol) +
+    geom_segment(aes(x = as.Date("2021-04-01"), y = 60, xend = as.Date("2021-10-01") - lubridate::weeks(1), yend = 60),
                  colour = "darkgreen",
                  linetype = "dashed") +
-    
+    geom_segment(aes(x = as.Date("2021-10-01"), y = 65, xend = as.Date("2021-12-01"), yend = 65),
+                 colour = "darkgreen",
+                 linetype = "dashed") +
     scale_x_date(date_breaks = "1 month", 
                  date_labels = "%b-%y") +
     scale_y_continuous(limits = c(0, max(data$perc_UDA_UOA_delivered, na.rm = T) + 5)) +
@@ -442,11 +454,21 @@ plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
          subtitle = subtitle,
          caption = "*April data is for the reporting period 1st April - 21st April 
          therefore the April data has been scaled up by 18 instead of 12") +
+    # annotate(geom = "text", 
+    #          x = data$month, 
+    #          y = data$perc_UDA_UOA_delivered + 1, 
+    #        label = paste0(data$perc_UDA_UOA_delivered, "%"), 
+    #        size = 3) +
     annotate(geom = "text", 
-             x = data$month, 
-             y = data$perc_UDA_UOA_delivered + 1, 
-           label = paste0(data$perc_UDA_UOA_delivered, "%"), 
-           size = 3) 
+             x = as.Date("2021-04-01") + lubridate::weeks(2), 
+             y = 63, 
+             label = "H1 threshold", 
+             size = 3) + 
+    annotate(geom = "text", 
+             x = as.Date("2021-10-01") + lubridate::weeks(2), 
+             y = 68, 
+             label = "Q3 threshold", 
+             size = 3) 
 }
 
 
