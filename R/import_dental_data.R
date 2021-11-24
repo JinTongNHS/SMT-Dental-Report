@@ -87,6 +87,7 @@ import_and_clean_scheduled_UDA_data <- function(data_path = "data/raw_data/dashb
            FP17s_urgent_prev_2_year = X__45, #remove
            FP17s_other_prev_2_year = X__46  #remove
     ) %>%
+    select(-UDA_financial_half_target) %>%
     #incorporate target change
     mutate(UDA_financial_half_target = if_else(month >= as.Date("2021-10-01"), annual_contracted_UDA * 0.65 /2, UDA_financial_half_target))
   
@@ -142,6 +143,7 @@ import_and_clean_scheduled_UOA_data <- function(data_path = "data/raw_data/dashb
            orthodontic_starts = X__17,
            orthodontic_completions = X__18 
     )%>%
+    select(-UOA_financial_half_target) %>%
     #incorporate target change
     mutate(UOA_financial_half_target = if_else(month >= as.Date("2021-10-01"), annual_contracted_UOA * 0.65 /2, UOA_financial_half_target))
   
