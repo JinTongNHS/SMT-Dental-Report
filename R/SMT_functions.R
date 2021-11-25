@@ -377,11 +377,12 @@ plot_banded_CoT <- function(data = UDA_scheduled_data,
 #current data source: Dental activity annual running total.xlsx sent by email by Caroline
 #current data is in teams folder "Monthly performance data\April 21 to September 21 data\Scheduled data\April to Sept UDA 2020-2021 (May).xlsx"
 plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data, 
-                                  existing_data = slide5_UDA_delivery_historic,
+                                  #existing_data = slide5_UDA_delivery_historic,
                                   calendar_data = UDA_calendar_data,
                                   UDAorUOA = "UDA",
                                   level = "National",
-                                  region_STP_name = NULL){
+                                  region_STP_name = NULL,
+                                  remove_prototypes = T){
   
   #add a region column to the data
   region_STP_lookup <- calendar_data %>%
@@ -405,30 +406,28 @@ plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
   
   if(UDAorUOA == "UDA"){
     #get data into the right format
-    data <- get_into_slide5_7_format(data, existing_data, remove_prototypes = F, UDAorUOA = "UDA")
-    title <- "Monthly percentage of usual annual contracted UDAs \ndelivered across all contracts* scaled up to 12 months**"
+    data <- get_into_slide5_7_format(data, remove_prototypes, UDAorUOA = "UDA")
+    title <- "Scheduled monthly percentage of usual annual contracted UDAs \ndelivered across all contracts* scaled up to 12 months**"
     ylab <- "% of contracted UDAs delivered"
     lineCol <- "coral"
+    lineCol <- "#CC79A7"
+    septemberTarget <- 60
+    decemberTarget <- 65
   }else{
     #get data into the right format
-    data <- get_into_slide5_7_format(data, existing_data, remove_prototypes = F, UDAorUOA = "UOA")
-    title <- "Monthly percentage of usual annual contracted UOAs \ndelivered across all contracts* scaled up to 12 months**"
+    data <- get_into_slide5_7_format(data, remove_prototypes, UDAorUOA = "UOA")
+    title <- "Scheduled monthly percentage of usual annual contracted UOAs \ndelivered across all contracts* scaled up to 12 months**"
     ylab <- "% of contracted UOAs delivered"
-    lineCol <- "seagreen3"
+    lineCol <- "#009E73"
+    septemberTarget <- 80
+    decemberTarget <- 85
   }
   
   #get data in the right format
   data <- data %>%
     mutate(month = as.Date(month)) %>%
     mutate(perc_UDA_UOA_delivered = perc_UDA_UOA_delivered)
-  
-  # data <- data %>%
-  #   add_row(month = as.Date("2021-11-01")) %>%
-  #   add_row(month = as.Date("2021-12-01")) %>%
-  #   mutate(threshold = if_else(month <= as.Date("2021-09-01"),
-  #                              60,
-  #                              65))
-  
+
   #plot code
   ggplot(data) +
     theme_bw() +
@@ -438,12 +437,13 @@ plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
               size = 1) +
     geom_point(aes(x = month, 
                   y = perc_UDA_UOA_delivered), 
-              colour = lineCol) +
-    geom_segment(aes(x = as.Date("2021-04-01"), y = 60, xend = as.Date("2021-10-01") - lubridate::weeks(1), yend = 60),
-                 colour = "darkgreen",
+              colour = lineCol
+              ) +
+    geom_segment(aes(x = as.Date("2021-04-01"), y = septemberTarget, xend = as.Date("2021-09-01"), yend = septemberTarget),
+                 colour = "#0072B2",
                  linetype = "dashed") +
-    geom_segment(aes(x = as.Date("2021-10-01"), y = 65, xend = as.Date("2021-12-01"), yend = 65),
-                 colour = "darkgreen",
+    geom_segment(aes(x = as.Date("2021-10-01"), y = decemberTarget, xend = as.Date("2021-12-01"), yend = decemberTarget),
+                 colour = "#0072B2",
                  linetype = "dashed") +
     scale_x_date(date_breaks = "1 month", 
                  date_labels = "%b-%y") +
@@ -452,23 +452,115 @@ plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
          x = "Month",
          y = ylab, 
          subtitle = subtitle,
-         caption = "*Excluding prototype contracts and those with annual contracted UDA < 100\n**April data is for the reporting period 1st April - 21st April 
-         therefore the April data has been scaled up by 18 instead of 12") +
-    # annotate(geom = "text", 
-    #          x = data$month, 
-    #          y = data$perc_UDA_UOA_delivered + 1, 
-    #        label = paste0(data$perc_UDA_UOA_delivered, "%"), 
-    #        size = 3) +
+         caption = "*Excluding prototype contracts and those with annual contracted UDA < 100 
+                    **These are scheduled months and April data is for the reporting period 1st April - 
+                    21st April therefore the April data has been scaled up by 18 instead of 12.") +
     annotate(geom = "text", 
              x = as.Date("2021-04-01") + lubridate::weeks(2), 
-             y = 63, 
+             y = septemberTarget + 3, 
              label = "H1 threshold", 
-             size = 3) + 
+             size = 3,
+             colour = "#0072B2") + 
     annotate(geom = "text", 
              x = as.Date("2021-10-01") + lubridate::weeks(2), 
-             y = 68, 
+             y = decemberTarget + 3, 
              label = "Q3 threshold", 
-             size = 3) 
+             size = 3,
+             colour = "#0072B2") 
+}
+
+
+
+################################################################################
+#function to create graph on slide 5
+#current data source: Dental activity annual running total.xlsx sent by email by Caroline
+#current data is in teams folder "Monthly performance data\April 21 to September 21 data\Scheduled data\April to Sept UDA 2020-2021 (May).xlsx"
+plot_UDA_UOA_delivery_calendar <- function(data = UDA_calendar_data, 
+                                  scheduled_data = UDA_scheduled_data,
+                                  UDAorUOA = "UDA",
+                                  level = "National",
+                                  region_STP_name = NULL,
+                                  remove_prototypes = T,
+                                  regional_lines = F){
+  
+
+  #filter for STP or region
+  if(level == "Regional"){
+    data <- data %>% 
+      filter(region_name == region_STP_name )
+    subtitle <- region_STP_name
+  }else if(level == "STP"){
+    data <- data %>% 
+      filter(commissioner_name == region_STP_name)
+    subtitle <- region_STP_name
+  }else{
+    subtitle <- "England"
+  }
+  
+  if(UDAorUOA == "UDA"){
+    #get data into the right format
+    data <- get_into_slide5_7_format_calendar(data, scheduled_data, remove_prototypes, UDAorUOA = "UDA", regional_lines)
+    title <- "Calendar monthly percentage of usual annual contracted UDAs \ndelivered across all contracts* scaled up to 12 months**"
+    ylab <- "% of contracted UDAs delivered"
+    lineCol <- "coral"
+    lineCol <- "#CC79A7"
+    septemberTarget <- 60
+    decemberTarget <- 65
+  }else{
+    #get data into the right format
+    data <- get_into_slide5_7_format_calendar(data, scheduled_data, remove_prototypes, UDAorUOA = "UOA", regional_lines)
+    title <- "Calendar monthly percentage of usual annual contracted UOAs \ndelivered across all contracts* scaled up to 12 months**"
+    ylab <- "% of contracted UOAs delivered"
+    lineCol <- "#009E73"
+    septemberTarget <- 80
+    decemberTarget <- 85
+  }
+
+  #plot code
+  ggplot(data) +
+    theme_bw() +
+    geom_line(aes(x = month, 
+                  y = perc_UDA_UOA_delivered), 
+              colour = lineCol, 
+              size = 1) +
+    geom_point(aes(x = month, 
+                   y = perc_UDA_UOA_delivered), 
+               colour = lineCol
+    ) +
+    geom_segment(aes(x = as.Date("2021-04-01"), 
+                     y = septemberTarget, 
+                     xend = as.Date("2021-09-01"), 
+                     yend = septemberTarget),
+                 colour = "#0072B2",
+                 linetype = "dashed") +
+    geom_segment(aes(x = as.Date("2021-10-01"), 
+                     y = decemberTarget, 
+                     xend = as.Date("2021-12-01"), 
+                     yend = decemberTarget),
+                 colour = "#0072B2",
+                 linetype = "dashed") +
+    scale_x_date(date_breaks = "1 month", 
+                 date_labels = "%b-%y") +
+    scale_y_continuous(limits = c(0, max(data$perc_UDA_UOA_delivered, na.rm = T) + 10),
+                       breaks = scales::breaks_pretty()) +
+    labs(title = title, 
+         x = "Month",
+         y = ylab, 
+         subtitle = subtitle,
+         caption = "*Excluding prototype contracts and those with annual contracted UDA < 100 
+                    **This is calendar data which means that data may change as more CoTs are registered") +
+    annotate(geom = "text", 
+             x = as.Date("2021-04-01") + lubridate::weeks(2), 
+             y = septemberTarget + 3, 
+             label = "H1 threshold", 
+             size = 3,
+             colour = "#0072B2") + 
+    annotate(geom = "text", 
+             x = as.Date("2021-10-01") + lubridate::weeks(2), 
+             y = decemberTarget + 3, 
+             label = "Q3 threshold", 
+             size = 3,
+             colour = "#0072B2") 
 }
 
 
