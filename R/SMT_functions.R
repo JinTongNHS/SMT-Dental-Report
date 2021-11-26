@@ -422,21 +422,16 @@ plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
     septemberTarget <- 80
     decemberTarget <- 85
   }
-  
-  #get data in the right format
-  data <- data %>%
-    mutate(month = as.Date(month)) %>%
-    mutate(perc_UDA_UOA_delivered = perc_UDA_UOA_delivered)
 
   #plot code
   ggplot(data) +
     theme_bw() +
     geom_line(aes(x = month, 
-                  y = perc_UDA_UOA_delivered), 
+                  y = scaled_perc_UDA_UOA_delivered), 
               colour = lineCol, 
               size = 1) +
     geom_point(aes(x = month, 
-                  y = perc_UDA_UOA_delivered), 
+                  y = scaled_perc_UDA_UOA_delivered), 
               colour = lineCol
               ) +
     geom_segment(aes(x = as.Date("2021-04-01"), y = septemberTarget, xend = as.Date("2021-09-01"), yend = septemberTarget),
@@ -447,7 +442,7 @@ plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
                  linetype = "dashed") +
     scale_x_date(date_breaks = "1 month", 
                  date_labels = "%b-%y") +
-    scale_y_continuous(limits = c(0, max(data$perc_UDA_UOA_delivered, na.rm = T) + 5)) +
+    scale_y_continuous(limits = c(0, max(data$scaled_perc_UDA_UOA_delivered, na.rm = T) + 5)) +
     labs(title = title, 
          x = "Month",
          y = ylab, 
@@ -477,12 +472,20 @@ plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
 #current data is in teams folder "Monthly performance data\April 21 to September 21 data\Scheduled data\April to Sept UDA 2020-2021 (May).xlsx"
 plot_UDA_UOA_delivery_calendar <- function(data = UDA_calendar_data, 
                                   scheduled_data = UDA_scheduled_data,
+                                  contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
                                   level = "National",
                                   region_STP_name = NULL,
                                   remove_prototypes = T,
-                                  regional_lines = F){
+                                  regional_lines = F, 
+                                  STP_lines = F,
+                                  cat_lines = F,
+                                  plot_chart = T){
   
+  #join in MY categories
+  data <- data %>%
+    left_join(contractor_cats)
+
 
   #filter for STP or region
   if(level == "Regional"){
@@ -499,7 +502,7 @@ plot_UDA_UOA_delivery_calendar <- function(data = UDA_calendar_data,
   
   if(UDAorUOA == "UDA"){
     #get data into the right format
-    data <- get_into_slide5_7_format_calendar(data, scheduled_data, remove_prototypes, UDAorUOA = "UDA", regional_lines)
+    data <- get_into_slide5_7_format_calendar(data, scheduled_data, remove_prototypes, UDAorUOA = "UDA", regional_lines, STP_lines, cat_lines)
     title <- "Calendar monthly percentage of usual annual contracted UDAs \ndelivered across all contracts* scaled up to 12 months**"
     ylab <- "% of contracted UDAs delivered"
     lineCol <- "coral"
@@ -508,25 +511,68 @@ plot_UDA_UOA_delivery_calendar <- function(data = UDA_calendar_data,
     decemberTarget <- 65
   }else{
     #get data into the right format
-    data <- get_into_slide5_7_format_calendar(data, scheduled_data, remove_prototypes, UDAorUOA = "UOA", regional_lines)
+    data <- get_into_slide5_7_format_calendar(data, scheduled_data, remove_prototypes, UDAorUOA = "UOA", regional_lines, STP_lines, cat_lines)
     title <- "Calendar monthly percentage of usual annual contracted UOAs \ndelivered across all contracts* scaled up to 12 months**"
     ylab <- "% of contracted UOAs delivered"
     lineCol <- "#009E73"
     septemberTarget <- 80
     decemberTarget <- 85
   }
+  
+  if(regional_lines){
+    g <- 
+      ggplot(data) +
+      theme_bw() +
+      geom_line(aes(x = month, 
+                    y = scaled_perc_UDA_UOA_delivered,
+                    colour = region_name), 
+                size = 1) +
+      geom_point(aes(x = month, 
+                     y = scaled_perc_UDA_UOA_delivered, 
+                     colour = region_name)
+      )
+  }else if(STP_lines){
+    g <- 
+      ggplot(data) +
+      theme_bw() +
+      geom_line(aes(x = month, 
+                    y = scaled_perc_UDA_UOA_delivered,
+                    colour = commissioner_name), 
+                size = 1) +
+      geom_point(aes(x = month, 
+                     y = scaled_perc_UDA_UOA_delivered, 
+                     colour = commissioner_name)
+      )
+  }else if(cat_lines){
+    data <- data %>%
+      filter(!is.na(category_sub_type))
+    
+    g <- 
+      ggplot(data) +
+      theme_bw() +
+      geom_line(aes(x = month, 
+                    y = scaled_perc_UDA_UOA_delivered,
+                    colour = category_sub_type), 
+                size = 1) +
+      geom_point(aes(x = month, 
+                     y = scaled_perc_UDA_UOA_delivered, 
+                     colour = category_sub_type)
+      )
+  }else{
+    g <- 
+      ggplot(data) +
+      theme_bw() +
+      geom_line(aes(x = month, 
+                    y = scaled_perc_UDA_UOA_delivered),
+                colour = lineCol, 
+                size = 1) +
+      geom_point(aes(x = month, 
+                     y = scaled_perc_UDA_UOA_delivered), 
+                 colour = lineCol
+      )
+  }
 
-  #plot code
-  ggplot(data) +
-    theme_bw() +
-    geom_line(aes(x = month, 
-                  y = perc_UDA_UOA_delivered), 
-              colour = lineCol, 
-              size = 1) +
-    geom_point(aes(x = month, 
-                   y = perc_UDA_UOA_delivered), 
-               colour = lineCol
-    ) +
+   g <- g +
     geom_segment(aes(x = as.Date("2021-04-01"), 
                      y = septemberTarget, 
                      xend = as.Date("2021-09-01"), 
@@ -541,7 +587,7 @@ plot_UDA_UOA_delivery_calendar <- function(data = UDA_calendar_data,
                  linetype = "dashed") +
     scale_x_date(date_breaks = "1 month", 
                  date_labels = "%b-%y") +
-    scale_y_continuous(limits = c(0, max(data$perc_UDA_UOA_delivered, na.rm = T) + 10),
+    scale_y_continuous(limits = c(0, max(data$scaled_perc_UDA_UOA_delivered, na.rm = T) + 10),
                        breaks = scales::breaks_pretty()) +
     labs(title = title, 
          x = "Month",
@@ -561,8 +607,62 @@ plot_UDA_UOA_delivery_calendar <- function(data = UDA_calendar_data,
              label = "Q3 threshold", 
              size = 3,
              colour = "#0072B2") 
+   
+   if(plot_chart){
+     g
+   }else{
+     data
+   }
 }
 
+
+################################################################################
+table_number_cat_contracts <- function(data = UDA_calendar_data, 
+                                      scheduled_data = UDA_scheduled_data,
+                                      contractor_cats = contractor_categories,
+                                      remove_prototypes = F){
+  
+  #join in contracted UDAs from scheduled data
+  contracted_UDAs <- scheduled_data %>%
+    select(month, contract_number, annual_contracted_UDA)
+  
+  data <- data %>%
+    left_join(contracted_UDAs, by = c("month", "contract_number"))
+  
+  #remove prototype contracts if specified
+  if(remove_prototypes){
+    #create not in function•
+    `%notin%` = Negate(`%in%`)
+    data <- data %>%
+      filter(contract_number %notin% prototype_contracts$prototype_contract_number)%>%
+      filter(annual_contracted_UDA > 100)
+  }
+  
+  #join in MY categories
+  data <- data %>%
+    left_join(contractor_cats) %>%
+    group_by(month) %>%
+    count(category_sub_type) %>%
+    ungroup() %>%
+    filter(month == max(data$month)) %>%
+    select(category_sub_type, n) %>%
+    rename(number_of_contracts = n) 
+  
+  data <- data %>%
+    mutate(percentage_of_contracts = round(number_of_contracts * 100 / sum(data$number_of_contracts))) %>%
+    add_row(category_sub_type = "TOTAL", number_of_contracts = sum(data$number_of_contracts), percentage_of_contracts = 100) %>%
+    rename(`category sub type` = category_sub_type,
+           `number of contracts` = number_of_contracts,
+           `percentage of contracts` = percentage_of_contracts)
+  
+  data
+
+  # ggplot(data, aes(x="", y=n, fill = category_sub_type)) +
+  #  geom_bar(width = 1, stat = "identity") +
+  #   coord_polar("y", start=0) +
+  #   labs(title = "prototypes") 
+
+}
 
 
 
