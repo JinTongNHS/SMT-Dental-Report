@@ -407,8 +407,8 @@ plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
   if(UDAorUOA == "UDA"){
     #get data into the right format
     data <- get_into_slide5_7_format(data, remove_prototypes, UDAorUOA = "UDA")
-    title <- "Scheduled monthly percentage of usual annual contracted UDAs \ndelivered across all contracts* scaled up to 12 months**"
-    ylab <- "% of contracted UDAs delivered"
+    title <- "Scheduled monthly percentage of usual annual contracted UDAs \nsubmitted across all contracts* scaled up to 12 months**"
+    ylab <- "% of contracted UDAs submitted"
     lineCol <- "coral"
     lineCol <- "#CC79A7"
     septemberTarget <- 60
@@ -416,8 +416,8 @@ plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
   }else{
     #get data into the right format
     data <- get_into_slide5_7_format(data, remove_prototypes, UDAorUOA = "UOA")
-    title <- "Scheduled monthly percentage of usual annual contracted UOAs \ndelivered across all contracts* scaled up to 12 months**"
-    ylab <- "% of contracted UOAs delivered"
+    title <- "Scheduled monthly percentage of usual annual contracted UOAs \nsubmitted across all contracts* scaled up to 12 months**"
+    ylab <- "% of contracted UOAs submitted"
     lineCol <- "#009E73"
     septemberTarget <- 80
     decemberTarget <- 85
@@ -427,41 +427,41 @@ plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
   ggplot(data) +
     theme_bw() +
     geom_line(aes(x = month, 
-                  y = scaled_perc_UDA_UOA_delivered), 
+                  y = perc_UDA_UOA_delivered), 
               colour = lineCol, 
               size = 1) +
     geom_point(aes(x = month, 
-                  y = scaled_perc_UDA_UOA_delivered), 
+                  y = perc_UDA_UOA_delivered), 
               colour = lineCol
               ) +
-    geom_segment(aes(x = as.Date("2021-04-01"), y = septemberTarget, xend = as.Date("2021-09-01"), yend = septemberTarget),
-                 colour = "#0072B2",
-                 linetype = "dashed") +
-    geom_segment(aes(x = as.Date("2021-10-01"), y = decemberTarget, xend = as.Date("2021-12-01"), yend = decemberTarget),
-                 colour = "#0072B2",
-                 linetype = "dashed") +
+    # geom_segment(aes(x = as.Date("2021-04-01"), y = septemberTarget, xend = as.Date("2021-09-01"), yend = septemberTarget),
+    #              colour = "#0072B2",
+    #              linetype = "dashed") +
+    # geom_segment(aes(x = as.Date("2021-10-01"), y = decemberTarget, xend = as.Date("2021-12-01"), yend = decemberTarget),
+    #              colour = "#0072B2",
+    #              linetype = "dashed") +
     scale_x_date(date_breaks = "1 month", 
                  date_labels = "%b-%y") +
-    scale_y_continuous(limits = c(0, max(data$scaled_perc_UDA_UOA_delivered, na.rm = T) + 5)) +
+    scale_y_continuous(limits = c(0, max(data$perc_UDA_UOA_delivered, na.rm = T) + 5)) +
     labs(title = title, 
          x = "Month",
          y = ylab, 
          subtitle = subtitle,
          caption = "*Excluding prototype contracts and those with annual contracted UDA < 100 
                     **These are scheduled months and April data is for the reporting period 1st April - 
-                    21st April therefore the April data has been scaled up by 18 instead of 12.") +
-    annotate(geom = "text", 
-             x = as.Date("2021-04-01") + lubridate::weeks(2), 
-             y = septemberTarget + 3, 
-             label = "H1 threshold", 
-             size = 3,
-             colour = "#0072B2") + 
-    annotate(geom = "text", 
-             x = as.Date("2021-10-01") + lubridate::weeks(2), 
-             y = decemberTarget + 3, 
-             label = "Q3 threshold", 
-             size = 3,
-             colour = "#0072B2") 
+                    21st April therefore the April data has been scaled up by 18 instead of 12.") #+
+    # annotate(geom = "text", 
+    #          x = as.Date("2021-04-01") + lubridate::weeks(2), 
+    #          y = septemberTarget + 3, 
+    #          label = "H1 threshold", 
+    #          size = 3,
+    #          colour = "#0072B2") + 
+    # annotate(geom = "text", 
+    #          x = as.Date("2021-10-01") + lubridate::weeks(2), 
+    #          y = decemberTarget + 3, 
+    #          label = "Q3 threshold", 
+    #          size = 3,
+    #          colour = "#0072B2") 
 }
 
 
@@ -1276,3 +1276,95 @@ plot_breakdown_111_referrals <- function(data = dental_data_111){
 }
 
   
+
+plot_scatter_protos <- function(data = prototype_delivery){
+  
+  data <- data %>%
+    filter(Wave == "Wave 1" | Wave == "Wave 2" | Wave == "Wave 3") %>%
+    mutate(mean_delivery_pre_pan = rowMeans(select(., `delivery_2016-17`, 
+                                                   `delivery_2017-18`,
+                                                   `delivery_2018-19`,
+                                                   `delivery_2019-20`))) %>%
+    mutate(mean_scaled_delivery_post_pan = rowMeans(select(., `delivery_2020-21`,
+                                                           `scaled_delivery_2021-22`)))
+  
+  ggplot(data, aes(x = mean_delivery_pre_pan, y = mean_scaled_delivery_post_pan)) +
+    geom_point() + 
+    geom_point(aes(x = mean(mean_delivery_pre_pan), y = mean(mean_scaled_delivery_post_pan)),
+               colour = "red",
+               #shape = 4,
+               size = 3
+               ) +
+    theme_bw() +
+    geom_smooth(method = "lm"
+                , se = F
+                ) +
+    scale_x_continuous(breaks = seq(0.2, 1.2, 0.1), 
+                       limits = c(0.25, 1.2),
+                       labels = scales::percent_format(accuracy = 1)) +
+    scale_y_continuous(breaks = seq(0, 0.6, 0.1),
+                       limits = c(0, 0.6),
+                       labels = scales::percent_format(accuracy = 1)) +
+    labs(title = "GDS UDA Delivery of Contracted Value for Prototype Contracts",
+         subtitle = "2016-2020 mean delivery Vs 2020-2022 scaled* mean delivery",
+         x = "Mean delivery pre-pandemic",
+         y = "Mean delivery post-pandemic",
+         caption = "*Data for 2021/22 has been scaled up to a full year for comparison. Wave 4 contracts excluded.") 
+  
+}
+
+
+plot_scatter_protos2 <- function(data = prototype_delivery){
+
+
+  ggplot(data, aes(x = `delivery_2019-20`, y = `delivery_2020-21`)) +
+    geom_point() +
+    geom_point(aes(x = mean(`delivery_2019-20`), y = mean(`delivery_2020-21`)),
+               colour = "red",
+               #shape = 4,
+               size = 3
+    ) +
+    theme_bw() +
+    geom_smooth(method = "lm"
+                , se = F
+                ) +
+    scale_x_continuous(breaks = seq(0.2, 1.2, 0.1),
+                       limits = c(0.25, 1.2),
+                       labels = scales::percent_format(accuracy = 1)) +
+    scale_y_continuous(breaks = seq(0, 0.6, 0.1),
+                       limits = c(0, 0.6),
+                       labels = scales::percent_format(accuracy = 1)) +
+    labs(title = "GDS UDA Delivery of Contracted Value for Prototype Contracts",
+         subtitle = "2019/20 vs 2020/21",
+         x = "2019/20 delivery",
+         y = "2020/21 delivery",
+         caption = "Wave 1-4 contracts included")
+}
+
+
+plot_scatter_protos3 <- function(data = prototype_delivery){
+  
+  
+  ggplot(data, aes(x = `delivery_2018-19`, y = `delivery_2020-21`)) +
+    geom_point() +
+    geom_point(aes(x = mean(`delivery_2018-19`), y = mean(`delivery_2020-21`)),
+               colour = "red",
+               #shape = 4,
+               size = 3
+    ) +
+    theme_bw() +
+    geom_smooth(method = "lm"
+                , se = F
+    ) +
+    scale_x_continuous(breaks = seq(0.2, 1.2, 0.1),
+                       limits = c(0.25, 1.2),
+                       labels = scales::percent_format(accuracy = 1)) +
+    scale_y_continuous(breaks = seq(0, 0.6, 0.1),
+                       limits = c(0, 0.6),
+                       labels = scales::percent_format(accuracy = 1)) +
+    labs(title = "GDS UDA Delivery of Contracted Value for Prototype Contracts",
+         subtitle = "2018/19 vs 2020/21",
+         x = "2018/19 delivery",
+         y = "2020/21 delivery",
+         caption = "Wave 1-4 contracts included")
+}
