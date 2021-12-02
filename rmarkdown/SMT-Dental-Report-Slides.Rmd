@@ -416,28 +416,55 @@ plot_breakdown_111_referrals()
 
 ## Appendix
 #### MY Category classification breakdown:
-"Cat 1 - Details in CoMPASS Correct"                                             "Cat 2 - Carry Forward - Other"                                                 
-"Cat 2 - Flexibly Commissioned Contract"                                         "Cat 2 - Force majeure accepted"                                                
-"Cat 2 - Force majeure o/s"                                                      "Cat 2 - In-year incorporation/merge (Parent contract - letter will be sent)"   
-"Cat 2 - Incomplete OOH/other access services"                                   "Cat 2 - Late subs processed"                                                   
-"Cat 2 - Mixed / CoT Contract"                                                   "Cat 2 - Non-recurring activity"                                                
-"Cat 2 - Open in-year"                                                           "Cat 2 - Other"                                                                 
-"Cat 2 - Request to re-base"                                                     "Cat 2 - Review Carry Forward"                                                  
-"Cat 2 - Sub Contracts (Parent contract - letter will be sent)"                  "Cat 2 - UDA Value below £15.00"                                                
-"Cat 2 - UDA Value exceeds £49.99"                                               "Cat 2 - UDC"                                                                   
-"Cat 2 - UOA Value exceeds £75.00"                                               "Cat 2 - Closed in-year"                                                       
-"Cat 2 - Incomplete service line entries"                                        "Cat 3 - CDS"                                                                   
-"Cat 3 - Closed in year"                                                         "Cat 3 - Contract End Date before 01/04/2020"                                   
-"Cat 3 - Contract End Date before 01/04/2021"                                    "Cat 3 - Contract End Date before 01/04/2022"                                   
-"Cat 3 - DCO req to resolve locally"                                             "Cat 3 - Domiciliary/ Sedation"                                                 
-"Cat 3 - IMOS/MOS"                                                               "Cat 3 - In-year incorporation/merge (Child contract - letter will not be sent)"
-"Cat 3 - Incomplete OOH/other access services"                                   "Cat 3 - Known performance/contract issues"                                     
-"Cat 3 - No Contracted activity"                                                 "Cat 3 - No Contracted value"                                                   
-"Cat 3 - Not paid by the NHSBSA"                                                 "Cat 3 - Open in year"                                                          
-"Cat 3 - Other"                                                                  "Cat 3 - Other - Please state why"                                              
-"Cat 3 - Other Advanced/Additional Services"                                     "Cat 3 - PDS Plus"                                                              
-"Cat 3 - Prison"                                                                 "Cat 3 - Sub Contracts (Child contract - letter will not be sent)"              
-"Cat 4 - Dental Contract Reform"    
+* Cat 1
+  + Details in CoMPASS Correct
+* Cat 2 
+  + Carry Forward - Other 
+  + Flexibly Commissioned Contract
+  + Force majeure accepted
+  + Force majeure o/s
+  + In-year incorporation/merge (Parent contract - letter will be sent)
+  + Incomplete OOH/other access services
+  + Late subs processed
+  + Mixed / CoT Contract
+  + Non-recurring activity
+  + Open in-year
+  + Other
+  + Request to re-base
+  + Review Carry Forward
+  + Sub Contracts (Parent contract - letter will be sent)
+  + UDA Value below £15.00
+  + UDA Value exceeds £49.99
+  + UDC
+  + UOA Value exceeds £75.00
+  + Closed in-year
+  + Incomplete service line entries
+  
+##
+* Cat 3
+  + CDS
+  + Closed in year 
+  + Contract End Date before 01/04/2020
+  + Contract End Date before 01/04/2021
+  + Contract End Date before 01/04/2022
+  + DCO req to resolve locally
+  + Domiciliary/ Sedation
+  + IMOS/MOS
+  + In-year incorporation/merge (Child contract - letter will not be sent)
+  + Incomplete OOH/other access services
+  + Known performance/contract issues
+  + No Contracted activity
+  + No Contracted value
+  + Not paid by the NHSBSA
+  + Open in year
+  + Other
+  + Other - Please state why
+  + Other Advanced/Additional Services
+  + PDS Plus
+  + Prison
+  + Sub Contracts (Child contract - letter will not be sent)
+* Cat 4
+  + Dental Contract Reform   
 
 ## Appendix 2
 #### Data sources: 

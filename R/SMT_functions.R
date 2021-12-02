@@ -517,13 +517,6 @@ plot_UDA_UOA_delivery_calendar <- function(data = UDA_calendar_data,
     decemberTarget <- 65
   }else{
     
-    # #add a region column to the data
-    # region_STP_lookup <- calendar_data %>%
-    #   select(contract_number, name_or_company_name, commissioner_name, region_name) %>%
-    #   distinct()
-    # 
-    # data <- left_join(data, region_STP_lookup, by = c("contract_number", "name_or_company_name", "commissioner_name"))
-    
     #get data into the right format
     data <- get_into_slide5_7_format_calendar(data, scheduled_data, remove_prototypes, UDAorUOA = "UOA", regional_lines, STP_lines, cat_lines)
     title <- "Calendar monthly percentage of usual annual contracted UOAs \ndelivered across all contracts* scaled up to 12 months"
@@ -605,8 +598,7 @@ plot_UDA_UOA_delivery_calendar <- function(data = UDA_calendar_data,
                x = data$month, 
                y = data$scaled_perc_UDA_UOA_delivered + 5, 
                label = paste0(round(data$scaled_perc_UDA_UOA_delivered), "%"), 
-               size = 3,
-               label.size = 0) 
+               size = 3) 
     
   }
 
