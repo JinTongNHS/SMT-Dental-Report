@@ -11,8 +11,8 @@ sansfont: Calibri Light
 fontsize: 8pt
 classoption: aspectratio = 169
 params:
-  level: "Regional"
-  region_STP_name: "London"
+  level: "National"
+  region_STP_name: NULL
 ---
 
 ```{r include = FALSE}
@@ -415,7 +415,7 @@ world.
 <!-- ``` -->
 
 ## Appendix
-#### MY Category clasification breakdown:
+#### MY Category classification breakdown:
 "Cat 1 - Details in CoMPASS Correct"                                             "Cat 2 - Carry Forward - Other"                                                 
 "Cat 2 - Flexibly Commissioned Contract"                                         "Cat 2 - Force majeure accepted"                                                
 "Cat 2 - Force majeure o/s"                                                      "Cat 2 - In-year incorporation/merge (Parent contract - letter will be sent)"   
