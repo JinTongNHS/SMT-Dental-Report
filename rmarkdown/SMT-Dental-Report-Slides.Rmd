@@ -12,7 +12,7 @@ fontsize: 8pt
 classoption: aspectratio = 169
 params:
   level: "National"
-  region_STP_name: "National"
+  region_STP_name: NULL
 ---
 
 ```{r include = FALSE}
@@ -22,51 +22,79 @@ source("../R/SMT_functions.R")
 source("../R/format_SMT_data.R")
 
 #load in raw data
-UDA_calendar_data <- readRDS("../data/cleaned_data_up_to_october/UDA_calendar_data.rds")
-UOA_calendar_data <- readRDS("../data/cleaned_data_up_to_october/UOA_calendar_data.rds")
-UDA_scheduled_data <- readRDS("../data/cleaned_data_up_to_october/UDA_scheduled_data.rds")
-UOA_scheduled_data <- readRDS("../data/cleaned_data_up_to_october/UOA_scheduled_data.rds")
+UDA_calendar_data <- read_excel("../data/cleaned_data_up_to_november/UDA_calendar_data.xlsx")
+UOA_calendar_data <- read_excel("../data/cleaned_data_up_to_november/UOA_calendar_data.xlsx")
+UDA_scheduled_data <- read_excel("../data/cleaned_data_up_to_november/UDA_scheduled_data.xlsx")
+UOA_scheduled_data <- read_excel("../data/cleaned_data_up_to_november/UOA_scheduled_data.xlsx")
 historical_UDA_scheduled_data <- readRDS("../data/cleaned_data_up_to_september/historical_UDA_scheduled_data.rds")
 
-#load in historic data not available in raw
-# slide5_UDA_delivery_historic <- readRDS("../data/cleaned_data_up_to_august/slide5_UDA_delivery_historic.rds")
-# slide7_UOA_delivery_historic <- readRDS("../data/cleaned_data_up_to_august/slide7_UOA_delivery_historic.rds")
-# slide8_banded_CoT_historic <- readRDS("../data/cleaned_data_up_to_august/slide8_banded_CoT_historic.rds")
+UDA_calendar_data <- rename(UDA_calendar_data, month = data_month)
+UOA_calendar_data <- UOA_calendar_data %>%
+  rename(month = data_month) %>%
+  mutate(contract_number = as.numeric(contract_number),
+         UOA_total = as.numeric(UOA_total)) 
 
-prototype_contracts <- read_excel("../data/prototype_contracts.xls")
+    #add a region column to the data
+    region_STP_lookup <- UDA_calendar_data %>%
+      select(contract_number, name_or_company_name, commissioner_name, region_name) %>%
+      distinct()
+    
+    UOA_calendar_data <- left_join(UOA_calendar_data, region_STP_lookup, by = c("contract_number", "name_or_company_name", "commissioner_name"))
+
+UDA_scheduled_data <- rename(UDA_scheduled_data, month = data_month)
+UOA_scheduled_data <- rename(UOA_scheduled_data, month = data_month)
+
+dental_data_111 <- read_excel("../data/cleaned_data_up_to_october/111_dental_data.xlsx", 
+                              col_types = c("date", "text", "text", 
+                                            "text", "numeric"))
+
+prototype_contracts <- read_excel("../data/prototype_contracts.xlsx")
+contractor_categories <- readRDS("../data/cleaned_data_up_to_october/contractor_categories.RDS")
+
+UDA_delivery <- get_into_slide5_7_format_calendar(STP_lines = T, renameColumns = T)
+#prototype_delivery <- readRDS("~/R-Projects/SMT-Dental-Report/data/prototype_delivery.RDS")
 
 ```
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 ```
 
 ## Contents 
+#### Dental
+* Table of number of contracts by MY category [4]
+* Calendar UDA activity [5]
+* Calendar UDA activity by region [6]
+* Calendar UDA activity by MY category [7 + 8]
+* Cumulative UDA delivery per quarter [9]
+* Scheduled UDAs [10]
+* UDA delivery profile across months [11]
+* Banded courses of treatment time series [19]
+* Urgent treatment form submissions [20]
+<!-- * 111 call volumes [21] -->
+<!-- * 111 call volumes by region [22] -->
 
-#### Calendar data 2021/2022 (explanation slide 3)
-###### April to October data only:
-* UDA contracts achieving 65% (4 and 5)
-* UOA contracts achieving 85% (8 and 9)
+#### Orthodontic
+* Calendar UOA activity [12]
+* Calendar UOA activity by region [13]
+* Calendar UOA activity by MY category [14 + 15]
+* Cumulative UOA delivery per quarter [16]
+* Scheduled UOAs [17]
+* UOA delivery profile across months [18]
 
-#### Scheduled data activity slides (explanation slide 3)
-* Total UDA activity scaled up by 12 (6)
-* Total UOA activity scaled up by 12 (10)
-* Historic banded Courses of Treatment comparison (12)
-* Total urgent FP17 form count 2019/2020 to 2020/2021 (13)  
-
-*Please Note: Slides 4, 5, 8 and 9 use calendar data as a measure of activity for the first half of the 2021-2022 year.*
-*Slides 6, 7, 10-13 use scheduled data, as per previous SMT data packs.*
-*The scheduled data is from 16th June - 16th July and is fixed.*
+*Please Note: Slides 5-10 and 12-16 use calendar data as a measure of activity.*
+*All other slides use scheduled data, as per previous SMT data packs.*
 
 ## Calendar and scheduled data 
 ### Calendar data explanation 
 
 * Slides 4, 5, 8 and 9 are based on calendar month data
 * Calendar data is based on courses of treatment completed within an entire month, for example 1st February to 28th Feb
-* For calendar data if a COT was completed in February but not declared till March, that activity would still be registered as
+* For calendar data, if a COT was completed in February but not declared till March, that activity would still be registered as
 occurring in February.
-* The activity % is now based on total number of UDA/Os delivered as a % of the total number of UDA/Os expected by March (65%/85%
-threshold).
+* This means that graphs using calendar data may change for historical months as more COTs are registered. 
+* The activity % is now based on total number of UDA/UOAs delivered as a % of total contracted UDA/UOAs per quarter.
+
 
 ### Scheduled data explanation
 * Slides 6, 7, 10-13 are based on scheduled data
@@ -75,65 +103,140 @@ threshold).
 scheduled data. However, if for example a COT was completed on May 1st, but reported to the BSA after the end of the
 reporting period (April 21st – May 19th), that activity would go into the following scheduled period. As a result, the
 scheduling period can be considered fixed.
+* N.B.Scheduled data for April is from 1st April - 21st April. This has been taken into account when scaling up to annual delivery.
+
+## Number of contracts by MY category (see appendix for breakdown)
+#### Including prototypes and contracts with annual contracted UDA < 100
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
+knitr::kable(table_number_cat_contracts(remove_prototypes = F, level = params$level, region_STP_name = params$region_STP_name))
+```
+#### Excluding prototypes and contracts with annual contracted UDA < 100
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
+knitr::kable(table_number_cat_contracts(remove_prototypes = T, level = params$level, region_STP_name = params$region_STP_name))
+```
+
 
 
 ## UDA activity data 
-```{r echo = FALSE, warning = FALSE, fig.height=4}
-plot_UDA_UOA_to_target(data = UDA_calendar_data, 
-                       UDAorUOA = "UDA", 
-                       level = params$level, 
-                       region_STP_name = params$region_STP_name)
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
+plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data, 
+                                  scheduled_data = UDA_scheduled_data,
+                                  contractor_cats = contractor_categories,
+                                  UDAorUOA = "UDA",
+                                  level = params$level,
+                                  region_STP_name = params$region_STP_name,
+                                  remove_prototypes = T,
+                                  regional_lines = F, 
+                                  STP_lines = F,
+                                  cat_lines = F,
+                                  plot_chart = T)
 ```
 
-* This graph shows the average monthly performance of the **`r get_num_contracts(level = params$level, region_STP_name = params$region_STP_name)`** GDS/PDS/PDS+ contracts 
-(with annual contracted UDAs of greater than or equal to 100) measured against the minimum monthly 
-activity required (16.7%) to reach the 65% cumulative target threshold by March 2022.  
-* N.B. Last month's delivery may be marginally different to what was reported last month 
-due to COTs not being registered within the calendar month. See slide 3 for more detail 
-on scheduled and calendar 
-data.
+* This graph shows the average monthly performance of the **`r get_num_contracts(level = params$level, region_STP_name = params$region_STP_name)`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (65% for Oct-Dec, 60% for Apr-Sep).
+* N.B. Previous month's delivery may be marginally higher to what was reported last month
+due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported. 
+
+
+## UDA activity data by region
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
+plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
+                                  scheduled_data = UDA_scheduled_data,
+                                  contractor_cats = contractor_categories,
+                                  UDAorUOA = "UDA",
+                                  level = params$level,
+                                  region_STP_name = params$region_STP_name,
+                                  remove_prototypes = T,
+                                  regional_lines = T,
+                                  STP_lines = F,
+                                  cat_lines = F,
+                                  plot_chart = T)
+```
+
+
+<!-- ## UDA activity data by STP -->
+<!-- ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=4} -->
+<!-- plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,  -->
+<!--                                   scheduled_data = UDA_scheduled_data, -->
+<!--                                   contractor_cats = contractor_categories, -->
+<!--                                   UDAorUOA = "UDA", -->
+<!--                                   level = params$level, -->
+<!--                                   region_STP_name = params$region_STP_name, -->
+<!--                                   remove_prototypes = T, -->
+<!--                                   regional_lines = F,  -->
+<!--                                   STP_lines = T, -->
+<!--                                   cat_lines = F, -->
+<!--                                   plot_chart = T) -->
+<!-- ``` -->
+
+
+## UDA activity data by MY Category
+#### Prototypes and contracts with annual contracted UDAs < 100 included
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
+plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data, 
+                                  scheduled_data = UDA_scheduled_data,
+                                  contractor_cats = contractor_categories,
+                                  UDAorUOA = "UDA",
+                                  level = params$level,
+                                  region_STP_name = params$region_STP_name,
+                                  remove_prototypes = F,
+                                  regional_lines = F, 
+                                  STP_lines = F,
+                                  cat_lines = T,
+                                  plot_chart = T)
+```
+
+## 
+#### Prototypes and contracts with annual contracted UDAs < 100 excluded
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
+plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data, 
+                                  scheduled_data = UDA_scheduled_data,
+                                  contractor_cats = contractor_categories,
+                                  UDAorUOA = "UDA",
+                                  level = params$level,
+                                  region_STP_name = params$region_STP_name,
+                                  remove_prototypes = T,
+                                  regional_lines = F, 
+                                  STP_lines = F,
+                                  cat_lines = T,
+                                  plot_chart = T)
+```
 
 
 
 ## UDA cumulative activity data
 
-```{r echo = FALSE, warning = FALSE, fig.height=4}
-plot_H2_cumulative_UDA_UOA_to_target(data = UDA_calendar_data, 
-                                  UDAorUOA = "UDA", 
-                                  level = params$level, 
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
+plot_Q3_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
+                                  UDAorUOA = "UDA",
+                                  level = params$level,
                                   region_STP_name = params$region_STP_name)
 ```
 
-* This graph shows the cumulative (Half-year-to-date) activity of the **`r get_num_contracts(level = params$level, region_STP_name = params$region_STP_name)`** GDS/PDS/PDS+ 
-contracts measured against the expected monthly total activity to achieve the H2 2021/22 
-activity threshold by March 2022. The graph measures the total cumulative UDAs performed
-divided by the total expected activity.
-
-* From October to `r format(Sys.Date() - lubridate::month(1), "%B")` **`r get_H2_num_contracts_on_target(level = params$level, region_STP_name = params$region_STP_name)`** 
-contracts (**`r round(get_H2_num_contracts_on_target(level = params$level, region_STP_name = params$region_STP_name)*100/get_num_contracts(level = params$level, region_STP_name = params$region_STP_name))`%**) 
-have delivered the required UDAs or more towards the H2 2021/22 activity threshold by the end of March 2022.
+* This graph shows the cumulative activity by quarter of the **`r get_num_contracts(level = params$level, region_STP_name = params$region_STP_name)`** GDS/PDS/PDS+
+contracts measured against the expected monthly total activity to achieve the quarterly thresholds (65% for Oct-Dec).
+* From October to `r format(Sys.Date() - lubridate::month(1), "%B")` **`r get_Q3_num_contracts_on_target(level = params$level, region_STP_name = params$region_STP_name)`**
+contracts (**`r round(get_Q3_num_contracts_on_target(level = params$level, region_STP_name = params$region_STP_name)*100/get_num_contracts(level = params$level, region_STP_name = params$region_STP_name))`%**)
+have delivered the required UDAs or more to be on track towards the Q3 threshold (65%) by the end of December 2021.
 
 
-## UDA delivery 
+## Scheduled UDAs
 
-```{r echo = FALSE, warning = FALSE, fig.height=4}
-plot_UDA_UOA_delivery(data = UDA_scheduled_data, existing_data = slide5_UDA_delivery_historic, UDAorUOA = "UDA", 
-                                  level = params$level, 
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
+plot_UDA_UOA_delivery(data = UDA_scheduled_data,  UDAorUOA = "UDA",
+                                  level = params$level,
                                   region_STP_name = params$region_STP_name)
 ```
 
-* This graph shows the average UDA delivery as a % of
-contracted activity when each month has been scaled up to
-12 months. The graph uses scheduled data to measure the
-activity.
+* This graph shows the monthly percentage of usual annual contracted UDAs scaled up to 12 months (18 months for April) submitted. The graph uses scheduled data to measure the
+activity which is fixed. This may be thought of as "UDAs submitted" in each month rather than delivered.
 
-## UDA delivery profile 
+## UDA delivery profile
 
-```{r echo = FALSE, warning = FALSE, fig.height=4}
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
 plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
                           calendar_data = UDA_calendar_data,
                           UDAorUOA = "UDA",
-                          level = params$level, 
+                          level = params$level,
                           region_STP_name = params$region_STP_name)
 ```
 
@@ -141,89 +244,152 @@ plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
 between a certain % group of contracted UDA activity if performance for that
 month is annualised. This uses scheduled data.
 
-## UOA activity data 
+## UOA activity data
 
-```{r echo = FALSE, warning = FALSE, fig.height=4}
-plot_UDA_UOA_to_target(data = UOA_calendar_data, 
-                       UDAorUOA = "UOA", 
-                       level = params$level, 
-                       region_STP_name = params$region_STP_name)
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
+plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data, 
+                                  scheduled_data = UOA_scheduled_data,
+                                  contractor_cats = contractor_categories,
+                                  UDAorUOA = "UOA",
+                                  level = params$level,
+                                  region_STP_name = params$region_STP_name,
+                                  remove_prototypes = T,
+                                  regional_lines = F, 
+                                  STP_lines = F,
+                                  cat_lines = F,
+                                  plot_chart = T)
 ```
 
-* This chart shows the average monthly performance of
-the **`r get_num_contracts(data = UOA_calendar_data, remove_prototypes = T, scheduled_data = UOA_scheduled_data, UDAorUOA = "UOA", level = params$level, region_STP_name = params$region_STP_name)`** 
-GDS/PDS contracts (with annual contracted UOAs of
-greater than or equal to 100) measured against the minimum
-activity required (16.7%) to reach the 85% threshold by March 2022.
-* N.B. Last month's delivery may be marginally different to what was reported last month 
-due to COTs not being registered within the calendar month. See slide 3 for more detail 
-on scheduled and calendar 
-data.
+* This graph shows the average monthly performance of the
+**`r get_num_contracts(data = UOA_calendar_data, remove_prototypes = T, scheduled_data = UOA_scheduled_data, UDAorUOA = "UOA", level = params$level, region_STP_name = params$region_STP_name)`**
+GDS/PDS contracts scaled up by 12 months measured against the delivery thresholds (85% for Oct-Dec, 80% for Apr-Sep).
+* N.B. Previous month's delivery may be marginally different to what was reported last month
+due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported.
 
-## UOA cumulative activity data 
 
-```{r echo = FALSE, warning = FALSE, fig.height=4}
-plot_H2_cumulative_UDA_UOA_to_target(data = UOA_calendar_data, 
-                                  UDAorUOA = "UOA", 
-                                  level = params$level, 
+## UOA activity data by region
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
+plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
+                                  scheduled_data = UOA_scheduled_data,
+                                  contractor_cats = contractor_categories,
+                                  UDAorUOA = "UOA",
+                                  level = params$level,
+                                  region_STP_name = params$region_STP_name,
+                                  remove_prototypes = T,
+                                  regional_lines = T,
+                                  STP_lines = F,
+                                  cat_lines = F,
+                                  plot_chart = T)
+```
+
+<!-- ## UOA activity data by STP -->
+<!-- ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=4} -->
+<!-- plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,  -->
+<!--                                   scheduled_data = UOA_scheduled_data, -->
+<!--                                   contractor_cats = contractor_categories, -->
+<!--                                   UDAorUOA = "UOA", -->
+<!--                                   level = params$level, -->
+<!--                                   region_STP_name = params$region_STP_name, -->
+<!--                                   remove_prototypes = T, -->
+<!--                                   regional_lines = F,  -->
+<!--                                   STP_lines = T, -->
+<!--                                   cat_lines = F, -->
+<!--                                   plot_chart = T) -->
+<!-- ``` -->
+
+## UOA activity data by MY Category
+#### Prototypes and contracts with annual contracted UDAs < 100 included
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
+plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data, 
+                                  scheduled_data = UOA_scheduled_data,
+                                  contractor_cats = contractor_categories,
+                                  UDAorUOA = "UOA",
+                                  level = params$level,
+                                  region_STP_name = params$region_STP_name,
+                                  remove_prototypes = F,
+                                  regional_lines = F, 
+                                  STP_lines = F,
+                                  cat_lines = T,
+                                  plot_chart = T)
+```
+
+##
+#### Prototypes and contracts with annual contracted UDAs < 100 excluded
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
+plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data, 
+                                  scheduled_data = UOA_scheduled_data,
+                                  contractor_cats = contractor_categories,
+                                  UDAorUOA = "UOA",
+                                  level = params$level,
+                                  region_STP_name = params$region_STP_name,
+                                  remove_prototypes = T,
+                                  regional_lines = F, 
+                                  STP_lines = F,
+                                  cat_lines = T,
+                                  plot_chart = T)
+```
+
+
+
+## UOA cumulative activity data
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
+plot_Q3_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
+                                  UDAorUOA = "UOA",
+                                  level = params$level,
                                   region_STP_name = params$region_STP_name)
 ```
 
-* This chart shows the cumulative (Half-year-to-date) average
-activity of the **`r get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = params$level, region_STP_name = params$region_STP_name)`** 
+* This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = params$level, region_STP_name = params$region_STP_name)`**
 GDS/PDS contracts) measured against the
-expected monthly activity to achieve the 85% threshold by
-March 2022. The graph measures the total cumulative UOAs
-performed divided by the total expected activity of the 85%
-threshold.
-* From October to `r format(Sys.Date() - lubridate::month(1), "%B")` **`r get_H2_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = params$level, region_STP_name = params$region_STP_name)`** contracts (**`r round(get_H2_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = params$level, region_STP_name = params$region_STP_name)*100/get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = params$level, region_STP_name = params$region_STP_name))`%**) have delivered 
-the required UOAs or more towards the 85% threshold.
+expected monthly total activity to achieve the quarterly thresholds (85% for Oct-Dec).
+* From October to `r format(Sys.Date() - lubridate::month(1), "%B")` **`r get_Q3_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = params$level, region_STP_name = params$region_STP_name)`** contracts (**`r round(get_Q3_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = params$level, region_STP_name = params$region_STP_name)*100/get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = params$level, region_STP_name = params$region_STP_name))`%**) have delivered
+the required UOAs or more to be on track towards the Q3 threshold (85%) by the end of December 2021.
 
-## UOA delivery 
 
-```{r echo = FALSE, warning = FALSE, fig.height=4}
-plot_UDA_UOA_delivery(data = UOA_scheduled_data, 
-                      existing_data = slide7_UOA_delivery_historic, 
-                      UDAorUOA = "UOA", 
-                                  level = params$level, 
+## UOA delivery
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
+plot_UDA_UOA_delivery(data = UOA_scheduled_data,
+                      UDAorUOA = "UOA",
+                                  level = params$level,
                                   region_STP_name = params$region_STP_name)
 ```
 
-* This graph shows the average UOA delivery as a % of contracted
-activity when each month has been scaled up to 12 months. The
-graph uses scheduled data to measure the activity. 
+* This graph shows the monthly percentage of usual annual contracted UOAs scaled up to 12 months (18 months for April) submitted. The graph uses scheduled data to measure the
+activity which is fixed. This may be thought of as "UOAs submitted" in each month rather than delivered.
 
 ## UOA delivery profile
 
-```{r echo = FALSE, warning = FALSE, fig.height=4}
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
 plot_UDA_UOA_delivery_profile(data = UOA_scheduled_data,
                           calendar_data = UOA_calendar_data,
                           UDAorUOA = "UOA",
-                          level = params$level, 
+                          level = params$level,
                           region_STP_name = params$region_STP_name)
 ```
 
 * The graph shows the proportion of practices delivering
-between a certain % group of contracted UOA activity if performance for that 
-month is annualised. 
-This uses scheduled data. 
+between a certain % group of contracted UOA activity if performance for that
+month is annualised.
+This uses scheduled data.
 
-## Time series of banded Courses of Treatment 
-```{r echo = FALSE, warning = FALSE, fig.height=5}
-plot_banded_CoT(data = UDA_scheduled_data, 
+## Time series of banded Courses of Treatment
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=5}
+plot_banded_CoT(data = UDA_scheduled_data,
                 calendar_data = UDA_calendar_data,
                 historic_data = historical_UDA_scheduled_data,
-                level = params$level, 
+                level = params$level,
                 region_STP_name = params$region_STP_name)
 ```
 
-## Urgent treatment form submissions 
+## Urgent treatment form submissions
 
-```{r echo = FALSE, warning = FALSE, fig.height=4}
-plot_urgent_form_submissions(data = UDA_scheduled_data, 
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
+plot_urgent_form_submissions(data = UDA_scheduled_data,
                 calendar_data = UDA_calendar_data,
                 historic_data = historical_UDA_scheduled_data,
-                level = params$level, 
+                level = params$level,
                 region_STP_name = params$region_STP_name)
 ```
 
@@ -232,4 +398,58 @@ declared per month across financial years.
 * The urgent treatment form count in **`r format(Sys.Date() - lubridate::weeks(4), "%B")` 2021** was
 **`r get_num_urgent_forms(level = params$level, region_STP_name = params$region_STP_name)`**, whilst in **`r format(Sys.Date() - lubridate::weeks(4), "%B")` 2019** this number was
 **`r get_num_urgent_forms_2019(level = params$level, region_STP_name = params$region_STP_name)`**, which is a **`r round((get_num_urgent_forms(level = params$level, region_STP_name = params$region_STP_name) - get_num_urgent_forms_2019(level = params$level, region_STP_name = params$region_STP_name)) *100 / get_num_urgent_forms_2019(level = params$level, region_STP_name = params$region_STP_name))`%** change from the pre-COVID
-world. 
+world.
+
+
+## 111 dental related call volumes
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
+plot_111_referrals()
+```
+
+
+## 111 dental related call volumes by disposition
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
+plot_breakdown_111_referrals()
+```
+
+## Appendix
+#### MY Category classification breakdown:
+"Cat 1 - Details in CoMPASS Correct"                                             "Cat 2 - Carry Forward - Other"                                                 
+"Cat 2 - Flexibly Commissioned Contract"                                         "Cat 2 - Force majeure accepted"                                                
+"Cat 2 - Force majeure o/s"                                                      "Cat 2 - In-year incorporation/merge (Parent contract - letter will be sent)"   
+"Cat 2 - Incomplete OOH/other access services"                                   "Cat 2 - Late subs processed"                                                   
+"Cat 2 - Mixed / CoT Contract"                                                   "Cat 2 - Non-recurring activity"                                                
+"Cat 2 - Open in-year"                                                           "Cat 2 - Other"                                                                 
+"Cat 2 - Request to re-base"                                                     "Cat 2 - Review Carry Forward"                                                  
+"Cat 2 - Sub Contracts (Parent contract - letter will be sent)"                  "Cat 2 - UDA Value below £15.00"                                                
+"Cat 2 - UDA Value exceeds £49.99"                                               "Cat 2 - UDC"                                                                   
+"Cat 2 - UOA Value exceeds £75.00"                                               "Cat 2 - Closed in-year"                                                       
+"Cat 2 - Incomplete service line entries"                                        "Cat 3 - CDS"                                                                   
+"Cat 3 - Closed in year"                                                         "Cat 3 - Contract End Date before 01/04/2020"                                   
+"Cat 3 - Contract End Date before 01/04/2021"                                    "Cat 3 - Contract End Date before 01/04/2022"                                   
+"Cat 3 - DCO req to resolve locally"                                             "Cat 3 - Domiciliary/ Sedation"                                                 
+"Cat 3 - IMOS/MOS"                                                               "Cat 3 - In-year incorporation/merge (Child contract - letter will not be sent)"
+"Cat 3 - Incomplete OOH/other access services"                                   "Cat 3 - Known performance/contract issues"                                     
+"Cat 3 - No Contracted activity"                                                 "Cat 3 - No Contracted value"                                                   
+"Cat 3 - Not paid by the NHSBSA"                                                 "Cat 3 - Open in year"                                                          
+"Cat 3 - Other"                                                                  "Cat 3 - Other - Please state why"                                              
+"Cat 3 - Other Advanced/Additional Services"                                     "Cat 3 - PDS Plus"                                                              
+"Cat 3 - Prison"                                                                 "Cat 3 - Sub Contracts (Child contract - letter will not be sent)"              
+"Cat 4 - Dental Contract Reform"    
+
+## Appendix 2
+#### Data sources: 
+* BSA calendar and scheduled UDA data downloaded from the "NHS England Central Dashboard" on eDEN.
+This data is downloaded monthly and put on the NCDR. Tables are:
+  + [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UDA_calendar]
+  + [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UDA_scheduled]
+  + [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UOA_calendar]
+  + [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UOA_scheduled]
+* A list of prototype contracts are also available in:
+  + [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[prototype_contracts]
+* A table of UDA delivery on STP level is available in:
+  + [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UDA_delivery]
+
+* 111 data comes from the pathways tool which is received monthly by email.

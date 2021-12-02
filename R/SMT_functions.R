@@ -8,8 +8,27 @@ library(tidyverse)
 #pass in raw data - either UDA_calendar_data or orthodontic_data_combined_calendar
 plot_UDA_UOA_to_target <- function(data = UDA_calendar_data, UDAorUOA = "UDA", 
                                    level = "National",
-                                   region_STP_name = NULL){
+                                   region_STP_name = NULL,
+                                   contractor_cats = contractor_categories,
+                                   cat = NULL){
   
+  #join in MY categories
+  data <- data %>%
+    left_join(contractor_cats)
+
+  if(!is.null(cat)){
+    data <- filter(data, category_sub_type == cat)
+    
+    numOfCats <- count(contractor_cats, category_sub_type)
+    numOfCats <- numOfCats %>%
+      filter(category_sub_type == cat)
+    numOfCats <- numOfCats[1,2]
+    cat_sub <- paste0(" (", cat, " contracts only", " - ", numOfCats,"/6906)")
+    
+  }else{
+    cat_sub <- " (All categories)"
+  }
+
   #filter for region or STP
   if(level == "Regional"){
     data <- data %>% 
@@ -27,9 +46,9 @@ plot_UDA_UOA_to_target <- function(data = UDA_calendar_data, UDAorUOA = "UDA",
   #change titles and colours for UDA or UOA
   if(UDAorUOA == "UDA"){
     septemberTarget <- 60
-    marchTarget <- 65
-    title <- "Monthly % of Apr21-Sept21 target (60%) and \nOct21-Mar22 target (65%) UDAs delivered"
-    ylab <- "% of target UDAs delivered"
+   decemberTarget <- 65
+    title <- "Monthly % of Q1, Q2 and Q3 contracted UDAs delivered"
+    ylab <- "% of quarterly \ncontracted UDAs delivered"
     barCol <- "coral"
     
     #get raw data into the right format
@@ -37,9 +56,9 @@ plot_UDA_UOA_to_target <- function(data = UDA_calendar_data, UDAorUOA = "UDA",
     
   }else{
     septemberTarget <- 80
-    marchTarget <- 85
-    title <- "Monthly % of Apr21-Sept21 target (80%) and \nOct21-Mar22 target (85%) UOAs delivered"
-    ylab <- "% of target UOAs delivered"
+   decemberTarget <- 85
+    title <- "Monthly % of Q1, Q2 and Q3 contracted UOAs delivered"
+    ylab <- "% of quarterly \ncontracted UDAs delivered"
     barCol <- "seagreen3"
     
     #get raw data into fight format
@@ -47,7 +66,7 @@ plot_UDA_UOA_to_target <- function(data = UDA_calendar_data, UDAorUOA = "UDA",
   }
   
   #add blanks for future dates
-  if(nrow(data) < 12){
+  if(nrow(data) < 9){
     if(!(as.Date("2021-09-01") %in% data$month)){
       data <- data %>% add_row(month = as.Date("2021-09-01"))
     }
@@ -60,221 +79,74 @@ plot_UDA_UOA_to_target <- function(data = UDA_calendar_data, UDAorUOA = "UDA",
     if(!(as.Date("2021-12-01") %in% data$month)){
       data <- data %>% add_row(month = as.Date("2021-12-01"))
     }
-    if(!(as.Date("2022-01-01") %in% data$month)){
-      data <- data %>% add_row(month = as.Date("2022-01-01"))
-    }
-    if(!(as.Date("2022-02-01") %in% data$month)){
-      data <- data %>% add_row(month = as.Date("2022-02-01"))
-    }
-    if(!(as.Date("2022-03-01") %in% data$month)){
-      data <- data %>% add_row(month = as.Date("2022-03-01"))
-    }
   }
   
   #get data in the right format
   data <- data %>%
     mutate(month = as.Date(month)) %>%
-    mutate(perc_of_UDA_UOA_target_delivered = monthly_UDA_UOAs_delivered * 100 / target_UDA_UOAs_delivered_in_financial_half) %>%
+    mutate(perc_of_UDA_UOA_target_delivered = monthly_UDA_UOAs_delivered * 100 / target_UDA_UOAs_delivered_in_target_period) %>%
     mutate(perc_of_UDA_UOA_target_delivered = round(perc_of_UDA_UOA_target_delivered, 1)) %>%
-    mutate(financial_half = if_else(month < as.Date("2021-10-01"), "Apr-Sept (H1)", "Oct-Mar (H2)"))
+    mutate(perc_of_contracted_UDA_UOAs_delivered = monthly_UDA_UOAs_delivered * 100 * 4/ total_annual_UDA_UOAs_contracted) %>%
+    mutate(financial_quarter = if_else(month < as.Date("2021-07-01"), "Apr-Jun (Q1)", 
+                                       if_else(month < as.Date("2021-10-01"), "Jul-Sep (Q2)",
+                                               "Oct-Dec (Q3)")))
   
   #ensures months with no data are still shown
   #done as separate dataframe so that annotations are not shown for months with no data
   data_to_plot <- data %>%
-    mutate(perc_of_UDA_UOA_target_delivered = if_else(is.na(perc_of_UDA_UOA_target_delivered)
+    mutate(perc_of_contracted_UDA_UOAs_delivered = if_else(is.na(perc_of_contracted_UDA_UOAs_delivered)
                                                   , 0, 
-                                                  perc_of_UDA_UOA_target_delivered)) %>%
-    mutate(target = 16.7) 
+                                                  perc_of_contracted_UDA_UOAs_delivered)) %>%
+    mutate(target = if_else(financial_quarter == "Apr-Jun (Q1)" | financial_quarter == "Jul-Sep (Q2)", septemberTarget/3,decemberTarget/3)) 
   
   #plot code
   ggplot(data_to_plot, 
          aes(x = month, 
-             y = perc_of_UDA_UOA_target_delivered)) +
+             y = perc_of_contracted_UDA_UOAs_delivered)) +
     geom_bar(stat = "identity", 
              fill = barCol, 
              width = 10) +
     geom_line(aes(x = month, 
                   y = target,
-                  colour = financial_half), 
+                  colour = financial_quarter), 
               linetype = "dashed") +
-    geom_point(aes(x = month, 
+    geom_point(aes(x = month,
                    y = target,
-                   colour = financial_half), 
-               shape = 4, 
-               size = 2) +
+                   colour = financial_quarter),
+               shape = 4,
+               size = 3) +
     geom_vline(xintercept = as.Date("2021-09-01") + lubridate::days(15),
                linetype = "dotted") +
-    geom_segment(aes(x = as.Date("2021-09-01") + lubridate::days(15),
-                     y = 24, 
-                     xend = as.Date("2021-10-01") + lubridate::days(15), 
-                     yend = 24),
-                 arrow = arrow(length = unit(0.15, "cm"))) +
-    annotate(geom = "text",
-             x = as.Date("2021-10-01") + lubridate::days(12),
-             y = 22.5,
-             label = paste0("H2 (", marchTarget,"% target)"),
-             size = 3) +
-    geom_segment(aes(x = as.Date("2021-09-01") + lubridate::days(15),
-                     y = 25, 
-                     xend = as.Date("2021-09-01") - lubridate::days(15), 
-                     yend = 25),
-                 arrow = arrow(length = unit(0.15, "cm"))) +
-    annotate(geom = "text",
-             x = as.Date("2021-09-01") - lubridate::days(12),
-             y = 27,
-             label = paste0("H1 (", septemberTarget,"% target)"),
-             size = 3) +
+    geom_vline(xintercept = as.Date("2021-06-01") + lubridate::days(15),
+               linetype = "dotted") +
     theme_bw() +
-    annotate(geom = "text", 
+    annotate(geom = "label", 
              x = data$month, 
-             y = data$perc_of_UDA_UOA_target_delivered + 1, 
-             label = format(round(data$perc_of_UDA_UOA_target_delivered, 2), nsmall = 1), 
-             size = 3) +
+             y = data$perc_of_contracted_UDA_UOAs_delivered + 1, 
+             label = format(round(data$perc_of_contracted_UDA_UOAs_delivered, 1), nsmall = 1), 
+             size = 3,
+             label.size = 0) +
     scale_x_date(date_breaks = "1 month", 
                  date_labels = "%b-%y") +
-    scale_colour_manual(labels = c(paste("Expected monthly delivery to \nreach H1 target of", septemberTarget,"%"),
-                                   paste("Expected monthly delivery to \nreach H2 target of", marchTarget,"%")),
-                        values = c("darkred", "blue")) + 
+    scale_colour_manual(labels = c(paste0("Expected monthly delivery to reach \nQ1 threshold of ", septemberTarget,"% by end of Jun-21*"),
+                                   paste0("Expected monthly delivery to reach \nQ2 threshold of ",septemberTarget,"% by end of Sep-21*"),
+                                   paste0("Expected monthly delivery to reach \nQ3 threshold of ",decemberTarget,"% by end of Dec-22*")
+                                   ),
+                        values = c("darkred", "blue", "darkgreen")) + 
       labs(title = title, 
            x = "Month", 
            y = ylab,
-           subtitle = subtitle,
-           colour = "") +
-    theme(legend.position = "bottom")
+           subtitle = paste0(subtitle, cat_sub),
+           caption = paste0("*expected monthly delivery to meet threshold is caluclated by assuming equal delivery across the 3 month period.
+           For Apr-Jun and Jul-Sep the monthly expected delivery is ",septemberTarget,"/3 = ",round(septemberTarget/3,1),"%, for Oct-Dec the monthly expected delivery is ",decemberTarget,"/3 = ",round(decemberTarget/3,1),"%")) +
+    theme(legend.position = "bottom", 
+          legend.title = element_blank(),
+          plot.caption = element_text(hjust = 0.5, 
+                                      face= "italic"),
+          plot.caption.position =  "plot"
+          )
 
 }
-
-# ################################################################################
-# #function to plot second chart on slide 4
-# #old data source is in teams folder "Monthly performance data/April 21 to September 21 data/Calendar data/April to Jul UDA 2021-2022 by Treatment month.xlsx"
-# #pass in raw data - either UDA_calendar_data or orthodontic_data_combined_calendar
-# plot_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data, 
-#                                               UDAorUOA = "UDA", 
-#                                               level = "National",
-#                                               region_STP_name = NULL){
-#   
-#   #filter for region or STP
-#   if(level == "Regional"){
-#     data <- data %>% 
-#       filter(region_name == region_STP_name )
-#     subtitle <- region_STP_name 
-#   }else if(level == "STP"){
-#     data <- data %>% 
-#       filter(commissioner_name == region_STP_name)
-#     subtitle <- region_STP_name
-#   }else{
-#     subtitle <- "England"
-#   }
-#   
-#   #change titles and colours for UDA or UOA
-#   if(UDAorUOA == "UDA"){
-#     septemberTarget <- 60 
-#     title <- "Cumulative monthly % of Apr21-Sept21 target (60%) and Oct21-Mar22 target (65%) UDAs delivered for H1 and H2"
-#     ylab <- "Cumulative % of target UDAs delivered \nfrom Apr-21 and from Oct-22"
-#     barCol <- "coral"
-#     
-#     #get raw data into the right format
-#     data <- get_into_slide4_format_calendar(data, remove_prototypes = T)
-#     
-#   }else{
-#     septemberTarget <- 80
-#     title <- "Cumulative monthly % of Apr21-Sept21 target (80%) and Oct21-Mar22 target (85%) UOAs delivered for H1 and H2"
-#     ylab <- "Cumulative % of target UOAs delivered \nfrom Apr-21"
-#     barCol <- "seagreen3"
-#     
-#     #get raw data into fight format
-#     data <- get_into_slide6_format_calendar(data, remove_prototypes = F)
-#     
-#   }
-#   
-#   #add blanks for future dates
-#   if(nrow(data) < 12){
-#     if(!(as.Date("2021-09-01") %in% data$month)){
-#       data <- data %>% add_row(month = as.Date("2021-09-01"))
-#     }
-#     if(!(as.Date("2021-10-01") %in% data$month)){
-#       data <- data %>% add_row(month = as.Date("2021-10-01"))
-#     }
-#     if(!(as.Date("2021-11-01") %in% data$month)){
-#       data <- data %>% add_row(month = as.Date("2021-11-01"))
-#     }
-#     if(!(as.Date("2021-12-01") %in% data$month)){
-#       data <- data %>% add_row(month = as.Date("2021-12-01"))
-#     }
-#     if(!(as.Date("2022-01-01") %in% data$month)){
-#       data <- data %>% add_row(month = as.Date("2022-01-01"))
-#     }
-#     if(!(as.Date("2022-02-01") %in% data$month)){
-#       data <- data %>% add_row(month = as.Date("2022-02-01"))
-#     }
-#     if(!(as.Date("2022-03-01") %in% data$month)){
-#       data <- data %>% add_row(month = as.Date("2022-03-01"))
-#     }
-#   }
-#   
-#   #get data in the right format
-#   data <- data %>%
-#     mutate(month = as.Date(month)) %>%
-#     mutate(perc_of_UDA_UOA_target_delivered = monthly_UDA_UOAs_delivered * 100 / target_UDA_UOAs_delivered_in_financial_half) %>%
-#     mutate(perc_of_UDA_UOA_target_delivered = format(round(perc_of_UDA_UOA_target_delivered, 1), nsmall = 2))
-#   
-#   #cumulative sum column
-#   data <- data  %>%
-#     mutate(financial_half = if_else(month < as.Date("2021-10-01"), "Apr-Sept (H1)", "Oct-Mar (H2)")) %>%
-#     group_by(financial_half) %>%
-#     mutate(cumulative_perc_of_UDA_UOA_target_delivered = cumsum(perc_of_UDA_UOA_target_delivered)) %>%
-#     ungroup()
-#   
-#   #ensures months with no data are still shown
-#   #done as separate dataframe so that annotations are not shown for months with no data
-#   data_to_plot <- data %>%
-#     mutate(cumulative_perc_of_UDA_UOA_target_delivered = if_else(is.na(monthly_UDA_UOAs_delivered),
-#                                                              0, 
-#                                                              cumulative_perc_of_UDA_UOA_target_delivered)) %>%
-#     mutate(target = rep(seq(from = 16.7, to = 100, length.out = 6), 2)) 
-#     #mutate(target_Oct_Mar = c(rep(NA,6), seq(from = 16.7, to = 100, length.out = 6))) 
-#   
-#   
-#   #plot code
-#   ggplot(data_to_plot) +
-#     theme_bw() +
-#     geom_bar(aes(x = month, 
-#                  y = cumulative_perc_of_UDA_UOA_target_delivered),
-#              stat = "identity", 
-#              fill = barCol, 
-#              width = 10) +
-#     geom_line(aes(x = month, 
-#                   y = target,
-#                   colour = financial_half), 
-#               linetype = "dashed") +
-#     geom_point(aes(x = month, 
-#                    y = target,
-#                    colour = financial_half), 
-#                shape = 4, 
-#                size = 2) +
-#     geom_hline(yintercept = 100, 
-#                colour = "grey", 
-#                linetype = "dashed") +
-#     # annotate(geom = "text", 
-#     #          x = as.Date("2021-09-01"), 
-#     #          y = 90, 
-#     #          label = "Expected monthly \nactivity to achieve \ntarget by Sep-21", 
-#     #          size = 3) +
-#     annotate(geom = "text", 
-#              x = data$month, 
-#              y = data$cumulative_perc_of_UDA_UOA_target_delivered + 3, 
-#              label = round(data$cumulative_perc_of_UDA_UOA_target_delivered, 2), 
-#              size = 3) +
-#     scale_x_date(date_breaks = "1 month", 
-#                  date_labels = "%b-%y") +
-#     scale_colour_manual(labels = c("H1 Apr21-Sept21 target - 60%", "H1 Oct21-Mar target - 65%"), values = c("darkgreen", "blue")) + 
-#     labs(title = title, 
-#          x = "Month", 
-#          y = ylab,
-#          subtitle = subtitle,
-#          colour = "Expected cumulative delivery to \nreach financial half target")
-#   
-# }
 
 
 
@@ -282,7 +154,7 @@ plot_UDA_UOA_to_target <- function(data = UDA_calendar_data, UDAorUOA = "UDA",
 #function to plot second chart on slide 4
 #old data source is in teams folder "Monthly performance data/April 21 to September 21 data/Calendar data/April to Jul UDA 2021-2022 by Treatment month.xlsx"
 #pass in raw data - either UDA_calendar_data or orthodontic_data_combined_calendar
-plot_H2_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data, 
+plot_Q3_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data, 
                                               UDAorUOA = "UDA", 
                                               level = "National",
                                               region_STP_name = NULL){
@@ -303,9 +175,9 @@ plot_H2_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data,
   #change titles and colours for UDA or UOA
   if(UDAorUOA == "UDA"){
     septemberTarget <- 60 
-    marchTarget <- 65
-    title <- "Cumulative monthly % of Apr21-Sep21 target (60%) and \nOct21-Mar22 target (65%) UDAs delivered for H1 and H2"
-    ylab <- "Cumulative % of target UDAs delivered \nfrom Apr-21 and from Oct-22"
+   decemberTarget <- 65
+    title <- "Cumulative monthly % of Q1, Q2 and Q3 contracted UDAs delivered"
+    ylab <- "Cumulative % of quarterly \ncontracted UDAs delivered"
     barCol <- "coral"
     
     #get raw data into the right format
@@ -313,9 +185,9 @@ plot_H2_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data,
     
   }else{
     septemberTarget <- 80
-    marchTarget <- 85
-    title <- "Cumulative monthly % of Apr21-Sep21 target (80%) and \nOct21-Mar22 target (85%) UOAs delivered for H1 and H2"
-    ylab <- "Cumulative % of target UOAs delivered \nfrom Apr-21 and from Oct-22"
+   decemberTarget <- 85
+    title <- "Cumulative monthly % of Q1, Q2 and Q3 contracted UOAs delivered"
+    ylab <- "Cumulative % of quarterly \ncontracted UOAs delivered"
     barCol <- "seagreen3"
     
     #get raw data into fight format
@@ -324,123 +196,95 @@ plot_H2_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data,
   }
   
   #add blanks for future dates
-  if(nrow(data) < 12){
-    if(!(as.Date("2021-09-01") %in% data$month)){
-      data <- data %>% add_row(month = as.Date("2021-09-01"))
-    }
-    if(!(as.Date("2021-10-01") %in% data$month)){
-      data <- data %>% add_row(month = as.Date("2021-10-01"))
-    }
-    if(!(as.Date("2021-11-01") %in% data$month)){
-      data <- data %>% add_row(month = as.Date("2021-11-01"))
-    }
+  if(nrow(data) < 9){
+    # if(!(as.Date("2021-09-01") %in% data$month)){
+    #   data <- data %>% add_row(month = as.Date("2021-09-01"))
+    # }
+    # if(!(as.Date("2021-10-01") %in% data$month)){
+    #   data <- data %>% add_row(month = as.Date("2021-10-01"))
+    # }
+    # if(!(as.Date("2021-11-01") %in% data$month)){
+    #   data <- data %>% add_row(month = as.Date("2021-11-01"))
+    # }
     if(!(as.Date("2021-12-01") %in% data$month)){
       data <- data %>% add_row(month = as.Date("2021-12-01"))
-    }
-    if(!(as.Date("2022-01-01") %in% data$month)){
-      data <- data %>% add_row(month = as.Date("2022-01-01"))
-    }
-    if(!(as.Date("2022-02-01") %in% data$month)){
-      data <- data %>% add_row(month = as.Date("2022-02-01"))
-    }
-    if(!(as.Date("2022-03-01") %in% data$month)){
-      data <- data %>% add_row(month = as.Date("2022-03-01"))
     }
   }
   
   #get data in the right format
   data <- data %>%
     mutate(month = as.Date(month)) %>%
-    mutate(perc_of_UDA_UOA_target_delivered = monthly_UDA_UOAs_delivered * 100 / target_UDA_UOAs_delivered_in_financial_half) %>%
-    mutate(perc_of_UDA_UOA_target_delivered = format(round(perc_of_UDA_UOA_target_delivered, 1), nsmall = 2))
+    mutate(perc_of_UDA_UOA_target_delivered = monthly_UDA_UOAs_delivered * 100 / target_UDA_UOAs_delivered_in_target_period) %>%
+    mutate(perc_of_contracted_UDA_UOAs_delivered = monthly_UDA_UOAs_delivered * 100 * 4/ total_annual_UDA_UOAs_contracted) %>%
+    mutate(financial_quarter = if_else(month < as.Date("2021-07-01"), "Apr-Jun (Q1)", 
+                                       if_else(month < as.Date("2021-10-01"), "Jul-Sep (Q2)",
+                                               "Oct-Dec (Q3)"))) #%>%
+    #mutate(perc_of_contracted_UDA_UOAs_delivered = format(round(perc_of_contracted_UDA_UOAs_delivered, 1), nsmall = 2))
   
   #cumulative sum column
   data <- data  %>%
-    mutate(financial_half = if_else(month < as.Date("2021-10-01"), "Apr-Sept (H1)", "Oct-Mar (H2)")) %>%
-    group_by(financial_half) %>%
-    mutate(cumulative_perc_of_UDA_UOA_target_delivered = cumsum(perc_of_UDA_UOA_target_delivered)) %>%
+    group_by(financial_quarter) %>%
+    mutate(cumulative_perc_of_contracted_UDA_UOAs_delivered = cumsum(perc_of_contracted_UDA_UOAs_delivered)) %>%
     ungroup()
   
   #ensures months with no data are still shown
   #done as separate dataframe so that annotations are not shown for months with no data
   data_to_plot <- data %>%
-    mutate(cumulative_perc_of_UDA_UOA_target_delivered = if_else(is.na(monthly_UDA_UOAs_delivered),
+    mutate(cumulative_perc_of_contracted_UDA_UOAs_delivered = if_else(is.na(monthly_UDA_UOAs_delivered),
                                                                  0, 
-                                                                 cumulative_perc_of_UDA_UOA_target_delivered)) %>%
-    mutate(target = rep(seq(from = 16.7, to = 100, length.out = 6), 2)) %>%
-    filter(month >= as.Date("2021-09-01")) #%>%
+                                                                 cumulative_perc_of_contracted_UDA_UOAs_delivered)) %>% 
+    mutate(target = c(rep(seq(from = septemberTarget/3, to = septemberTarget, length.out = 3),2), 
+                      seq(from =decemberTarget/3, to =decemberTarget, length.out = 3))) #%>% 
+    #filter(month >= as.Date("2021-09-01")) #%>%
     #mutate(month = format(month, "%b-%y")) %>%
-    #mutate(month_name = if_else(month == "Sep-21","H1 - Apr21-Sep21", month))
+    #mutate(month_name = if_else(month == "Sep-21","(Q1 + Q2) - Apr21-Sep21", month))
   
   #get months into the right order
-  #data_to_plot$month_name <- factor(data_to_plot$month_name, levels = c("H1 - Apr21-Sep21", "Oct-21", "Nov-21", "Dec-21", "Jan-22", "Feb-22", "Mar-22"))
+  #data_to_plot$month_name <- factor(data_to_plot$month_name, levels = c("(Q1 + Q2) - Apr21-Sep21", "Oct-21", "Nov-21", "Dec-21", "Jan-22", "Feb-22", "Dec-22"))
   
   
   #plot code
   ggplot(data_to_plot) +
     theme_bw() +
-    geom_bar(aes(x = month, 
-                 y = cumulative_perc_of_UDA_UOA_target_delivered),
-             stat = "identity", 
-             fill = barCol, 
+    geom_bar(aes(x = month,
+                 y = cumulative_perc_of_contracted_UDA_UOAs_delivered),
+             stat = "identity",
+             fill = barCol,
              width = 10) +
-    geom_line(aes(x = month, 
+    geom_line(aes(x = month,
                   y = target,
-                  colour = financial_half), 
+                  colour = financial_quarter),
               linetype = "dashed") +
-    geom_point(aes(x = month, 
+    geom_point(aes(x = month,
                    y = target,
-                   colour = financial_half), 
-               shape = 4, 
-               size = 2) +
+                   colour = financial_quarter),
+               shape = 4,
+               size = 3) +
     geom_vline(xintercept = as.Date("2021-09-01") + lubridate::days(15),
                linetype = "dotted") +
-    geom_segment(aes(x = as.Date("2021-09-01") + lubridate::days(15),
-                     y = 115, 
-                     xend = as.Date("2021-10-01") + lubridate::days(15), 
-                     yend = 115),
-                 arrow = arrow(length = unit(0.15, "cm"))) +
-    annotate(geom = "text",
-             x = as.Date("2021-10-01") + lubridate::days(1),
-             y = 108,
-             label = paste0("H2 (", marchTarget,"% target)"),
-             size = 3) +
-    geom_segment(aes(x = as.Date("2021-09-01") + lubridate::days(15),
-                     y = 120, 
-                     xend = as.Date("2021-09-01") - lubridate::days(15), 
-                     yend = 120),
-                 arrow = arrow(length = unit(0.15, "cm"))) +
-    annotate(geom = "text",
-             x = as.Date("2021-09-01") - lubridate::days(1),
-             y = 130,
-             label = paste0("H1 (", septemberTarget,"% target)"),
-             size = 3) +
-    # geom_hline(yintercept = 100, 
-    #            colour = "grey", 
-    #            linetype = "dashed") +
-    # annotate(geom = "text", 
-    #          x = as.Date("2021-09-01"), 
-    #          y = 90, 
-    #          label = "Expected monthly \nactivity to achieve \ntarget by Sep-21", 
-    #          size = 3) +
-    annotate(geom = "text", 
-             x = data_to_plot$month, 
-             y = data_to_plot$cumulative_perc_of_UDA_UOA_target_delivered + 3, 
-             label = ifelse(data_to_plot$cumulative_perc_of_UDA_UOA_target_delivered != 0,
-                            round(data_to_plot$cumulative_perc_of_UDA_UOA_target_delivered, 2),
-                            ""), 
-             size = 3) +
+    geom_vline(xintercept = as.Date("2021-06-01") + lubridate::days(15),
+               linetype = "dotted") +
+    annotate(geom = "label",
+             x = data_to_plot$month,
+             y = data_to_plot$cumulative_perc_of_contracted_UDA_UOAs_delivered + 4,
+             label = ifelse(data_to_plot$cumulative_perc_of_contracted_UDA_UOAs_delivered != 0,
+                            format(round(data_to_plot$cumulative_perc_of_contracted_UDA_UOAs_delivered, 1), nsmall = 1),
+                            ""),
+             size = 3,
+             label.size = 0) +
     scale_x_date(date_breaks = "1 month",
                  date_labels = "%b-%y") +
-    scale_colour_manual(labels = c(paste("Expected cumulative delivery to \nreach H1 target of", septemberTarget,"%"),
-                                   paste("Expected cumulative delivery to \nreach H2 target of", marchTarget,"%")),
-                        values = c("darkred", "blue")) +
-    labs(title = title, 
-         x = "Month", 
+    scale_colour_manual(labels = c(paste0("Expected cumulative delivery to reach \nQ1 threshold of ",septemberTarget,"% by end of Jun-21"),
+                                   paste0("Expected cumulative delivery to reach \nQ2 threshold of ",septemberTarget,"% by end of Sep-21"),
+                                   paste0("Expected cumulative delivery to reach \nQ3 threshold of ",decemberTarget,"% by end of Dec-22")),
+                        values = c("darkred", "blue", "darkgreen")) +
+    labs(title = title,
+         x = "Month",
          y = ylab,
          subtitle = subtitle,
          colour = "") +
     theme(legend.position = "bottom")
+
 
 }
 
@@ -500,7 +344,7 @@ plot_banded_CoT <- function(data = UDA_scheduled_data,
   #plot code
   ggplot(data) +    
     theme_bw() +
-    theme(axis.text.x = element_text(angle = 45)) +
+    theme(axis.text.x = element_text(angle = 90)) +
     geom_line(aes(x = month, 
                   y = CoTs, 
                   colour = band), 
@@ -534,11 +378,18 @@ plot_banded_CoT <- function(data = UDA_scheduled_data,
 #current data source: Dental activity annual running total.xlsx sent by email by Caroline
 #current data is in teams folder "Monthly performance data\April 21 to September 21 data\Scheduled data\April to Sept UDA 2020-2021 (May).xlsx"
 plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data, 
-                                  existing_data = slide5_UDA_delivery_historic,
+                                  #existing_data = slide5_UDA_delivery_historic,
                                   calendar_data = UDA_calendar_data,
                                   UDAorUOA = "UDA",
                                   level = "National",
-                                  region_STP_name = NULL){
+                                  region_STP_name = NULL,
+                                  remove_prototypes = T){
+  
+  data <- data %>%
+    mutate(month = as.Date(month))
+  
+  calendar_data <- calendar_data %>%
+    mutate(month = as.Date(month)) 
   
   #add a region column to the data
   region_STP_lookup <- calendar_data %>%
@@ -562,23 +413,23 @@ plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
   
   if(UDAorUOA == "UDA"){
     #get data into the right format
-    data <- get_into_slide5_7_format(data, existing_data, remove_prototypes = F, UDAorUOA = "UDA")
-    title <- "Average percentage of contracted UDAs delivered \nscaled up to 12 months"
-    ylab <- "% of contracted UDAs delivered"
+    data <- get_into_slide5_7_format(data, remove_prototypes, UDAorUOA = "UDA")
+    title <- "Scheduled monthly percentage of usual annual contracted UDAs \nsubmitted across all contracts* scaled up to 12 months**"
+    ylab <- "% of contracted UDAs submitted"
     lineCol <- "coral"
+    lineCol <- "#CC79A7"
+    septemberTarget <- 60
+    decemberTarget <- 65
   }else{
     #get data into the right format
-    data <- get_into_slide5_7_format(data, existing_data, remove_prototypes = F, UDAorUOA = "UOA")
-    title <- "Average percentage of contracted UOAs delivered \nscaled up to 12 months"
-    ylab <- "% of contracted UOAs delivered"
-    lineCol <- "seagreen3"
+    data <- get_into_slide5_7_format(data, remove_prototypes, UDAorUOA = "UOA")
+    title <- "Scheduled monthly percentage of usual annual contracted UOAs \nsubmitted across all contracts* scaled up to 12 months**"
+    ylab <- "% of contracted UOAs submitted"
+    lineCol <- "#009E73"
+    septemberTarget <- 80
+    decemberTarget <- 85
   }
-  
-  #get data in the right format
-  data <- data %>%
-    mutate(month = as.Date(month)) %>%
-    mutate(perc_UDA_UOA_delivered = perc_UDA_UOA_delivered)
-  
+
   #plot code
   ggplot(data) +
     theme_bw() +
@@ -586,20 +437,313 @@ plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
                   y = perc_UDA_UOA_delivered), 
               colour = lineCol, 
               size = 1) +
+    geom_point(aes(x = month, 
+                  y = perc_UDA_UOA_delivered), 
+              colour = lineCol
+              ) +
+    # geom_segment(aes(x = as.Date("2021-04-01"), y = septemberTarget, xend = as.Date("2021-09-01"), yend = septemberTarget),
+    #              colour = "#0072B2",
+    #              linetype = "dashed") +
+    # geom_segment(aes(x = as.Date("2021-10-01"), y = decemberTarget, xend = as.Date("2021-12-01"), yend = decemberTarget),
+    #              colour = "#0072B2",
+    #              linetype = "dashed") +
     scale_x_date(date_breaks = "1 month", 
                  date_labels = "%b-%y") +
     scale_y_continuous(limits = c(0, max(data$perc_UDA_UOA_delivered, na.rm = T) + 5)) +
     labs(title = title, 
          x = "Month",
          y = ylab, 
-         subtitle = subtitle) +
+         subtitle = subtitle,
+         caption = "*Excluding prototype contracts and those with annual contracted UDA < 100 
+                    **These are scheduled months and April data is for the reporting period 1st April - 
+                    21st April therefore the April data has been scaled up by 18 instead of 12.") +
     annotate(geom = "text", 
              x = data$month, 
-             y = data$perc_UDA_UOA_delivered + 1, 
-           label = paste0(data$perc_UDA_UOA_delivered, "%"), 
-           size = 3) 
+             y = data$perc_UDA_UOA_delivered + 3, 
+             label = paste0(data$perc_UDA_UOA_delivered, "%"), 
+             size = 3) 
 }
 
+
+
+################################################################################
+#function to create graph on slide 5
+#current data source: Dental activity annual running total.xlsx sent by email by Caroline
+#current data is in teams folder "Monthly performance data\April 21 to September 21 data\Scheduled data\April to Sept UDA 2020-2021 (May).xlsx"
+plot_UDA_UOA_delivery_calendar <- function(data = UDA_calendar_data, 
+                                  scheduled_data = UDA_scheduled_data,
+                                  contractor_cats = contractor_categories,
+                                  UDAorUOA = "UDA",
+                                  level = "National",
+                                  region_STP_name = NULL,
+                                  remove_prototypes = T,
+                                  regional_lines = F, 
+                                  STP_lines = F,
+                                  cat_lines = F,
+                                  plot_chart = T){
+  
+  data <- data %>%
+    mutate(month = as.Date(month))
+  
+  scheduled_data <- scheduled_data %>%
+    mutate(month = as.Date(month)) 
+  
+  #join in MY categories
+  data <- data %>%
+    left_join(contractor_cats)
+
+
+  #filter for STP or region
+  if(level == "Regional"){
+    data <- data %>% 
+      filter(region_name == region_STP_name )
+    subtitle <- region_STP_name
+  }else if(level == "STP"){
+    data <- data %>% 
+      filter(commissioner_name == region_STP_name)
+    subtitle <- region_STP_name
+  }else{
+    subtitle <- "England"
+  }
+  
+  if(UDAorUOA == "UDA"){
+    #get data into the right format
+    data <- get_into_slide5_7_format_calendar(data, scheduled_data, remove_prototypes, UDAorUOA = "UDA", regional_lines, STP_lines, cat_lines)
+    title <- "Calendar monthly percentage of usual annual contracted UDAs \ndelivered across all contracts* scaled up to 12 months"
+    ylab <- "% of contracted UDAs delivered"
+    lineCol <- "coral"
+    #lineCol <- "#CC79A7"
+    septemberTarget <- 60
+    decemberTarget <- 65
+  }else{
+    
+    # #add a region column to the data
+    # region_STP_lookup <- calendar_data %>%
+    #   select(contract_number, name_or_company_name, commissioner_name, region_name) %>%
+    #   distinct()
+    # 
+    # data <- left_join(data, region_STP_lookup, by = c("contract_number", "name_or_company_name", "commissioner_name"))
+    
+    #get data into the right format
+    data <- get_into_slide5_7_format_calendar(data, scheduled_data, remove_prototypes, UDAorUOA = "UOA", regional_lines, STP_lines, cat_lines)
+    title <- "Calendar monthly percentage of usual annual contracted UOAs \ndelivered across all contracts* scaled up to 12 months"
+    ylab <- "% of contracted UOAs delivered"
+    lineCol <- "#009E73"
+    septemberTarget <- 80
+    decemberTarget <- 85
+  }
+  
+  captionTitle <- "*Excluding prototype contracts and those with annual contracted UDA < 100
+                   **This is calendar data which means that data may change as more CoTs are registered"
+  subtitle_addition <- ""
+  
+  if(regional_lines){
+    g <- 
+      ggplot(data) +
+      theme_bw() +
+      geom_line(aes(x = month, 
+                    y = scaled_perc_UDA_UOA_delivered,
+                    colour = region_name), 
+                size = 1) +
+      geom_point(aes(x = month, 
+                     y = scaled_perc_UDA_UOA_delivered, 
+                     colour = region_name)
+      )
+    
+    legendTitle <- "Region"
+    
+  }else if(STP_lines){
+    g <- 
+      ggplot(data) +
+      theme_bw() +
+      geom_line(aes(x = month, 
+                    y = scaled_perc_UDA_UOA_delivered,
+                    colour = commissioner_name), 
+                size = 1) +
+      geom_point(aes(x = month, 
+                     y = scaled_perc_UDA_UOA_delivered, 
+                     colour = commissioner_name)
+      )
+    
+    legendTitle <- "STP"
+    
+  }else if(cat_lines){
+    data <- data %>%
+      filter(!is.na(category_sub_type))
+    
+    g <- 
+      ggplot(data) +
+      theme_bw() +
+      geom_line(aes(x = month, 
+                    y = scaled_perc_UDA_UOA_delivered,
+                    colour = category_sub_type), 
+                size = 1) +
+      geom_point(aes(x = month, 
+                     y = scaled_perc_UDA_UOA_delivered, 
+                     colour = category_sub_type)
+      )
+    
+    legendTitle <- "MY Category"
+    subtitle_addition <- if_else(remove_prototypes, " - *Excluding prototypes and contracts with annual contracted UDA < 100",
+                        " - *Including prototypes and contracts with annual contracted UDA < 100")
+    
+    captionTitle <- "**This is calendar data which means that data may change as more CoTs are registered"
+    
+  }else{
+    g <- 
+      ggplot(data) +
+      theme_bw() +
+      geom_line(aes(x = month, 
+                    y = scaled_perc_UDA_UOA_delivered),
+                colour = lineCol, 
+                size = 1) +
+      geom_point(aes(x = month, 
+                     y = scaled_perc_UDA_UOA_delivered), 
+                 colour = lineCol
+      )+
+      annotate(geom = "text", 
+               x = data$month, 
+               y = data$scaled_perc_UDA_UOA_delivered + 5, 
+               label = paste0(round(data$scaled_perc_UDA_UOA_delivered), "%"), 
+               size = 3,
+               label.size = 0) 
+    
+  }
+
+   g <- g +
+    geom_segment(aes(x = as.Date("2021-04-01"), 
+                     y = septemberTarget, 
+                     xend = as.Date("2021-09-01"), 
+                     yend = septemberTarget),
+                 colour = "#0072B2",
+                 linetype = "dashed") +
+    geom_segment(aes(x = as.Date("2021-10-01"), 
+                     y = decemberTarget, 
+                     xend = as.Date("2021-12-01"), 
+                     yend = decemberTarget),
+                 colour = "#0072B2",
+                 linetype = "dashed") +
+    scale_x_date(date_breaks = "1 month", 
+                 date_labels = "%b-%y") +
+    scale_y_continuous(limits = c(0, max(data$scaled_perc_UDA_UOA_delivered, na.rm = T) + 10),
+                       breaks = scales::breaks_pretty()) +
+     annotate(geom = "text", 
+              x = as.Date("2021-04-01") + lubridate::weeks(2), 
+              y = septemberTarget - 3, 
+              label = "H1 threshold", 
+              size = 3,
+              colour = "#0072B2") + 
+     annotate(geom = "text", 
+              x = as.Date("2021-10-01") + lubridate::weeks(2), 
+              y = decemberTarget - 3, 
+              label = "Q3 threshold", 
+              size = 3,
+              colour = "#0072B2")
+   
+   
+   if(regional_lines == F & cat_lines == F){
+     g <- g +
+       # annotate(geom = "text", 
+       #          x = as.Date("2021-04-01") + lubridate::weeks(2), 
+       #          y = septemberTarget - 3, 
+       #          label = "H1 threshold", 
+       #          size = 3,
+       #          colour = "#0072B2") + 
+       # annotate(geom = "text", 
+       #          x = as.Date("2021-10-01") + lubridate::weeks(2), 
+       #          y = decemberTarget - 3, 
+       #          label = "Q3 threshold", 
+       #          size = 3,
+       #         colour = "#0072B2") +
+       labs(title = title, 
+            x = "Month",
+            y = ylab, 
+            subtitle = paste0(subtitle, subtitle_addition),
+            caption = "*Excluding prototype contracts and those with annual contracted UDA < 100 
+                    **This is calendar data which means that data may change as more CoTs are registered")
+
+   }else{
+     g <- g +
+       labs(title = title, 
+            x = "Month",
+            y = ylab, 
+            subtitle = paste0(subtitle, subtitle_addition),
+            caption = captionTitle,
+            colour = legendTitle) 
+       
+   }
+    
+   
+   if(plot_chart){
+     g
+   }else{
+     data
+   }
+}
+
+
+################################################################################
+table_number_cat_contracts <- function(data = UDA_calendar_data, 
+                                      scheduled_data = UDA_scheduled_data,
+                                      contractor_cats = contractor_categories,
+                                      remove_prototypes = F,
+                                      level = NULL,
+                                      region_STP_name = NULL){
+  
+  #filter for STP or region
+  if(level == "Regional"){
+    data <- data %>% 
+      filter(region_name == region_STP_name )
+    subtitle <- region_STP_name
+  }else if(level == "STP"){
+    data <- data %>% 
+      filter(commissioner_name == region_STP_name)
+    subtitle <- region_STP_name
+  }else{
+    subtitle <- "England"
+  }
+  
+  #join in contracted UDAs from scheduled data
+  contracted_UDAs <- scheduled_data %>%
+    select(month, contract_number, annual_contracted_UDA)
+  
+  data <- data %>%
+    left_join(contracted_UDAs, by = c("month", "contract_number"))
+  
+  #remove prototype contracts if specified
+  if(remove_prototypes){
+    #create not in function•
+    `%notin%` = Negate(`%in%`)
+    data <- data %>%
+      filter(contract_number %notin% prototype_contracts$prototype_contract_number)%>%
+      filter(annual_contracted_UDA > 100)
+  }
+  
+  #join in MY categories
+  data <- data %>%
+    left_join(contractor_cats) %>%
+    group_by(month) %>%
+    count(category_sub_type) %>%
+    ungroup() %>%
+    filter(month == max(data$month)) %>%
+    select(category_sub_type, n) %>%
+    rename(number_of_contracts = n) 
+  
+  data <- data %>%
+    mutate(percentage_of_contracts = round(number_of_contracts * 100 / sum(data$number_of_contracts))) %>%
+    add_row(category_sub_type = "TOTAL", number_of_contracts = sum(data$number_of_contracts), percentage_of_contracts = 100) %>%
+    rename(`category sub type` = category_sub_type,
+           `number of contracts` = number_of_contracts,
+           `percentage of contracts` = percentage_of_contracts)
+  
+  data
+
+  # ggplot(data, aes(x="", y=n, fill = category_sub_type)) +
+  #  geom_bar(width = 1, stat = "identity") +
+  #   coord_polar("y", start=0) +
+  #   labs(title = "prototypes") 
+
+}
 
 
 
@@ -710,7 +854,7 @@ plot_UDA_UOA_delivery_profile <- function(data = UDA_scheduled_data,
   }
   
   #get data into the right format
-  data <- get_slide5_table(data = data, UDAorUOA = UDAorUOA, remove_prototypes = F)
+  data <- get_slide5_table(data = data, UDAorUOA = UDAorUOA, remove_prototypes = T)
   
   #change title for UDA or UOA
   if(UDAorUOA == "UDA"){
@@ -838,50 +982,6 @@ get_adjusted_number_reaching_target <- function(){
 
 
 
-
-################################################################################
-#function to plot the density of contracts based on performance 
-plot_density <- function(data = density_data){
-  
-  ggplot(data, 
-         aes(x = perc_performance_delivered)) +
-    geom_density(size = 1,
-                 aes(colour = timePeriod,
-                     fill = timePeriod),
-                 alpha = 0.1) +
-    geom_vline(xintercept = 45, 
-               size = 0.5, 
-               colour = "blue",
-               linetype = "dashed"
-    ) +
-    geom_vline(xintercept = 60, 
-               size = 0.5, 
-               colour = "red",
-               linetype = "dashed"
-    ) +
-    annotate(geom = "text", 
-             x = 40, 
-             y = 0, 
-             label = "45% target", 
-             size = 3,
-             colour = "blue") +
-    annotate(geom = "text", 
-             x = 65, 
-             y = 0, 
-             label = "60% target", 
-             size = 3,
-             colour = "red") +
-    scale_x_continuous(limits = c(0,150),
-                       breaks = seq(0,150, 10)) +
-    labs(title = "UDA performance distribution of contracts\nMarch 21 compared with Apr-Aug 2021",
-         x = "Percentage of contracted UDAs delivered in given time period",
-         y = "Density of contracts",
-         colour = "Time Period",
-         fill = "Time Period")
-  
-  
-}
-
 ################################################################################
 get_num_contracts <- function(data = UDA_calendar_data, 
                                     remove_prototypes = T,
@@ -920,11 +1020,11 @@ get_num_contracts <- function(data = UDA_calendar_data,
   #remove prototype contracts if specified
   if(remove_prototypes & UDAorUOA == "UDA"){
     data <- data %>%
-      filter(contract_number %notin% prototype_contracts$proto_contracts)%>%
+      filter(contract_number %notin% prototype_contracts$prototype_contract_number)%>%
       filter(annual_contracted_UDA > 100)
   }else if(remove_prototypes & UDAorUOA == "UOA"){
     data <- data %>%
-      #filter(contract_number %notin% prototype_contracts$proto_contracts)%>%
+      #filter(contract_number %notin% prototype_contracts$prototype_contract_number)%>%
       filter(annual_contracted_UOA > 100)
   }
   
@@ -934,81 +1034,9 @@ get_num_contracts <- function(data = UDA_calendar_data,
   nrow(data)
 }
 
-################################################################################
-get_num_contracts_on_target <- function(data = UDA_calendar_data, 
-                                       remove_prototypes = T,
-                                       scheduled_data = UDA_scheduled_data,
-                                       UDAorUOA = "UDA",
-                                       level = "National",
-                                       region_STP_name = NULL){
-  
-  #filter for STP or region
-  if(level == "Regional"){
-    data <- data %>% 
-      filter(region_name == region_STP_name )
-  }else if(level == "STP"){
-    data <- data %>% 
-      filter(commissioner_name == region_STP_name)
-    subtitle <- region_STP_name
-  }
-  
-  if(UDAorUOA == "UDA"){
-    #get contracted UDAs
-    contracted_UDA_UOAs <- scheduled_data %>%
-      select(month, contract_number, annual_contracted_UDA, UDA_financial_half_target)
-  }else{
-    #get contracted UOAs
-    contracted_UDA_UOAs <- scheduled_data %>%
-      select(month, contract_number, annual_contracted_UOA, UOA_financial_half_target)
-  }
-  
-  
-  
-  #join in contracted UDA/UOAs from scheduled data
-  data <- data %>%
-    left_join(contracted_UDA_UOAs, by = c("month", "contract_number")) %>%
-    filter(month < as.Date("2021-10-01"))
-  
-  #create not in function
-  `%notin%` = Negate(`%in%`)
-  
-  #remove prototype contracts if specified
-  if(remove_prototypes & UDAorUOA == "UDA"){
-    data <- data %>%
-      filter(contract_number %notin% prototype_contracts$proto_contracts)%>%
-      filter(annual_contracted_UDA > 100)
-  }else if(remove_prototypes & UDAorUOA == "UOA"){
-    data <- data %>%
-      #filter(contract_number %notin% prototype_contracts$proto_contracts)%>%
-      filter(annual_contracted_UOA > 100)
-  }
-
-  if(UDAorUOA == "UDA"){
-    #count number of contracts meeting target
-    data <- data %>%
-      group_by(contract_number) %>%
-      summarise(mean_annual_contracted_UDA = mean(annual_contracted_UDA),
-                mean_UDA_financial_half_target = mean(UDA_financial_half_target),
-                YTD_UDA_delivered = sum(UDA_total)) %>%
-      count(YTD_UDA_delivered >= (mean_UDA_financial_half_target))
-  }else{
-    #count number of contracts meeting target
-    data <- data %>%
-      group_by(contract_number) %>%
-      summarise(mean_annual_contracted_UOA = mean(annual_contracted_UOA),
-                mean_UOA_financial_half_target = mean(UOA_financial_half_target),
-                YTD_UOA_delivered = sum(UOA_total)) %>%
-      count(YTD_UOA_delivered >= (mean_UOA_financial_half_target))
-  }
-  
-  
-  no_on_target <- data[2, "n"]
-  as.integer(no_on_target)
-
-}
 
 ################################################################################
-get_H2_num_contracts_on_target <- function(data = UDA_calendar_data, 
+get_Q3_num_contracts_on_target <- function(data = UDA_calendar_data, 
                                         remove_prototypes = T,
                                         scheduled_data = UDA_scheduled_data,
                                         UDAorUOA = "UDA",
@@ -1028,11 +1056,15 @@ get_H2_num_contracts_on_target <- function(data = UDA_calendar_data,
   if(UDAorUOA == "UDA"){
     #get contracted UDAs
     contracted_UDA_UOAs <- scheduled_data %>%
-      select(month, contract_number, annual_contracted_UDA, UDA_financial_half_target)
+      select(month, contract_number, annual_contracted_UDA) %>%
+      mutate(UDA_financial_half_target = case_when(month < as.Date("2021-10-01") ~ 0.6 * annual_contracted_UDA/4,
+                                                   month > as.Date("2021-10-01") ~ 0.65 * annual_contracted_UDA/4))
   }else{
     #get contracted UOAs
     contracted_UDA_UOAs <- scheduled_data %>%
-      select(month, contract_number, annual_contracted_UOA, UOA_financial_half_target)
+      select(month, contract_number, annual_contracted_UOA, UOA_financial_half_target) %>%
+      mutate(UDA_financial_half_target = case_when(month < as.Date("2021-10-01") ~ 0.8 * annual_contracted_UOA/4,
+                                                   month > as.Date("2021-10-01") ~ 0.85 * annual_contracted_UOA/4))
   }
   
   
@@ -1048,11 +1080,11 @@ get_H2_num_contracts_on_target <- function(data = UDA_calendar_data,
   #remove prototype contracts if specified
   if(remove_prototypes & UDAorUOA == "UDA"){
     data <- data %>%
-      filter(contract_number %notin% prototype_contracts$proto_contracts)%>%
+      filter(contract_number %notin% prototype_contracts$prototype_contract_number)%>%
       filter(annual_contracted_UDA > 100)
   }else if(remove_prototypes & UDAorUOA == "UOA"){
     data <- data %>%
-      #filter(contract_number %notin% prototype_contracts$proto_contracts)%>%
+      #filter(contract_number %notin% prototype_contracts$prototype_contract_number)%>%
       filter(annual_contracted_UOA > 100)
   }
   
@@ -1066,32 +1098,25 @@ get_H2_num_contracts_on_target <- function(data = UDA_calendar_data,
   if(max(data$month) == as.Date("2021-12-01")){
     month_factor <- 3
   }
-  if(max(data$month) == as.Date("2022-01-01")){
-    month_factor <- 4
-  }
-  if(max(data$month) == as.Date("2022-02-01")){
-    month_factor <- 5
-  }
-  if(max(data$month) == as.Date("2022-03-01")){
-    month_factor <- 6
-  }
   
   if(UDAorUOA == "UDA"){
     #count number of contracts meeting target
     data <- data %>%
       group_by(contract_number) %>%
       summarise(mean_annual_contracted_UDA = mean(annual_contracted_UDA),
-                mean_UDA_financial_half_target = mean(UDA_financial_half_target),
+                #mean_UDA_target = mean(UDA_financial_half_target),
                 YTD_UDA_delivered = sum(UDA_total)) %>%
-      count(YTD_UDA_delivered >= (mean_UDA_financial_half_target) * month_factor / 6)
+      mutate(mean_Q3_UDA_target = mean_annual_contracted_UDA * 0.65 / 4) %>%
+      count(YTD_UDA_delivered >= (mean_Q3_UDA_target) * month_factor / 3)
   }else{
     #count number of contracts meeting target
     data <- data %>%
       group_by(contract_number) %>%
       summarise(mean_annual_contracted_UOA = mean(annual_contracted_UOA),
-                mean_UOA_financial_half_target = mean(UOA_financial_half_target),
+                #mean_Q3_UOA_target = mean(UOA_financial_half_target),
                 YTD_UOA_delivered = sum(UOA_total)) %>%
-      count(YTD_UOA_delivered >= (mean_UOA_financial_half_target) * month_factor / 6)
+      mutate(mean_Q3_UOA_target = mean_annual_contracted_UOA * 0.85 / 4) %>%
+      count(YTD_UOA_delivered >= (mean_Q3_UOA_target) * month_factor / 3)
   }
   
   
@@ -1139,43 +1164,7 @@ get_num_urgent_forms <- function(data = UDA_scheduled_data,
   
 }
 
-################################################################################
-# get_num_urgent_forms_2019 <- function(data = UDA_scheduled_data, 
-#                                  existing_data = slide8_banded_CoT_historic,
-#                                  historic_data = historical_UDA_scheduled_data,
-#                                  calendar_data = UDA_calendar_data,
-#                                  remove_prototypes = F,
-#                                  level = "National",
-#                                  region_STP_name = NULL){
-#   
-#   #add a region column to the data
-#   region_STP_lookup <- calendar_data %>%
-#     select(contract_number, name_or_company_name, commissioner_name, region_name) %>%
-#     distinct()
-#   
-#   data <- left_join(data, region_STP_lookup, by = c("contract_number", "name_or_company_name", "commissioner_name"))
-#   
-#   #filter for STP or region
-#   if(level == "Regional"){
-#     data <- data %>% 
-#       filter(region_name == region_STP_name )
-#   }else if(level == "STP"){
-#     data <- data %>% 
-#       filter(commissioner_name == region_STP_name)
-#   }
-#   
-#   data <- get_into_slide8_format(data, 
-#                                  existing_data = existing_data,
-#                                  historic_data = historic_data,
-#                                  remove_prototypes = remove_prototypes)
-#   
-#   data <- data %>% 
-#     filter(month == max(data$month) - lubridate::years(2))
-#   
-#   num_urgent_forms <- data[1, "urgent"]
-#   as.integer(num_urgent_forms)
-#   
-# }
+
 
 get_num_urgent_forms_2019 <- function(data = UDA_scheduled_data, 
                                  existing_data = slide8_banded_CoT_historic,
@@ -1219,8 +1208,112 @@ get_num_urgent_forms_2019 <- function(data = UDA_scheduled_data,
   
 }
 
+
+get_SOF_data <- function(data = UDA_scheduled_data){
+  SOF_data <- data %>%
+    select(month, contract_number, commissioner_name, annual_contracted_UDA, UDA_delivered) %>%
+    filter(annual_contracted_UDA > 100 & !(contract_number %in% prototype_contracts)) %>%
+    group_by(month, commissioner_name) %>%
+    summarise(annual_contracted_UDA = sum(annual_contracted_UDA, na.rm = T), UDA_delivered = sum(UDA_delivered, na.rm = T)) %>%
+    mutate(annual_contracted_UDA_scaled_monthly = annual_contracted_UDA / 12) %>%
+    #change names to match ICS names
+    mutate(commissioner_name = if_else(commissioner_name == "South East London STP", 
+                                       "OUR HEALTHIER SOUTH EAST LONDON ICS", 
+                                       commissioner_name)) %>%
+    mutate(commissioner_name = if_else(commissioner_name == "Lancashire and South Cumbria STP", 
+                                       "HEALTHIER LANCASHIRE AND SOUTH CUMBRIA ICS", 
+                                       commissioner_name))
   
-    
+  #write.csv(SOF_data, "SOF_data.csv", row.names = F)
+}
+  
+
+################################################################################
+plot_111_referrals <- function(data = dental_data_111){
+  
+  data <- data %>% 
+    mutate(month = as.Date(month)) %>%
+    group_by(month) %>%
+    summarise(monthly_case_volume = sum(monthly_case_volume))
+  
+  #plot code
+  ggplot(data) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 90)) +
+    geom_line(aes(x = month, 
+                  y = monthly_case_volume), 
+              colour = "steelblue", 
+              size = 1) +
+    scale_x_date(date_breaks = "1 month", 
+                 date_labels = "%b-%y") +
+    scale_y_continuous(breaks = seq(47000, 
+                                    max(data$monthly_case_volume, na.rm = T) + 10000,
+                                    10000)) +
+    labs(title = "111 call volume recommended towards dental services", 
+         x = "Month",
+         y = "Call volume", 
+         subtitle = "England"#,
+         #caption = "*services include: "
+    ) #+
+  # annotate(geom = "text", 
+  #          x = data$month, 
+  #          y = data$monthly_case_volume + 1, 
+  #          label = data$monthly_case_volume, 
+  #          size = 3) 
   
   
+}
+
+
+################################################################################  
+plot_breakdown_111_referrals <- function(data = dental_data_111){
+  
+  data <- data %>% 
+    mutate(disposition_text = if_else(disposition_text == "Attend Emergency Dental Treatment Centre within 4",
+                                      "Attend Emergency Dental Treatment Centre within 4hrs",
+                                      disposition_text)) %>%
+    mutate(month = as.Date(month)) 
+  
+  #get lines in the right order
+  data$disposition_text <- factor(data$disposition_text,
+                                  levels = c("Attend Emergency Dental Treatment Centre within 4hrs",
+                                             "To Contact a Dental Service within 1 hour",
+                                             "To Contact a Dental Service within 2 hours",
+                                             "Speak to a Dental Service within 2 hours",
+                                             "To Contact a Dental Service within 6 hours",
+                                             "To Contact a Dental Service within 12 hours",
+                                             "To Contact a Dental Service within 24 hours",
+                                             "To Contact a Dental Practice within 5 working days",
+                                             "Dental - Contact Orthodontist next working day"
+                                             ))
+  
+  #plot code
+  ggplot(data) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 90)) +
+    geom_line(aes(x = month, 
+                  y = monthly_case_volume,
+                  colour = str_wrap(disposition_text, 35)), 
+              size = 1) +
+    scale_x_date(date_breaks = "1 month", 
+                 date_labels = "%b-%y") +
+    # scale_y_continuous(breaks = seq(47000, 
+    #                                 max(data$monthly_case_volume, na.rm = T) + 10000,
+    #                                 10000)) +
+    labs(title = "111 call volume recommended towards dental services", 
+         x = "Month",
+         y = "Call volume", 
+         subtitle = "England",
+         colour = "Disposition"#,
+         #caption = "*services include: "
+    ) #+
+  # annotate(geom = "text", 
+  #          x = data$month, 
+  #          y = data$monthly_case_volume + 1, 
+  #          label = data$monthly_case_volume, 
+  #          size = 3) 
+  
+  
+}
+
   

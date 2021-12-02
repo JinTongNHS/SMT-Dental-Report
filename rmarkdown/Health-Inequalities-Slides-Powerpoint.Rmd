@@ -1,9 +1,19 @@
 ---
+# title: "Dental Health Inequalities"
+# author: "NHS England and NHS Improvement"
+# date: "`r format(Sys.time(), '%d %B, %Y')`"
+# output: 
 title: "Dental Health Inequalities"
-author: "NHS England and NHS Improvement"
-date: "`r format(Sys.time(), '%d %B, %Y')`"
-output: 
-  powerpoint_presentation
+subtitle: "National"
+author: "`r format(Sys.time(), '%B, %Y')`"
+output:
+  beamer_presentation:
+    includes:
+      in_header: slide_format2.tex
+  slidy_presentation: default
+sansfont: Calibri Light
+fontsize: 8pt
+classoption: aspectratio = 169
 ---
 
 
@@ -11,10 +21,12 @@ output:
 library(tidyverse)
 library(readxl)
 source("../R/health_inequalities_functions.R")
-monthly_HE <- readRDS("~/R-Projects/SMT-Dental-Report/data/health_inequalities_data/monthly_HE.rds")
-monthly_HE_deprived_by_contract <- read_excel("../data/health_inequalities_data/monthly_HE_deprived_by_contract.xlsx")
-monthly_HE_deprived_by_patient <- read_excel("../data/health_inequalities_data/monthly_HE_deprived_by_patient.xlsx")
-child_band2_FV <- readRDS("../data/health_inequalities_data/child_band2_FV.rds")
+# monthly_HE <- readRDS("~/R-Projects/SMT-Dental-Report/data/health_inequalities_data/monthly_HE.rds")
+# monthly_HE_deprived_by_contract <- read_excel("../data/health_inequalities_data/monthly_HE_deprived_by_contract.xlsx")
+# monthly_HE_deprived_by_patient <- read_excel("../data/health_inequalities_data/monthly_HE_deprived_by_patient.xlsx")
+# child_band2_FV <- readRDS("../data/health_inequalities_data/child_band2_FV.rds")
+
+monthly_HE <- readRDS("../data/health_inequalities_data/October_data/HE_patient_charge_201808_202110.RDS")
 ```
 
 ```{r setup, include=FALSE}
@@ -23,193 +35,260 @@ knitr::opts_chunk$set(echo = FALSE)
 
 <!-- ## National Level -->
 
-<!-- ## Band 2 courses of treatment ncompared to FV rates for 3-16 year olds -->
-<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
-<!-- plot_child_band2_FV() -->
-<!-- ``` -->
+## Total FP17s by ethnic group 
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_ethnicity(band = total_FP17, band_name = "Total", numOrPerc = "tot", level = "National")
+```
 
-<!-- ## Total FP17s by ethnic group -->
-<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
-<!-- plot_HE_ethnicity(band = total_FP17, band_name = "Total", numOrPerc = "tot", level = "National") -->
-<!-- ``` -->
+##
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_ethnicity(band = band1, band_name = "Band 1", numOrPerc = "num", level = "National")
+```
 
-<!-- ## Banded FP17s by ethnic group -->
-<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
-<!-- plot_HE_ethnicity(band = band1, band_name = "Band 1", numOrPerc = "num", level = "National") -->
-<!-- ``` -->
+## 
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_ethnicity(band = band2, band_name = "Band 2", numOrPerc = "num", level = "National")
+```
+## 
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_ethnicity(band = band3, band_name = "Band 3", numOrPerc = "num", level = "National")
+```
 
-<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
-<!-- plot_HE_ethnicity(band = band2, band_name = "Band 2", numOrPerc = "num", level = "National") -->
-<!-- ``` -->
+## 
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_ethnicity(band = urgent, band_name = "Urgent", numOrPerc = "num", level = "National")
+```
 
-<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
-<!-- plot_HE_ethnicity(band = band3, band_name = "Band 3", numOrPerc = "num", level = "National") -->
-<!-- ``` -->
+## Percentage of total FP17s by ethnic group 
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_ethnicity(band = perc_total_FP17, band_name = "Total", numOrPerc = "perc", level = "National")
+```
 
-<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
-<!-- plot_HE_ethnicity(band = urgent, band_name = "Urgent", numOrPerc = "num", level = "National") -->
-<!-- ``` -->
+##
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_ethnicity(band = perc_band1, band_name = "Band 1", numOrPerc = "perc", level = "National")
+```
 
-<!-- ## Percentage of total FP17s by ethnic group -->
-<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
-<!-- plot_HE_ethnicity(band = perc_total_FP17, band_name = "Total", numOrPerc = "perc", level = "National") -->
-<!-- ``` -->
+##
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_ethnicity(band = perc_band2, band_name = "Band 2", numOrPerc = "perc", level = "National")
+```
 
-<!-- ## Percentage of banded FP17s by ethnic group -->
-<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
-<!-- plot_HE_ethnicity(band = perc_band1, band_name = "Band 1", numOrPerc = "perc", level = "National") -->
-<!-- ``` -->
+## 
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_ethnicity(band = perc_band3, band_name = "Band 3", numOrPerc = "perc", level = "National")
+```
 
-<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
-<!-- plot_HE_ethnicity(band = perc_band2, band_name = "Band 2", numOrPerc = "perc", level = "National") -->
-<!-- ``` -->
-
-<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
-<!-- plot_HE_ethnicity(band = perc_band3, band_name = "Band 3", numOrPerc = "perc", level = "National") -->
-<!-- ``` -->
-
-<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
-<!-- plot_HE_ethnicity(band = perc_urgent, band_name = "Urgent", numOrPerc = "perc", level = "National") -->
-<!-- ``` -->
-
-
-
-<!-- ## Total FP17s by gender -->
-<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
-<!-- plot_HE_gender(band = total_FP17, band_name = "Total", numOrPerc = "tot", level = "National") -->
-<!-- ``` -->
-
-<!-- ## Banded FP17s by gender -->
-<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
-<!-- plot_HE_gender(band = band1, band_name = "Band 1", numOrPerc = "num", level = "National") -->
-<!-- ``` -->
-
-<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
-<!-- plot_HE_gender(band = band2, band_name = "Band 2", numOrPerc = "num", level = "National") -->
-<!-- ``` -->
-
-<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
-<!-- plot_HE_gender(band = band3, band_name = "Band 3", numOrPerc = "num", level = "National") -->
-<!-- ``` -->
-
-<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
-<!-- plot_HE_gender(band = urgent, band_name = "Urgent", numOrPerc = "num", level = "National") -->
-<!-- ``` -->
-
-<!-- ## Percentage of total FP17s by gender -->
-<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
-<!-- plot_HE_gender(band = perc_total_FP17, band_name = "Total", numOrPerc = "perc", level = "National") -->
-<!-- ``` -->
-
-<!-- ## Percentage of banded FP17s by gender -->
-<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
-<!-- plot_HE_gender(band = perc_band1, band_name = "Band 1", numOrPerc = "perc", level = "National") -->
-<!-- ``` -->
-
-<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
-<!-- plot_HE_gender(band = perc_band2, band_name = "Band 2", numOrPerc = "perc", level = "National") -->
-<!-- ``` -->
-
-<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
-<!-- plot_HE_gender(band = perc_band3, band_name = "Band 3", numOrPerc = "perc", level = "National") -->
-<!-- ``` -->
-
-<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
-<!-- plot_HE_gender(band = perc_urgent, band_name = "Urgent", numOrPerc = "perc", level = "National") -->
-<!-- ``` -->
+##
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_ethnicity(band = perc_urgent, band_name = "Urgent", numOrPerc = "perc", level = "National")
+```
 
 
 
-<!-- ## Total FP17s by patient charge status -->
-<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
-<!-- plot_HE_charge_status(band = total_FP17, band_name = "Total", numOrPerc = "tot", level = "National") -->
-<!-- ``` -->
+## Total FP17s by gender
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_gender(band = total_FP17, band_name = "Total", numOrPerc = "tot", level = "National")
+```
 
-<!-- ## Banded FP17s by patient charge status -->
-<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
-<!-- plot_HE_charge_status(band = band1, band_name = "Band 1", numOrPerc = "num", level = "National") -->
-<!-- ``` -->
+## Banded FP17s by gender
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_gender(band = band1, band_name = "Band 1", numOrPerc = "num", level = "National")
+```
 
-<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
-<!-- plot_HE_charge_status(band = band2, band_name = "Band 2", numOrPerc = "num", level = "National") -->
-<!-- ``` -->
+##
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_gender(band = band2, band_name = "Band 2", numOrPerc = "num", level = "National")
+```
 
-<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
-<!-- plot_HE_charge_status(band = band3, band_name = "Band 3", numOrPerc = "num", level = "National") -->
-<!-- ``` -->
+##
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_gender(band = band3, band_name = "Band 3", numOrPerc = "num", level = "National")
+```
 
-<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
-<!-- plot_HE_charge_status(band = urgent, band_name = "Urgent", numOrPerc = "num", level = "National") -->
-<!-- ``` -->
+##
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_gender(band = urgent, band_name = "Urgent", numOrPerc = "num", level = "National")
+```
 
-<!-- ## Percentage of total FP17s by patient charge status -->
-<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
-<!-- plot_HE_charge_status(band = perc_total_FP17, band_name = "Total", numOrPerc = "perc", level = "National") -->
-<!-- ``` -->
+## Percentage of total FP17s by gender
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_gender(band = perc_total_FP17, band_name = "Total", numOrPerc = "perc", level = "National")
+```
 
-<!-- ## Percentage of banded FP17s by patient charge status -->
-<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
-<!-- plot_HE_charge_status(band = perc_band1, band_name = "Band 1", numOrPerc = "perc", level = "National") -->
-<!-- ``` -->
+## Percentage of banded FP17s by gender
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_gender(band = perc_band1, band_name = "Band 1", numOrPerc = "perc", level = "National")
+```
 
-<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
-<!-- plot_HE_charge_status(band = perc_band2, band_name = "Band 2", numOrPerc = "perc", level = "National") -->
-<!-- ``` -->
+##
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_gender(band = perc_band2, band_name = "Band 2", numOrPerc = "perc", level = "National")
+```
 
-<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
-<!-- plot_HE_charge_status(band = perc_band3, band_name = "Band 3", numOrPerc = "perc", level = "National") -->
-<!-- ``` -->
+##
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_gender(band = perc_band3, band_name = "Band 3", numOrPerc = "perc", level = "National")
+```
 
-<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
-<!-- plot_HE_charge_status(band = perc_urgent, band_name = "Urgent", numOrPerc = "perc", level = "National") -->
-<!-- ``` -->
+##
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_gender(band = perc_urgent, band_name = "Urgent", numOrPerc = "perc", level = "National")
+```
 
 
 
+## Total FP17s by patient charge status
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_charge_status(band = total_FP17, band_name = "Total", numOrPerc = "tot", level = "National")
+```
 
-<!-- ## Total FP17s by age group -->
-<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
-<!-- plot_HE_age(band = total_FP17, band_name = "Total", numOrPerc = "tot", level = "National") -->
-<!-- ``` -->
+## Banded FP17s by patient charge status
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_charge_status(band = band1, band_name = "Band 1", numOrPerc = "num", level = "National")
+```
 
-<!-- ## Banded FP17s by patient age group -->
-<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
-<!-- plot_HE_age(band = band1, band_name = "Band 1", numOrPerc = "num", level = "National") -->
-<!-- ``` -->
+##
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_charge_status(band = band2, band_name = "Band 2", numOrPerc = "num", level = "National")
+```
 
-<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
-<!-- plot_HE_age(band = band2, band_name = "Band 2", numOrPerc = "num", level = "National") -->
-<!-- ``` -->
+##
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_charge_status(band = band3, band_name = "Band 3", numOrPerc = "num", level = "National")
+```
 
-<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
-<!-- plot_HE_age(band = band3, band_name = "Band 3", numOrPerc = "num", level = "National") -->
-<!-- ``` -->
+##
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_charge_status(band = urgent, band_name = "Urgent", numOrPerc = "num", level = "National")
+```
 
-<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
-<!-- plot_HE_age(band = urgent, band_name = "Urgent", numOrPerc = "num", level = "National") -->
-<!-- ``` -->
+## Percentage of total FP17s by patient charge status
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_charge_status(band = perc_total_FP17, band_name = "Total", numOrPerc = "perc", level = "National")
+```
 
-<!-- ## Percentage of total FP17s by age group -->
-<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
-<!-- plot_HE_age(band = perc_total_FP17, band_name = "Total", numOrPerc = "perc", level = "National") -->
-<!-- ``` -->
+## Percentage of banded FP17s by patient charge status
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_charge_status(band = perc_band1, band_name = "Band 1", numOrPerc = "perc", level = "National")
+```
 
-<!-- ## Percentage of banded FP17s by age group -->
-<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
-<!-- plot_HE_age(band = perc_band1, band_name = "Band 1", numOrPerc = "perc", level = "National") -->
-<!-- ``` -->
+##
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_charge_status(band = perc_band2, band_name = "Band 2", numOrPerc = "perc", level = "National")
+```
 
-<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
-<!-- plot_HE_age(band = perc_band2, band_name = "Band 2", numOrPerc = "perc", level = "National") -->
-<!-- ``` -->
+##
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_charge_status(band = perc_band3, band_name = "Band 3", numOrPerc = "perc", level = "National")
+```
 
-<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
-<!-- plot_HE_age(band = perc_band3, band_name = "Band 3", numOrPerc = "perc", level = "National") -->
-<!-- ``` -->
+##
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_charge_status(band = perc_urgent, band_name = "Urgent", numOrPerc = "perc", level = "National")
+```
 
-<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
-<!-- plot_HE_age(band = perc_urgent, band_name = "Urgent", numOrPerc = "perc", level = "National") -->
-<!-- ``` -->
+
+## Total FP17s by patient exemption/remission type
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_charge_status_levels(band = total_FP17, band_name = "Total", numOrPerc = "tot", level = "National")
+```
+
+## Banded FP17s by patient exemption/remission type
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_charge_status_levels(band = band1, band_name = "Band 1", numOrPerc = "num", level = "National")
+```
+
+##
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_charge_status_levels(band = band2, band_name = "Band 2", numOrPerc = "num", level = "National")
+```
+
+##
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_charge_status_levels(band = band3, band_name = "Band 3", numOrPerc = "num", level = "National")
+```
+
+##
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_charge_status_levels(band = urgent, band_name = "Urgent", numOrPerc = "num", level = "National")
+```
+
+## Percentage of total FP17s by exemption/remission type
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_charge_status_levels(band = perc_total_FP17, band_name = "Total", numOrPerc = "perc", level = "National")
+```
+
+## Percentage of banded FP17s by exemption/remission type
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_charge_status_levels(band = perc_band1, band_name = "Band 1", numOrPerc = "perc", level = "National")
+```
+
+##
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_charge_status_levels(band = perc_band2, band_name = "Band 2", numOrPerc = "perc", level = "National")
+```
+
+##
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_charge_status_levels(band = perc_band3, band_name = "Band 3", numOrPerc = "perc", level = "National")
+```
+
+##
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_charge_status_levels(band = perc_urgent, band_name = "Urgent", numOrPerc = "perc", level = "National")
+```
+
+
+## Total FP17s by age group
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_age(band = total_FP17, band_name = "Total", numOrPerc = "tot", level = "National")
+```
+
+## Banded FP17s by patient age group
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_age(band = band1, band_name = "Band 1", numOrPerc = "num", level = "National")
+```
+
+##
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_age(band = band2, band_name = "Band 2", numOrPerc = "num", level = "National")
+```
+
+##
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_age(band = band3, band_name = "Band 3", numOrPerc = "num", level = "National")
+```
+
+##
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_age(band = urgent, band_name = "Urgent", numOrPerc = "num", level = "National")
+```
+
+## Percentage of total FP17s by age group
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_age(band = perc_total_FP17, band_name = "Total", numOrPerc = "perc", level = "National")
+```
+
+## Percentage of banded FP17s by age group
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_age(band = perc_band1, band_name = "Band 1", numOrPerc = "perc", level = "National")
+```
+
+##
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_age(band = perc_band2, band_name = "Band 2", numOrPerc = "perc", level = "National")
+```
+
+##
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_age(band = perc_band3, band_name = "Band 3", numOrPerc = "perc", level = "National")
+```
+
+##
+```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
+plot_HE_age(band = perc_urgent, band_name = "Urgent", numOrPerc = "perc", level = "National")
+```
 
 
 <!-- ## Regional Level -->
@@ -8406,376 +8485,376 @@ knitr::opts_chunk$set(echo = FALSE)
 <!--     age_perc_urg[[42]] -->
 <!-- ``` -->
 
-## Top 20 Most Deprived Local Authorities - by Contracts within the LAs
+<!-- ## Top 20 Most Deprived Local Authorities - by Contracts within the LAs -->
 
 
-## Total FP17s by ethnic group
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_ethnicity(data = monthly_HE_deprived_by_contract, band = total_FP17, band_name = "Total", numOrPerc = "tot", override_subtitle = "Grouped top 20 most deprived local authorities by contract*")
-```
+<!-- ## Total FP17s by ethnic group -->
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_ethnicity(data = monthly_HE_deprived_by_contract, band = total_FP17, band_name = "Total", numOrPerc = "tot", override_subtitle = "Grouped top 20 most deprived local authorities by contract*") -->
+<!-- ``` -->
 
-## Banded FP17s by ethnic group
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_ethnicity(data = monthly_HE_deprived_by_contract, band = band1, band_name = "Band 1", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by contract*")
-```
+<!-- ## Banded FP17s by ethnic group -->
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_ethnicity(data = monthly_HE_deprived_by_contract, band = band1, band_name = "Band 1", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by contract*") -->
+<!-- ``` -->
 
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_ethnicity(data = monthly_HE_deprived_by_contract, band = band2, band_name = "Band 2", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by contract*")
-```
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_ethnicity(data = monthly_HE_deprived_by_contract, band = band2, band_name = "Band 2", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by contract*") -->
+<!-- ``` -->
 
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_ethnicity(data = monthly_HE_deprived_by_contract, band = band3, band_name = "Band 3", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by contract*")
-```
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_ethnicity(data = monthly_HE_deprived_by_contract, band = band3, band_name = "Band 3", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by contract*") -->
+<!-- ``` -->
 
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_ethnicity(data = monthly_HE_deprived_by_contract, band = urgent, band_name = "Urgent", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by contract*")
-```
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_ethnicity(data = monthly_HE_deprived_by_contract, band = urgent, band_name = "Urgent", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by contract*") -->
+<!-- ``` -->
 
-## Percentage of total FP17s by ethnic group
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_ethnicity(data = monthly_HE_deprived_by_contract, band = perc_total_FP17, band_name = "Total", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by contract*")
-```
+<!-- ## Percentage of total FP17s by ethnic group -->
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_ethnicity(data = monthly_HE_deprived_by_contract, band = perc_total_FP17, band_name = "Total", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by contract*") -->
+<!-- ``` -->
 
-## Percentage of banded FP17s by ethnic group
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_ethnicity(data = monthly_HE_deprived_by_contract, band = perc_band1, band_name = "Band 1", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by contract*")
-```
+<!-- ## Percentage of banded FP17s by ethnic group -->
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_ethnicity(data = monthly_HE_deprived_by_contract, band = perc_band1, band_name = "Band 1", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by contract*") -->
+<!-- ``` -->
 
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_ethnicity(data = monthly_HE_deprived_by_contract, band = perc_band2, band_name = "Band 2", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by contract*")
-```
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_ethnicity(data = monthly_HE_deprived_by_contract, band = perc_band2, band_name = "Band 2", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by contract*") -->
+<!-- ``` -->
 
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_ethnicity(data = monthly_HE_deprived_by_contract, band = perc_band3, band_name = "Band 3", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by contract*")
-```
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_ethnicity(data = monthly_HE_deprived_by_contract, band = perc_band3, band_name = "Band 3", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by contract*") -->
+<!-- ``` -->
 
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_ethnicity(data = monthly_HE_deprived_by_contract, band = perc_urgent, band_name = "Urgent", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by contract*")
-```
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_ethnicity(data = monthly_HE_deprived_by_contract, band = perc_urgent, band_name = "Urgent", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by contract*") -->
+<!-- ``` -->
 
 
 
-## Total FP17s by gender
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_gender(data = monthly_HE_deprived_by_contract, band = total_FP17, band_name = "Total", numOrPerc = "tot", override_subtitle = "Grouped top 20 most deprived local authorities by contract*")
-```
+<!-- ## Total FP17s by gender -->
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_gender(data = monthly_HE_deprived_by_contract, band = total_FP17, band_name = "Total", numOrPerc = "tot", override_subtitle = "Grouped top 20 most deprived local authorities by contract*") -->
+<!-- ``` -->
 
-## Banded FP17s by gender
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_gender(data = monthly_HE_deprived_by_contract, band = band1, band_name = "Band 1", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by contract*")
-```
+<!-- ## Banded FP17s by gender -->
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_gender(data = monthly_HE_deprived_by_contract, band = band1, band_name = "Band 1", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by contract*") -->
+<!-- ``` -->
 
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_gender(data = monthly_HE_deprived_by_contract, band = band2, band_name = "Band 2", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by contract*")
-```
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_gender(data = monthly_HE_deprived_by_contract, band = band2, band_name = "Band 2", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by contract*") -->
+<!-- ``` -->
 
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_gender(data = monthly_HE_deprived_by_contract, band = band3, band_name = "Band 3", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by contract*")
-```
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_gender(data = monthly_HE_deprived_by_contract, band = band3, band_name = "Band 3", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by contract*") -->
+<!-- ``` -->
 
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_gender(data = monthly_HE_deprived_by_contract, band = urgent, band_name = "Urgent", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by contract*")
-```
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_gender(data = monthly_HE_deprived_by_contract, band = urgent, band_name = "Urgent", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by contract*") -->
+<!-- ``` -->
 
-## Percentage of total FP17s by gender
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_gender(data = monthly_HE_deprived_by_contract, band = perc_total_FP17, band_name = "Total", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by contract*")
-```
+<!-- ## Percentage of total FP17s by gender -->
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_gender(data = monthly_HE_deprived_by_contract, band = perc_total_FP17, band_name = "Total", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by contract*") -->
+<!-- ``` -->
 
-## Percentage of banded FP17s by gender
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_gender(data = monthly_HE_deprived_by_contract, band = perc_band1, band_name = "Band 1", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by contract*")
-```
+<!-- ## Percentage of banded FP17s by gender -->
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_gender(data = monthly_HE_deprived_by_contract, band = perc_band1, band_name = "Band 1", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by contract*") -->
+<!-- ``` -->
 
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_gender(data = monthly_HE_deprived_by_contract, band = perc_band2, band_name = "Band 2", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by contract*")
-```
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_gender(data = monthly_HE_deprived_by_contract, band = perc_band2, band_name = "Band 2", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by contract*") -->
+<!-- ``` -->
 
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_gender(data = monthly_HE_deprived_by_contract, band = perc_band3, band_name = "Band 3", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by contract*")
-```
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_gender(data = monthly_HE_deprived_by_contract, band = perc_band3, band_name = "Band 3", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by contract*") -->
+<!-- ``` -->
 
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_gender(data = monthly_HE_deprived_by_contract, band = perc_urgent, band_name = "Urgent", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by contract*")
-```
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_gender(data = monthly_HE_deprived_by_contract, band = perc_urgent, band_name = "Urgent", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by contract*") -->
+<!-- ``` -->
 
 
 
-## Total FP17s by patient charge status
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_charge_status(data = monthly_HE_deprived_by_contract, band = total_FP17, band_name = "Total", numOrPerc = "tot", override_subtitle = "Grouped top 20 most deprived local authorities by contract*")
-```
+<!-- ## Total FP17s by patient charge status -->
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_charge_status(data = monthly_HE_deprived_by_contract, band = total_FP17, band_name = "Total", numOrPerc = "tot", override_subtitle = "Grouped top 20 most deprived local authorities by contract*") -->
+<!-- ``` -->
 
-## Banded FP17s by patient charge status
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_charge_status(data = monthly_HE_deprived_by_contract, band = band1, band_name = "Band 1", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by contract*")
-```
+<!-- ## Banded FP17s by patient charge status -->
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_charge_status(data = monthly_HE_deprived_by_contract, band = band1, band_name = "Band 1", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by contract*") -->
+<!-- ``` -->
 
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_charge_status(data = monthly_HE_deprived_by_contract, band = band2, band_name = "Band 2", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by contract*")
-```
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_charge_status(data = monthly_HE_deprived_by_contract, band = band2, band_name = "Band 2", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by contract*") -->
+<!-- ``` -->
 
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_charge_status(data = monthly_HE_deprived_by_contract, band = band3, band_name = "Band 3", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by contract*")
-```
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_charge_status(data = monthly_HE_deprived_by_contract, band = band3, band_name = "Band 3", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by contract*") -->
+<!-- ``` -->
 
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_charge_status(data = monthly_HE_deprived_by_contract, band = urgent, band_name = "Urgent", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by contract*")
-```
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_charge_status(data = monthly_HE_deprived_by_contract, band = urgent, band_name = "Urgent", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by contract*") -->
+<!-- ``` -->
 
-## Percentage of total FP17s by patient charge status
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_charge_status(data = monthly_HE_deprived_by_contract, band = perc_total_FP17, band_name = "Total", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by contract*")
-```
+<!-- ## Percentage of total FP17s by patient charge status -->
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_charge_status(data = monthly_HE_deprived_by_contract, band = perc_total_FP17, band_name = "Total", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by contract*") -->
+<!-- ``` -->
 
-## Percentage of banded FP17s by patient charge status
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_charge_status(data = monthly_HE_deprived_by_contract, band = perc_band1, band_name = "Band 1", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by contract*")
-```
+<!-- ## Percentage of banded FP17s by patient charge status -->
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_charge_status(data = monthly_HE_deprived_by_contract, band = perc_band1, band_name = "Band 1", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by contract*") -->
+<!-- ``` -->
 
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_charge_status(data = monthly_HE_deprived_by_contract, band = perc_band2, band_name = "Band 2", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by contract*")
-```
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_charge_status(data = monthly_HE_deprived_by_contract, band = perc_band2, band_name = "Band 2", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by contract*") -->
+<!-- ``` -->
 
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_charge_status(data = monthly_HE_deprived_by_contract, band = perc_band3, band_name = "Band 3", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by contract*")
-```
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_charge_status(data = monthly_HE_deprived_by_contract, band = perc_band3, band_name = "Band 3", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by contract*") -->
+<!-- ``` -->
 
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_charge_status(data = monthly_HE_deprived_by_contract, band = perc_urgent, band_name = "Urgent", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by contract*")
-```
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_charge_status(data = monthly_HE_deprived_by_contract, band = perc_urgent, band_name = "Urgent", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by contract*") -->
+<!-- ``` -->
 
 
-## Total FP17s by age group
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_age(data = monthly_HE_deprived_by_contract, band = total_FP17, band_name = "Total", numOrPerc = "tot", override_subtitle = "Grouped top 20 most deprived local authorities by contract*")
-```
+<!-- ## Total FP17s by age group -->
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_age(data = monthly_HE_deprived_by_contract, band = total_FP17, band_name = "Total", numOrPerc = "tot", override_subtitle = "Grouped top 20 most deprived local authorities by contract*") -->
+<!-- ``` -->
 
-## Banded FP17s by patient age group
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_age(data = monthly_HE_deprived_by_contract, band = band1, band_name = "Band 1", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by contract*")
-```
+<!-- ## Banded FP17s by patient age group -->
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_age(data = monthly_HE_deprived_by_contract, band = band1, band_name = "Band 1", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by contract*") -->
+<!-- ``` -->
 
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_age(data = monthly_HE_deprived_by_contract, band = band2, band_name = "Band 2", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by contract*")
-```
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_age(data = monthly_HE_deprived_by_contract, band = band2, band_name = "Band 2", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by contract*") -->
+<!-- ``` -->
 
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_age(data = monthly_HE_deprived_by_contract, band = band3, band_name = "Band 3", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by contract*")
-```
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_age(data = monthly_HE_deprived_by_contract, band = band3, band_name = "Band 3", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by contract*") -->
+<!-- ``` -->
 
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_age(data = monthly_HE_deprived_by_contract, band = urgent, band_name = "Urgent", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by contract*")
-```
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_age(data = monthly_HE_deprived_by_contract, band = urgent, band_name = "Urgent", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by contract*") -->
+<!-- ``` -->
 
-## Percentage of total FP17s by age group
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_age(data = monthly_HE_deprived_by_contract, band = perc_total_FP17, band_name = "Total", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by contract*")
-```
+<!-- ## Percentage of total FP17s by age group -->
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_age(data = monthly_HE_deprived_by_contract, band = perc_total_FP17, band_name = "Total", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by contract*") -->
+<!-- ``` -->
 
-## Percentage of banded FP17s by age group
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_age(data = monthly_HE_deprived_by_contract, band = perc_band1, band_name = "Band 1", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by contract*")
-```
+<!-- ## Percentage of banded FP17s by age group -->
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_age(data = monthly_HE_deprived_by_contract, band = perc_band1, band_name = "Band 1", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by contract*") -->
+<!-- ``` -->
 
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_age(data = monthly_HE_deprived_by_contract, band = perc_band2, band_name = "Band 2", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by contract*")
-```
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_age(data = monthly_HE_deprived_by_contract, band = perc_band2, band_name = "Band 2", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by contract*") -->
+<!-- ``` -->
 
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_age(data = monthly_HE_deprived_by_contract, band = perc_band3, band_name = "Band 3", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by contract*")
-```
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_age(data = monthly_HE_deprived_by_contract, band = perc_band3, band_name = "Band 3", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by contract*") -->
+<!-- ``` -->
 
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_age(data = monthly_HE_deprived_by_contract, band = perc_urgent, band_name = "Urgent", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by contract*")
-```
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_age(data = monthly_HE_deprived_by_contract, band = perc_urgent, band_name = "Urgent", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by contract*") -->
+<!-- ``` -->
 
 
 
 
-## Top 20 Most Deprived Local Authorities - by Patients Resident in the LAs
+<!-- ## Top 20 Most Deprived Local Authorities - by Patients Resident in the LAs -->
 
 
-## Total FP17s by ethnic group
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_ethnicity(data = monthly_HE_deprived_by_patient, band = total_FP17, band_name = "Total", numOrPerc = "tot", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*")
-```
+<!-- ## Total FP17s by ethnic group -->
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_ethnicity(data = monthly_HE_deprived_by_patient, band = total_FP17, band_name = "Total", numOrPerc = "tot", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*") -->
+<!-- ``` -->
 
-## Banded FP17s by ethnic group
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_ethnicity(data = monthly_HE_deprived_by_patient, band = band1, band_name = "Band 1", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*")
-```
+<!-- ## Banded FP17s by ethnic group -->
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_ethnicity(data = monthly_HE_deprived_by_patient, band = band1, band_name = "Band 1", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*") -->
+<!-- ``` -->
 
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_ethnicity(data = monthly_HE_deprived_by_patient, band = band2, band_name = "Band 2", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*")
-```
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_ethnicity(data = monthly_HE_deprived_by_patient, band = band2, band_name = "Band 2", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*") -->
+<!-- ``` -->
 
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_ethnicity(data = monthly_HE_deprived_by_patient, band = band3, band_name = "Band 3", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*")
-```
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_ethnicity(data = monthly_HE_deprived_by_patient, band = band3, band_name = "Band 3", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*") -->
+<!-- ``` -->
 
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_ethnicity(data = monthly_HE_deprived_by_patient, band = urgent, band_name = "Urgent", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*")
-```
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_ethnicity(data = monthly_HE_deprived_by_patient, band = urgent, band_name = "Urgent", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*") -->
+<!-- ``` -->
 
-## Percentage of total FP17s by ethnic group
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_ethnicity(data = monthly_HE_deprived_by_patient, band = perc_total_FP17, band_name = "Total", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*")
-```
+<!-- ## Percentage of total FP17s by ethnic group -->
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_ethnicity(data = monthly_HE_deprived_by_patient, band = perc_total_FP17, band_name = "Total", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*") -->
+<!-- ``` -->
 
-## Percentage of banded FP17s by ethnic group
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_ethnicity(data = monthly_HE_deprived_by_patient, band = perc_band1, band_name = "Band 1", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*")
-```
+<!-- ## Percentage of banded FP17s by ethnic group -->
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_ethnicity(data = monthly_HE_deprived_by_patient, band = perc_band1, band_name = "Band 1", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*") -->
+<!-- ``` -->
 
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_ethnicity(data = monthly_HE_deprived_by_patient, band = perc_band2, band_name = "Band 2", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*")
-```
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_ethnicity(data = monthly_HE_deprived_by_patient, band = perc_band2, band_name = "Band 2", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*") -->
+<!-- ``` -->
 
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_ethnicity(data = monthly_HE_deprived_by_patient, band = perc_band3, band_name = "Band 3", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*")
-```
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_ethnicity(data = monthly_HE_deprived_by_patient, band = perc_band3, band_name = "Band 3", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*") -->
+<!-- ``` -->
 
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_ethnicity(data = monthly_HE_deprived_by_patient, band = perc_urgent, band_name = "Urgent", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*")
-```
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_ethnicity(data = monthly_HE_deprived_by_patient, band = perc_urgent, band_name = "Urgent", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*") -->
+<!-- ``` -->
 
 
 
-## Total FP17s by gender
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_gender(data = monthly_HE_deprived_by_patient, band = total_FP17, band_name = "Total", numOrPerc = "tot", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*")
-```
+<!-- ## Total FP17s by gender -->
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_gender(data = monthly_HE_deprived_by_patient, band = total_FP17, band_name = "Total", numOrPerc = "tot", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*") -->
+<!-- ``` -->
 
-## Banded FP17s by gender
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_gender(data = monthly_HE_deprived_by_patient, band = band1, band_name = "Band 1", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*")
-```
+<!-- ## Banded FP17s by gender -->
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_gender(data = monthly_HE_deprived_by_patient, band = band1, band_name = "Band 1", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*") -->
+<!-- ``` -->
 
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_gender(data = monthly_HE_deprived_by_patient, band = band2, band_name = "Band 2", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*")
-```
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_gender(data = monthly_HE_deprived_by_patient, band = band2, band_name = "Band 2", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*") -->
+<!-- ``` -->
 
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_gender(data = monthly_HE_deprived_by_patient, band = band3, band_name = "Band 3", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*")
-```
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_gender(data = monthly_HE_deprived_by_patient, band = band3, band_name = "Band 3", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*") -->
+<!-- ``` -->
 
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_gender(data = monthly_HE_deprived_by_patient, band = urgent, band_name = "Urgent", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*")
-```
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_gender(data = monthly_HE_deprived_by_patient, band = urgent, band_name = "Urgent", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*") -->
+<!-- ``` -->
 
-## Percentage of total FP17s by gender
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_gender(data = monthly_HE_deprived_by_patient, band = perc_total_FP17, band_name = "Total", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*")
-```
+<!-- ## Percentage of total FP17s by gender -->
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_gender(data = monthly_HE_deprived_by_patient, band = perc_total_FP17, band_name = "Total", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*") -->
+<!-- ``` -->
 
-## Percentage of banded FP17s by gender
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_gender(data = monthly_HE_deprived_by_patient, band = perc_band1, band_name = "Band 1", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*")
-```
+<!-- ## Percentage of banded FP17s by gender -->
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_gender(data = monthly_HE_deprived_by_patient, band = perc_band1, band_name = "Band 1", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*") -->
+<!-- ``` -->
 
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_gender(data = monthly_HE_deprived_by_patient, band = perc_band2, band_name = "Band 2", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*")
-```
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_gender(data = monthly_HE_deprived_by_patient, band = perc_band2, band_name = "Band 2", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*") -->
+<!-- ``` -->
 
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_gender(data = monthly_HE_deprived_by_patient, band = perc_band3, band_name = "Band 3", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*")
-```
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_gender(data = monthly_HE_deprived_by_patient, band = perc_band3, band_name = "Band 3", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*") -->
+<!-- ``` -->
 
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_gender(data = monthly_HE_deprived_by_patient, band = perc_urgent, band_name = "Urgent", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*")
-```
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_gender(data = monthly_HE_deprived_by_patient, band = perc_urgent, band_name = "Urgent", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*") -->
+<!-- ``` -->
 
 
 
-## Total FP17s by patient charge status
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_charge_status(data = monthly_HE_deprived_by_patient, band = total_FP17, band_name = "Total", numOrPerc = "tot", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*")
-```
+<!-- ## Total FP17s by patient charge status -->
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_charge_status(data = monthly_HE_deprived_by_patient, band = total_FP17, band_name = "Total", numOrPerc = "tot", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*") -->
+<!-- ``` -->
 
-## Banded FP17s by patient charge status
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_charge_status(data = monthly_HE_deprived_by_patient, band = band1, band_name = "Band 1", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*")
-```
+<!-- ## Banded FP17s by patient charge status -->
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_charge_status(data = monthly_HE_deprived_by_patient, band = band1, band_name = "Band 1", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*") -->
+<!-- ``` -->
 
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_charge_status(data = monthly_HE_deprived_by_patient, band = band2, band_name = "Band 2", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*")
-```
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_charge_status(data = monthly_HE_deprived_by_patient, band = band2, band_name = "Band 2", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*") -->
+<!-- ``` -->
 
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_charge_status(data = monthly_HE_deprived_by_patient, band = band3, band_name = "Band 3", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*")
-```
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_charge_status(data = monthly_HE_deprived_by_patient, band = band3, band_name = "Band 3", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*") -->
+<!-- ``` -->
 
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_charge_status(data = monthly_HE_deprived_by_patient, band = urgent, band_name = "Urgent", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*")
-```
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_charge_status(data = monthly_HE_deprived_by_patient, band = urgent, band_name = "Urgent", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*") -->
+<!-- ``` -->
 
-## Percentage of total FP17s by patient charge status
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_charge_status(data = monthly_HE_deprived_by_patient, band = perc_total_FP17, band_name = "Total", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*")
-```
+<!-- ## Percentage of total FP17s by patient charge status -->
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_charge_status(data = monthly_HE_deprived_by_patient, band = perc_total_FP17, band_name = "Total", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*") -->
+<!-- ``` -->
 
-## Percentage of banded FP17s by patient charge status
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_charge_status(data = monthly_HE_deprived_by_patient, band = perc_band1, band_name = "Band 1", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*")
-```
+<!-- ## Percentage of banded FP17s by patient charge status -->
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_charge_status(data = monthly_HE_deprived_by_patient, band = perc_band1, band_name = "Band 1", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*") -->
+<!-- ``` -->
 
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_charge_status(data = monthly_HE_deprived_by_patient, band = perc_band2, band_name = "Band 2", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*")
-```
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_charge_status(data = monthly_HE_deprived_by_patient, band = perc_band2, band_name = "Band 2", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*") -->
+<!-- ``` -->
 
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_charge_status(data = monthly_HE_deprived_by_patient, band = perc_band3, band_name = "Band 3", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*")
-```
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_charge_status(data = monthly_HE_deprived_by_patient, band = perc_band3, band_name = "Band 3", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*") -->
+<!-- ``` -->
 
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_charge_status(data = monthly_HE_deprived_by_patient, band = perc_urgent, band_name = "Urgent", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*")
-```
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_charge_status(data = monthly_HE_deprived_by_patient, band = perc_urgent, band_name = "Urgent", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*") -->
+<!-- ``` -->
 
 
-## Total FP17s by age group
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_age(data = monthly_HE_deprived_by_patient, band = total_FP17, band_name = "Total", numOrPerc = "tot", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*")
-```
+<!-- ## Total FP17s by age group -->
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_age(data = monthly_HE_deprived_by_patient, band = total_FP17, band_name = "Total", numOrPerc = "tot", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*") -->
+<!-- ``` -->
 
-## Banded FP17s by patient age group
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_age(data = monthly_HE_deprived_by_patient, band = band1, band_name = "Band 1", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*")
-```
+<!-- ## Banded FP17s by patient age group -->
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_age(data = monthly_HE_deprived_by_patient, band = band1, band_name = "Band 1", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*") -->
+<!-- ``` -->
 
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_age(data = monthly_HE_deprived_by_patient, band = band2, band_name = "Band 2", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*")
-```
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_age(data = monthly_HE_deprived_by_patient, band = band2, band_name = "Band 2", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*") -->
+<!-- ``` -->
 
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_age(data = monthly_HE_deprived_by_patient, band = band3, band_name = "Band 3", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*")
-```
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_age(data = monthly_HE_deprived_by_patient, band = band3, band_name = "Band 3", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*") -->
+<!-- ``` -->
 
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_age(data = monthly_HE_deprived_by_patient, band = urgent, band_name = "Urgent", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*")
-```
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_age(data = monthly_HE_deprived_by_patient, band = urgent, band_name = "Urgent", numOrPerc = "num", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*") -->
+<!-- ``` -->
 
-## Percentage of total FP17s by age group
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_age(data = monthly_HE_deprived_by_patient, band = perc_total_FP17, band_name = "Total", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*")
-```
+<!-- ## Percentage of total FP17s by age group -->
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_age(data = monthly_HE_deprived_by_patient, band = perc_total_FP17, band_name = "Total", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*") -->
+<!-- ``` -->
 
-## Percentage of banded FP17s by age group
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_age(data = monthly_HE_deprived_by_patient, band = perc_band1, band_name = "Band 1", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*")
-```
+<!-- ## Percentage of banded FP17s by age group -->
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_age(data = monthly_HE_deprived_by_patient, band = perc_band1, band_name = "Band 1", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*") -->
+<!-- ``` -->
 
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_age(data = monthly_HE_deprived_by_patient, band = perc_band2, band_name = "Band 2", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*")
-```
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_age(data = monthly_HE_deprived_by_patient, band = perc_band2, band_name = "Band 2", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*") -->
+<!-- ``` -->
 
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_age(data = monthly_HE_deprived_by_patient, band = perc_band3, band_name = "Band 3", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*")
-```
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_age(data = monthly_HE_deprived_by_patient, band = perc_band3, band_name = "Band 3", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*") -->
+<!-- ``` -->
 
-```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7}
-plot_HE_age(data = monthly_HE_deprived_by_patient, band = perc_urgent, band_name = "Urgent", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*")
-```
+<!-- ```{r echo = FALSE, warning = FALSE, error = FALSE, fig.height=4, fig.width=7} -->
+<!-- plot_HE_age(data = monthly_HE_deprived_by_patient, band = perc_urgent, band_name = "Urgent", numOrPerc = "perc", override_subtitle = "Grouped top 20 most deprived local authorities by resident patients*") -->
+<!-- ``` -->
 
 
 

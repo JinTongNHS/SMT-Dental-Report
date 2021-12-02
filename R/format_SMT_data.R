@@ -19,7 +19,7 @@ get_into_slide4_format_calendar <- function(data = UDA_calendar_data,
     #create not in function
     `%notin%` = Negate(`%in%`)
     data <- data %>%
-      filter(contract_number %notin% prototype_contracts$proto_contracts) %>%
+      filter(contract_number %notin% prototype_contracts$prototype_contract_number) %>%
       filter(annual_contracted_UDA > 100)
   }
 
@@ -28,10 +28,13 @@ get_into_slide4_format_calendar <- function(data = UDA_calendar_data,
     group_by(month) %>%
     summarise(monthly_UDA_UOAs_delivered = sum(UDA_total, na.rm = T),
               total_annual_UDA_UOAs_contracted = sum(annual_contracted_UDA)) %>%
-    mutate(financial_half_target_perc = if_else(month >= as.Date("2021-04-01") & month < as.Date("2021-10-01"),
-                                                0.6,
-                                                0.65)) %>%
-    mutate(target_UDA_UOAs_delivered_in_financial_half = total_annual_UDA_UOAs_contracted * financial_half_target_perc / 2) 
+    mutate(target_perc = if_else(month >= as.Date("2021-04-01") & month < as.Date("2021-10-01"),
+                                 0.6,
+                                 0.65)) %>%
+    mutate(target_period = if_else(month >= as.Date("2021-04-01") & month < as.Date("2021-10-01"),
+                                   lubridate::interval(as.Date("2021-04-01"), as.Date("2021-09-30")),
+                                   lubridate::interval(as.Date("2021-10-01"), as.Date("2021-12-31")))) %>%
+    mutate(target_UDA_UOAs_delivered_in_target_period = total_annual_UDA_UOAs_contracted * target_perc * lubridate::time_length(target_period, "month")/ 12) 
   
 }
 
@@ -53,7 +56,7 @@ get_into_slide6_format_calendar <- function(data = UOA_calendar_data,
     #create not in function
     `%notin%` = Negate(`%in%`)
     data <- data %>%
-      filter(contract_number %in% prototype_contracts_orth$proto_contracts)
+      filter(contract_number %in% prototype_contracts_orth$prototype_contract_number)
   }
 
   #group by month and sum UDAs delivered
@@ -61,10 +64,13 @@ get_into_slide6_format_calendar <- function(data = UOA_calendar_data,
     group_by(month) %>%
     summarise(monthly_UDA_UOAs_delivered = sum(UOA_total, na.rm = T),
               total_annual_UDA_UOAs_contracted = sum(annual_contracted_UOA, na.rm = T)) %>%
-    mutate(financial_half_target_perc = if_else(month >= as.Date("2021-04-01") & month < as.Date("2021-10-01"),
+    mutate(target_perc = if_else(month >= as.Date("2021-04-01") & month < as.Date("2021-10-01"),
                                                 0.8,
                                                 0.85)) %>%
-    mutate(target_UDA_UOAs_delivered_in_financial_half = total_annual_UDA_UOAs_contracted * financial_half_target_perc / 2)
+    mutate(target_period = if_else(month >= as.Date("2021-04-01") & month < as.Date("2021-10-01"),
+                                   lubridate::interval(as.Date("2021-04-01"), as.Date("2021-09-30")),
+                                   lubridate::interval(as.Date("2021-10-01"), as.Date("2021-12-31")))) %>%
+    mutate(target_UDA_UOAs_delivered_in_target_period = total_annual_UDA_UOAs_contracted * target_perc * lubridate::time_length(target_period, "month")/ 12) 
 }
 
 
@@ -72,16 +78,16 @@ get_into_slide6_format_calendar <- function(data = UOA_calendar_data,
 ################################################################################
 #function to get dental data into the right format for slide 4
 get_into_slide5_7_format <- function(data = UDA_scheduled_data, 
-                                   existing_data = slide5_UDA_delivery_historic, 
-                                   remove_prototypes = F,
+                                   #existing_data = slide5_UDA_delivery_historic, 
+                                   remove_prototypes = T,
                                    UDAorUOA = "UDA"){
   
   #remove prototype contracts if specified
   if(remove_prototypes){
-    #create not in function
+    #create not in function•
     `%notin%` = Negate(`%in%`)
     data <- data %>%
-      filter(contract_number %notin% prototype_contracts$proto_contracts)%>%
+      filter(contract_number %notin% prototype_contracts$prototype_contract_number)%>%
       filter(annual_contracted_UDA > 100)
   }
   
@@ -102,12 +108,98 @@ get_into_slide5_7_format <- function(data = UDA_scheduled_data,
   
   new_data <- full_join(UDA_UOAs_delivered, UDA_UOAs_contracted, by = "month")
   new_data <- new_data %>%
-    mutate(perc_UDA_UOA_delivered = round(monthly_UDA_UOAs_delivered * 12 * 100 / annual_contracted_UDA_UOA)) %>%
-    select(month, perc_UDA_UOA_delivered) #%>%
-    #filter(month == as.Date("2021-08-01") | month == as.Date("2021-09-01"))
+    #April data needs scaling differently
+    mutate(perc_UDA_UOA_delivered = if_else(month != as.Date("2021-04-01"),
+                                            round(monthly_UDA_UOAs_delivered * 12 * 100 / annual_contracted_UDA_UOA),
+                                            round(monthly_UDA_UOAs_delivered * 18 * 100 / annual_contracted_UDA_UOA))) 
 
-  #add latest month to existing data
-  #data <- bind_rows(existing_data, new_data)
+}
+
+
+
+################################################################################
+#function to get dental data into the right format for slide 4
+get_into_slide5_7_format_calendar <- function(calendar_data = UDA_calendar_data,  
+                                              scheduled_data = UDA_scheduled_data,
+                                     remove_prototypes = T,
+                                     UDAorUOA = "UDA",
+                                     regional_lines = F,
+                                     STP_lines = F,
+                                     cat_lines = F, 
+                                     renameColumns = F){
+  
+  if(UDAorUOA == "UDA"){
+    #join in contracted UDAs from scheduled data
+    contracted_UDAs <- scheduled_data %>%
+      select(month, contract_number, annual_contracted_UDA)
+    
+    data <- calendar_data %>%
+      left_join(contracted_UDAs, by = c("month", "contract_number"))
+  }else{
+    contracted_UOAs <- scheduled_data %>%
+      select(month, contract_number, annual_contracted_UOA, annual_contracted_UDA)
+    
+    data <- calendar_data %>%
+      left_join(contracted_UOAs, by = c("month", "contract_number"))
+  }
+  
+  
+  #remove prototype contracts if specified
+  if(remove_prototypes){
+    #create not in function•
+    `%notin%` = Negate(`%in%`)
+    data <- data %>%
+      filter(contract_number %notin% prototype_contracts$prototype_contract_number)%>%
+      filter(annual_contracted_UDA > 100)
+  }
+  
+  if(regional_lines){
+    data <- data %>%
+      group_by(month, region_name)
+  }else if(STP_lines){
+    data <- data %>%
+      group_by(month, commissioner_name)
+  }else if(cat_lines){
+    data <- data %>%
+      group_by(month, category_sub_type)
+  }else{
+    data <- data %>%
+      group_by(month)
+  }
+  
+  data <- data %>%
+    summarise(monthly_UDA_UOAs_delivered = ifelse(UDAorUOA == "UDA", 
+                                                  sum(UDA_total, na.rm = T),
+                                                  sum(UOA_total, na.rm = T)),
+              annual_contracted_UDA_UOA = ifelse(UDAorUOA == "UDA",
+                                                 sum(annual_contracted_UDA, na.rm = T),
+                                                 sum(annual_contracted_UOA, na.rm = T))) %>%
+    mutate(scaled_monthly_UDA_UOAs_delivered = monthly_UDA_UOAs_delivered * 12) %>%
+    mutate(scaled_perc_UDA_UOA_delivered = monthly_UDA_UOAs_delivered * 12 * 100 / annual_contracted_UDA_UOA) %>%
+    mutate(month = as.Date(month))
+  
+  
+  #for PCOR and SOF table
+  if(renameColumns){
+    
+    #add a region column to the data
+    region_STP_lookup <- calendar_data %>%
+      select(commissioner_name, region_name) %>%
+      distinct()
+    
+    data <- left_join(data, region_STP_lookup, by = c("commissioner_name"))
+    
+    data <- data %>%
+      select(calendar_month = month,
+             commissioner_name,
+             region_name,
+             monthly_UDAs_delivered = monthly_UDA_UOAs_delivered,
+             scaled_monthly_UDAs_delivered = scaled_monthly_UDA_UOAs_delivered,
+             annual_contracted_UDA_UOA,
+             scaled_perc_UDAs_delivered = scaled_perc_UDA_UOA_delivered)
+  }
+  
+  data
 }
 
 
@@ -134,7 +226,7 @@ get_into_slide8_format <- function(data = UDA_scheduled_data,
     #create not in function
     `%notin%` = Negate(`%in%`)
     data <- data %>%
-      filter(contract_number %notin% prototype_contracts_orth$proto_contracts)%>%
+      filter(contract_number %notin% prototype_contracts_orth$prototype_contract_number)%>%
       filter(annual_contracted_UDA > 100)
   }
   
@@ -156,25 +248,29 @@ get_into_slide8_format <- function(data = UDA_scheduled_data,
 ################################################################################
 get_slide5_table <- function(data = UDA_scheduled_data,
                              UDAorUOA = "UDA",
-                             remove_prototypes = F){
+                             remove_prototypes = T){
   
   #remove prototype contracts if specified
   if(remove_prototypes){
     #create not in function
     `%notin%` = Negate(`%in%`)
     data <- data %>%
-      filter(contract_number %notin% prototype_contracts$proto_contracts) %>%
-      filter(annual_contracted_UDA < 100)
+      filter(contract_number %notin% prototype_contracts$prototype_contract_number) %>%
+      filter(annual_contracted_UDA > 100)
   }
   
   if(UDAorUOA == "UDA"){
-    #create column for 12 month scaled % of UDAs delivered 
+    #create column for 12 month scaled % of UDAs delivered. April must be scaled differently.
     performance_table <- data %>%
-      mutate(monthly_perc_scaled = UDA_delivered * 12 * 100/ annual_contracted_UDA)
+      mutate(monthly_perc_scaled = if_else(month != as.Date("2021-04-01"),
+                                           round(UDA_delivered * 12 * 100 / annual_contracted_UDA),
+                                           round(UDA_delivered * 18 * 100 / annual_contracted_UDA)))
   }else{
     #create column for 12 month scaled % of UOAs delivered 
     performance_table <- data %>%
-      mutate(monthly_perc_scaled = UOA_delivered * 12 * 100/ annual_contracted_UOA)
+      mutate(monthly_perc_scaled = if_else(month != as.Date("2021-04-01"),
+                                           round(UOA_delivered * 12 * 100 / annual_contracted_UOA),
+                                           round(UOA_delivered * 18 * 100 / annual_contracted_UOA)))
   }
     
   #put into bands then sum across these bands by month
@@ -224,7 +320,7 @@ get_slide7_table <- function(data = UOA_scheduled_data, remove_prototypes = F){
     #create not in function
     `%notin%` = Negate(`%in%`)
     data <- data %>%
-      filter(Contract.Number %notin% prototype_contracts$proto_contracts)%>%
+      filter(Contract.Number %notin% prototype_contracts$prototype_contract_number)%>%
       filter(Contract.Number %notin% UDAs_less_than_100$Contract.Number)
   }
   
