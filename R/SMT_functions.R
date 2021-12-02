@@ -456,19 +456,12 @@ plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
          subtitle = subtitle,
          caption = "*Excluding prototype contracts and those with annual contracted UDA < 100 
                     **These are scheduled months and April data is for the reporting period 1st April - 
-                    21st April therefore the April data has been scaled up by 18 instead of 12.") #+
-    # annotate(geom = "text", 
-    #          x = as.Date("2021-04-01") + lubridate::weeks(2), 
-    #          y = septemberTarget + 3, 
-    #          label = "H1 threshold", 
-    #          size = 3,
-    #          colour = "#0072B2") + 
-    # annotate(geom = "text", 
-    #          x = as.Date("2021-10-01") + lubridate::weeks(2), 
-    #          y = decemberTarget + 3, 
-    #          label = "Q3 threshold", 
-    #          size = 3,
-    #          colour = "#0072B2") 
+                    21st April therefore the April data has been scaled up by 18 instead of 12.") +
+    annotate(geom = "text", 
+             x = data$month, 
+             y = data$perc_UDA_UOA_delivered + 3, 
+             label = paste0(data$perc_UDA_UOA_delivered, "%"), 
+             size = 3) 
 }
 
 
@@ -607,7 +600,13 @@ plot_UDA_UOA_delivery_calendar <- function(data = UDA_calendar_data,
       geom_point(aes(x = month, 
                      y = scaled_perc_UDA_UOA_delivered), 
                  colour = lineCol
-      )
+      )+
+      annotate(geom = "text", 
+               x = data$month, 
+               y = data$scaled_perc_UDA_UOA_delivered + 5, 
+               label = paste0(round(data$scaled_perc_UDA_UOA_delivered), "%"), 
+               size = 3,
+               label.size = 0) 
     
   }
 
@@ -986,44 +985,130 @@ get_adjusted_number_reaching_target <- function(){
 
 ################################################################################
 #function to plot the density of contracts based on performance 
-plot_density <- function(data = density_data){
+plot_density <- function(data = prototype_delivery, 
+                         gdsCol,
+                         dcrCol,
+                         subtitle = "2020/21"){
   
-  ggplot(data, 
-         aes(x = perc_performance_delivered)) +
+
+  
+  data <- data %>% 
+    #select({{ gdsCol }}, {{ dcrCol }}) %>%
+    select(gds_perf_2020.21, dcr_perf_2020.21) %>%
+    reshape2::melt() %>%
+    rename(GDSorDCR = variable,
+           perf = value) %>%
+    mutate(perf = perf * 100)
+  
+  
+  data_GDS <- data %>%
+    filter(GDSorDCR == "gds_perf_2020.21")
+  
+  data_GDS <- summary(data_GDS$perf)
+  
+  data_DCR <- data %>%
+    filter(GDSorDCR == "dcr_perf_2020.21")
+  
+  data_DCR <- summary(data_DCR$perf)
+  
+  
+  ggplot(data,
+         aes(x = perf)) +
     geom_density(size = 1,
-                 aes(colour = timePeriod,
-                     fill = timePeriod),
+                 aes(colour = GDSorDCR,
+                     fill = GDSorDCR),
                  alpha = 0.1) +
-    geom_vline(xintercept = 45, 
-               size = 0.5, 
-               colour = "blue",
+    #GDS mean
+    geom_vline(xintercept = as.numeric(data_GDS["Mean"]),
+               size = 0.5,
+               colour = "coral",
+               linetype = "solid"
+    ) +
+    annotate(geom = "text",
+             x = as.numeric(data_GDS["Mean"]),
+             y = 0,
+             label = "mean",
+             size = 3,
+             colour = "coral") +
+    
+    #GDS LQ
+    geom_vline(xintercept = as.numeric(data_GDS["1st Qu."]),
+               size = 0.5,
+               colour = "coral",
                linetype = "dashed"
     ) +
-    geom_vline(xintercept = 60, 
-               size = 0.5, 
-               colour = "red",
+    annotate(geom = "text",
+             x = as.numeric(data_GDS["1st Qu."]),
+             y = 0,
+             label = "LQ.",
+             size = 3,
+             colour = "coral") +
+    
+    #GDS UQ
+    geom_vline(xintercept = as.numeric(data_GDS["3rd Qu."]),
+               size = 0.5,
+               colour = "coral",
                linetype = "dashed"
     ) +
-    annotate(geom = "text", 
-             x = 40, 
-             y = 0, 
-             label = "45% target", 
+    annotate(geom = "text",
+             x = as.numeric(data_GDS["3rd Qu."]),
+             y = 0,
+             label = "UQ.",
              size = 3,
-             colour = "blue") +
-    annotate(geom = "text", 
-             x = 65, 
-             y = 0, 
-             label = "60% target", 
+             colour = "coral") +
+
+    #DCR mean
+    geom_vline(xintercept = as.numeric(data_DCR["Mean"]),
+               size = 0.5,
+               colour = "seagreen",
+               linetype = "solid"
+    ) +
+    annotate(geom = "text",
+             x = as.numeric(data_DCR["Mean"]),
+             y = 0,
+             label = "mean",
              size = 3,
-             colour = "red") +
+             colour = "seagreen") +
+    
+    #DCR LQ
+    geom_vline(xintercept = as.numeric(data_DCR["1st Qu."]),
+               size = 0.5,
+               colour = "seagreen",
+               linetype = "dashed"
+    ) +
+    annotate(geom = "text",
+             x = as.numeric(data_DCR["1st Qu."]),
+             y = 0,
+             label = "LQ.",
+             size = 3,
+             colour = "seagreen") +
+    
+    #DCR UQ
+    geom_vline(xintercept = as.numeric(data_DCR["3rd Qu."]),
+               size = 0.5,
+               colour = "seagreen",
+               linetype = "dashed"
+    ) +
+    annotate(geom = "text",
+             x = as.numeric(data_DCR["3rd Qu."]),
+             y = 0,
+             label = "UQ.",
+             size = 3,
+             colour = "seagreen") +
+
     scale_x_continuous(limits = c(0,150),
                        breaks = seq(0,150, 10)) +
-    labs(title = "UDA performance distribution of contracts\nMarch 21 compared with Apr-Aug 2021",
-         x = "Percentage of contracted UDAs delivered in given time period",
+    scale_colour_manual(labels = c("GDS", "DCR"), values = c("coral", "seagreen")) +
+    scale_fill_manual(labels = c("GDS", "DCR"), values = c("coral", "seagreen")) +
+    labs(title = "Performance distribution for prototype contracts in GDS and DCR systems",
+         x = "Delivery in given time period (%)",
          y = "Density of contracts",
-         colour = "Time Period",
-         fill = "Time Period")
-  
+         colour = "Measure of performance",
+         fill = "Measure of performance",
+         subtitle = subtitle) +
+    theme_bw()
+ 
+ 
   
 }
 

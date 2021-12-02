@@ -137,7 +137,23 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
 due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported. 
 
 
-<!-- ## UDA activity data by region -->
+## UDA activity data by region
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
+plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
+                                  scheduled_data = UDA_scheduled_data,
+                                  contractor_cats = contractor_categories,
+                                  UDAorUOA = "UDA",
+                                  level = params$level,
+                                  region_STP_name = params$region_STP_name,
+                                  remove_prototypes = T,
+                                  regional_lines = T,
+                                  STP_lines = F,
+                                  cat_lines = F,
+                                  plot_chart = T)
+```
+
+
+<!-- ## UDA activity data by STP -->
 <!-- ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=4} -->
 <!-- plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,  -->
 <!--                                   scheduled_data = UDA_scheduled_data, -->
@@ -146,27 +162,11 @@ due to the nature of calendar data (see slide 3). This month's figure is likely 
 <!--                                   level = params$level, -->
 <!--                                   region_STP_name = params$region_STP_name, -->
 <!--                                   remove_prototypes = T, -->
-<!--                                   regional_lines = T,  -->
-<!--                                   STP_lines = F, -->
+<!--                                   regional_lines = F,  -->
+<!--                                   STP_lines = T, -->
 <!--                                   cat_lines = F, -->
 <!--                                   plot_chart = T) -->
 <!-- ``` -->
-
-
-## UDA activity data by STP
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
-plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data, 
-                                  scheduled_data = UDA_scheduled_data,
-                                  contractor_cats = contractor_categories,
-                                  UDAorUOA = "UDA",
-                                  level = params$level,
-                                  region_STP_name = params$region_STP_name,
-                                  remove_prototypes = T,
-                                  regional_lines = F, 
-                                  STP_lines = T,
-                                  cat_lines = F,
-                                  plot_chart = T)
-```
 
 
 ## UDA activity data by MY Category
@@ -267,7 +267,22 @@ GDS/PDS contracts scaled up by 12 months measured against the delivery threshold
 due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported.
 
 
-<!-- ## UOA activity data by region -->
+## UOA activity data by region
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
+plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
+                                  scheduled_data = UOA_scheduled_data,
+                                  contractor_cats = contractor_categories,
+                                  UDAorUOA = "UOA",
+                                  level = params$level,
+                                  region_STP_name = params$region_STP_name,
+                                  remove_prototypes = T,
+                                  regional_lines = T,
+                                  STP_lines = F,
+                                  cat_lines = F,
+                                  plot_chart = T)
+```
+
+<!-- ## UOA activity data by STP -->
 <!-- ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=4} -->
 <!-- plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,  -->
 <!--                                   scheduled_data = UOA_scheduled_data, -->
@@ -276,26 +291,11 @@ due to the nature of calendar data (see slide 3). This month's figure is likely 
 <!--                                   level = params$level, -->
 <!--                                   region_STP_name = params$region_STP_name, -->
 <!--                                   remove_prototypes = T, -->
-<!--                                   regional_lines = T,  -->
-<!--                                   STP_lines = F, -->
+<!--                                   regional_lines = F,  -->
+<!--                                   STP_lines = T, -->
 <!--                                   cat_lines = F, -->
 <!--                                   plot_chart = T) -->
 <!-- ``` -->
-
-## UOA activity data by STP
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
-plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data, 
-                                  scheduled_data = UOA_scheduled_data,
-                                  contractor_cats = contractor_categories,
-                                  UDAorUOA = "UOA",
-                                  level = params$level,
-                                  region_STP_name = params$region_STP_name,
-                                  remove_prototypes = T,
-                                  regional_lines = F, 
-                                  STP_lines = T,
-                                  cat_lines = F,
-                                  plot_chart = T)
-```
 
 ## UOA activity data by MY Category
 #### Prototypes and contracts with annual contracted UDAs < 100 included
@@ -401,18 +401,18 @@ declared per month across financial years.
 world.
 
 
-<!-- ## 111 dental related call volumes -->
+## 111 dental related call volumes
 
-<!-- ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=4} -->
-<!-- plot_111_referrals() -->
-<!-- ``` -->
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
+plot_111_referrals()
+```
 
 
-<!-- ## 111 dental related call volumes by disposition -->
+## 111 dental related call volumes by disposition
 
-<!-- ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=4} -->
-<!-- plot_breakdown_111_referrals() -->
-<!-- ``` -->
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
+plot_breakdown_111_referrals()
+```
 
 ## Appendix
 #### MY Category classification breakdown:
@@ -443,13 +443,13 @@ world.
 #### Data sources: 
 * BSA calendar and scheduled UDA data downloaded from the "NHS England Central Dashboard" on eDEN.
 This data is downloaded monthly and put on the NCDR. Tables are:
-+ [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UDA_calendar]
-+ [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UDA_scheduled]
-+ [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UOA_calendar]
-+ [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UOA_scheduled]
+  + [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UDA_calendar]
+  + [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UDA_scheduled]
+  + [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UOA_calendar]
+  + [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UOA_scheduled]
 * A list of prototype contracts are also available in:
-+ [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[prototype_contracts]
+  + [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[prototype_contracts]
 * A table of UDA delivery on STP level is available in:
-+ [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UDA_delivery]
+  + [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UDA_delivery]
 
 * 111 data comes from the pathways tool which is received monthly by email.
