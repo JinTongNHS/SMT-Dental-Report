@@ -109,7 +109,7 @@ get_into_slide5_7_format <- function(data = UDA_scheduled_data,
   new_data <- full_join(UDA_UOAs_delivered, UDA_UOAs_contracted, by = "month")
   new_data <- new_data %>%
     #April data needs scaling differently
-    mutate(perc_UDA_UOA_delivered = if_else(month != as.Date("2021-04-01"),
+    mutate(perc_UDA_UOA_delivered = if_else(month != as.Date("2021-04-01") & month != as.Date("2020-04-01") & month != as.Date("2019-04-01"),
                                             round(monthly_UDA_UOAs_delivered * 12 * 100 / annual_contracted_UDA_UOA),
                                             round(monthly_UDA_UOAs_delivered * 18 * 100 / annual_contracted_UDA_UOA))) 
 
@@ -264,7 +264,7 @@ get_slide5_table <- function(data = UDA_scheduled_data,
     performance_table <- data %>%
       mutate(monthly_perc_scaled = if_else(month != as.Date("2021-04-01"),
                                            round(UDA_delivered * 12 * 100 / annual_contracted_UDA),
-                                           round(UDA_delivered * 18 * 100 / annual_contracted_UDA)))
+                                           round(UDA_delivered * 18 * 100 / annual_contracted_UDA))) 
   }else{
     #create column for 12 month scaled % of UOAs delivered 
     performance_table <- data %>%
@@ -274,7 +274,7 @@ get_slide5_table <- function(data = UDA_scheduled_data,
   }
     
   #put into bands then sum across these bands by month
-  performance_table <- performance_table %>%  
+  performance_table <- performance_table %>%
     mutate(performance_band = if_else(monthly_perc_scaled >= 0 & monthly_perc_scaled <10, "0-9%",
                                       if_else(monthly_perc_scaled >= 10 & monthly_perc_scaled <20, "10-19%",
                                               if_else(monthly_perc_scaled >= 20 & monthly_perc_scaled <30, "20-29%",
@@ -294,9 +294,23 @@ get_slide5_table <- function(data = UDA_scheduled_data,
                                                       )
                                               )
                                       )
-    )
-                                      
-    ) %>%
+    )) %>%
+  
+  
+  # #put into bands then sum across these bands by month
+  # performance_table <- performance_table %>%  
+  #   mutate(performance_band = rowwise( case_when(monthly_perc_scaled < 10 ~ "0-9%",
+  #                                       monthly_perc_scaled >= 10 & monthly_perc_scaled <20 ~ "10-19%",
+  #                                       monthly_perc_scaled >= 20 & monthly_perc_scaled <30, "20-29%",
+  #                                       monthly_perc_scaled >= 30 & monthly_perc_scaled <40, "30-39%",
+  #                                       monthly_perc_scaled >= 40 & monthly_perc_scaled <50, "40-49%",
+  #                                       monthly_perc_scaled >= 50 & monthly_perc_scaled <60, "50-59%",
+  #                                       monthly_perc_scaled >= 60 & monthly_perc_scaled <70, "60-69%",
+  #                                       monthly_perc_scaled >= 70 & monthly_perc_scaled <80, "70-79%",
+  #                                       monthly_perc_scaled >= 80 & monthly_perc_scaled <90, "80-89%",
+  #                                       monthly_perc_scaled >= 90 & monthly_perc_scaled <100, "90-99%",
+  #                                       monthly_perc_scaled >= 100 ~ "100% +",
+  #                                       TRUE ~ "not a number")) )%>%
     #exclude NAs
     filter(!is.na(performance_band)) %>%
     group_by(month) %>%
@@ -306,6 +320,7 @@ get_slide5_table <- function(data = UDA_scheduled_data,
     mutate(perc_of_contracts = n * 100 / no_of_contracts) %>%
     mutate(month = as.POSIXct(month))
 
+  performance_table
 }
 
 

@@ -9,7 +9,6 @@ rmarkdown::render(input = "rmarkdown/SMT-Dental-Report-Slides.Rmd",
                   output_file = paste0("../reports/national_pack_Dec/SMT data pres December ","National ", Sys.Date()," v2.pdf"))
 
 
-
 for(r in regions){
   rmarkdown::render(input = "rmarkdown/SMT-Dental-Report-Slides.Rmd",
                     output_format = "beamer_presentation",

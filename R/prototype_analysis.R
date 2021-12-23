@@ -343,3 +343,19 @@ plot_density <- function(data = prototype_delivery,
   
   
 }
+
+
+
+#analysis of proactices likely to hand their contracts back
+hand_back <- function(data = UDA_calendar_data,
+                      contractor_cats = contractor_categories){
+  
+  data <- data %>%
+    left_join(contractor_cats) %>%
+    filter(MY_category == "Cat 2 - closed in-year" |
+             MY_category == "Cat 3 - closed in year" |
+             MY_category == "Cat 3 - Contract End Date before 01/04/2020" |
+             MY_category == "Cat 3 - Contract End Date before 01/04/2021" |
+             MY_category == "Cat 3 - Contract End Date before 01/04/2022")
+  
+}

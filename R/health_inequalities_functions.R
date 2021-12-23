@@ -224,15 +224,15 @@ plot_HE_ethnicity <- function(data = monthly_HE, band = band1, band_name = "Band
   
   #set correct title
   if(numOrPerc == "num"){
-    title <- paste("Monthly number of", band_name, "forms by ethnic group")
+    title <- paste("Monthly number of", band_name, "forms \nby ethnic group")
     ytitle <- "Number of FP17 forms"
     limits <- c(0, max(data$band1, na.rm = T))
   }else if(numOrPerc == "perc"){
-    title <- paste("Monthly percentage of", band_name, "forms by ethnic group")
+    title <- paste("Monthly percentage of", band_name, "forms \nby ethnic group")
     ytitle <- paste("Percentage of", band_name, "FP17 forms")
     limits <- c(0, 100)
   }else{
-    title <- paste("Monthly number of", band_name, "forms by ethnic group")
+    title <- paste("Monthly number of", band_name, "forms by \nethnic group")
     ytitle <- "Number of FP17 forms"
     limits <- c(0, max(data$total_FP17, na.rm = T))
   }
@@ -278,7 +278,7 @@ plot_HE_ethnicity <- function(data = monthly_HE, band = band1, band_name = "Band
                        breaks = scales::pretty_breaks()
                        ) +
     theme_bw() +
-    theme(axis.text.x = element_text(angle = 90)) +
+    theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
     labs(title = title, 
          x = "Month", 
          y = ytitle,
@@ -355,17 +355,17 @@ plot_HE_gender <- function(data = monthly_HE, band = band1, band_name = "Band 1"
   
   #set correct title
   if(numOrPerc == "num"){
-    title <- paste("Monthly number of", band_name, "forms by gender")
+    title <- paste("Monthly number of", band_name, "forms by \ngender")
     ytitle <- "Number of FP17 forms"
     limits <- c(0, max(data$band1, na.rm = T))
     breaks <- seq(0, max(data$band1, na.rm = T),by = 200000)
   }else if(numOrPerc == "perc"){
-    title <- paste("Monthly percentage of", band_name, "forms by gender")
+    title <- paste("Monthly percentage of", band_name, "forms by \ngender")
     ytitle <- paste("Percentage of", band_name, "FP17 forms")
     limits <- c(0, 100)
     breaks <- seq(0, 100, by = 20)
   }else{
-    title <- paste("Monthly number of", band_name, "forms by gender")
+    title <- paste("Monthly number of", band_name, "forms by \ngender")
     ytitle <- "Number of FP17 forms"
     limits <- c(0, max(data$total_FP17, na.rm = T))
     breaks <- seq(0, max(data$total_FP17, na.rm = T),by = 200000)
@@ -399,7 +399,7 @@ plot_HE_gender <- function(data = monthly_HE, band = band1, band_name = "Band 1"
                        breaks = scales::breaks_pretty()
     ) +
     theme_bw() +
-    theme(axis.text.x = element_text(angle = 90)) 
+    theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) 
   
 }
 
@@ -469,17 +469,17 @@ plot_HE_charge_status <- function(data = monthly_HE, band = band1, band_name = "
   
   #set correct title
   if(numOrPerc == "num"){
-    title <- paste("Monthly number of", band_name, "forms by patient charge status")
+    title <- paste("Monthly number of", band_name, "forms by \npatient charge status")
     ytitle <- "Number of FP17 forms"
     limits <- c(0, max(data$band1, na.rm = T))
     breaks <- seq(0, max(data$band1, na.rm = T),by = 200000)
   }else if(numOrPerc == "perc"){
-    title <- paste("Monthly percentage of", band_name, "forms by patient charge status")
+    title <- paste("Monthly percentage of", band_name, "forms by \npatient charge status")
     ytitle <- paste("Percentage of", band_name, "FP17 forms")
     limits <- c(0, 100)
     breaks <- seq(0, 100, by = 20)
   }else{
-    title <- paste("Monthly number of", band_name, "forms by patient charge status")
+    title <- paste("Monthly number of", band_name, "forms by \npatient charge status")
     ytitle <- "Number of FP17 forms"
     limits <- c(0, max(data$total_FP17, na.rm = T))
     breaks <- seq(0, max(data$total_FP17, na.rm = T),by = 200000)
@@ -515,7 +515,7 @@ plot_HE_charge_status <- function(data = monthly_HE, band = band1, band_name = "
                        breaks = scales::breaks_pretty()
     ) +
     theme_bw() +
-    theme(axis.text.x = element_text(angle = 90)) 
+    theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) 
   
 }
 
@@ -570,17 +570,17 @@ plot_HE_charge_status_levels <- function(data = monthly_HE, band = band1, band_n
   
   #set correct title
   if(numOrPerc == "num"){
-    title <- paste("Monthly number of", band_name, "forms by patient exemption/remission type")
+    title <- paste("Monthly number of", band_name, "forms by \npatient exemption/remission type")
     ytitle <- "Number of FP17 forms"
     limits <- c(0, max(data$band1, na.rm = T))
     breaks <- seq(0, max(data$band1, na.rm = T),by = 200000)
   }else if(numOrPerc == "perc"){
-    title <- paste("Monthly percentage of", band_name, "forms by patient exemption/remission type")
+    title <- paste("Monthly percentage of", band_name, "forms by \npatient exemption/remission type")
     ytitle <- paste("Percentage of", band_name, "FP17 forms")
     limits <- c(0, 20)
     breaks <- seq(0, 20, by = 5)
   }else{
-    title <- paste("Monthly number of", band_name, "forms by patient exemtion/remission type")
+    title <- paste("Monthly number of", band_name, "forms by \npatient exemtion/remission type")
     ytitle <- "Number of FP17 forms"
     limits <- c(0, max(data$total_FP17, na.rm = T))
     breaks <- seq(0, max(data$total_FP17, na.rm = T),by = 200000)
@@ -616,7 +616,7 @@ plot_HE_charge_status_levels <- function(data = monthly_HE, band = band1, band_n
                        breaks = scales::breaks_pretty()
     ) +
     theme_bw() +
-    theme(axis.text.x = element_text(angle = 90)) 
+    theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) 
   
 }
 
@@ -686,17 +686,17 @@ plot_HE_age <- function(data = monthly_HE, band = band1, band_name = "Band 1", n
   
   #set correct title
   if(numOrPerc == "num"){
-    title <- paste("Monthly number of", band_name, "forms by age group")
+    title <- paste("Monthly number of", band_name, "forms by \nage group")
     ytitle <- "Number of FP17 forms"
     limits <- c(0, max(data$band1, na.rm = T))
     breaks <- seq(0, max(data$band1, na.rm = T),by = 200000)
   }else if(numOrPerc == "perc"){
-    title <- paste("Monthly percentage of", band_name, "forms by age group")
+    title <- paste("Monthly percentage of", band_name, "forms by \nage group")
     ytitle <- paste("Percentage of", band_name, "FP17 forms")
     limits <- c(0, 100)
     breaks <- seq(0, 100, by = 20)
   }else{
-    title <- paste("Monthly number of", band_name, "forms by age group")
+    title <- paste("Monthly number of", band_name, "forms by \nage group")
     ytitle <- "Number of FP17 forms"
     limits <- c(0, max(data$total_FP17, na.rm = T))
     breaks <- seq(0, max(data$total_FP17, na.rm = T),by = 200000)
@@ -748,10 +748,132 @@ plot_HE_age <- function(data = monthly_HE, band = band1, band_name = "Band 1", n
                        breaks = scales::breaks_pretty()
     ) +
     theme_bw() +
-    theme(axis.text.x = element_text(angle = 90)) 
+    theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) 
   
 }
 
+
+
+plot_banded_ethnicity_facet <- function(data = monthly_HE, numOrPerc = "num"){
+  
+  if(numOrPerc == "num"){
+    p_band1 <- plot_HE_ethnicity(data = data, band = band1, band_name = "Band 1", numOrPerc = numOrPerc, level = "National")
+    p_band2 <- plot_HE_ethnicity(data = data, band = band2, band_name = "Band 2", numOrPerc = numOrPerc, level = "National")
+    p_band3 <- plot_HE_ethnicity(data = data, band = band3, band_name = "Band 3", numOrPerc = numOrPerc, level = "National")
+    p_urgent <- plot_HE_ethnicity(data = data, band = urgent, band_name = "Urgent", numOrPerc = numOrPerc, level = "National")
+  }else{
+    p_band1 <- plot_HE_ethnicity(data = data, band = perc_band1, band_name = "Band 1", numOrPerc = numOrPerc, level = "National")
+    p_band2 <- plot_HE_ethnicity(data = data, band = perc_band2, band_name = "Band 2", numOrPerc = numOrPerc, level = "National")
+    p_band3 <- plot_HE_ethnicity(data = data, band = perc_band3, band_name = "Band 3", numOrPerc = numOrPerc, level = "National")
+    p_urgent <- plot_HE_ethnicity(data = data, band = perc_urgent, band_name = "Urgent", numOrPerc = numOrPerc, level = "National")
+  }
+  
+  
+  ggarrange(p_band1 + xlab(NULL),
+            p_band2 + xlab(NULL) + ylab(NULL), 
+            p_band3, 
+            p_urgent + ylab(NULL),
+            ncol = 2, 
+            nrow = 2,
+            common.legend = T,
+            legend = "right")
+}
+
+
+plot_banded_gender_facet <- function(data = monthly_HE, numOrPerc = "num"){
+  
+  if(numOrPerc == "num"){
+    p_band1 <- plot_HE_gender(data = data, band = band1, band_name = "Band 1", numOrPerc = numOrPerc, level = "National")
+    p_band2 <- plot_HE_gender(data = data, band = band2, band_name = "Band 2", numOrPerc = numOrPerc, level = "National")
+    p_band3 <- plot_HE_gender(data = data, band = band3, band_name = "Band 3", numOrPerc = numOrPerc, level = "National")
+    p_urgent <- plot_HE_gender(data = data, band = urgent, band_name = "Urgent", numOrPerc = numOrPerc, level = "National")
+  }else{
+    p_band1 <- plot_HE_gender(data = data, band = perc_band1, band_name = "Band 1", numOrPerc = numOrPerc, level = "National")
+    p_band2 <- plot_HE_gender(data = data, band = perc_band2, band_name = "Band 2", numOrPerc = numOrPerc, level = "National")
+    p_band3 <- plot_HE_gender(data = data, band = perc_band3, band_name = "Band 3", numOrPerc = numOrPerc, level = "National")
+    p_urgent <- plot_HE_gender(data = data, band = perc_urgent, band_name = "Urgent", numOrPerc = numOrPerc, level = "National")
+  }
+  
+  ggarrange(p_band1 + xlab(NULL),
+            p_band2 + xlab(NULL) + ylab(NULL), 
+            p_band3, 
+            p_urgent + ylab(NULL),
+            ncol = 2, 
+            nrow = 2,
+            common.legend = T,
+            legend = "right")
+}
+
+
+plot_banded_charge_status_facet <- function(data = monthly_HE, numOrPerc = "num"){
+  if(numOrPerc == "num"){
+    p_band1 <- plot_HE_charge_status(data = data, band = band1, band_name = "Band 1", numOrPerc = numOrPerc, level = "National")
+    p_band2 <- plot_HE_charge_status(data = data, band = band2, band_name = "Band 2", numOrPerc = numOrPerc, level = "National")
+    p_band3 <- plot_HE_charge_status(data = data, band = band3, band_name = "Band 3", numOrPerc = numOrPerc, level = "National")
+    p_urgent <- plot_HE_charge_status(data = data, band = urgent, band_name = "Urgent", numOrPerc = numOrPerc, level = "National")
+  }else{
+    p_band1 <- plot_HE_charge_status(data = data, band = perc_band1, band_name = "Band 1", numOrPerc = numOrPerc, level = "National")
+    p_band2 <- plot_HE_charge_status(data = data, band = perc_band2, band_name = "Band 2", numOrPerc = numOrPerc, level = "National")
+    p_band3 <- plot_HE_charge_status(data = data, band = perc_band3, band_name = "Band 3", numOrPerc = numOrPerc, level = "National")
+    p_urgent <- plot_HE_charge_status(data = data, band = perc_urgent, band_name = "Urgent", numOrPerc = numOrPerc, level = "National")
+  }
+  
+  ggarrange(p_band1 + xlab(NULL),
+            p_band2 + xlab(NULL) + ylab(NULL), 
+            p_band3, 
+            p_urgent + ylab(NULL),
+            ncol = 2, 
+            nrow = 2,
+            common.legend = T,
+            legend = "right")
+}
+
+plot_banded_charge_status_levels_facet <- function(data = monthly_HE, numOrPerc = "num"){
+  if(numOrPerc == "num"){
+    p_band1 <- plot_HE_charge_status_levels(data = data, band = band1, band_name = "Band 1", numOrPerc = numOrPerc, level = "National")
+    p_band2 <- plot_HE_charge_status_levels(data = data, band = band2, band_name = "Band 2", numOrPerc = numOrPerc, level = "National")
+    p_band3 <- plot_HE_charge_status_levels(data = data, band = band3, band_name = "Band 3", numOrPerc = numOrPerc, level = "National")
+    p_urgent <- plot_HE_charge_status_levels(data = data, band = urgent, band_name = "Urgent", numOrPerc = numOrPerc, level = "National")
+  }else{
+    p_band1 <- plot_HE_charge_status_levels(data = data, band = perc_band1, band_name = "Band 1", numOrPerc = numOrPerc, level = "National")
+    p_band2 <- plot_HE_charge_status_levels(data = data, band = perc_band2, band_name = "Band 2", numOrPerc = numOrPerc, level = "National")
+    p_band3 <- plot_HE_charge_status_levels(data = data, band = perc_band3, band_name = "Band 3", numOrPerc = numOrPerc, level = "National")
+    p_urgent <- plot_HE_charge_status_levels(data = data, band = perc_urgent, band_name = "Urgent", numOrPerc = numOrPerc, level = "National")
+  }
+  
+  ggarrange(p_band1 + xlab(NULL),
+            p_band2 + xlab(NULL) + ylab(NULL), 
+            p_band3, 
+            p_urgent + ylab(NULL),
+            ncol = 2, 
+            nrow = 2,
+            common.legend = T,
+            legend = "right")
+}
+
+
+plot_banded_age_facet <- function(data = monthly_HE, numOrPerc = "num"){
+  if(numOrPerc == "num"){
+    p_band1 <- plot_HE_age(data = data, band = band1, band_name = "Band 1", numOrPerc = numOrPerc, level = "National")
+    p_band2 <- plot_HE_age(data = data, band = band2, band_name = "Band 2", numOrPerc = numOrPerc, level = "National")
+    p_band3 <- plot_HE_age(data = data, band = band3, band_name = "Band 3", numOrPerc = numOrPerc, level = "National")
+    p_urgent <- plot_HE_age(data = data, band = urgent, band_name = "Urgent", numOrPerc = numOrPerc, level = "National")
+  }else{
+    p_band1 <- plot_HE_age(data = data, band = perc_band1, band_name = "Band 1", numOrPerc = numOrPerc, level = "National")
+    p_band2 <- plot_HE_age(data = data, band = perc_band2, band_name = "Band 2", numOrPerc = numOrPerc, level = "National")
+    p_band3 <- plot_HE_age(data = data, band = perc_band3, band_name = "Band 3", numOrPerc = numOrPerc, level = "National")
+    p_urgent <- plot_HE_age(data = data, band = perc_urgent, band_name = "Urgent", numOrPerc = numOrPerc, level = "National")
+  }
+  
+  ggarrange(p_band1 + xlab(NULL),
+            p_band2 + xlab(NULL) + ylab(NULL), 
+            p_band3, 
+            p_urgent + ylab(NULL),
+            ncol = 2, 
+            nrow = 2,
+            common.legend = T,
+            legend = "right")
+}
 
 
 

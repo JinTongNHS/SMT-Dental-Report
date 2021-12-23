@@ -396,7 +396,8 @@ plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
     select(contract_number, name_or_company_name, commissioner_name, region_name) %>%
     distinct()
   
-  data <- left_join(data, region_STP_lookup, by = c("contract_number", "name_or_company_name", "commissioner_name"))
+  # data <- left_join(data, region_STP_lookup, by = c("contract_number", "name_or_company_name", "commissioner_name"))
+  data <- left_join(data, region_STP_lookup, by = c("contract_number"))
   
   #filter for STP or region
   if(level == "Regional"){
@@ -433,6 +434,7 @@ plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
   #plot code
   ggplot(data) +
     theme_bw() +
+    #theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
     geom_line(aes(x = month, 
                   y = perc_UDA_UOA_delivered), 
               colour = lineCol, 
@@ -1308,4 +1310,362 @@ plot_breakdown_111_referrals <- function(data = dental_data_111){
   
 }
 
+
+################################################################################
+#hand back scatter
+plot_delivery_vs_contract_size_scatter <- function(data = UDA_scheduled_data,
+                                                   remove_prototypes = T,
+                                                   plot_month = as.Date("2021-11-01"),
+                                                   UDAorUOA = "UDA"){
   
+  
+  #create not in function
+  `%notin%` = Negate(`%in%`)
+  
+  #remove prototype contracts if specified
+  if(remove_prototypes & UDAorUOA == "UDA"){
+    data <- data %>%
+      filter(contract_number %notin% prototype_contracts$prototype_contract_number)%>%
+      filter(annual_contracted_UDA > 100)
+  }else if(remove_prototypes & UDAorUOA == "UOA"){
+    data <- data %>%
+      #filter(contract_number %notin% prototype_contracts$prototype_contract_number)%>%
+      filter(annual_contracted_UOA > 100)
+  }
+  
+  data <- data %>%
+    filter(month == plot_month) %>%
+    select(contract_number, annual_contracted_UDA, UDA_delivered) %>%
+    mutate(UDA_delivery = UDA_delivered * 12 / annual_contracted_UDA) 
+  
+  
+  ggplot(data, aes(x = annual_contracted_UDA, y = UDA_delivery)) +
+    geom_point(colour = "steelblue") +
+    theme_bw() +
+    geom_hline(yintercept = 0.65,
+               colour = "orangered4",
+               linetype = "dashed") +
+    annotate(geom = "text",
+             x = 150000,
+             y = 0.59,
+             label = "65% Q3 threshold",
+             size = 3,
+             #label.size = 0,
+             colour = "orangered4") +
+    geom_hline(yintercept = 0.85,
+               colour = "grey40",
+               linetype = "dashed") +
+    annotate(geom = "text",
+             x = 150000,
+             y = 0.79,
+             label = "85%",
+             size = 3,
+             #label.size = 0,
+             colour = "grey40") +
+    geom_hline(yintercept = 1,
+               colour = "grey40",
+               linetype = "dashed") +
+    annotate(geom = "text",
+             x = 150000,
+             y = 0.94,
+             label = "100%",
+             size = 3,
+             #label.size = 0,
+             colour = "grey40") +
+    scale_x_continuous(breaks = seq(0, 175000, 20000),
+                       #limits = c(0, 1.2),
+                       #labels = scales::percent_format(accuracy = 1)
+                       labels=function(x) format(x, big.mark = ",", scientific = FALSE)
+                       ) +
+    scale_y_continuous(breaks = seq(0, 3, 0.5),
+                       limits = c(0, 3),
+                       labels = scales::percent_format(accuracy = 1)) +
+    labs(title = "UDA contract size Vs UDA delivery scaled up 12 months",
+         subtitle = "November 2021 delivery",
+         x = "Annual contracted UDAs",
+         y = "Percentage of annual contracted UDAs delivered \n scaled up 12 months",
+         caption = "*Excluding prototype contracts and contracts with annual contracted UDA < 100.
+         24 contracts with delivery > 300% have been excluded. All of which have contract size below 2560."
+    )
+  
+}
+
+
+
+################################################################################
+#hand back scatter
+plot_delivery_vs_contract_size_scatter_corporate <- function(data = UDA_scheduled_data,
+                                                             demographics_data = contract_demographics,
+                                                             remove_prototypes = T,
+                                                             plot_month = as.Date("2021-11-01"),
+                                                             UDAorUOA = "UDA"){
+  
+  demographics_data <- demographics_data %>%
+    select(contract_number, Region, Dental.Group, Corporate.Status, Average.UDA.value)
+  
+  data <- data %>%
+    left_join(demographics_data)
+  
+  #create not in function
+  `%notin%` = Negate(`%in%`)
+
+  #remove prototype contracts if specified
+  if(remove_prototypes & UDAorUOA == "UDA"){
+    data <- data %>%
+      filter(contract_number %notin% prototype_contracts$prototype_contract_number)%>%
+      filter(annual_contracted_UDA > 100)
+  }else if(remove_prototypes & UDAorUOA == "UOA"){
+    data <- data %>%
+      #filter(contract_number %notin% prototype_contracts$prototype_contract_number)%>%
+      filter(annual_contracted_UOA > 100)
+  }
+
+  data <- data %>%
+    filter(month == plot_month) %>%
+    select(contract_number, annual_contracted_UDA, UDA_delivered,
+           Region, Dental.Group, Corporate.Status, Average.UDA.value) %>%
+    mutate(UDA_delivery = UDA_delivered * 12 / annual_contracted_UDA) %>%
+    mutate(Corporate.Status = if_else(Corporate.Status == 1, T, F)) %>%
+    filter(!is.na(Corporate.Status)) %>%
+    arrange(Corporate.Status)
+
+
+  ggplot(data, aes(x = annual_contracted_UDA, y = UDA_delivery)) +
+    geom_point(aes(colour = Corporate.Status)) +
+    theme_bw() +
+    geom_hline(yintercept = 0.65,
+               colour = "orangered4",
+               linetype = "dashed") +
+    annotate(geom = "text",
+             x = 150000,
+             y = 0.59,
+             label = "65% Q3 threshold",
+             size = 3,
+             #label.size = 0,
+             colour = "orangered4") +
+    geom_hline(yintercept = 0.85,
+               colour = "grey40",
+               linetype = "dashed") +
+    annotate(geom = "text",
+             x = 150000,
+             y = 0.79,
+             label = "85%",
+             size = 3,
+             #label.size = 0,
+             colour = "grey40") +
+    geom_hline(yintercept = 1,
+               colour = "grey40",
+               linetype = "dashed") +
+    annotate(geom = "text",
+             x = 150000,
+             y = 0.94,
+             label = "100%",
+             size = 3,
+             #label.size = 0,
+             colour = "grey40") +
+    scale_colour_manual(values = c("steelblue", "coral"), labels = c("non-corporate", "corporate")) +
+    scale_x_continuous(breaks = seq(0, 175000, 20000),
+                       #limits = c(0, 1.2),
+                       #labels = scales::percent_format(accuracy = 1)
+                       labels=function(x) format(x, big.mark = ",", scientific = FALSE)
+    ) +
+    scale_y_continuous(breaks = seq(0, 3, 0.5),
+                       limits = c(0, 3),
+                       labels = scales::percent_format(accuracy = 1)) +
+    labs(title = "UDA contract size Vs UDA delivery scaled up 12 months",
+         subtitle = "November 2021 scheduled delivery",
+         x = "Annual contracted UDAs",
+         y = "Percentage of annual contracted UDAs delivered \n scaled up 12 months",
+         caption = "*Excluding prototype contracts and contracts with annual contracted UDA < 100.
+         24 contracts with delivery > 300% have been excluded. All of which have contract size below 2560.",
+         colour = "Corporate status"
+    )
+
+}
+  
+
+
+################################################################################
+#hand back scatter
+plot_delivery_vs_contract_size_scatter_dental_group <- function(data = UDA_scheduled_data,
+                                                                demographics_data = contract_demographics,
+                                                                remove_prototypes = T,
+                                                                plot_month = as.Date("2021-11-01"),
+                                                                UDAorUOA = "UDA"){
+  
+  demographics_data <- demographics_data %>%
+    select(contract_number, Region, Dental.Group, Corporate.Status, Average.UDA.value)
+  
+  data <- data %>%
+    left_join(demographics_data)
+  
+  #create not in function
+  `%notin%` = Negate(`%in%`)
+  
+  #remove prototype contracts if specified
+  if(remove_prototypes & UDAorUOA == "UDA"){
+    data <- data %>%
+      filter(contract_number %notin% prototype_contracts$prototype_contract_number)%>%
+      filter(annual_contracted_UDA > 100)
+  }else if(remove_prototypes & UDAorUOA == "UOA"){
+    data <- data %>%
+      #filter(contract_number %notin% prototype_contracts$prototype_contract_number)%>%
+      filter(annual_contracted_UOA > 100)
+  }
+  
+  data <- data %>%
+    filter(month == plot_month) %>%
+    select(contract_number, annual_contracted_UDA, UDA_delivered,
+           Region, Dental.Group, Corporate.Status, Average.UDA.value) %>%
+    mutate(UDA_delivery = UDA_delivered * 12 / annual_contracted_UDA) %>%
+    mutate(Corporate.Status = if_else(Corporate.Status == 1, T, F)) %>%
+    filter(!is.na(Dental.Group)) %>%
+    arrange(Dental.Group)
+  
+  
+  ggplot(data, aes(x = annual_contracted_UDA, y = UDA_delivery)) +
+    geom_point(aes(colour = Dental.Group)) +
+    theme_bw() +
+    geom_hline(yintercept = 0.65,
+               colour = "orangered4",
+               linetype = "dashed") +
+    annotate(geom = "text",
+             x = 150000,
+             y = 0.59,
+             label = "65% Q3 threshold",
+             size = 3,
+             #label.size = 0,
+             colour = "orangered4") +
+    geom_hline(yintercept = 0.85,
+               colour = "grey40",
+               linetype = "dashed") +
+    annotate(geom = "text",
+             x = 150000,
+             y = 0.79,
+             label = "85%",
+             size = 3,
+             #label.size = 0,
+             colour = "grey40") +
+    geom_hline(yintercept = 1,
+               colour = "grey40",
+               linetype = "dashed") +
+    annotate(geom = "text",
+             x = 150000,
+             y = 0.94,
+             label = "100%",
+             size = 3,
+             #label.size = 0,
+             colour = "grey40") +
+    #scale_colour_manual(values = c("steelblue", "coral"), labels = c("non-corporate", "corporate")) +
+    scale_x_continuous(breaks = seq(0, 175000, 20000),
+                       #limits = c(0, 1.2),
+                       #labels = scales::percent_format(accuracy = 1)
+                       labels=function(x) format(x, big.mark = ",", scientific = FALSE)
+    ) +
+    scale_y_continuous(breaks = seq(0, 3, 0.5),
+                       limits = c(0, 3),
+                       labels = scales::percent_format(accuracy = 1)) +
+    labs(title = "UDA contract size Vs UDA delivery scaled up 12 months",
+         subtitle = "November 2021 delivery",
+         x = "Annual contracted UDAs",
+         y = "Percentage of annual contracted UDAs delivered \n scaled up 12 months",
+         caption = "*Excluding prototype contracts and contracts with annual contracted UDA < 100.
+         24 contracts with delivery > 300% have been excluded. All of which have contract size below 2560.",
+         colour = "Dental Group"
+    )
+  
+}
+
+
+
+################################################################################
+#hand back scatter
+plot_delivery_vs_contract_size_scatter_region <- function(data = UDA_scheduled_data,
+                                                                demographics_data = contract_demographics,
+                                                                remove_prototypes = T,
+                                                                plot_month = as.Date("2021-11-01"),
+                                                                UDAorUOA = "UDA"){
+  
+  demographics_data <- demographics_data %>%
+    select(contract_number, Region, Dental.Group, Corporate.Status, Average.UDA.value)
+  
+  data <- data %>%
+    left_join(demographics_data)
+  
+  #create not in function
+  `%notin%` = Negate(`%in%`)
+  
+  #remove prototype contracts if specified
+  if(remove_prototypes & UDAorUOA == "UDA"){
+    data <- data %>%
+      filter(contract_number %notin% prototype_contracts$prototype_contract_number)%>%
+      filter(annual_contracted_UDA > 100)
+  }else if(remove_prototypes & UDAorUOA == "UOA"){
+    data <- data %>%
+      #filter(contract_number %notin% prototype_contracts$prototype_contract_number)%>%
+      filter(annual_contracted_UOA > 100)
+  }
+  
+  data <- data %>%
+    filter(month == plot_month) %>%
+    select(contract_number, annual_contracted_UDA, UDA_delivered,
+           Region, Dental.Group, Corporate.Status, Average.UDA.value) %>%
+    mutate(UDA_delivery = UDA_delivered * 12 / annual_contracted_UDA) %>%
+    mutate(Corporate.Status = if_else(Corporate.Status == 1, T, F)) %>%
+    filter(!is.na(Average.UDA.value)) %>%
+    arrange(Average.UDA.value)
+  
+  
+  ggplot(data, aes(x = annual_contracted_UDA, y = UDA_delivery)) +
+    geom_point(aes(colour = Average.UDA.value)) +
+    theme_bw() +
+    geom_hline(yintercept = 0.65,
+               colour = "orangered4",
+               linetype = "dashed") +
+    annotate(geom = "text",
+             x = 150000,
+             y = 0.59,
+             label = "65% Q3 threshold",
+             size = 3,
+             #label.size = 0,
+             colour = "orangered4") +
+    geom_hline(yintercept = 0.85,
+               colour = "grey40",
+               linetype = "dashed") +
+    annotate(geom = "text",
+             x = 150000,
+             y = 0.79,
+             label = "85%",
+             size = 3,
+             #label.size = 0,
+             colour = "grey40") +
+    geom_hline(yintercept = 1,
+               colour = "grey40",
+               linetype = "dashed") +
+    annotate(geom = "text",
+             x = 150000,
+             y = 0.94,
+             label = "100%",
+             size = 3,
+             #label.size = 0,
+             colour = "grey40") +
+    #scale_colour_manual(values = c("steelblue", "coral"), labels = c("non-corporate", "corporate")) +
+    scale_x_continuous(breaks = seq(0, 175000, 20000),
+                       #limits = c(0, 1.2),
+                       #labels = scales::percent_format(accuracy = 1)
+                       labels=function(x) format(x, big.mark = ",", scientific = FALSE)
+    ) +
+    scale_y_continuous(breaks = seq(0, 3, 0.5),
+                       limits = c(0, 3),
+                       labels = scales::percent_format(accuracy = 1)) +
+    labs(title = "UDA contract size Vs UDA delivery scaled up 12 months",
+         subtitle = "November 2021 delivery",
+         x = "Annual contracted UDAs",
+         y = "Percentage of annual contracted UDAs delivered \n scaled up 12 months",
+         caption = "*Excluding prototype contracts and contracts with annual contracted UDA < 100.
+         24 contracts with delivery > 300% have been excluded. All of which have contract size below 2560.",
+         colour = "Average UDA value"
+    )
+  
+}
+
