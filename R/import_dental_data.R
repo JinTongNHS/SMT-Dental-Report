@@ -397,8 +397,37 @@ import_and_clean_calendar_UDA_data <- function(data_path = "data/raw_data/dashbo
            total_other_FP17s = X__104
     )
   
+  #add column for date and rename columns, split data for just december
+  data_dec <- data %>%
+    mutate(data_month = as.Date("2021-12-01")) %>%
+    select(data_month, X__1, X__2, X__3, X__4, X__5, X__6, X__7, X__8, 
+           X__105, X__106, X__107, X__108, X__109, X__110, X__111, X__112, X__113, X__114,
+           X__115, X__116) %>%
+    rename(contract_number = X__1,
+           latest_contract_type = X__2,
+           name_or_company_name = X__3,
+           commissioner_name = X__4,
+           region_name = X__5,
+           paid_by_BSA = X__6,
+           contract_start_date = X__7, 
+           contract_end_date = X__8, 
+           
+           UDA_total = X__105, 
+           UDA_band_1_total = X__106,
+           UDA_band_2_total = X__107,
+           UDA_band_3_total = X__108, 
+           UDA_urgent_total = X__109, 
+           UDA_other_total = X__110, 
+           total_FP17s = X__111, 
+           total_band_1_FP17s  = X__112,
+           total_band_2_FP17s = X__113,
+           total_band_3_FP17s = X__114,
+           total_urgent_FP17s = X__115,
+           total_other_FP17s = X__116
+    )
+  
   UDA_calendar_data <- bind_rows(data_apr, data_may, data_jun, data_jul, data_aug, 
-                                 data_sep, data_oct, data_nov)
+                                 data_sep, data_oct, data_nov, data_dec)
   
 }
 
@@ -566,9 +595,27 @@ import_and_clean_calendar_UOA_data <- function(data_path = "data/raw_data/dashbo
            total_orthodontic_starts = X__24
     )
   
+  #add column for date and rename columns, split data for just nov
+  data_dec <- data %>%
+    mutate(data_month = as.Date("2021-12-01")) %>%
+    select(data_month, X__1, X__2, X__3, X__4, X__5, X__6, X__7, X__8, 
+           X__25, X__26) %>%
+    rename(contract_number = X__1,
+           contract_type = X__2,
+           name_or_company_name = X__3,
+           commissioner_name = X__4,
+           region_name = X__5,
+           paid_by_BSA = X__6,
+           contract_start_date = X__7, 
+           contract_end_date = X__8, 
+           
+           UOA_total = X__25, 
+           total_orthodontic_starts = X__26
+    )
+  
   
   UOA_calendar_data <- bind_rows(data_apr, data_may, data_jun, data_jul, data_aug, 
-                                 data_sep, data_oct, data_nov)
+                                 data_sep, data_oct, data_nov, data_dec)
   
 }
 
@@ -578,7 +625,7 @@ import_and_clean_calendar_UOA_data <- function(data_path = "data/raw_data/dashbo
 ################################################################################
 #function to import and clean data
 #N.B. this assumes that the columns are in the same order each time!
-import_and_clean_calendar_UOA_data_nov <- function(data_path = "data/raw_data/dashboard_raw_data/UOA_calendar_raw_data/UOA_calendar_Apr_Nov21.xlsx"){
+import_and_clean_calendar_UOA_data_dec <- function(data_path = "data/raw_data/dashboard_raw_data/UOA_calendar_raw_data/UOA_calendar_Apr_Dec21.xlsx"){
   
   #read in data with correct types and removing top 6 rows and renaming columns 
   data <- read_excel(data_path,
@@ -586,7 +633,7 @@ import_and_clean_calendar_UOA_data_nov <- function(data_path = "data/raw_data/da
                      col_types = c("text", "text", "text", 
                                    "text", "text", "date", "date", "text", 
                                    "text", "text", "text", "text", "text", 
-                                   "text", "text"),
+                                   "text", "text", "text"),
                      skip = 3,
                      .name_repair = ~ paste0("X__", seq_along(.x)))
   
@@ -723,9 +770,25 @@ import_and_clean_calendar_UOA_data_nov <- function(data_path = "data/raw_data/da
            UOA_total = X__15
     )
   
+  #add column for date and rename columns, split data for just dec
+  data_dec <- data %>%
+    mutate(data_month = as.Date("2021-12-01")) %>%
+    select(data_month, X__1, X__2, X__3, X__4, X__5, X__6, X__7, 
+           X__16) %>%
+    rename(contract_number = X__1,
+           contract_type = X__2,
+           name_or_company_name = X__3,
+           commissioner_name = X__4,
+           paid_by_BSA = X__5,
+           contract_start_date = X__6, 
+           contract_end_date = X__7, 
+           
+           UOA_total = X__16
+    )
+  
   
   UOA_calendar_data <- bind_rows(data_apr, data_may, data_jun, data_jul, data_aug, 
-                                 data_sep, data_oct, data_nov)
+                                 data_sep, data_oct, data_nov, data_dec)
   
 }
 

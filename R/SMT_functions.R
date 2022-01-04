@@ -1395,11 +1395,42 @@ plot_delivery_vs_contract_size_scatter <- function(data = UDA_scheduled_data,
 ################################################################################
 #hand back scatter
 plot_delivery_vs_contract_size_scatter_corporate <- function(data = UDA_scheduled_data,
+                                                             calendar_data = UDA_calendar_data,
                                                              demographics_data = contract_demographics,
                                                              remove_prototypes = T,
-                                                             plot_month = as.Date("2021-11-01"),
-                                                             UDAorUOA = "UDA"){
+                                                             plot_month = NULL,
+                                                             UDAorUOA = "UDA",
+                                                             level = "National",
+                                                             region_STP_name = NULL,
+                                                             get_num_above = NULL){
+  if(is.null(plot_month)){
+    #use latest month in data
+    plot_month <- max(data$month)
+  }
   
+  #add a region column to the data
+  region_STP_lookup <- calendar_data %>%
+    select(contract_number, name_or_company_name, commissioner_name, region_name) %>%
+    distinct()
+  
+  # data <- left_join(data, region_STP_lookup, by = c("contract_number", "name_or_company_name", "commissioner_name"))
+  data <- left_join(data, region_STP_lookup, by = c("contract_number"))
+  
+  #filter for STP or region
+  if(level == "Regional"){
+    data <- data %>% 
+      filter(region_name == region_STP_name)
+    subtitle <- region_STP_name
+  }else if(level == "STP"){
+    data <- data %>% 
+      filter(commissioner_name == region_STP_name)
+    subtitle <- region_STP_name
+  }else{
+    subtitle <- "England"
+  }
+  
+  
+  #join in demographics data
   demographics_data <- demographics_data %>%
     select(contract_number, Region, Dental.Group, Corporate.Status, Average.UDA.value)
   
@@ -1424,62 +1455,68 @@ plot_delivery_vs_contract_size_scatter_corporate <- function(data = UDA_schedule
     filter(month == plot_month) %>%
     select(contract_number, annual_contracted_UDA, UDA_delivered,
            Region, Dental.Group, Corporate.Status, Average.UDA.value) %>%
-    mutate(UDA_delivery = UDA_delivered * 12 / annual_contracted_UDA) %>%
+    mutate(UDA_delivery = UDA_delivered * 12 / annual_contracted_UDA) 
+  
+  data_to_plot <- data %>%
     mutate(Corporate.Status = if_else(Corporate.Status == 1, T, F)) %>%
     filter(!is.na(Corporate.Status)) %>%
     arrange(Corporate.Status)
 
 
-  ggplot(data, aes(x = annual_contracted_UDA, y = UDA_delivery)) +
-    geom_point(aes(colour = Corporate.Status)) +
-    theme_bw() +
-    geom_hline(yintercept = 0.65,
-               colour = "orangered4",
-               linetype = "dashed") +
-    annotate(geom = "text",
-             x = 150000,
-             y = 0.59,
-             label = "65% Q3 threshold",
-             size = 3,
-             #label.size = 0,
-             colour = "orangered4") +
-    geom_hline(yintercept = 0.85,
-               colour = "grey40",
-               linetype = "dashed") +
-    annotate(geom = "text",
-             x = 150000,
-             y = 0.79,
-             label = "85%",
-             size = 3,
-             #label.size = 0,
-             colour = "grey40") +
-    geom_hline(yintercept = 1,
-               colour = "grey40",
-               linetype = "dashed") +
-    annotate(geom = "text",
-             x = 150000,
-             y = 0.94,
-             label = "100%",
-             size = 3,
-             #label.size = 0,
-             colour = "grey40") +
-    scale_colour_manual(values = c("steelblue", "coral"), labels = c("non-corporate", "corporate")) +
-    scale_x_continuous(breaks = seq(0, 175000, 20000),
-                       #limits = c(0, 1.2),
-                       #labels = scales::percent_format(accuracy = 1)
-                       labels=function(x) format(x, big.mark = ",", scientific = FALSE)
-    ) +
-    scale_y_continuous(breaks = seq(0, 3, 0.5),
-                       limits = c(0, 3),
-                       labels = scales::percent_format(accuracy = 1)) +
-    labs(title = "UDA contract size Vs UDA delivery scaled up 12 months",
-         subtitle = "November 2021 scheduled delivery",
-         x = "Annual contracted UDAs",
-         y = "Percentage of annual contracted UDAs delivered \n scaled up 12 months",
-         caption = "*Excluding prototype contracts and contracts with annual contracted UDA < 100.
-         24 contracts with delivery > 300% have been excluded. All of which have contract size below 2560.",
-         colour = "Corporate status"
-    )
+  if(is.null(get_num_above)){
+    p <- ggplot(data_to_plot, aes(x = annual_contracted_UDA, y = UDA_delivery)) +
+      geom_point(aes(colour = Corporate.Status)) +
+      theme_bw() +
+      geom_hline(yintercept = 0.65,
+                 colour = "orangered4",
+                 linetype = "dashed") +
+      annotate(geom = "text",
+               x = 150000,
+               y = 0.59,
+               label = "65% Q3 threshold",
+               size = 3,
+               #label.size = 0,
+               colour = "orangered4") +
+      geom_hline(yintercept = 1,
+                 colour = "grey40",
+                 linetype = "dashed") +
+      annotate(geom = "text",
+               x = 150000,
+               y = 0.94,
+               label = "100%",
+               size = 3,
+               #label.size = 0,
+               colour = "grey40") +
+      scale_colour_manual(values = c("steelblue", "coral"), labels = c("non-corporate", "corporate")) +
+      scale_x_continuous(breaks = seq(0, 175000, 20000),
+                         #limits = c(0, 1.2),
+                         #labels = scales::percent_format(accuracy = 1)
+                         labels=function(x) format(x, big.mark = ",", scientific = FALSE)
+      ) +
+      scale_y_continuous(breaks = seq(0, 3, 0.5),
+                         limits = c(0, 3),
+                         labels = scales::percent_format(accuracy = 1)) +
+      labs(title = "UDA contract size Vs UDA delivery scaled up 12 months",
+           subtitle = paste(format(plot_month, "%B %Y"), "scheduled delivery - ", subtitle),
+           x = "Annual contracted UDAs",
+           y = "Percentage of annual contracted UDAs delivered \n scaled up 12 months",
+           caption = "*Excluding prototype contracts and contracts with annual contracted UDA < 100.
+         Also excluding contracts with delivery > 300% for plot purposes.",
+           colour = "Corporate status"
+      )
+    
+    p
+  }else{
+    data <- data %>%
+      filter(UDA_delivery >= get_num_above) 
+    
+    num_contracts_above_threshold <- round(nrow(data))
+    mean_contract_size_above_threshold <- round(mean(data$annual_contracted_UDA, na.rm = T))
+    
+    list(num_contracts_above_threshold = num_contracts_above_threshold,
+         mean_contract_size_above_threshold = mean_contract_size_above_threshold)
+  }
+  
 
 }
   

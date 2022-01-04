@@ -22,10 +22,10 @@ source("../R/SMT_functions.R")
 source("../R/format_SMT_data.R")
 
 #load in raw data
-UDA_calendar_data <- read_excel("../data/cleaned_data_up_to_november/UDA_calendar_data.xlsx")
-UOA_calendar_data <- read_excel("../data/cleaned_data_up_to_november/UOA_calendar_data.xlsx")
-UDA_scheduled_data <- read_excel("../data/cleaned_data_up_to_november/UDA_scheduled_data.xlsx")
-UOA_scheduled_data <- read_excel("../data/cleaned_data_up_to_november/UOA_scheduled_data.xlsx")
+UDA_calendar_data <- read_excel("../data/cleaned_data_up_to_december/UDA_calendar_data.xlsx")
+UOA_calendar_data <- read_excel("../data/cleaned_data_up_to_december/UOA_calendar_data.xlsx")
+UDA_scheduled_data <- read_excel("../data/cleaned_data_up_to_december/UDA_scheduled_data.xlsx")
+UOA_scheduled_data <- read_excel("../data/cleaned_data_up_to_december/UOA_scheduled_data.xlsx")
 historical_UDA_scheduled_data <- readRDS("../data/cleaned_data_up_to_september/historical_UDA_scheduled_data.rds")
 
 UDA_calendar_data <- rename(UDA_calendar_data, month = data_month)
@@ -61,7 +61,7 @@ contract_demographics <- readRDS("~/R-Projects/SMT-Dental-Report/data/contract_d
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 ```
 
-## Contents 
+## Contents
 #### Dental
 * Table of number of contracts by MY category [4]
 * Calendar UDA activity [5]
@@ -69,22 +69,22 @@ knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 * Calendar UDA activity by MY category [7 + 8]
 * Cumulative UDA delivery per quarter [9]
 * Scheduled UDAs [10]
-* UDA delivery profile across months [11]
-* Banded courses of treatment time series [19]
-* Urgent treatment form submissions [20]
-* 111 call volumes [21]
-* 111 call volumes by region [22]
+* Contract size vs delivery scatter plot [11]
+* UDA delivery profile across months [12]
+* Banded courses of treatment time series [20]
+* Urgent treatment form submissions [21]
+* 111 call volumes [22]
+* 111 call volumes by region [23]
 
 #### Orthodontic
-* Calendar UOA activity [12]
-* Calendar UOA activity by region [13]
-* Calendar UOA activity by MY category [14 + 15]
-* Cumulative UOA delivery per quarter [16]
-* Scheduled UOAs [17]
-* UOA delivery profile across months [18]
+* Calendar UOA activity [13]
+* Calendar UOA activity by region [14]
+* Calendar UOA activity by MY category [15 + 16]
+* Cumulative UOA delivery per quarter [17]
+* Scheduled UOAs [18]
+* UOA delivery profile across months [19]
 
-*Please Note: Slides 5-10 and 12-16 use calendar data as a measure of activity.*
-*All other slides use scheduled data, as per previous SMT data packs.*
+
 
 ## Calendar and scheduled data 
 ### Calendar data explanation 
@@ -105,6 +105,9 @@ scheduled data. However, if for example a COT was completed on May 1st, but repo
 reporting period (April 21st – May 19th), that activity would go into the following scheduled period. As a result, the
 scheduling period can be considered fixed.
 * N.B.Scheduled data for April is from 1st April - 21st April. This has been taken into account when scaling up to annual delivery.
+
+*Please Note: Slides 5-10 and 12-16 use calendar data as a measure of activity.*
+*All other slides use scheduled data, as per previous SMT data packs.*
 
 ## Number of contracts by MY category (see appendix for breakdown)
 #### Including prototypes and contracts with annual contracted UDA < 100
@@ -235,14 +238,21 @@ activity which is fixed. This may be thought of as "UDAs submitted" in each mont
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
 plot_delivery_vs_contract_size_scatter_corporate(data = UDA_scheduled_data,
-                                                                demographics_data = contract_demographics,
-                                                                remove_prototypes = T,
-                                                                plot_month = as.Date("2021-11-01"),
-                                                                UDAorUOA = "UDA")
+                                                 demographics_data = contract_demographics,
+                                                 remove_prototypes = T,
+                                                 plot_month = NULL,
+                                                 UDAorUOA = "UDA",
+                                                 level = params$level,
+                                                 region_STP_name = params$region_STP_name)
 ```
 
-* Need to do on regional level 
-* Need to make it update each month
+* The scatter plot shows the relationship between contract size and delivery for the current month. 
+* The number of contracts delivering above 65% contracted value for this month is **`r plot_delivery_vs_contract_size_scatter_corporate(level = params$level, region_STP_name = params$region_STP_name, get_num_above = 0.65)[1]`**
+(out of **`r get_num_contracts(level = params$level, region_STP_name = params$region_STP_name)`** contracts),
+with a mean contract size of **`r plot_delivery_vs_contract_size_scatter_corporate(level = params$level, region_STP_name = params$region_STP_name, get_num_above = 0.65)[2]`** UDAs.
+* The number of contracts delivering above 100% contracted value for this month is **`r plot_delivery_vs_contract_size_scatter_corporate(level = params$level, region_STP_name = params$region_STP_name, get_num_above = 1)[1]`**,
+with a mean contract size of **`r plot_delivery_vs_contract_size_scatter_corporate(level = params$level, region_STP_name = params$region_STP_name, get_num_above = 1)[2]`** UDAs.
+
 
 ## UDA delivery profile
 
