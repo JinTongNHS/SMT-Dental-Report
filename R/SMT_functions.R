@@ -368,7 +368,7 @@ plot_banded_CoT <- function(data = UDA_scheduled_data,
          is equivalent to 1 UDA, a band 2 FP17 = 3 UDAs, 
          a band 3 FP17 = 12 UDAs, an urgent FP17 = 1.2 
          UDAs and an 'other' FP17 = 0.6 UDAs.")
-  
+
 }
 
 
@@ -443,12 +443,24 @@ plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
                   y = perc_UDA_UOA_delivered), 
               colour = lineCol
               ) +
-    # geom_segment(aes(x = as.Date("2021-04-01"), y = septemberTarget, xend = as.Date("2021-09-01"), yend = septemberTarget),
-    #              colour = "#0072B2",
-    #              linetype = "dashed") +
-    # geom_segment(aes(x = as.Date("2021-10-01"), y = decemberTarget, xend = as.Date("2021-12-01"), yend = decemberTarget),
-    #              colour = "#0072B2",
-    #              linetype = "dashed") +
+    geom_segment(aes(x = as.Date("2021-04-01"), y = septemberTarget, xend = as.Date("2021-09-01"), yend = septemberTarget),
+                 colour = "#0072B2",
+                 linetype = "dashed") +
+    geom_segment(aes(x = as.Date("2021-10-01"), y = decemberTarget, xend = as.Date("2021-12-01"), yend = decemberTarget),
+                 colour = "#0072B2",
+                 linetype = "dashed") +
+    annotate(geom = "text", 
+             x = as.Date("2021-04-01") + lubridate::weeks(2), 
+             y = septemberTarget - 3, 
+             label = "H1 threshold", 
+             size = 3,
+             colour = "#0072B2") + 
+    annotate(geom = "text", 
+             x = as.Date("2021-10-01") + lubridate::weeks(2), 
+             y = decemberTarget - 3, 
+             label = "Q3 threshold", 
+             size = 3,
+             colour = "#0072B2") +
     scale_x_date(date_breaks = "1 month", 
                  date_labels = "%b-%y") +
     scale_y_continuous(limits = c(0, max(data$perc_UDA_UOA_delivered, na.rm = T) + 5)) +
