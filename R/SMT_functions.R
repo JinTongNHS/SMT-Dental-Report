@@ -299,7 +299,8 @@ plot_banded_CoT <- function(data = UDA_scheduled_data,
                             #existing_data = slide8_banded_CoT_historic,
                             historic_data = historical_UDA_scheduled_data, 
                             level = "National",
-                            region_STP_name = NULL){
+                            region_STP_name = NULL,
+                            plot_chart = TRUE){
   
   #avoid standard form on axes
   options(scipen = 100)
@@ -340,34 +341,41 @@ plot_banded_CoT <- function(data = UDA_scheduled_data,
     mutate(month = as.Date(month)) %>%
     rename(band = variable, CoTs = value)
   
-  
-  #plot code
-  ggplot(data) +    
-    theme_bw() +
-    theme(axis.text.x = element_text(angle = 90)) +
-    geom_line(aes(x = month, 
-                  y = CoTs, 
-                  colour = band), 
-              size = 1) +
-    scale_x_date(date_breaks = "1 month", 
-                 date_labels = "%b-%y") +
-    scale_colour_manual(labels = c("Band 1", "Band 2", "Band 3", "Other", "Urgent"), 
-                        values = c("coral3",
-                                   "orange",
-                                   "yellow3",
-                                   "green",
-                                   "blue")
-    ) +
-    scale_y_continuous(breaks = scales::breaks_pretty()) +
-    labs(title = "Banded Courses of Treatment", 
-         x = "Month",
-         y = "Number of FP17* forms submitted",
-         colour = "Band",
-         subtitle = subtitle,
-         caption = "*UDA to FP17 conversion has been done assuming a band 1 FP17 
+  if(plot_chart == TRUE){
+    
+    #plot code
+    ggplot(data) +    
+      theme_bw() +
+      theme(axis.text.x = element_text(angle = 90)) +
+      geom_line(aes(x = month, 
+                    y = CoTs, 
+                    colour = band), 
+                size = 1) +
+      scale_x_date(date_breaks = "1 month", 
+                   date_labels = "%b-%y") +
+      scale_colour_manual(labels = c("Band 1", "Band 2", "Band 3", "Other", "Urgent"), 
+                          values = c("coral3",
+                                     "orange",
+                                     "yellow3",
+                                     "green",
+                                     "blue")
+      ) +
+      scale_y_continuous(breaks = scales::breaks_pretty()) +
+      labs(title = "Banded Courses of Treatment", 
+           x = "Month",
+           y = "Number of FP17* forms submitted",
+           colour = "Band",
+           subtitle = subtitle,
+           caption = "*UDA to FP17 conversion has been done assuming a band 1 FP17 
          is equivalent to 1 UDA, a band 2 FP17 = 3 UDAs, 
          a band 3 FP17 = 12 UDAs, an urgent FP17 = 1.2 
          UDAs and an 'other' FP17 = 0.6 UDAs.")
+    
+  }else{
+    data
+  }
+  
+  
 
 }
 
@@ -393,7 +401,7 @@ plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
   
   #add a region column to the data
   region_STP_lookup <- calendar_data %>%
-    select(contract_number, name_or_company_name, commissioner_name, region_name) %>%
+    select(contract_number, name_or_company_name, region_name) %>%
     distinct()
   
   # data <- left_join(data, region_STP_lookup, by = c("contract_number", "name_or_company_name", "commissioner_name"))
@@ -451,13 +459,13 @@ plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
                  linetype = "dashed") +
     annotate(geom = "text", 
              x = as.Date("2021-04-01") + lubridate::weeks(2), 
-             y = septemberTarget - 3, 
+             y = septemberTarget - 5, 
              label = "H1 threshold", 
              size = 3,
              colour = "#0072B2") + 
     annotate(geom = "text", 
              x = as.Date("2021-10-01") + lubridate::weeks(2), 
-             y = decemberTarget - 3, 
+             y = decemberTarget - 5, 
              label = "Q3 threshold", 
              size = 3,
              colour = "#0072B2") +
@@ -1422,7 +1430,7 @@ plot_delivery_vs_contract_size_scatter_corporate <- function(data = UDA_schedule
   
   #add a region column to the data
   region_STP_lookup <- calendar_data %>%
-    select(contract_number, name_or_company_name, commissioner_name, region_name) %>%
+    select(contract_number, name_or_company_name, region_name) %>%
     distinct()
   
   # data <- left_join(data, region_STP_lookup, by = c("contract_number", "name_or_company_name", "commissioner_name"))
@@ -1483,7 +1491,7 @@ plot_delivery_vs_contract_size_scatter_corporate <- function(data = UDA_schedule
                  colour = "orangered4",
                  linetype = "dashed") +
       annotate(geom = "text",
-               x = 150000,
+               x = max(data_to_plot$annual_contracted_UDA),
                y = 0.59,
                label = "65% Q3 threshold",
                size = 3,
@@ -1493,7 +1501,7 @@ plot_delivery_vs_contract_size_scatter_corporate <- function(data = UDA_schedule
                  colour = "grey40",
                  linetype = "dashed") +
       annotate(geom = "text",
-               x = 150000,
+               x = max(data_to_plot$annual_contracted_UDA),
                y = 0.94,
                label = "100%",
                size = 3,
@@ -1501,7 +1509,7 @@ plot_delivery_vs_contract_size_scatter_corporate <- function(data = UDA_schedule
                colour = "grey40") +
       scale_colour_manual(values = c("steelblue", "coral"), labels = c("non-corporate", "corporate")) +
       scale_x_continuous(breaks = seq(0, 175000, 20000),
-                         #limits = c(0, 1.2),
+                         limits = c(0, max(data_to_plot$annual_contracted_UDA) + 5000),
                          #labels = scales::percent_format(accuracy = 1)
                          labels=function(x) format(x, big.mark = ",", scientific = FALSE)
       ) +
@@ -1509,7 +1517,7 @@ plot_delivery_vs_contract_size_scatter_corporate <- function(data = UDA_schedule
                          limits = c(0, 3),
                          labels = scales::percent_format(accuracy = 1)) +
       labs(title = "UDA contract size Vs UDA delivery scaled up 12 months",
-           subtitle = paste(format(plot_month, "%B %Y"), "scheduled delivery - ", subtitle),
+           subtitle = paste(format(plot_month, "%B %Y"), "scheduled delivery -", subtitle),
            x = "Annual contracted UDAs",
            y = "Percentage of annual contracted UDAs delivered \n scaled up 12 months",
            caption = "*Excluding prototype contracts and contracts with annual contracted UDA < 100.

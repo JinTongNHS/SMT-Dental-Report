@@ -77,10 +77,13 @@ get_into_slide6_format_calendar <- function(data = UOA_calendar_data,
 
 ################################################################################
 #function to get dental data into the right format for slide 4
-get_into_slide5_7_format <- function(data = UDA_scheduled_data, 
+get_into_slide5_7_format <- function(data = UDA_scheduled_data,
+                                     calendar_data = UDA_calendar_data,
                                    #existing_data = slide5_UDA_delivery_historic, 
                                    remove_prototypes = T,
-                                   UDAorUOA = "UDA"){
+                                   UDAorUOA = "UDA",
+                                   STP_lines = F,
+                                   renameColumns = F){
   
   #remove prototype contracts if specified
   if(remove_prototypes){
@@ -91,27 +94,61 @@ get_into_slide5_7_format <- function(data = UDA_scheduled_data,
       filter(annual_contracted_UDA > 100)
   }
   
+  if(STP_lines){
+    data <- data %>%
+      group_by(month, commissioner_name)
+  }else{
+    data <- data %>%
+      group_by(month)
+  }
+  
   #group by month and sum UDAs delivered
   UDA_UOAs_delivered <- data %>%
-    group_by(month) %>%
     summarise(monthly_UDA_UOAs_delivered = ifelse(UDAorUOA == "UDA", 
                                                    sum(UDA_delivered, na.rm = T),
-                                                   sum(UOA_delivered, na.rm = T)))
+                                                   sum(UOA_delivered, na.rm = T)),
+              annual_contracted_UDA_UOA = ifelse(UDAorUOA == "UDA",
+                                                 sum(annual_contracted_UDA, na.rm = T),
+                                                 sum(annual_contracted_UOA, na.rm = T))
+              )
   
-  #group by month and sum contracted UDAs
-  #filter down to latest month only
-  UDA_UOAs_contracted <- data %>%
-    group_by(month) %>%
-    summarise(annual_contracted_UDA_UOA = ifelse(UDAorUOA == "UDA",
-                                                  sum(annual_contracted_UDA, na.rm = T),
-                                                  sum(annual_contracted_UOA, na.rm = T)))
+  # #group by month and sum contracted UDAs
+  # #filter down to latest month only
+  # UDA_UOAs_contracted <- data %>%
+  #   summarise(annual_contracted_UDA_UOA = ifelse(UDAorUOA == "UDA",
+  #                                                 sum(annual_contracted_UDA, na.rm = T),
+  #                                                 sum(annual_contracted_UOA, na.rm = T))) %>%
+  #   select(-commissioner_name)
   
-  new_data <- full_join(UDA_UOAs_delivered, UDA_UOAs_contracted, by = "month")
-  new_data <- new_data %>%
+  #new_data <- full_join(UDA_UOAs_delivered, UDA_UOAs_contracted, by = "month")
+  new_data <- UDA_UOAs_delivered %>%
     #April data needs scaling differently
-    mutate(perc_UDA_UOA_delivered = if_else(month != as.Date("2021-04-01") & month != as.Date("2020-04-01") & month != as.Date("2019-04-01"),
-                                            round(monthly_UDA_UOAs_delivered * 12 * 100 / annual_contracted_UDA_UOA),
-                                            round(monthly_UDA_UOAs_delivered * 18 * 100 / annual_contracted_UDA_UOA))) 
+    mutate(scaled_monthly_UDA_UOAs_delivered = if_else(month != as.Date("2021-04-01") & month != as.Date("2020-04-01") & month != as.Date("2019-04-01"),
+                                                       monthly_UDA_UOAs_delivered * 12,
+                                                       monthly_UDA_UOAs_delivered * 18)) %>%
+    mutate(perc_UDA_UOA_delivered = round(scaled_monthly_UDA_UOAs_delivered * 100 / annual_contracted_UDA_UOA)) 
+  
+  #for PCOR and SOF table
+  if(renameColumns){
+    
+    #add a region column to the data
+    region_STP_lookup <- calendar_data %>%
+      select(commissioner_name, region_name) %>%
+      distinct()
+    
+    new_data <- left_join(new_data, region_STP_lookup, by = c("commissioner_name"))
+    
+    new_data <- new_data %>%
+      select(scheduled_month = month,
+             commissioner_name,
+             region_name,
+             monthly_UDAs_delivered = monthly_UDA_UOAs_delivered,
+             scaled_monthly_UDAs_delivered = scaled_monthly_UDA_UOAs_delivered,
+             annual_contracted_UDAs = annual_contracted_UDA_UOA,
+             scaled_perc_UDAs_delivered = perc_UDA_UOA_delivered)
+  }
+  
+  new_data
 
 }
 
@@ -195,7 +232,7 @@ get_into_slide5_7_format_calendar <- function(calendar_data = UDA_calendar_data,
              region_name,
              monthly_UDAs_delivered = monthly_UDA_UOAs_delivered,
              scaled_monthly_UDAs_delivered = scaled_monthly_UDA_UOAs_delivered,
-             annual_contracted_UDA_UOA,
+             annual_contracted_UDAs = annual_contracted_UDA_UOA,
              scaled_perc_UDAs_delivered = scaled_perc_UDA_UOA_delivered)
   }
   
