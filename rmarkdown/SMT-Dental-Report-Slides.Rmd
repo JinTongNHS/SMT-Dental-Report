@@ -12,7 +12,7 @@ fontsize: 8pt
 classoption: aspectratio = 169
 params:
   level: "National"
-  region_STP_name: NULL
+  region_STP_name: NULL 
 ---
 
 ```{r include = FALSE}
@@ -51,7 +51,9 @@ dental_data_111 <- read_excel("../data/cleaned_data_up_to_november/111_dental_da
 prototype_contracts <- read_excel("../data/prototype_contracts.xlsx")
 contractor_categories <- readRDS("../data/cleaned_data_up_to_october/contractor_categories.RDS")
 
-UDA_delivery <- get_into_slide5_7_format_calendar(STP_lines = T, renameColumns = T)
+UDA_delivery_calendar <- get_into_slide5_7_format_calendar(STP_lines = T, renameColumns = T)
+UDA_delivery_scheduled <- get_into_slide5_7_format(STP_lines = T, renameColumns = T)
+
 #prototype_delivery <- readRDS("~/R-Projects/SMT-Dental-Report/data/prototype_delivery.RDS")
 contract_demographics <- readRDS("~/R-Projects/SMT-Dental-Report/data/contract_demographics.rds")
 
@@ -89,7 +91,7 @@ knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 ## Calendar and scheduled data 
 ### Calendar data explanation 
 
-* Slides 4, 5, 8 and 9 are based on calendar month data
+* Slides 5-9 and 13-17 are based on calendar month data
 * Calendar data is based on courses of treatment completed within an entire month, for example 1st February to 28th Feb
 * For calendar data, if a COT was completed in February but not declared till March, that activity would still be registered as
 occurring in February.
@@ -98,7 +100,7 @@ occurring in February.
 
 
 ### Scheduled data explanation
-* Slides 6, 7, 10-13 are based on scheduled data
+* Slides 10-12 and 18-21 are based on scheduled data
 * The scheduling time period is usually between the 20th of one month and the 20th of the next month i.e., 21st April to the
 19th May. That means that any Mandatory contract COT completed after this period will not be included in the May
 scheduled data. However, if for example a COT was completed on May 1st, but reported to the BSA after the end of the
@@ -176,14 +178,14 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
 ## UDA activity data by MY Category
 #### Prototypes and contracts with annual contracted UDAs < 100 included
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
-plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data, 
+plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
                                   scheduled_data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
                                   level = params$level,
                                   region_STP_name = params$region_STP_name,
                                   remove_prototypes = F,
-                                  regional_lines = F, 
+                                  regional_lines = F,
                                   STP_lines = F,
                                   cat_lines = T,
                                   plot_chart = T)
@@ -500,7 +502,8 @@ This data is downloaded monthly and put on the NCDR. Tables are:
   + [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UOA_scheduled]
 * A list of prototype contracts are also available in:
   + [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[prototype_contracts]
-* A table of UDA delivery on STP level is available in:
-  + [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UDA_delivery]
+* Tables of UDA delivery on STP level in calendar and scheduled format available in:
+  + [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UDA_delivery_calendar]
+  + [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UDA_delivery_scheduled]
 
 * 111 data comes from the pathways tool which is received monthly by email.

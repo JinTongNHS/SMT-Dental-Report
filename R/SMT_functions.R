@@ -175,7 +175,8 @@ plot_Q3_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data,
   #change titles and colours for UDA or UOA
   if(UDAorUOA == "UDA"){
     septemberTarget <- 60 
-   decemberTarget <- 65
+    decemberTarget <- 65
+    marchTarget <- 85
     title <- "Cumulative monthly % of Q1, Q2 and Q3 contracted UDAs delivered"
     ylab <- "Cumulative % of quarterly \ncontracted UDAs delivered"
     barCol <- "coral"
@@ -185,7 +186,8 @@ plot_Q3_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data,
     
   }else{
     septemberTarget <- 80
-   decemberTarget <- 85
+    decemberTarget <- 85
+    marchTarget <- 90
     title <- "Cumulative monthly % of Q1, Q2 and Q3 contracted UOAs delivered"
     ylab <- "Cumulative % of quarterly \ncontracted UOAs delivered"
     barCol <- "seagreen3"
@@ -196,18 +198,18 @@ plot_Q3_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data,
   }
   
   #add blanks for future dates
-  if(nrow(data) < 9){
-    # if(!(as.Date("2021-09-01") %in% data$month)){
-    #   data <- data %>% add_row(month = as.Date("2021-09-01"))
-    # }
-    # if(!(as.Date("2021-10-01") %in% data$month)){
-    #   data <- data %>% add_row(month = as.Date("2021-10-01"))
-    # }
-    # if(!(as.Date("2021-11-01") %in% data$month)){
-    #   data <- data %>% add_row(month = as.Date("2021-11-01"))
-    # }
-    if(!(as.Date("2021-12-01") %in% data$month)){
-      data <- data %>% add_row(month = as.Date("2021-12-01"))
+  if(nrow(data) < 12){
+    
+    if(!(as.Date("2022-01-01") %in% data$month)){
+      data <- data %>% add_row(month = as.Date("2022-01-01"))
+    }
+    
+    if(!(as.Date("2022-02-01") %in% data$month)){
+      data <- data %>% add_row(month = as.Date("2022-02-01"))
+    }
+    
+    if(!(as.Date("2022-03-01") %in% data$month)){
+      data <- data %>% add_row(month = as.Date("2022-03-01"))
     }
   }
   
@@ -216,10 +218,16 @@ plot_Q3_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data,
     mutate(month = as.Date(month)) %>%
     mutate(perc_of_UDA_UOA_target_delivered = monthly_UDA_UOAs_delivered * 100 / target_UDA_UOAs_delivered_in_target_period) %>%
     mutate(perc_of_contracted_UDA_UOAs_delivered = monthly_UDA_UOAs_delivered * 100 * 4/ total_annual_UDA_UOAs_contracted) %>%
-    mutate(financial_quarter = if_else(month < as.Date("2021-07-01"), "Apr-Jun (Q1)", 
-                                       if_else(month < as.Date("2021-10-01"), "Jul-Sep (Q2)",
-                                               "Oct-Dec (Q3)"))) #%>%
-    #mutate(perc_of_contracted_UDA_UOAs_delivered = format(round(perc_of_contracted_UDA_UOAs_delivered, 1), nsmall = 2))
+    mutate(financial_quarter = case_when(month < as.Date("2021-07-01") ~ "Apr-Jun (Q1)", 
+                                         month < as.Date("2021-10-01") ~ "Jul-Sep (Q2)",
+                                         month < as.Date("2022-01-01") ~ "Oct-Dec (Q3)",
+                                         month < as.Date("2022-04-01") ~ "Jan-Mar (Q4)"))
+  
+  data$financial_quarter <- factor(data$financial_quarter,
+                                   levels = c("Apr-Jun (Q1)",
+                                              "Jul-Sep (Q2)",
+                                              "Oct-Dec (Q3)",
+                                              "Jan-Mar (Q4)"))
   
   #cumulative sum column
   data <- data  %>%
@@ -233,15 +241,10 @@ plot_Q3_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data,
     mutate(cumulative_perc_of_contracted_UDA_UOAs_delivered = if_else(is.na(monthly_UDA_UOAs_delivered),
                                                                  0, 
                                                                  cumulative_perc_of_contracted_UDA_UOAs_delivered)) %>% 
-    mutate(target = c(rep(seq(from = septemberTarget/3, to = septemberTarget, length.out = 3),2), 
-                      seq(from =decemberTarget/3, to =decemberTarget, length.out = 3))) #%>% 
-    #filter(month >= as.Date("2021-09-01")) #%>%
-    #mutate(month = format(month, "%b-%y")) %>%
-    #mutate(month_name = if_else(month == "Sep-21","(Q1 + Q2) - Apr21-Sep21", month))
-  
-  #get months into the right order
-  #data_to_plot$month_name <- factor(data_to_plot$month_name, levels = c("(Q1 + Q2) - Apr21-Sep21", "Oct-21", "Nov-21", "Dec-21", "Jan-22", "Feb-22", "Dec-22"))
-  
+    mutate(target = c(
+      rep(seq(from = septemberTarget/3, to = septemberTarget, length.out = 3),2),
+      seq(from = decemberTarget/3, to = decemberTarget, length.out = 3),
+      seq(from = marchTarget/3, to = marchTarget, length.out = 3))) 
   
   #plot code
   ggplot(data_to_plot) +
@@ -264,6 +267,8 @@ plot_Q3_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data,
                linetype = "dotted") +
     geom_vline(xintercept = as.Date("2021-06-01") + lubridate::days(15),
                linetype = "dotted") +
+    geom_vline(xintercept = as.Date("2021-12-01") + lubridate::days(15),
+               linetype = "dotted") +
     annotate(geom = "label",
              x = data_to_plot$month,
              y = data_to_plot$cumulative_perc_of_contracted_UDA_UOAs_delivered + 4,
@@ -276,8 +281,9 @@ plot_Q3_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data,
                  date_labels = "%b-%y") +
     scale_colour_manual(labels = c(paste0("Expected cumulative delivery to reach \nQ1 threshold of ",septemberTarget,"% by end of Jun-21"),
                                    paste0("Expected cumulative delivery to reach \nQ2 threshold of ",septemberTarget,"% by end of Sep-21"),
-                                   paste0("Expected cumulative delivery to reach \nQ3 threshold of ",decemberTarget,"% by end of Dec-22")),
-                        values = c("darkred", "blue", "darkgreen")) +
+                                   paste0("Expected cumulative delivery to reach \nQ3 threshold of ",decemberTarget,"% by end of Dec-21"),
+                                   paste0("Expected cumulative delivery to reach \nQ4 threshold of ",marchTarget,"% by end of Mar-22")),
+                        values = c("darkred", "blue", "darkgreen", "magenta4")) +
     labs(title = title,
          x = "Month",
          y = ylab,
@@ -369,7 +375,7 @@ plot_banded_CoT <- function(data = UDA_scheduled_data,
            caption = "*UDA to FP17 conversion has been done assuming a band 1 FP17 
          is equivalent to 1 UDA, a band 2 FP17 = 3 UDAs, 
          a band 3 FP17 = 12 UDAs, an urgent FP17 = 1.2 
-         UDAs and an 'other' FP17 = 0.6 UDAs.")
+         UDAs and an 'other' FP17 = 0.6 UDAs. Scheduled data used.")
     
   }else{
     data
@@ -429,6 +435,7 @@ plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
     lineCol <- "#CC79A7"
     septemberTarget <- 60
     decemberTarget <- 65
+    marchTarget <- 85
   }else{
     #get data into the right format
     data <- get_into_slide5_7_format(data, remove_prototypes, UDAorUOA = "UOA")
@@ -437,6 +444,7 @@ plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
     lineCol <- "#009E73"
     septemberTarget <- 80
     decemberTarget <- 85
+    marchTarget <- 90
   }
 
   #plot code
@@ -457,6 +465,10 @@ plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
     geom_segment(aes(x = as.Date("2021-10-01"), y = decemberTarget, xend = as.Date("2021-12-01"), yend = decemberTarget),
                  colour = "#0072B2",
                  linetype = "dashed") +
+    geom_segment(aes(x = as.Date("2022-01-01"), y = marchTarget, xend = as.Date("2022-03-01"), yend = marchTarget),
+                 colour = "#0072B2",
+                 linetype = "dashed") +
+    
     annotate(geom = "text", 
              x = as.Date("2021-04-01") + lubridate::weeks(2), 
              y = septemberTarget - 5, 
@@ -469,9 +481,16 @@ plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
              label = "Q3 threshold", 
              size = 3,
              colour = "#0072B2") +
+    annotate(geom = "text", 
+             x = as.Date("2022-01-01") + lubridate::weeks(2), 
+             y = marchTarget - 5, 
+             label = "Q4 threshold", 
+             size = 3,
+             colour = "#0072B2") +
+    
     scale_x_date(date_breaks = "1 month", 
                  date_labels = "%b-%y") +
-    scale_y_continuous(limits = c(0, max(data$perc_UDA_UOA_delivered, na.rm = T) + 5)) +
+    scale_y_continuous(limits = c(0, max(c(data$perc_UDA_UOA_delivered, 95), na.rm = T) + 5)) +
     labs(title = title, 
          x = "Month",
          y = ylab, 
@@ -537,6 +556,7 @@ plot_UDA_UOA_delivery_calendar <- function(data = UDA_calendar_data,
     #lineCol <- "#CC79A7"
     septemberTarget <- 60
     decemberTarget <- 65
+    marchTarget <- 85
   }else{
     
     #get data into the right format
@@ -546,6 +566,7 @@ plot_UDA_UOA_delivery_calendar <- function(data = UDA_calendar_data,
     lineCol <- "#009E73"
     septemberTarget <- 80
     decemberTarget <- 85
+    marchTarget <- 90
   }
   
   captionTitle <- "*Excluding prototype contracts and those with annual contracted UDA < 100
@@ -631,28 +652,47 @@ plot_UDA_UOA_delivery_calendar <- function(data = UDA_calendar_data,
                      yend = septemberTarget),
                  colour = "#0072B2",
                  linetype = "dashed") +
+     
     geom_segment(aes(x = as.Date("2021-10-01"), 
                      y = decemberTarget, 
                      xend = as.Date("2021-12-01"), 
                      yend = decemberTarget),
                  colour = "#0072B2",
                  linetype = "dashed") +
-    scale_x_date(date_breaks = "1 month", 
-                 date_labels = "%b-%y") +
-    scale_y_continuous(limits = c(0, max(data$scaled_perc_UDA_UOA_delivered, na.rm = T) + 10),
-                       breaks = scales::breaks_pretty()) +
+     
+     geom_segment(aes(x = as.Date("2022-01-01"), 
+                      y = marchTarget, 
+                      xend = as.Date("2022-03-01"), 
+                      yend = marchTarget),
+                  colour = "#0072B2",
+                  linetype = "dashed") +
+     
+    
      annotate(geom = "text", 
               x = as.Date("2021-04-01") + lubridate::weeks(2), 
               y = septemberTarget - 3, 
               label = "H1 threshold", 
               size = 3,
               colour = "#0072B2") + 
+     
      annotate(geom = "text", 
               x = as.Date("2021-10-01") + lubridate::weeks(2), 
               y = decemberTarget - 3, 
               label = "Q3 threshold", 
               size = 3,
-              colour = "#0072B2")
+              colour = "#0072B2") +
+     
+     annotate(geom = "text", 
+              x = as.Date("2022-01-01") + lubridate::weeks(2), 
+              y = marchTarget - 3, 
+              label = "Q4 threshold", 
+              size = 3,
+              colour = "#0072B2") +
+     
+     scale_x_date(date_breaks = "1 month", 
+                  date_labels = "%b-%y") +
+     scale_y_continuous(limits = c(0, max(c(data$scaled_perc_UDA_UOA_delivered, 90), na.rm = T) + 10),
+                        breaks = scales::breaks_pretty()) 
    
    
    if(regional_lines == F & cat_lines == F){
@@ -833,7 +873,7 @@ plot_urgent_form_submissions <- function(data = UDA_scheduled_data,
          caption = "*UDA to FP17 conversion has been done assuming a band 1 FP17 
          is equivalent to 1 UDA, a band 2 FP17 = 3 UDAs, 
          a band 3 FP17 = 12 UDAs, an urgent FP17 = 1.2 
-         UDAs and an 'other' FP17 = 0.6 UDAs.")
+         UDAs and an 'other' FP17 = 0.6 UDAs. Scheduled data used.")
     
     
 }
