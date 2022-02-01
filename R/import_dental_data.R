@@ -426,8 +426,38 @@ import_and_clean_calendar_UDA_data <- function(data_path = "data/raw_data/dashbo
            total_other_FP17s = X__116
     )
   
+  #add column for date and rename columns, split data for just january
+  data_jan <- data %>%
+    mutate(data_month = as.Date("2022-01-01")) %>%
+    select(data_month, X__1, X__2, X__3, X__4, X__5, X__6, X__7, X__8, 
+           X__117, X__118, X__119, X__120, X__121, X__122, X__123, X__124, X__125, X__126,
+           X__127, X__128) %>%
+    rename(contract_number = X__1,
+           latest_contract_type = X__2,
+           name_or_company_name = X__3,
+           commissioner_name = X__4,
+           region_name = X__5,
+           paid_by_BSA = X__6,
+           contract_start_date = X__7, 
+           contract_end_date = X__8, 
+           
+           UDA_total = X__117, 
+           UDA_band_1_total = X__118,
+           UDA_band_2_total = X__119,
+           UDA_band_3_total = X__120, 
+           UDA_urgent_total = X__121, 
+           UDA_other_total = X__122, 
+           total_FP17s = X__123, 
+           total_band_1_FP17s  = X__124,
+           total_band_2_FP17s = X__125,
+           total_band_3_FP17s = X__126,
+           total_urgent_FP17s = X__127,
+           total_other_FP17s = X__128
+    )
+  
+  
   UDA_calendar_data <- bind_rows(data_apr, data_may, data_jun, data_jul, data_aug, 
-                                 data_sep, data_oct, data_nov, data_dec)
+                                 data_sep, data_oct, data_nov, data_dec, data_jan)
   
 }
 
@@ -633,7 +663,7 @@ import_and_clean_calendar_UOA_data_dec <- function(data_path = "data/raw_data/da
                      col_types = c("text", "text", "text", 
                                    "text", "text", "date", "date", "text", 
                                    "text", "text", "text", "text", "text", 
-                                   "text", "text", "text"),
+                                   "text", "text", "text", "text"),
                      skip = 3,
                      .name_repair = ~ paste0("X__", seq_along(.x)))
   
@@ -786,9 +816,25 @@ import_and_clean_calendar_UOA_data_dec <- function(data_path = "data/raw_data/da
            UOA_total = X__16
     )
   
+  #add column for date and rename columns, split data for just dec
+  data_jan <- data %>%
+    mutate(data_month = as.Date("2022-01-01")) %>%
+    select(data_month, X__1, X__2, X__3, X__4, X__5, X__6, X__7, 
+           X__17) %>%
+    rename(contract_number = X__1,
+           contract_type = X__2,
+           name_or_company_name = X__3,
+           commissioner_name = X__4,
+           paid_by_BSA = X__5,
+           contract_start_date = X__6, 
+           contract_end_date = X__7, 
+           
+           UOA_total = X__17
+    )
+  
   
   UOA_calendar_data <- bind_rows(data_apr, data_may, data_jun, data_jul, data_aug, 
-                                 data_sep, data_oct, data_nov, data_dec)
+                                 data_sep, data_oct, data_nov, data_dec, data_jan)
   
 }
 
@@ -959,9 +1005,11 @@ import_and_clean_historical_scheduled_data <- function(data_path = "data/raw_dat
            other_FP17 = X__40,
            urgent_FP17 = X__41
     )
-  hisptorical_UDA_scheduled_data <- bind_rows(data_apr, data_may, data_jun, data_jul, data_aug, 
+  historical_UDA_scheduled_data <- bind_rows(data_apr, data_may, data_jun, data_jul, data_aug, 
                                               data_sep, data_oct, data_nov)
   
 }
 
 
+
+#

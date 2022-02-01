@@ -22,10 +22,10 @@ source("../R/SMT_functions.R")
 source("../R/format_SMT_data.R")
 
 #load in raw data
-UDA_calendar_data <- read_excel("../data/cleaned_data_up_to_december/UDA_calendar_data.xlsx")
-UOA_calendar_data <- read_excel("../data/cleaned_data_up_to_december/UOA_calendar_data.xlsx")
-UDA_scheduled_data <- read_excel("../data/cleaned_data_up_to_december/UDA_scheduled_data.xlsx")
-UOA_scheduled_data <- read_excel("../data/cleaned_data_up_to_december/UOA_scheduled_data.xlsx")
+UDA_calendar_data <- read_excel("../data/cleaned_data_up_to_january/UDA_calendar_data.xlsx")
+UOA_calendar_data <- read_excel("../data/cleaned_data_up_to_january/UOA_calendar_data.xlsx")
+UDA_scheduled_data <- read_excel("../data/cleaned_data_up_to_january/UDA_scheduled_data.xlsx")
+UOA_scheduled_data <- read_excel("../data/cleaned_data_up_to_january/UOA_scheduled_data.xlsx")
 historical_UDA_scheduled_data <- readRDS("../data/cleaned_data_up_to_september/historical_UDA_scheduled_data.rds")
 
 UDA_calendar_data <- rename(UDA_calendar_data, month = data_month)
@@ -44,9 +44,7 @@ UOA_calendar_data <- UOA_calendar_data %>%
 UDA_scheduled_data <- rename(UDA_scheduled_data, month = data_month)
 UOA_scheduled_data <- rename(UOA_scheduled_data, month = data_month)
 
-dental_data_111 <- read_excel("../data/cleaned_data_up_to_november/111_dental_data.xls", 
-                              col_types = c("date", "text", "text", 
-                                            "text", "numeric"))
+dental_data_111 <- readRDS("../data/cleaned_data_up_to_january/dental_data_111.rds")
 
 prototype_contracts <- read_excel("../data/prototype_contracts.xlsx")
 contractor_categories <- readRDS("../data/cleaned_data_up_to_october/contractor_categories.RDS")
@@ -107,9 +105,6 @@ scheduled data. However, if for example a COT was completed on May 1st, but repo
 reporting period (April 21st – May 19th), that activity would go into the following scheduled period. As a result, the
 scheduling period can be considered fixed.
 * N.B.Scheduled data for April is from 1st April - 21st April. This has been taken into account when scaling up to annual delivery.
-
-*Please Note: Slides 5-10 and 12-16 use calendar data as a measure of activity.*
-*All other slides use scheduled data, as per previous SMT data packs.*
 
 ## Number of contracts by MY category (see appendix for breakdown)
 #### Including prototypes and contracts with annual contracted UDA < 100
@@ -219,10 +214,10 @@ plot_Q3_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
 ```
 
 * This graph shows the cumulative activity by quarter of the **`r get_num_contracts(level = params$level, region_STP_name = params$region_STP_name)`** GDS/PDS/PDS+
-contracts measured against the expected monthly total activity to achieve the quarterly thresholds (65% for Oct-Dec).
-* From October to `r format(Sys.Date() - lubridate::month(1), "%B")` **`r get_Q3_num_contracts_on_target(level = params$level, region_STP_name = params$region_STP_name)`**
-contracts (**`r round(get_Q3_num_contracts_on_target(level = params$level, region_STP_name = params$region_STP_name)*100/get_num_contracts(level = params$level, region_STP_name = params$region_STP_name))`%**)
-have delivered the required UDAs or more to be on track towards the Q3 threshold (65%) by the end of December 2021.
+contracts measured against the expected monthly total activity to achieve the quarterly thresholds (85% for Jan-Mar).
+* From October to `r format(Sys.Date() - lubridate::month(1), "%B")` **`r get_Q4_num_contracts_on_target(level = params$level, region_STP_name = params$region_STP_name)`**
+contracts (**`r round(get_Q4_num_contracts_on_target(level = params$level, region_STP_name = params$region_STP_name)*100/get_num_contracts(level = params$level, region_STP_name = params$region_STP_name))`%**)
+have delivered the required UDAs or more to be on track towards the Q4 threshold (85%) by the end of March 2022.
 
 
 ## Scheduled UDAs
@@ -249,9 +244,9 @@ plot_delivery_vs_contract_size_scatter_corporate(data = UDA_scheduled_data,
 ```
 
 * The scatter plot shows the relationship between contract size and delivery for the current month. 
-* The number of contracts delivering above 65% contracted value for this month is **`r plot_delivery_vs_contract_size_scatter_corporate(level = params$level, region_STP_name = params$region_STP_name, get_num_above = 0.65)[1]`**
+* The number of contracts delivering above 85% contracted value for this month is **`r plot_delivery_vs_contract_size_scatter_corporate(level = params$level, region_STP_name = params$region_STP_name, get_num_above = 0.85)[1]`**
 (out of **`r get_num_contracts(level = params$level, region_STP_name = params$region_STP_name)`** contracts),
-with a mean contract size of **`r plot_delivery_vs_contract_size_scatter_corporate(level = params$level, region_STP_name = params$region_STP_name, get_num_above = 0.65)[2]`** UDAs.
+with a mean contract size of **`r plot_delivery_vs_contract_size_scatter_corporate(level = params$level, region_STP_name = params$region_STP_name, get_num_above = 0.85)[2]`** UDAs.
 * The number of contracts delivering above 100% contracted value for this month is **`r plot_delivery_vs_contract_size_scatter_corporate(level = params$level, region_STP_name = params$region_STP_name, get_num_above = 1)[1]`**,
 with a mean contract size of **`r plot_delivery_vs_contract_size_scatter_corporate(level = params$level, region_STP_name = params$region_STP_name, get_num_above = 1)[2]`** UDAs.
 
@@ -368,9 +363,9 @@ plot_Q3_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
 
 * This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = params$level, region_STP_name = params$region_STP_name)`**
 GDS/PDS contracts) measured against the
-expected monthly total activity to achieve the quarterly thresholds (85% for Oct-Dec).
-* From October to `r format(Sys.Date() - lubridate::month(1), "%B")` **`r get_Q3_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = params$level, region_STP_name = params$region_STP_name)`** contracts (**`r round(get_Q3_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = params$level, region_STP_name = params$region_STP_name)*100/get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = params$level, region_STP_name = params$region_STP_name))`%**) have delivered
-the required UOAs or more to be on track towards the Q3 threshold (85%) by the end of December 2021.
+expected monthly total activity to achieve the quarterly thresholds (90% for Jan-Mar).
+* From October to `r format(Sys.Date() - lubridate::month(1), "%B")` **`r get_Q4_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = params$level, region_STP_name = params$region_STP_name)`** contracts (**`r round(get_Q4_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = params$level, region_STP_name = params$region_STP_name)*100/get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = params$level, region_STP_name = params$region_STP_name))`%**) have delivered
+the required UOAs or more to be on track towards the Q4 threshold (90%) by the end of March 2022.
 
 
 ## UOA delivery

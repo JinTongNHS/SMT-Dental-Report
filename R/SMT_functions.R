@@ -199,11 +199,7 @@ plot_Q3_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data,
   
   #add blanks for future dates
   if(nrow(data) < 12){
-    
-    if(!(as.Date("2022-01-01") %in% data$month)){
-      data <- data %>% add_row(month = as.Date("2022-01-01"))
-    }
-    
+
     if(!(as.Date("2022-02-01") %in% data$month)){
       data <- data %>% add_row(month = as.Date("2022-02-01"))
     }
@@ -244,8 +240,8 @@ plot_Q3_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data,
     mutate(target = c(
       rep(seq(from = septemberTarget/3, to = septemberTarget, length.out = 3),2),
       seq(from = decemberTarget/3, to = decemberTarget, length.out = 3),
-      seq(from = marchTarget/3, to = marchTarget, length.out = 3))) 
-  
+      seq(from = marchTarget/3, to = marchTarget, length.out = 3)))
+
   #plot code
   ggplot(data_to_plot) +
     theme_bw() +
@@ -269,7 +265,7 @@ plot_Q3_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data,
                linetype = "dotted") +
     geom_vline(xintercept = as.Date("2021-12-01") + lubridate::days(15),
                linetype = "dotted") +
-    annotate(geom = "label",
+    annotate(geom = "text",
              x = data_to_plot$month,
              y = data_to_plot$cumulative_perc_of_contracted_UDA_UOAs_delivered + 4,
              label = ifelse(data_to_plot$cumulative_perc_of_contracted_UDA_UOAs_delivered != 0,
@@ -1181,6 +1177,99 @@ get_Q3_num_contracts_on_target <- function(data = UDA_calendar_data,
 
 
 ################################################################################
+get_Q4_num_contracts_on_target <- function(data = UDA_calendar_data, 
+                                           remove_prototypes = T,
+                                           scheduled_data = UDA_scheduled_data,
+                                           UDAorUOA = "UDA",
+                                           level = "National",
+                                           region_STP_name = NULL){
+  
+  #filter for STP or region
+  if(level == "Regional"){
+    data <- data %>% 
+      filter(region_name == region_STP_name )
+  }else if(level == "STP"){
+    data <- data %>% 
+      filter(commissioner_name == region_STP_name)
+    subtitle <- region_STP_name
+  }
+  
+  if(UDAorUOA == "UDA"){
+    #get contracted UDAs
+    contracted_UDA_UOAs <- scheduled_data %>%
+      select(month, contract_number, annual_contracted_UDA) %>%
+      mutate(UDA_financial_half_target = case_when(month < as.Date("2021-10-01") ~ 0.6 * annual_contracted_UDA/4,
+                                                   month < as.Date("2022-01-01") ~ 0.65 * annual_contracted_UDA/4,
+                                                   month < as.Date("2022-04-01") ~ 0.85 * annual_contracted_UDA/4))
+  }else{
+    #get contracted UOAs
+    contracted_UDA_UOAs <- scheduled_data %>%
+      select(month, contract_number, annual_contracted_UOA, UOA_financial_half_target) %>%
+      mutate(UDA_financial_half_target = case_when(month < as.Date("2021-10-01") ~ 0.8 * annual_contracted_UOA/4,
+                                                   month < as.Date("2022-01-01") ~ 0.85 * annual_contracted_UOA/4,
+                                                   month < as.Date("2022-04-01") ~ 0.90 * annual_contracted_UOA/4))
+  }
+  
+  
+  
+  #join in contracted UDA/UOAs from scheduled data
+  data <- data %>%
+    left_join(contracted_UDA_UOAs, by = c("month", "contract_number")) %>%
+    filter(month >= as.Date("2022-01-01"))
+  
+  #create not in function
+  `%notin%` = Negate(`%in%`)
+  
+  #remove prototype contracts if specified
+  if(remove_prototypes & UDAorUOA == "UDA"){
+    data <- data %>%
+      filter(contract_number %notin% prototype_contracts$prototype_contract_number)%>%
+      filter(annual_contracted_UDA > 100)
+  }else if(remove_prototypes & UDAorUOA == "UOA"){
+    data <- data %>%
+      #filter(contract_number %notin% prototype_contracts$prototype_contract_number)%>%
+      filter(annual_contracted_UOA > 100)
+  }
+  
+  #way to progress through the months
+  if(max(data$month) == as.Date("2022-01-01")){
+    month_factor <- 1
+  }
+  if(max(data$month) == as.Date("2022-02-01")){
+    month_factor <- 2
+  }
+  if(max(data$month) == as.Date("2022-03-01")){
+    month_factor <- 3
+  }
+  
+  if(UDAorUOA == "UDA"){
+    #count number of contracts meeting target
+    data <- data %>%
+      group_by(contract_number) %>%
+      summarise(mean_annual_contracted_UDA = mean(annual_contracted_UDA),
+                #mean_UDA_target = mean(UDA_financial_half_target),
+                YTD_UDA_delivered = sum(UDA_total)) %>%
+      mutate(mean_Q4_UDA_target = mean_annual_contracted_UDA * 0.85 / 4) %>%
+      count(YTD_UDA_delivered >= (mean_Q4_UDA_target) * month_factor / 3)
+  }else{
+    #count number of contracts meeting target
+    data <- data %>%
+      group_by(contract_number) %>%
+      summarise(mean_annual_contracted_UOA = mean(annual_contracted_UOA),
+                #mean_Q3_UOA_target = mean(UOA_financial_half_target),
+                YTD_UOA_delivered = sum(UOA_total)) %>%
+      mutate(mean_Q4_UOA_target = mean_annual_contracted_UOA * 0.90 / 4) %>%
+      count(YTD_UOA_delivered >= (mean_Q4_UOA_target) * month_factor / 3)
+  }
+  
+  
+  no_on_target <- data[2, "n"]
+  as.integer(no_on_target)
+  
+}
+
+
+################################################################################
 get_num_urgent_forms <- function(data = UDA_scheduled_data, 
                                  existing_data = slide8_banded_CoT_historic,
                                  historic_data = historical_UDA_scheduled_data,
@@ -1527,13 +1616,13 @@ plot_delivery_vs_contract_size_scatter_corporate <- function(data = UDA_schedule
     p <- ggplot(data_to_plot, aes(x = annual_contracted_UDA, y = UDA_delivery)) +
       geom_point(aes(colour = Corporate.Status)) +
       theme_bw() +
-      geom_hline(yintercept = 0.65,
+      geom_hline(yintercept = 0.85,
                  colour = "orangered4",
                  linetype = "dashed") +
       annotate(geom = "text",
-               x = max(data_to_plot$annual_contracted_UDA),
-               y = 0.59,
-               label = "65% Q3 threshold",
+               x = max(data_to_plot$annual_contracted_UDA) - 8000,
+               y = 0.79,
+               label = "85% Q4 threshold",
                size = 3,
                #label.size = 0,
                colour = "orangered4") +
