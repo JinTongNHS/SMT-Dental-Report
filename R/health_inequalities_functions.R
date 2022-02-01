@@ -133,6 +133,7 @@ clean_HE_data <- function(data = monthly_HE){
            band3 = as.numeric(band3),
            urgent = as.numeric(urgent),
            total_FP17 = as.numeric(total_FP17)) %>%
+    mutate(year_month = as.character(year_month)) %>%
     mutate(year = substring(year_month, 1, 4)) %>%
     mutate(month = substring(year_month, 5)) %>%
     mutate(date = as.Date(paste0(year,"-",month,"-","01"))) 

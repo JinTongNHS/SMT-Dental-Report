@@ -39,7 +39,7 @@ source("../R/health_inequalities_functions.R")
 
 
 
-monthly_HE <- readRDS("../data/health_inequalities_data/October_data/HE_patient_charge_201808_202110.RDS")
+monthly_HE <- readRDS("../data/health_inequalities_data/January_data/monthly_HE.rds")
 ```
 
 ```{r setup, include=FALSE}
