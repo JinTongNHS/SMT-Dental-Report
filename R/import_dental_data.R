@@ -455,9 +455,39 @@ import_and_clean_calendar_UDA_data <- function(data_path = "data/raw_data/dashbo
            total_other_FP17s = X__128
     )
   
+  #add column for date and rename columns, split data for just feb
+  data_feb <- data %>%
+    mutate(data_month = as.Date("2022-02-01")) %>%
+    select(data_month, X__1, X__2, X__3, X__4, X__5, X__6, X__7, X__8, 
+           X__129, X__130, X__131, X__132, X__133, X__134, X__135, X__136, X__137, X__138,
+           X__139, X__140) %>%
+    rename(contract_number = X__1,
+           latest_contract_type = X__2,
+           name_or_company_name = X__3,
+           commissioner_name = X__4,
+           region_name = X__5,
+           paid_by_BSA = X__6,
+           contract_start_date = X__7, 
+           contract_end_date = X__8, 
+           
+           UDA_total = X__129, 
+           UDA_band_1_total = X__130,
+           UDA_band_2_total = X__131,
+           UDA_band_3_total = X__132, 
+           UDA_urgent_total = X__133, 
+           UDA_other_total = X__134, 
+           total_FP17s = X__135, 
+           total_band_1_FP17s  = X__136,
+           total_band_2_FP17s = X__137,
+           total_band_3_FP17s = X__138,
+           total_urgent_FP17s = X__139,
+           total_other_FP17s = X__140
+    )
+  
   
   UDA_calendar_data <- bind_rows(data_apr, data_may, data_jun, data_jul, data_aug, 
-                                 data_sep, data_oct, data_nov, data_dec, data_jan)
+                                 data_sep, data_oct, data_nov, data_dec, data_jan,
+                                 data_feb)
   
 }
 
@@ -655,7 +685,7 @@ import_and_clean_calendar_UOA_data <- function(data_path = "data/raw_data/dashbo
 ################################################################################
 #function to import and clean data
 #N.B. this assumes that the columns are in the same order each time!
-import_and_clean_calendar_UOA_data_dec <- function(data_path = "data/raw_data/dashboard_raw_data/UOA_calendar_raw_data/UOA_calendar_Apr_Dec21.xlsx"){
+import_and_clean_calendar_UOA_data_new_format <- function(data_path = "data/raw_data/dashboard_raw_data/UOA_calendar_raw_data/UOA_calendar_Apr_Dec21.xlsx"){
   
   #read in data with correct types and removing top 6 rows and renaming columns 
   data <- read_excel(data_path,
@@ -663,7 +693,7 @@ import_and_clean_calendar_UOA_data_dec <- function(data_path = "data/raw_data/da
                      col_types = c("text", "text", "text", 
                                    "text", "text", "date", "date", "text", 
                                    "text", "text", "text", "text", "text", 
-                                   "text", "text", "text", "text"),
+                                   "text", "text", "text", "text", "text"),
                      skip = 3,
                      .name_repair = ~ paste0("X__", seq_along(.x)))
   
@@ -816,7 +846,7 @@ import_and_clean_calendar_UOA_data_dec <- function(data_path = "data/raw_data/da
            UOA_total = X__16
     )
   
-  #add column for date and rename columns, split data for just dec
+  #add column for date and rename columns, split data for just jan
   data_jan <- data %>%
     mutate(data_month = as.Date("2022-01-01")) %>%
     select(data_month, X__1, X__2, X__3, X__4, X__5, X__6, X__7, 
@@ -832,9 +862,26 @@ import_and_clean_calendar_UOA_data_dec <- function(data_path = "data/raw_data/da
            UOA_total = X__17
     )
   
+  #add column for date and rename columns, split data for just feb
+  data_feb <- data %>%
+    mutate(data_month = as.Date("2022-02-01")) %>%
+    select(data_month, X__1, X__2, X__3, X__4, X__5, X__6, X__7, 
+           X__18) %>%
+    rename(contract_number = X__1,
+           contract_type = X__2,
+           name_or_company_name = X__3,
+           commissioner_name = X__4,
+           paid_by_BSA = X__5,
+           contract_start_date = X__6, 
+           contract_end_date = X__7, 
+           
+           UOA_total = X__18
+    )
+  
   
   UOA_calendar_data <- bind_rows(data_apr, data_may, data_jun, data_jul, data_aug, 
-                                 data_sep, data_oct, data_nov, data_dec, data_jan)
+                                 data_sep, data_oct, data_nov, data_dec, data_jan,
+                                 data_feb)
   
 }
 

@@ -200,43 +200,39 @@ plot_Q3_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data,
   #add blanks for future dates
   if(nrow(data) < 12){
 
-    if(!(as.Date("2022-02-01") %in% data$month)){
-      data <- data %>% add_row(month = as.Date("2022-02-01"))
-    }
-    
     if(!(as.Date("2022-03-01") %in% data$month)){
       data <- data %>% add_row(month = as.Date("2022-03-01"))
     }
   }
-  
+
   #get data in the right format
   data <- data %>%
     mutate(month = as.Date(month)) %>%
     mutate(perc_of_UDA_UOA_target_delivered = monthly_UDA_UOAs_delivered * 100 / target_UDA_UOAs_delivered_in_target_period) %>%
     mutate(perc_of_contracted_UDA_UOAs_delivered = monthly_UDA_UOAs_delivered * 100 * 4/ total_annual_UDA_UOAs_contracted) %>%
-    mutate(financial_quarter = case_when(month < as.Date("2021-07-01") ~ "Apr-Jun (Q1)", 
+    mutate(financial_quarter = case_when(month < as.Date("2021-07-01") ~ "Apr-Jun (Q1)",
                                          month < as.Date("2021-10-01") ~ "Jul-Sep (Q2)",
                                          month < as.Date("2022-01-01") ~ "Oct-Dec (Q3)",
                                          month < as.Date("2022-04-01") ~ "Jan-Mar (Q4)"))
-  
+
   data$financial_quarter <- factor(data$financial_quarter,
                                    levels = c("Apr-Jun (Q1)",
                                               "Jul-Sep (Q2)",
                                               "Oct-Dec (Q3)",
                                               "Jan-Mar (Q4)"))
-  
+
   #cumulative sum column
   data <- data  %>%
     group_by(financial_quarter) %>%
     mutate(cumulative_perc_of_contracted_UDA_UOAs_delivered = cumsum(perc_of_contracted_UDA_UOAs_delivered)) %>%
     ungroup()
-  
+
   #ensures months with no data are still shown
   #done as separate dataframe so that annotations are not shown for months with no data
   data_to_plot <- data %>%
     mutate(cumulative_perc_of_contracted_UDA_UOAs_delivered = if_else(is.na(monthly_UDA_UOAs_delivered),
-                                                                 0, 
-                                                                 cumulative_perc_of_contracted_UDA_UOAs_delivered)) %>% 
+                                                                 0,
+                                                                 cumulative_perc_of_contracted_UDA_UOAs_delivered)) %>%
     mutate(target = c(
       rep(seq(from = septemberTarget/3, to = septemberTarget, length.out = 3),2),
       seq(from = decemberTarget/3, to = decemberTarget, length.out = 3),
@@ -1074,8 +1070,8 @@ get_num_contracts <- function(data = UDA_calendar_data,
       filter(annual_contracted_UDA > 100)
   }else if(remove_prototypes & UDAorUOA == "UOA"){
     data <- data %>%
-      #filter(contract_number %notin% prototype_contracts$prototype_contract_number)%>%
-      filter(annual_contracted_UOA > 100)
+      filter(contract_number %notin% prototype_contracts$prototype_contract_number)%>%
+      filter(annual_contracted_UOA > 0)###############
   }
   
   data <- data %>%
@@ -1112,7 +1108,7 @@ get_Q3_num_contracts_on_target <- function(data = UDA_calendar_data,
   }else{
     #get contracted UOAs
     contracted_UDA_UOAs <- scheduled_data %>%
-      select(month, contract_number, annual_contracted_UOA, UOA_financial_half_target) %>%
+      select(month, contract_number, annual_contracted_UOA) %>%
       mutate(UDA_financial_half_target = case_when(month < as.Date("2021-10-01") ~ 0.8 * annual_contracted_UOA/4,
                                                    month > as.Date("2021-10-01") ~ 0.85 * annual_contracted_UOA/4))
   }
@@ -1122,7 +1118,7 @@ get_Q3_num_contracts_on_target <- function(data = UDA_calendar_data,
   #join in contracted UDA/UOAs from scheduled data
   data <- data %>%
     left_join(contracted_UDA_UOAs, by = c("month", "contract_number")) %>%
-    filter(month >= as.Date("2021-10-01"))
+    filter(month >= as.Date("2021-10-01") & month < as.Date("2022-01-01"))
   
   #create not in function
   `%notin%` = Negate(`%in%`)
@@ -1134,8 +1130,8 @@ get_Q3_num_contracts_on_target <- function(data = UDA_calendar_data,
       filter(annual_contracted_UDA > 100)
   }else if(remove_prototypes & UDAorUOA == "UOA"){
     data <- data %>%
-      #filter(contract_number %notin% prototype_contracts$prototype_contract_number)%>%
-      filter(annual_contracted_UOA > 100)
+      filter(contract_number %notin% prototype_contracts$prototype_contract_number)#%>%
+      #filter(annual_contracted_UOA > 100)
   }
   
   #way to progress through the months
@@ -1170,9 +1166,10 @@ get_Q3_num_contracts_on_target <- function(data = UDA_calendar_data,
   }
   
   
+  
   no_on_target <- data[2, "n"]
   as.integer(no_on_target)
-  
+
 }
 
 
@@ -1204,7 +1201,7 @@ get_Q4_num_contracts_on_target <- function(data = UDA_calendar_data,
   }else{
     #get contracted UOAs
     contracted_UDA_UOAs <- scheduled_data %>%
-      select(month, contract_number, annual_contracted_UOA, UOA_financial_half_target) %>%
+      select(month, contract_number, annual_contracted_UOA) %>%
       mutate(UDA_financial_half_target = case_when(month < as.Date("2021-10-01") ~ 0.8 * annual_contracted_UOA/4,
                                                    month < as.Date("2022-01-01") ~ 0.85 * annual_contracted_UOA/4,
                                                    month < as.Date("2022-04-01") ~ 0.90 * annual_contracted_UOA/4))
@@ -1227,8 +1224,8 @@ get_Q4_num_contracts_on_target <- function(data = UDA_calendar_data,
       filter(annual_contracted_UDA > 100)
   }else if(remove_prototypes & UDAorUOA == "UOA"){
     data <- data %>%
-      #filter(contract_number %notin% prototype_contracts$prototype_contract_number)%>%
-      filter(annual_contracted_UOA > 100)
+      filter(contract_number %notin% prototype_contracts$prototype_contract_number)%>%
+      filter(annual_contracted_UOA > 0)
   }
   
   #way to progress through the months
@@ -1265,7 +1262,7 @@ get_Q4_num_contracts_on_target <- function(data = UDA_calendar_data,
   
   no_on_target <- data[2, "n"]
   as.integer(no_on_target)
-  
+
 }
 
 
@@ -1478,8 +1475,8 @@ plot_delivery_vs_contract_size_scatter <- function(data = UDA_scheduled_data,
       filter(annual_contracted_UDA > 100)
   }else if(remove_prototypes & UDAorUOA == "UOA"){
     data <- data %>%
-      #filter(contract_number %notin% prototype_contracts$prototype_contract_number)%>%
-      filter(annual_contracted_UOA > 100)
+      filter(contract_number %notin% prototype_contracts$prototype_contract_number)#%>%
+      #filter(annual_contracted_UOA > 100)
   }
   
   data <- data %>%
@@ -1596,8 +1593,8 @@ plot_delivery_vs_contract_size_scatter_corporate <- function(data = UDA_schedule
       filter(annual_contracted_UDA > 100)
   }else if(remove_prototypes & UDAorUOA == "UOA"){
     data <- data %>%
-      #filter(contract_number %notin% prototype_contracts$prototype_contract_number)%>%
-      filter(annual_contracted_UOA > 100)
+      filter(contract_number %notin% prototype_contracts$prototype_contract_number)#%>%
+      #filter(annual_contracted_UOA > 100)
   }
 
   data <- data %>%
@@ -1695,8 +1692,8 @@ plot_delivery_vs_contract_size_scatter_dental_group <- function(data = UDA_sched
       filter(annual_contracted_UDA > 100)
   }else if(remove_prototypes & UDAorUOA == "UOA"){
     data <- data %>%
-      #filter(contract_number %notin% prototype_contracts$prototype_contract_number)%>%
-      filter(annual_contracted_UOA > 100)
+      filter(contract_number %notin% prototype_contracts$prototype_contract_number)#%>%
+      #filter(annual_contracted_UOA > 100)
   }
   
   data <- data %>%
@@ -1788,8 +1785,8 @@ plot_delivery_vs_contract_size_scatter_region <- function(data = UDA_scheduled_d
       filter(annual_contracted_UDA > 100)
   }else if(remove_prototypes & UDAorUOA == "UOA"){
     data <- data %>%
-      #filter(contract_number %notin% prototype_contracts$prototype_contract_number)%>%
-      filter(annual_contracted_UOA > 100)
+      filter(contract_number %notin% prototype_contracts$prototype_contract_number)#%>%
+      #filter(annual_contracted_UOA > 100)
   }
   
   data <- data %>%

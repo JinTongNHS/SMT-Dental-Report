@@ -203,9 +203,9 @@ get_into_slide5_7_format_calendar <- function(calendar_data = UDA_calendar_data,
     data <- data %>%
       group_by(month)
   }
-  
+
   data <- data %>%
-    summarise(monthly_UDA_UOAs_delivered = ifelse(UDAorUOA == "UDA", 
+    summarise(monthly_UDA_UOAs_delivered = ifelse(UDAorUOA == "UDA",
                                                   sum(UDA_total, na.rm = T),
                                                   sum(UOA_total, na.rm = T)),
               annual_contracted_UDA_UOA = ifelse(UDAorUOA == "UDA",
@@ -214,18 +214,18 @@ get_into_slide5_7_format_calendar <- function(calendar_data = UDA_calendar_data,
     mutate(scaled_monthly_UDA_UOAs_delivered = monthly_UDA_UOAs_delivered * 12) %>%
     mutate(scaled_perc_UDA_UOA_delivered = monthly_UDA_UOAs_delivered * 12 * 100 / annual_contracted_UDA_UOA) %>%
     mutate(month = as.Date(month))
-  
-  
+
+
   #for PCOR and SOF table
   if(renameColumns){
-    
+
     #add a region column to the data
     region_STP_lookup <- calendar_data %>%
       select(commissioner_name, region_name) %>%
       distinct()
-    
+
     data <- left_join(data, region_STP_lookup, by = c("commissioner_name"))
-    
+
     data <- data %>%
       select(calendar_month = month,
              commissioner_name,
@@ -235,7 +235,7 @@ get_into_slide5_7_format_calendar <- function(calendar_data = UDA_calendar_data,
              annual_contracted_UDAs = annual_contracted_UDA_UOA,
              scaled_perc_UDAs_delivered = scaled_perc_UDA_UOA_delivered)
   }
-  
+
   data
 }
 

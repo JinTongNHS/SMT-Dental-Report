@@ -16,10 +16,10 @@ source("../R/SMT_functions.R")
 source("../R/format_SMT_data.R")
 
 #load in raw data
-UDA_calendar_data <- read_excel("../data/cleaned_data_up_to_january/UDA_calendar_data.xlsx")
-UOA_calendar_data <- read_excel("../data/cleaned_data_up_to_january/UOA_calendar_data.xlsx")
-UDA_scheduled_data <- read_excel("../data/cleaned_data_up_to_january/UDA_scheduled_data.xlsx")
-UOA_scheduled_data <- read_excel("../data/cleaned_data_up_to_january/UOA_scheduled_data.xlsx")
+UDA_calendar_data <- read_excel("../data/cleaned_data_up_to_february/UDA_calendar_data.xlsx")
+UOA_calendar_data <- read_excel("../data/cleaned_data_up_to_february/UOA_calendar_data.xlsx")
+UDA_scheduled_data <- read_excel("../data/cleaned_data_up_to_february/UDA_scheduled_data.xlsx")
+UOA_scheduled_data <- read_excel("../data/cleaned_data_up_to_february/UOA_scheduled_data.xlsx")
 historical_UDA_scheduled_data <- readRDS("../data/cleaned_data_up_to_september/historical_UDA_scheduled_data.rds")
 
 UDA_calendar_data <- rename(UDA_calendar_data, month = data_month)
@@ -38,7 +38,7 @@ UOA_calendar_data <- UOA_calendar_data %>%
 UDA_scheduled_data <- rename(UDA_scheduled_data, month = data_month)
 UOA_scheduled_data <- rename(UOA_scheduled_data, month = data_month)
 
-dental_data_111 <- readRDS("../data/cleaned_data_up_to_january/dental_data_111.rds")
+dental_data_111 <- readRDS("../data/cleaned_data_up_to_february/ dental_data_111.rds")
 
 prototype_contracts <- read_excel("../data/prototype_contracts.xlsx")
 contractor_categories <- readRDS("../data/cleaned_data_up_to_october/contractor_categories.RDS")
@@ -48,6 +48,7 @@ UDA_delivery_scheduled <- get_into_slide5_7_format(STP_lines = T, renameColumns 
 
 #prototype_delivery <- readRDS("~/R-Projects/SMT-Dental-Report/data/prototype_delivery.RDS")
 contract_demographics <- readRDS("~/R-Projects/SMT-Dental-Report/data/contract_demographics.rds")
+
 
 ```
 
@@ -308,7 +309,7 @@ plot_UDA_UOA_delivery_profile(data = UOA_scheduled_data,
 
 
 ## Time series of banded Courses of Treatment
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=5}
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=5, fig.width=8}
 plot_banded_CoT(data = UDA_scheduled_data,
                 calendar_data = UDA_calendar_data,
                 historic_data = historical_UDA_scheduled_data,
