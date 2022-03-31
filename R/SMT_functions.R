@@ -877,7 +877,8 @@ plot_UDA_UOA_delivery_profile <- function(data = UDA_scheduled_data,
                                           calendar_data = UDA_calendar_data,
                                           UDAorUOA = "UDA",
                                           level = "National",
-                                          region_STP_name = NULL){
+                                          region_STP_name = NULL,
+                                          plotChart = TRUE){
   
   #add a region column to the data
   region_STP_lookup <- calendar_data %>%
@@ -920,23 +921,28 @@ plot_UDA_UOA_delivery_profile <- function(data = UDA_scheduled_data,
   cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7",
                  "#52854C", "#4E84C4", "#293352", "#FFDB6D")
   
-  #plot code
-  ggplot(data, 
-         aes(fill = performance_band, 
-             y = perc_of_contracts, 
-             x = month)) +
-    geom_bar(position = "dodge", 
-             stat = "identity") +
-    labs(title = title,
-         x = "Month",
-         y = "Percentage of contracts delivering in this band",
-         fill = legTitle,
-         subtitle = subtitle) +
-    #scale_fill_manual(values = cbPalette) +
-    scale_x_datetime(breaks = data$month, 
-                     labels = scales::date_format("%b-%y")) +
-    geom_vline(xintercept = as.Date("2020-07-01"), colour = "black", size = 5) +
-    theme_bw()
+  if(plotChart == TRUE){
+    #plot code
+    ggplot(data, 
+           aes(fill = performance_band, 
+               y = perc_of_contracts, 
+               x = month)) +
+      geom_bar(position = "dodge", 
+               stat = "identity") +
+      labs(title = title,
+           x = "Month",
+           y = "Percentage of contracts delivering in this band",
+           fill = legTitle,
+           subtitle = subtitle) +
+      #scale_fill_manual(values = cbPalette) +
+      scale_x_datetime(breaks = data$month, 
+                       labels = scales::date_format("%b-%y")) +
+      geom_vline(xintercept = as.Date("2020-07-01"), colour = "black", size = 5) +
+      theme_bw()
+  }else{
+    data
+  }
+  
 }
 
 
@@ -1852,3 +1858,110 @@ plot_delivery_vs_contract_size_scatter_region <- function(data = UDA_scheduled_d
   
 }
 
+
+
+
+################################################################################
+#function to plot unique patients by band
+plot_unique_patients_bar <- function(data = unique_patients_static,
+                                     calendar_data = UDA_calendar_data,
+                                     scheduled_data = UDA_scheduled_data,
+                                     level = "National",
+                                     region_STP_name = NULL,
+                                     plotChart = TRUE,
+                                     remove_prototypes = TRUE){
+  
+
+  
+  #join in region and STP data
+  region_STP_lookup <- calendar_data %>%
+    select(contract_number, commissioner_name, region_name) %>%
+    unique()
+  
+  #join annual contracted UDAs
+  contracted_UDAs <- scheduled_data %>%
+    filter(month == max(scheduled_data$month, na.rm = TRUE)) %>%
+    select(contract_number, annual_contracted_UDA)
+  
+  data <- data %>%
+    left_join(region_STP_lookup) %>%
+    left_join(contracted_UDAs)
+  
+  #remove prototype contracts if specified
+  if(remove_prototypes){
+    #create not in function
+    `%notin%` = Negate(`%in%`)
+    data <- data %>%
+      filter(contract_number %notin% prototype_contracts$prototype_contract_number) %>%
+      filter(annual_contracted_UDA > 100)
+  }
+  
+  #filter for region or STP
+  if(level == "Regional"){
+    data <- data %>%
+      filter(region_name == region_STP_name)
+    subtitle <- region_STP_name
+  }else if(level == "STP"){
+    data <- data %>%
+      filter(commissioner_name == region_STP_name)
+    subtitle <- region_STP_name
+  }else{
+    subtitle <- "England"
+  }
+  
+data <- data %>%
+  summarise(unique_patients_rolling_12M = mean(unique_patients_rolling_12M, na.rm = TRUE),
+            band1_unique_patients_rolling_12M = mean(band1_unique_patients_rolling_12M, na.rm = TRUE),
+            band2_or_3_unique_patients_rolling_12M = mean(band2_or_3_unique_patients_rolling_12M, na.rm = TRUE),
+            band1_urgent_unique_patients_rolling_12M = mean(band1_urgent_unique_patients_rolling_12M, na.rm = TRUE),
+            band_other_unique_patients_rolling_12M = mean(band_other_unique_patients_rolling_12M, na.rm = TRUE)) %>%
+  pivot_longer(c(unique_patients_rolling_12M,
+               band1_unique_patients_rolling_12M,
+               band2_or_3_unique_patients_rolling_12M,
+               band1_urgent_unique_patients_rolling_12M,
+               band_other_unique_patients_rolling_12M)) %>%
+  rename(band = name, total_unique_patients = value) %>%
+  mutate(band = case_when(band == "unique_patients_rolling_12M" ~ "Any band",
+                          band == "band1_unique_patients_rolling_12M" ~ "Band 1",
+                          band == "band2_or_3_unique_patients_rolling_12M" ~ "Band 2 or 3",
+                          band == "band1_urgent_unique_patients_rolling_12M" ~ "Urgent band 1",
+                          band == "band_other_unique_patients_rolling_12M" ~ "Other band"))
+
+data$band <- factor(data$band,
+                    levels = c(
+                      "Any band",
+                      "Band 1",
+                      "Band 2 or 3",
+                      "Urgent band 1",
+                      "Other band"
+                    ))
+
+
+  
+  if(plotChart == TRUE){
+    #plot code
+    ggplot(data) +
+      theme_bw() +
+      geom_bar(aes(x =band,
+                   y = total_unique_patients),
+               position = "dodge",
+               stat = "identity",
+               fill = "steelblue") +
+      geom_text(aes(x =band,
+                    y = total_unique_patients + 100,
+                    label = round(total_unique_patients))) +
+      labs(title = "Mean number of unique patients seen per contract* over \n12 month period Apr-2018 to Apr-2019 by band",
+           x = "Band",
+           y = "Mean unique patients per contract",
+           subtitle = subtitle,
+           caption = "*Excluding prototype contracts and those with annual contracted UDAs < 100."
+           ) #+
+      #theme(axis.text.x = element_text(angle = 90))
+      #theme(legend.position = "bottom")
+  }else{
+    data
+  }
+
+  
+  
+}

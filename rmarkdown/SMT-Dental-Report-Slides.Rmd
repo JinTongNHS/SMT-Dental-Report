@@ -26,7 +26,7 @@ UDA_calendar_data <- read_excel("../data/cleaned_data_up_to_february/UDA_calenda
 UOA_calendar_data <- read_excel("../data/cleaned_data_up_to_february/UOA_calendar_data.xlsx")
 UDA_scheduled_data <- read_excel("../data/cleaned_data_up_to_february/UDA_scheduled_data.xlsx")
 UOA_scheduled_data <- read_excel("../data/cleaned_data_up_to_february/UOA_scheduled_data.xlsx")
-historical_UDA_scheduled_data <- readRDS("../data/cleaned_data_up_to_september/historical_UDA_scheduled_data.rds")
+historical_UDA_scheduled_data <- read_excel("../data/cleaned_data_up_to_february/historical_UDA_scheduled_data.xlsx")
 
 UDA_calendar_data <- rename(UDA_calendar_data, month = data_month)
 UOA_calendar_data <- UOA_calendar_data %>%
@@ -54,6 +54,28 @@ UDA_delivery_scheduled <- get_into_slide5_7_format(STP_lines = T, renameColumns 
 
 #prototype_delivery <- readRDS("~/R-Projects/SMT-Dental-Report/data/prototype_delivery.RDS")
 contract_demographics <- readRDS("~/R-Projects/SMT-Dental-Report/data/contract_demographics.rds")
+
+
+#evaluate chunks based on pack level
+if(params$level == "National"){
+  evaluate_contents_1 <- TRUE
+  evaluate_contents_2 <- FALSE
+  evaluate_regional <- TRUE
+  evaluate_STP <- FALSE
+  evaluate_111 <- TRUE
+}else if(params$level == "Regional"){
+  evaluate_contents_1 <- TRUE
+  evaluate_contents_2 <- FALSE
+  evaluate_regional <- FALSE
+  evaluate_STP <- TRUE
+  evaluate_111 <- FALSE
+}else{
+  evaluate_contents_1 <- FALSE
+  evaluate_contents_2 <- TRUE
+  evaluate_regional <- FALSE
+  evaluate_STP <- FALSE
+  evaluate_111 <- FALSE
+}
 
 
 # ## Contents
@@ -133,18 +155,18 @@ scheduling period can be considered fixed.
 
 ## Number of contracts by MY category (see appendix for breakdown)
 #### Including prototypes and contracts with annual contracted UDA < 100
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
+```{r table1, echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
 knitr::kable(table_number_cat_contracts(remove_prototypes = F, level = params$level, region_STP_name = params$region_STP_name))
 ```
 #### Excluding prototypes and contracts with annual contracted UDA < 100
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
+```{r table2, echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
 knitr::kable(table_number_cat_contracts(remove_prototypes = T, level = params$level, region_STP_name = params$region_STP_name))
 ```
 
 
 
 ## UDA activity data 
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
+```{r UDA_activity_Calendar, echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
 plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data, 
                                   scheduled_data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
@@ -164,7 +186,7 @@ due to the nature of calendar data (see slide 3). This month's figure is likely 
 
 
 ## UDA activity data by region
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
+```{r UDA_activity_regional, echo = FALSE, warning = FALSE, message = FALSE, fig.height=4, eval=evaluate_regional}
 plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
                                   scheduled_data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
@@ -179,25 +201,25 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
 ```
 
 
-<!-- ## UDA activity data by STP -->
-<!-- ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=4} -->
-<!-- plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data, -->
-<!--                                   scheduled_data = UDA_scheduled_data, -->
-<!--                                   contractor_cats = contractor_categories, -->
-<!--                                   UDAorUOA = "UDA", -->
-<!--                                   level = params$level, -->
-<!--                                   region_STP_name = params$region_STP_name, -->
-<!--                                   remove_prototypes = T, -->
-<!--                                   regional_lines = F, -->
-<!--                                   STP_lines = T, -->
-<!--                                   cat_lines = F, -->
-<!--                                   plot_chart = T) -->
-<!-- ``` -->
+## UDA activity data by STP
+```{r UDA_activity_STP, echo = FALSE, warning = FALSE, message = FALSE, fig.height=4, eval=evaluate_STP}
+plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
+                                  scheduled_data = UDA_scheduled_data,
+                                  contractor_cats = contractor_categories,
+                                  UDAorUOA = "UDA",
+                                  level = params$level,
+                                  region_STP_name = params$region_STP_name,
+                                  remove_prototypes = T,
+                                  regional_lines = F,
+                                  STP_lines = T,
+                                  cat_lines = F,
+                                  plot_chart = T)
+```
 
 
 ## UDA activity data by MY Category
 #### Prototypes and contracts with annual contracted UDAs < 100 included
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
+```{r UDA_activity_MY_cat, echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
 plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
                                   scheduled_data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
@@ -213,7 +235,7 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
 
 ##
 #### Prototypes and contracts with annual contracted UDAs < 100 excluded
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
+```{r UDA_activity_MY_cat2, echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
 plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
                                   scheduled_data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
@@ -231,7 +253,7 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
 
 ## UDA cumulative activity data
 
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
+```{r UDA_cumulative_activity, echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
 plot_Q3_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
                                   UDAorUOA = "UDA",
                                   level = params$level,
@@ -247,7 +269,7 @@ have delivered the required UDAs or more to be on track towards the Q4 threshold
 
 ## Scheduled UDAs
 
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
+```{r UDA_activity_scheduled, echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
 plot_UDA_UOA_delivery(data = UDA_scheduled_data,  UDAorUOA = "UDA",
                                   level = params$level,
                                   region_STP_name = params$region_STP_name)
@@ -258,7 +280,7 @@ activity which is fixed. This may be thought of as "UDAs submitted" in each mont
 
 ## Contract size to delivery comparison
 
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
+```{r contract_size_delivery, echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
 plot_delivery_vs_contract_size_scatter_corporate(data = UDA_scheduled_data,
                                                  demographics_data = contract_demographics,
                                                  remove_prototypes = T,
@@ -278,7 +300,7 @@ with a mean contract size of **`r plot_delivery_vs_contract_size_scatter_corpora
 
 ## UDA delivery profile
 
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
+```{r UDA_Delivery_profile, echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
 plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
                           calendar_data = UDA_calendar_data,
                           UDAorUOA = "UDA",
@@ -292,7 +314,7 @@ month is annualised. This uses scheduled data.
 
 ## UOA activity data
 
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
+```{r UOA_activity_calendar, echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
 plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data, 
                                   scheduled_data = UOA_scheduled_data,
                                   contractor_cats = contractor_categories,
@@ -314,7 +336,7 @@ due to the nature of calendar data (see slide 3). This month's figure is likely 
 
 
 ## UOA activity data by region
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
+```{r UOA_activity_regional, echo = FALSE, warning = FALSE, message = FALSE, fig.height=4, eval=evaluate_regional}
 plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
                                   scheduled_data = UOA_scheduled_data,
                                   contractor_cats = contractor_categories,
@@ -328,24 +350,24 @@ plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
                                   plot_chart = T)
 ```
 
-<!-- ## UOA activity data by STP -->
-<!-- ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=4} -->
-<!-- plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data, -->
-<!--                                   scheduled_data = UOA_scheduled_data, -->
-<!--                                   contractor_cats = contractor_categories, -->
-<!--                                   UDAorUOA = "UOA", -->
-<!--                                   level = params$level, -->
-<!--                                   region_STP_name = params$region_STP_name, -->
-<!--                                   remove_prototypes = T, -->
-<!--                                   regional_lines = F, -->
-<!--                                   STP_lines = T, -->
-<!--                                   cat_lines = F, -->
-<!--                                   plot_chart = T) -->
-<!-- ``` -->
+## UOA activity data by STP
+```{r UOA_activity_STP, echo = FALSE, warning = FALSE, message = FALSE, fig.height=4, eval=evaluate_STP}
+plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
+                                  scheduled_data = UOA_scheduled_data,
+                                  contractor_cats = contractor_categories,
+                                  UDAorUOA = "UOA",
+                                  level = params$level,
+                                  region_STP_name = params$region_STP_name,
+                                  remove_prototypes = T,
+                                  regional_lines = F,
+                                  STP_lines = T,
+                                  cat_lines = F,
+                                  plot_chart = T)
+```
 
 ## UOA activity data by MY Category
 #### Prototypes and contracts with annual contracted UDAs < 100 included
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
+```{r UOA_activity_MY_cat, echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
 plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
                                   scheduled_data = UOA_scheduled_data,
                                   contractor_cats = contractor_categories,
@@ -361,7 +383,7 @@ plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
 
 ##
 #### Prototypes and contracts with annual contracted UDAs < 100 excluded
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
+```{r UOA_activity_MY_cat2, echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
 plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
                                   scheduled_data = UOA_scheduled_data,
                                   contractor_cats = contractor_categories,
@@ -379,7 +401,7 @@ plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
 
 ## UOA cumulative activity data
 
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
+```{r UOA_cumulative_delivery, echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
 plot_Q3_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
                                   UDAorUOA = "UOA",
                                   level = params$level,
@@ -395,7 +417,7 @@ the required UOAs or more to be on track towards the Q4 threshold (90%) by the e
 
 ## UOA scheduled delivery
 
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
+```{r UOA_scheduled_Delivery, echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
 plot_UDA_UOA_delivery(data = UOA_scheduled_data,
                       UDAorUOA = "UOA",
                                   level = params$level,
@@ -407,7 +429,7 @@ activity which is fixed. This may be thought of as "UOAs submitted" in each mont
 
 ## UOA delivery profile
 
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
+```{r UOA_delivery_profile, echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
 plot_UDA_UOA_delivery_profile(data = UOA_scheduled_data,
                           calendar_data = UOA_calendar_data,
                           UDAorUOA = "UOA",
@@ -421,7 +443,7 @@ month is annualised.
 This uses scheduled data.
 
 ## Time series of banded Courses of Treatment
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=5}
+```{r banded_CoTs, echo = FALSE, warning = FALSE, message = FALSE, fig.height=5}
 plot_banded_CoT(data = UDA_scheduled_data,
                 calendar_data = UDA_calendar_data,
                 historic_data = historical_UDA_scheduled_data,
@@ -431,7 +453,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
 
 ## Urgent treatment form submissions
 
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
+```{r urgent_treatements, echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
 plot_urgent_form_submissions(data = UDA_scheduled_data,
                 calendar_data = UDA_calendar_data,
                 historic_data = historical_UDA_scheduled_data,
@@ -449,16 +471,30 @@ world.
 
 ## 111 dental related call volumes
 
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
+```{r 111_volumes, echo = FALSE, warning = FALSE, message = FALSE, fig.height=4, eval=evaluate_111}
 plot_111_referrals()
 ```
 
 
 ## 111 dental related call volumes by disposition
 
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
+```{r 111_volumes_breakdown, echo = FALSE, warning = FALSE, message = FALSE, fig.height=4, eval=evaluate_111}
 plot_breakdown_111_referrals()
 ```
+
+## Unique dental patients seen
+
+```{r unique_patients, echo = FALSE, warning = FALSE, message = FALSE, fig.height=4, eval=evaluate_111}
+plot_unique_patients_bar(data = unique_patients_static,
+                                     calendar_data = UDA_calendar_data,
+                                     scheduled_data = UDA_scheduled_data,
+                                     level = params$level,
+                                     region_STP_name = params$region_STP_name,
+                                     plotChart = TRUE,
+                                     remove_prototypes = TRUE)
+```
+
+* N.B. this graph is for financial year 2018/2019. When the data is available, this graph will be updated to show rolling 12 month unique patients from 2018 to present month.
 
 ## Appendix
 #### MY Category classification breakdown:

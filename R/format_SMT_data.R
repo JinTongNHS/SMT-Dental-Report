@@ -287,6 +287,10 @@ get_slide5_table <- function(data = UDA_scheduled_data,
                              UDAorUOA = "UDA",
                              remove_prototypes = T){
   
+  #filter out ended contracts
+  data <- data %>%
+    filter(is.na(contract_end_date) | contract_end_date > month)
+  
   #remove prototype contracts if specified
   if(remove_prototypes){
     #create not in function
@@ -332,22 +336,6 @@ get_slide5_table <- function(data = UDA_scheduled_data,
                                               )
                                       )
     )) %>%
-  
-  
-  # #put into bands then sum across these bands by month
-  # performance_table <- performance_table %>%  
-  #   mutate(performance_band = rowwise( case_when(monthly_perc_scaled < 10 ~ "0-9%",
-  #                                       monthly_perc_scaled >= 10 & monthly_perc_scaled <20 ~ "10-19%",
-  #                                       monthly_perc_scaled >= 20 & monthly_perc_scaled <30, "20-29%",
-  #                                       monthly_perc_scaled >= 30 & monthly_perc_scaled <40, "30-39%",
-  #                                       monthly_perc_scaled >= 40 & monthly_perc_scaled <50, "40-49%",
-  #                                       monthly_perc_scaled >= 50 & monthly_perc_scaled <60, "50-59%",
-  #                                       monthly_perc_scaled >= 60 & monthly_perc_scaled <70, "60-69%",
-  #                                       monthly_perc_scaled >= 70 & monthly_perc_scaled <80, "70-79%",
-  #                                       monthly_perc_scaled >= 80 & monthly_perc_scaled <90, "80-89%",
-  #                                       monthly_perc_scaled >= 90 & monthly_perc_scaled <100, "90-99%",
-  #                                       monthly_perc_scaled >= 100 ~ "100% +",
-  #                                       TRUE ~ "not a number")) )%>%
     #exclude NAs
     filter(!is.na(performance_band)) %>%
     group_by(month) %>%
