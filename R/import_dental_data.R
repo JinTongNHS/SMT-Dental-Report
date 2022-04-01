@@ -484,10 +484,39 @@ import_and_clean_calendar_UDA_data <- function(data_path = "data/raw_data/dashbo
            total_other_FP17s = X__140
     )
   
+  #add column for date and rename columns, split data for just mar
+  data_mar <- data %>%
+    mutate(data_month = as.Date("2022-03-01")) %>%
+    select(data_month, X__1, X__2, X__3, X__4, X__5, X__6, X__7, X__8, 
+           X__141, X__142, X__143, X__144, X__145, X__146, X__147, X__148, X__149, X__150,
+           X__151, X__152) %>%
+    rename(contract_number = X__1,
+           latest_contract_type = X__2,
+           name_or_company_name = X__3,
+           commissioner_name = X__4,
+           region_name = X__5,
+           paid_by_BSA = X__6,
+           contract_start_date = X__7, 
+           contract_end_date = X__8, 
+           
+           UDA_total = X__141, 
+           UDA_band_1_total = X__142,
+           UDA_band_2_total = X__143,
+           UDA_band_3_total = X__144, 
+           UDA_urgent_total = X__145, 
+           UDA_other_total = X__146, 
+           total_FP17s = X__147, 
+           total_band_1_FP17s  = X__148,
+           total_band_2_FP17s = X__149,
+           total_band_3_FP17s = X__150,
+           total_urgent_FP17s = X__151,
+           total_other_FP17s = X__152
+    )
+  
   
   UDA_calendar_data <- bind_rows(data_apr, data_may, data_jun, data_jul, data_aug, 
                                  data_sep, data_oct, data_nov, data_dec, data_jan,
-                                 data_feb)
+                                 data_feb, data_mar)
   
 }
 
@@ -693,7 +722,8 @@ import_and_clean_calendar_UOA_data_new_format <- function(data_path = "data/raw_
                      col_types = c("text", "text", "text", 
                                    "text", "text", "date", "date", "text", 
                                    "text", "text", "text", "text", "text", 
-                                   "text", "text", "text", "text", "text"),
+                                   "text", "text", "text", "text", "text",
+                                   "text"),
                      skip = 3,
                      .name_repair = ~ paste0("X__", seq_along(.x)))
   
@@ -878,10 +908,26 @@ import_and_clean_calendar_UOA_data_new_format <- function(data_path = "data/raw_
            UOA_total = X__18
     )
   
+  #add column for date and rename columns, split data for just mar
+  data_mar <- data %>%
+    mutate(data_month = as.Date("2022-03-01")) %>%
+    select(data_month, X__1, X__2, X__3, X__4, X__5, X__6, X__7, 
+           X__19) %>%
+    rename(contract_number = X__1,
+           contract_type = X__2,
+           name_or_company_name = X__3,
+           commissioner_name = X__4,
+           paid_by_BSA = X__5,
+           contract_start_date = X__6, 
+           contract_end_date = X__7, 
+           
+           UOA_total = X__19
+    )
+  
   
   UOA_calendar_data <- bind_rows(data_apr, data_may, data_jun, data_jul, data_aug, 
                                  data_sep, data_oct, data_nov, data_dec, data_jan,
-                                 data_feb)
+                                 data_feb, data_mar)
   
 }
 

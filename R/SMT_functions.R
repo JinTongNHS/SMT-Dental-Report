@@ -494,7 +494,8 @@ plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
              x = data$month, 
              y = data$perc_UDA_UOA_delivered + 3, 
              label = paste0(data$perc_UDA_UOA_delivered, "%"), 
-             size = 3) 
+             size = 3) +
+    theme(axis.text.x = element_text(angle = 90))
 }
 
 
@@ -938,7 +939,8 @@ plot_UDA_UOA_delivery_profile <- function(data = UDA_scheduled_data,
       scale_x_datetime(breaks = data$month, 
                        labels = scales::date_format("%b-%y")) +
       geom_vline(xintercept = as.Date("2020-07-01"), colour = "black", size = 5) +
-      theme_bw()
+      theme_bw() +
+      theme(axis.text.x = element_text(angle = 90))
   }else{
     data
   }
@@ -1871,6 +1873,16 @@ plot_unique_patients_bar <- function(data = unique_patients_static,
                                      plotChart = TRUE,
                                      remove_prototypes = TRUE){
   
+  #avoid standard form notation
+  options(scipen = 5)
+  
+  
+  # unique_patients_static <- rename(unique_patients_static, contract_number = "Contract Number", unique_patients_rolling_12M = "Unique Patient Count Rolling 12M",
+  #                                                                    band1_unique_patients_rolling_12M = "Band 1 Unique Patient Count Rolling 12M",
+  #                                                                    band2_or_3_unique_patients_rolling_12M = "Band 2 or Band 3 Unique Patient Count Rolling 12M",
+  #                                                                    band1_urgent_unique_patients_rolling_12M = "Band 1 Urgent Unique Patient Count Rolling 12M",
+  #                                                                    band_other_unique_patients_rolling_12M = "Other Unique Patient Count Rolling 12M")
+  
 
   
   #join in region and STP data
@@ -1910,11 +1922,11 @@ plot_unique_patients_bar <- function(data = unique_patients_static,
   }
   
 data <- data %>%
-  summarise(unique_patients_rolling_12M = mean(unique_patients_rolling_12M, na.rm = TRUE),
-            band1_unique_patients_rolling_12M = mean(band1_unique_patients_rolling_12M, na.rm = TRUE),
-            band2_or_3_unique_patients_rolling_12M = mean(band2_or_3_unique_patients_rolling_12M, na.rm = TRUE),
-            band1_urgent_unique_patients_rolling_12M = mean(band1_urgent_unique_patients_rolling_12M, na.rm = TRUE),
-            band_other_unique_patients_rolling_12M = mean(band_other_unique_patients_rolling_12M, na.rm = TRUE)) %>%
+  summarise(unique_patients_rolling_12M = sum(unique_patients_rolling_12M, na.rm = TRUE),
+            band1_unique_patients_rolling_12M = sum(band1_unique_patients_rolling_12M, na.rm = TRUE),
+            band2_or_3_unique_patients_rolling_12M = sum(band2_or_3_unique_patients_rolling_12M, na.rm = TRUE),
+            band1_urgent_unique_patients_rolling_12M = sum(band1_urgent_unique_patients_rolling_12M, na.rm = TRUE),
+            band_other_unique_patients_rolling_12M = sum(band_other_unique_patients_rolling_12M, na.rm = TRUE)) %>%
   pivot_longer(c(unique_patients_rolling_12M,
                band1_unique_patients_rolling_12M,
                band2_or_3_unique_patients_rolling_12M,
@@ -1948,13 +1960,16 @@ data$band <- factor(data$band,
                stat = "identity",
                fill = "steelblue") +
       geom_text(aes(x =band,
-                    y = total_unique_patients + 100,
-                    label = round(total_unique_patients))) +
-      labs(title = "Mean number of unique patients seen per contract* over \n12 month period Apr-2018 to Apr-2019 by band",
+                    y = total_unique_patients + 0.05*total_unique_patients,
+                    label = format( round(total_unique_patients), big.mark = ",", scientific = FALSE)
+                    ),
+                size = 2.5) +
+      scale_y_continuous(labels=function(x) format(x, big.mark = ",", scientific = FALSE)) +
+      labs(title = "Total number of unique patients seen over \n12 month period Apr-2018 to Apr-2019 by band",
            x = "Band",
-           y = "Mean unique patients per contract",
+           y = "Unique patients",
            subtitle = subtitle,
-           caption = "*Excluding prototype contracts and those with annual contracted UDAs < 100."
+           caption = "*N.B. this analysis uses unique patients per contract** and does not take \ninto account patients who have been seen at more than one dental practice. \n**Excluding prototype contracts and those with annual contracted UDAs < 100."
            ) #+
       #theme(axis.text.x = element_text(angle = 90))
       #theme(legend.position = "bottom")
