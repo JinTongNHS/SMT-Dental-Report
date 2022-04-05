@@ -1980,3 +1980,120 @@ data$band <- factor(data$band,
   
   
 }
+
+
+
+
+################################################################################
+#function to plot unique patients by band
+plot_unique_patients_rolling <- function(data = unique_patients_rolling,
+                                     calendar_data = UDA_calendar_data,
+                                     scheduled_data = UDA_scheduled_data,
+                                     level = "National",
+                                     region_STP_name = NULL,
+                                     plotChart = TRUE,
+                                     remove_prototypes = TRUE){
+  
+  #avoid standard form notation
+  options(scipen = 5)
+  
+  data <- data %>%
+    rename(month = month_ending)
+
+  #join in region and STP data
+  region_STP_lookup <- calendar_data %>%
+    select(contract_number, commissioner_name, region_name) %>%
+    unique()
+  
+  #join annual contracted UDAs
+  contracted_UDAs <- scheduled_data %>%
+    filter(month == max(scheduled_data$month, na.rm = TRUE)) %>%
+    select(contract_number, annual_contracted_UDA)
+  
+  data <- data %>%
+    left_join(region_STP_lookup) %>%
+    left_join(contracted_UDAs)
+  
+  #remove prototype contracts if specified
+  if(remove_prototypes){
+    #create not in function
+    `%notin%` = Negate(`%in%`)
+    data <- data %>%
+      filter(contract_number %notin% prototype_contracts$prototype_contract_number) %>%
+      filter(annual_contracted_UDA > 100)
+  }
+
+  #filter for region or STP
+  if(level == "Regional"){
+    data <- data %>%
+      filter(region_name == region_STP_name)
+    subtitle <- region_STP_name
+  }else if(level == "STP"){
+    data <- data %>%
+      filter(commissioner_name == region_STP_name)
+    subtitle <- region_STP_name
+  }else{
+    subtitle <- "England"
+  }
+
+  data <- data %>%
+    group_by(month) %>%
+    summarise(unique_patients_rolling_12M = sum(unique_patients_rolling_12M, na.rm = TRUE),
+              band1_unique_patients_rolling_12M = sum(band1_unique_patients_rolling_12M, na.rm = TRUE),
+              band2_or_3_unique_patients_rolling_12M = sum(band2_or_3_unique_patients_rolling_12M, na.rm = TRUE),
+              band1_urgent_unique_patients_rolling_12M = sum(band1_urgent_unique_patients_rolling_12M, na.rm = TRUE),
+              band_other_unique_patients_rolling_12M = sum(band_other_unique_patients_rolling_12M, na.rm = TRUE)) %>%
+    pivot_longer(c(unique_patients_rolling_12M,
+                   band1_unique_patients_rolling_12M,
+                   band2_or_3_unique_patients_rolling_12M,
+                   band1_urgent_unique_patients_rolling_12M,
+                   band_other_unique_patients_rolling_12M)) %>%
+    rename(band = name, total_unique_patients = value) %>%
+    mutate(band = case_when(band == "unique_patients_rolling_12M" ~ "Any band",
+                            band == "band1_unique_patients_rolling_12M" ~ "Band 1",
+                            band == "band2_or_3_unique_patients_rolling_12M" ~ "Band 2 or 3",
+                            band == "band1_urgent_unique_patients_rolling_12M" ~ "Urgent band 1",
+                            band == "band_other_unique_patients_rolling_12M" ~ "Other band")) %>%
+    mutate(month = as.Date(month))
+
+  data$band <- factor(data$band,
+                      levels = c(
+                        "Any band",
+                        "Band 1",
+                        "Band 2 or 3",
+                        "Urgent band 1",
+                        "Other band"
+                      ))
+
+
+  if(plotChart == TRUE){
+    #plot code
+    ggplot(data) +
+      theme_bw() +
+      geom_line(aes(x = month,
+                   y = total_unique_patients,
+                   colour = band)) +
+      geom_point(aes(x = month,
+                     y = total_unique_patients,
+                     colour = band)) +
+      # geom_text(aes(x =band,
+      #               y = total_unique_patients + 0.05*total_unique_patients,
+      #               label = format( round(total_unique_patients), big.mark = ",", scientific = FALSE)
+      # ),
+      # size = 2.5) +
+      scale_y_continuous(labels=function(x) format(x, big.mark = ",", scientific = FALSE)) +
+      labs(title = "Total number of unique patients seen over a rolling 12 month period by band",
+           x = "12 month rolling period end date",
+           y = "Unique patients",
+           subtitle = subtitle,
+           caption = "*N.B. this analysis uses unique patients per contract** and does not take \ninto account patients who have been seen at more than one dental practice. \n**Excluding prototype contracts and those with annual contracted UDAs < 100."
+      ) +
+      scale_x_date(date_breaks = "1 month", 
+                   date_labels = "%b-%y") +
+    theme(axis.text.x = element_text(angle = 90))
+    #theme(legend.position = "bottom")
+  }else{
+    data
+  }
+
+}

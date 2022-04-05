@@ -57,6 +57,8 @@ contract_demographics <- readRDS("../data/contract_demographics.rds")
 
 #read in unique patients
 unique_patients_static <- readRDS("../data/unique_patients/unique_patients_static.rds")
+unique_patients_rolling <- readRDS("../data/unique_patients/unique_patients_rolling.rds")
+
 
 #evaluate chunks based on pack level
 if(params$level == "National"){
