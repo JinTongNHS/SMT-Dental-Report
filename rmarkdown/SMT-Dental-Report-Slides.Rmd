@@ -490,7 +490,7 @@ world.
 ## Unique dental patients seen
 
 ```{r unique_patients, echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
-plot_unique_patients_bar(data = unique_patients_static,
+plot_unique_patients_rolling(data = unique_patients_rolling,
                                      calendar_data = UDA_calendar_data,
                                      scheduled_data = UDA_scheduled_data,
                                      level = params$level,
