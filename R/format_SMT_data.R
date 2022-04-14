@@ -51,13 +51,22 @@ get_into_slide6_format_calendar <- function(data = UOA_calendar_data,
   data <- data %>%
     left_join(contracted_UOAs, by = c("month", "contract_number"))
 
-  #remove prototype contracts if specified
-  if(remove_prototypes){
-    #create not in function
-    `%notin%` = Negate(`%in%`)
+  # #remove prototype contracts if specified
+  # if(remove_prototypes){
+  #   #create not in function
+  #   `%notin%` = Negate(`%in%`)
+  #   data <- data %>%
+  #     filter(contract_number %in% prototype_contracts_orth$prototype_contract_number)
+  # }
+  
+  #create not in function
+  `%notin%` = Negate(`%in%`)
+  
+
     data <- data %>%
-      filter(contract_number %in% prototype_contracts_orth$prototype_contract_number)
-  }
+      filter(contract_number %notin% prototype_contracts$prototype_contract_number)%>%
+      filter(annual_contracted_UOA > 0)
+  
 
   #group by month and sum UDAs delivered
   UOAs_delivered <- data %>%
@@ -85,13 +94,19 @@ get_into_slide5_7_format <- function(data = UDA_scheduled_data,
                                    STP_lines = F,
                                    renameColumns = F){
   
+
+  #create not in function
+  `%notin%` = Negate(`%in%`)
+  
   #remove prototype contracts if specified
-  if(remove_prototypes){
-    #create not in function•
-    `%notin%` = Negate(`%in%`)
+  if(remove_prototypes & UDAorUOA == "UDA"){
     data <- data %>%
       filter(contract_number %notin% prototype_contracts$prototype_contract_number)%>%
       filter(annual_contracted_UDA > 100)
+  }else if(remove_prototypes & UDAorUOA == "UOA"){
+    data <- data %>%
+      filter(contract_number %notin% prototype_contracts$prototype_contract_number)%>%
+      filter(annual_contracted_UOA > 0)
   }
   
   if(STP_lines){
@@ -181,13 +196,18 @@ get_into_slide5_7_format_calendar <- function(calendar_data = UDA_calendar_data,
   }
   
   
+  #create not in function
+  `%notin%` = Negate(`%in%`)
+  
   #remove prototype contracts if specified
-  if(remove_prototypes){
-    #create not in function•
-    `%notin%` = Negate(`%in%`)
+  if(remove_prototypes & UDAorUOA == "UDA"){
     data <- data %>%
       filter(contract_number %notin% prototype_contracts$prototype_contract_number)%>%
       filter(annual_contracted_UDA > 100)
+  }else if(remove_prototypes & UDAorUOA == "UOA"){
+    data <- data %>%
+      filter(contract_number %notin% prototype_contracts$prototype_contract_number)%>%
+      filter(annual_contracted_UOA > 0)
   }
   
   if(regional_lines){
@@ -291,13 +311,18 @@ get_slide5_table <- function(data = UDA_scheduled_data,
   data <- data %>%
     filter(is.na(contract_end_date) | contract_end_date > month)
   
+  #create not in function
+  `%notin%` = Negate(`%in%`)
+  
   #remove prototype contracts if specified
-  if(remove_prototypes){
-    #create not in function
-    `%notin%` = Negate(`%in%`)
+  if(remove_prototypes & UDAorUOA == "UDA"){
     data <- data %>%
-      filter(contract_number %notin% prototype_contracts$prototype_contract_number) %>%
+      filter(contract_number %notin% prototype_contracts$prototype_contract_number)%>%
       filter(annual_contracted_UDA > 100)
+  }else if(remove_prototypes & UDAorUOA == "UOA"){
+    data <- data %>%
+      filter(contract_number %notin% prototype_contracts$prototype_contract_number)%>%
+      filter(annual_contracted_UOA > 0)
   }
   
   if(UDAorUOA == "UDA"){
@@ -355,14 +380,23 @@ get_slide7_table <- function(data = UOA_scheduled_data, remove_prototypes = F){
   #remove spaces from column names
   colnames(data) <- make.names(colnames(data), unique = T)
   
-  #remove prototype contracts if specified
-  if(remove_prototypes){
-    #create not in function
-    `%notin%` = Negate(`%in%`)
+  # #remove prototype contracts if specified
+  # if(remove_prototypes){
+  #   #create not in function
+  #   `%notin%` = Negate(`%in%`)
+  #   data <- data %>%
+  #     filter(Contract.Number %notin% prototype_contracts$prototype_contract_number)%>%
+  #     filter(Contract.Number %notin% UDAs_less_than_100$Contract.Number)
+  # }
+  
+  #create not in function
+  `%notin%` = Negate(`%in%`)
+  
+
     data <- data %>%
-      filter(Contract.Number %notin% prototype_contracts$prototype_contract_number)%>%
-      filter(Contract.Number %notin% UDAs_less_than_100$Contract.Number)
-  }
+      filter(contract_number %notin% prototype_contracts$prototype_contract_number)%>%
+      filter(annual_contracted_UOA > 0)
+  
   
   #create column for 12 month scaled % of UDAs delivered and put into bands
   #then sum across these bands by month
