@@ -44,7 +44,7 @@ UOA_calendar_data <- UOA_calendar_data %>%
 UDA_scheduled_data <- rename(UDA_scheduled_data, month = data_month)
 UOA_scheduled_data <- rename(UOA_scheduled_data, month = data_month)
 
-dental_data_111 <- dental_data_111_Feb22 <- read_excel("../data/cleaned_data_up_to_march/dental_data_111_Feb22.xlsx")
+dental_data_111 <- read_excel("../data/cleaned_data_up_to_march/dental_data_111_Mar22.xls")
 
 prototype_contracts <- read_excel("../data/prototype_contracts.xlsx")
 contractor_categories <- readRDS("../data/cleaned_data_up_to_october/contractor_categories.RDS")
@@ -190,20 +190,20 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
 due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported. 
 
 
-<!-- ## UDA activity data by region -->
-<!-- ```{r UDA_activity_regional, echo = FALSE, warning = FALSE, message = FALSE, fig.height=4, eval=evaluate_regional} -->
-<!-- plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data, -->
-<!--                                   scheduled_data = UDA_scheduled_data, -->
-<!--                                   contractor_cats = contractor_categories, -->
-<!--                                   UDAorUOA = "UDA", -->
-<!--                                   level = params$level, -->
-<!--                                   region_STP_name = params$region_STP_name, -->
-<!--                                   remove_prototypes = T, -->
-<!--                                   regional_lines = T, -->
-<!--                                   STP_lines = F, -->
-<!--                                   cat_lines = F, -->
-<!--                                   plot_chart = T) -->
-<!-- ``` -->
+## UDA activity data by region
+```{r UDA_activity_regional, echo = FALSE, warning = FALSE, message = FALSE, fig.height=4, eval=evaluate_regional}
+plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
+                                  scheduled_data = UDA_scheduled_data,
+                                  contractor_cats = contractor_categories,
+                                  UDAorUOA = "UDA",
+                                  level = params$level,
+                                  region_STP_name = params$region_STP_name,
+                                  remove_prototypes = T,
+                                  regional_lines = T,
+                                  STP_lines = F,
+                                  cat_lines = F,
+                                  plot_chart = T)
+```
 
 
 <!-- ## UDA activity data by STP -->
@@ -340,20 +340,20 @@ GDS/PDS contracts scaled up by 12 months measured against the delivery threshold
 due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported.
 
 
-<!-- ## UOA activity data by region -->
-<!-- ```{r UOA_activity_regional, echo = FALSE, warning = FALSE, message = FALSE, fig.height=4, eval=evaluate_regional} -->
-<!-- plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data, -->
-<!--                                   scheduled_data = UOA_scheduled_data, -->
-<!--                                   contractor_cats = contractor_categories, -->
-<!--                                   UDAorUOA = "UOA", -->
-<!--                                   level = params$level, -->
-<!--                                   region_STP_name = params$region_STP_name, -->
-<!--                                   remove_prototypes = T, -->
-<!--                                   regional_lines = T, -->
-<!--                                   STP_lines = F, -->
-<!--                                   cat_lines = F, -->
-<!--                                   plot_chart = T) -->
-<!-- ``` -->
+## UOA activity data by region
+```{r UOA_activity_regional, echo = FALSE, warning = FALSE, message = FALSE, fig.height=4, eval=evaluate_regional}
+plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
+                                  scheduled_data = UOA_scheduled_data,
+                                  contractor_cats = contractor_categories,
+                                  UDAorUOA = "UOA",
+                                  level = params$level,
+                                  region_STP_name = params$region_STP_name,
+                                  remove_prototypes = T,
+                                  regional_lines = T,
+                                  STP_lines = F,
+                                  cat_lines = F,
+                                  plot_chart = T)
+```
 
 <!-- ## UOA activity data by STP -->
 <!-- ```{r UOA_activity_STP, echo = FALSE, warning = FALSE, message = FALSE, fig.height=4, eval=evaluate_STP} -->
@@ -474,18 +474,18 @@ declared per month across financial years.
 world.
 
 
-<!-- ## 111 dental related call volumes -->
+## 111 dental related call volumes
 
-<!-- ```{r 111_volumes, echo = FALSE, warning = FALSE, message = FALSE, fig.height=4, eval=evaluate_111} -->
-<!-- plot_111_referrals() -->
-<!-- ``` -->
+```{r 111_volumes, echo = FALSE, warning = FALSE, message = FALSE, fig.height=4, eval=evaluate_111}
+plot_111_referrals()
+```
 
 
-<!-- ## 111 dental related call volumes by disposition -->
+## 111 dental related call volumes by disposition
 
-<!-- ```{r 111_volumes_breakdown, echo = FALSE, warning = FALSE, message = FALSE, fig.height=4, eval=evaluate_111} -->
-<!-- plot_breakdown_111_referrals() -->
-<!-- ``` -->
+```{r 111_volumes_breakdown, echo = FALSE, warning = FALSE, message = FALSE, fig.height=4, eval=evaluate_111}
+plot_breakdown_111_referrals()
+```
 
 ## Unique dental patients seen
 
@@ -499,7 +499,7 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
                                      remove_prototypes = TRUE)
 ```
 
-* N.B. this graph is for financial year 2018/2019. When the data is available, this graph will be updated to show rolling 12 month unique patients from 2018 to present month.
+* The number of unique patients seen in the last 12 months is currently around **73%** of pre-pandemic levels.
 
 ## Appendix
 #### MY Category classification breakdown:
