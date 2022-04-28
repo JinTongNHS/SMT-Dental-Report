@@ -1394,9 +1394,10 @@ plot_111_referrals <- function(data = dental_data_111){
               size = 1) +
     scale_x_date(date_breaks = "1 month", 
                  date_labels = "%b-%y") +
-    scale_y_continuous(breaks = seq(47000, 
+    scale_y_continuous(breaks = seq(0, 
                                     max(data$monthly_case_volume, na.rm = T) + 10000,
-                                    10000)) +
+                                    10000),
+                       limits = c(0, max(data$monthly_case_volume))) +
     labs(title = "111 call volume recommended towards dental services", 
          x = "Month",
          y = "Call volume", 
