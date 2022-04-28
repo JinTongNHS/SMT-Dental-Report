@@ -433,7 +433,7 @@ plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
     data <- get_into_slide5_7_format(data, remove_prototypes, UDAorUOA = "UOA")
     title <- "Scheduled monthly percentage of usual annual contracted UOAs \nsubmitted across all contracts* scaled up to 12 months**"
     ylab <- "% of contracted UOAs submitted"
-    lineCol <- "#009E73"
+    lineCol <- "steelblue"
     septemberTarget <- 80
     decemberTarget <- 85
     marchTarget <- 90
@@ -939,6 +939,7 @@ plot_UDA_UOA_delivery_profile <- function(data = UDA_scheduled_data,
       scale_x_datetime(breaks = data$month, 
                        labels = scales::date_format("%b-%y")) +
       geom_vline(xintercept = as.Date("2020-07-01"), colour = "black", size = 5) +
+      scale_y_continuous(limits = c(0, 55)) +
       theme_bw() +
       theme(axis.text.x = element_text(angle = 90))
   }else{
@@ -1993,7 +1994,8 @@ plot_unique_patients_rolling <- function(data = unique_patients_rolling,
                                      level = "National",
                                      region_STP_name = NULL,
                                      plotChart = TRUE,
-                                     remove_prototypes = TRUE){
+                                     remove_prototypes = TRUE,
+                                     get_perc = FALSE){
   
   #avoid standard form notation
   options(scipen = 5)
@@ -2067,7 +2069,7 @@ plot_unique_patients_rolling <- function(data = unique_patients_rolling,
                       ))
 
 
-  if(plotChart == TRUE){
+  if(plotChart == TRUE & get_perc == FALSE){
     #plot code
     ggplot(data) +
       theme_bw() +
@@ -2093,8 +2095,15 @@ plot_unique_patients_rolling <- function(data = unique_patients_rolling,
                    date_labels = "%b-%y") +
     theme(axis.text.x = element_text(angle = 90))
     #theme(legend.position = "bottom")
-  }else{
+  }else if(plotChart == FALSE & get_perc == FALSE){
     data
+  }else{
+    #percentage of pre-covid levels
+    data <- data %>%
+      filter(band == "Any band") %>%
+      arrange(month)
+    
+    round(data$total_unique_patients[nrow(data)] * 100 / data$total_unique_patients[1])
   }
 
 }
