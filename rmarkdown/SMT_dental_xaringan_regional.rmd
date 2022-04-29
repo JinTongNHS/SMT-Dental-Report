@@ -22,8 +22,8 @@ params:
 
 library(tidyverse)
 library(readxl)
-source("../R/SMT_functions.R")
-source("../R/format_SMT_data.R")
+source("../R/03 SMT_plot_functions.R")
+source("../R/02 format_SMT_data.R")
 #load in raw data
 UDA_calendar_data <- read_excel("../data/cleaned_data_up_to_march/UDA_calendar_data.xlsx")
 UOA_calendar_data <- read_excel("../data/cleaned_data_up_to_march/UOA_calendar_data.xlsx")
@@ -95,7 +95,7 @@ options(scipen=999)
 * Contract size vs delivery scatter plot [10]
 * UDA delivery profile across months [11]
 * Banded courses of treatment time series [18]
-* Urgent treatment form submissions [19]
+* Urgent treatment form submissions [19]☻
 * 111 call volumes [20]
 * 111 call volumes by disposition [21]
 * Unique patients seen rolling 12 months [22]

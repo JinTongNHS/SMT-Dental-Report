@@ -3,10 +3,10 @@ title: "Dental Data Pack"
 subtitle: "`r params$region_STP_name`"
 author: "`r paste(format(Sys.time(), '%B, %Y'), ' - Reporting up to end of', format(Sys.Date() - lubridate::weeks(4), '%B, %Y'))`" 
 output:
-  slidy_presentation: default
   beamer_presentation:
     includes:
       in_header: slide_format2.tex
+  slidy_presentation: default
 sansfont: Calibri Light
 fontsize: 8pt
 classoption: aspectratio = 169
@@ -18,8 +18,8 @@ params:
 ```{r include = FALSE}
 library(tidyverse)
 library(readxl)
-source("../R/SMT_functions.R")
-source("../R/format_SMT_data.R")
+source("../R/03 SMT_plot_functions.R")
+source("../R/02 format_SMT_data.R")
 
 #load in raw data
 UDA_calendar_data <- read_excel("../data/cleaned_data_up_to_march/UDA_calendar_data.xlsx")
@@ -49,8 +49,8 @@ dental_data_111 <- read_excel("../data/cleaned_data_up_to_march/dental_data_111_
 prototype_contracts <- read_excel("../data/prototype_contracts.xlsx")
 contractor_categories <- readRDS("../data/cleaned_data_up_to_october/contractor_categories.RDS")
 
-UDA_delivery_calendar <- get_into_slide5_7_format_calendar(STP_lines = T, renameColumns = T)
-UDA_delivery_scheduled <- get_into_slide5_7_format(STP_lines = T, renameColumns = T)
+UDA_delivery_calendar <- get_delivery_data_calendar(STP_lines = T, renameColumns = T)
+UDA_delivery_scheduled <- get_delivery_data(STP_lines = T, renameColumns = T)
 
 #prototype_delivery <- readRDS("~/R-Projects/SMT-Dental-Report/data/prototype_delivery.RDS")
 contract_demographics <- readRDS("../data/contract_demographics.rds")
