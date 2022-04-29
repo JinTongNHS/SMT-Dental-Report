@@ -3,7 +3,7 @@ library(tidyverse)
 
 
 ################################################################################
-plot_Q3_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data, 
+plot_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data, 
                                               UDAorUOA = "UDA", 
                                               level = "National",
                                               region_STP_name = NULL){
@@ -26,7 +26,8 @@ plot_Q3_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data,
     septemberTarget <- 60 
     decemberTarget <- 65
     marchTarget <- 85
-    title <- "Cumulative monthly % of Q1, Q2 and Q3 contracted UDAs delivered"
+    juneTarget <- 95
+    title <- "Cumulative monthly % of quarterly contracted UDAs delivered"
     ylab <- "Cumulative % of quarterly \ncontracted UDAs delivered"
     barCol <- "coral"
     
@@ -37,7 +38,8 @@ plot_Q3_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data,
     septemberTarget <- 80
     decemberTarget <- 85
     marchTarget <- 90
-    title <- "Cumulative monthly % of Q1, Q2 and Q3 contracted UOAs delivered"
+    juneTarget <- 100
+    title <- "Cumulative monthly % of quarterly contracted UOAs delivered"
     ylab <- "Cumulative % of quarterly \ncontracted UOAs delivered"
     barCol <- "seagreen3"
     
@@ -47,10 +49,18 @@ plot_Q3_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data,
   }
   
   #add blanks for future dates
-  if(nrow(data) < 12){
+  if(nrow(data) < 16){
 
-    if(!(as.Date("2022-03-01") %in% data$month)){
-      data <- data %>% add_row(month = as.Date("2022-03-01"))
+    if(!(as.Date("2022-04-01") %in% data$month)){
+      data <- data %>% add_row(month = as.Date("2022-04-01"))
+    }
+    
+    if(!(as.Date("2022-05-01") %in% data$month)){
+      data <- data %>% add_row(month = as.Date("2022-05-01"))
+    }
+    
+    if(!(as.Date("2022-06-01") %in% data$month)){
+      data <- data %>% add_row(month = as.Date("2022-06-01"))
     }
   }
 
@@ -62,13 +72,15 @@ plot_Q3_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data,
     mutate(financial_quarter = case_when(month < as.Date("2021-07-01") ~ "Apr-Jun (Q1)",
                                          month < as.Date("2021-10-01") ~ "Jul-Sep (Q2)",
                                          month < as.Date("2022-01-01") ~ "Oct-Dec (Q3)",
-                                         month < as.Date("2022-04-01") ~ "Jan-Mar (Q4)"))
+                                         month < as.Date("2022-04-01") ~ "Jan-Mar (Q4)",
+                                         month < as.Date("2022-07-01") ~ "Apr-Jun (Q1 22/23)"))
 
   data$financial_quarter <- factor(data$financial_quarter,
                                    levels = c("Apr-Jun (Q1)",
                                               "Jul-Sep (Q2)",
                                               "Oct-Dec (Q3)",
-                                              "Jan-Mar (Q4)"))
+                                              "Jan-Mar (Q4)",
+                                              "Apr-Jun (Q1 22/23)"))
 
   #cumulative sum column
   data <- data  %>%
@@ -85,7 +97,8 @@ plot_Q3_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data,
     mutate(target = c(
       rep(seq(from = septemberTarget/3, to = septemberTarget, length.out = 3),2),
       seq(from = decemberTarget/3, to = decemberTarget, length.out = 3),
-      seq(from = marchTarget/3, to = marchTarget, length.out = 3)))
+      seq(from = marchTarget/3, to = marchTarget, length.out = 3),
+      seq(from = juneTarget/3, to = juneTarget, length.out = 3)))
 
   #plot code
   ggplot(data_to_plot) +
@@ -110,28 +123,32 @@ plot_Q3_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data,
                linetype = "dotted") +
     geom_vline(xintercept = as.Date("2021-12-01") + lubridate::days(15),
                linetype = "dotted") +
+    geom_vline(xintercept = as.Date("2022-03-01") + lubridate::days(15),
+               linetype = "dotted") +
     annotate(geom = "text",
              x = data_to_plot$month,
              y = data_to_plot$cumulative_perc_of_contracted_UDA_UOAs_delivered + 4,
              label = ifelse(data_to_plot$cumulative_perc_of_contracted_UDA_UOAs_delivered != 0,
                             format(round(data_to_plot$cumulative_perc_of_contracted_UDA_UOAs_delivered, 1), nsmall = 1),
                             ""),
-             size = 3,
-             label.size = 0) +
+             size = 3) +
     scale_x_date(date_breaks = "1 month",
                  date_labels = "%b-%y") +
+    scale_y_continuous(breaks = seq(0, 120, 10)) +
     scale_colour_manual(labels = c(paste0("Expected cumulative delivery to reach \nQ1 threshold of ",septemberTarget,"% by end of Jun-21"),
                                    paste0("Expected cumulative delivery to reach \nQ2 threshold of ",septemberTarget,"% by end of Sep-21"),
                                    paste0("Expected cumulative delivery to reach \nQ3 threshold of ",decemberTarget,"% by end of Dec-21"),
-                                   paste0("Expected cumulative delivery to reach \nQ4 threshold of ",marchTarget,"% by end of Mar-22")),
-                        values = c("darkred", "blue", "darkgreen", "magenta4")) +
+                                   paste0("Expected cumulative delivery to reach \nQ4 threshold of ",marchTarget,"% by end of Mar-22"),
+                                   paste0("Expected cumulative delivery to reach \nQ1 threshold of ",juneTarget,"% by end of Jun-22")),
+                        values = c("darkred", "blue", "darkgreen", "darkgoldenrod3", "darkorange3")) +
     labs(title = title,
          x = "Month",
          y = ylab,
          subtitle = subtitle,
          colour = "") +
-    theme(legend.position = "bottom")
-
+    theme(legend.position = "bottom"#, legend.box="vertical", legend.margin=margin()
+          ) +
+    guides(colour=guide_legend(nrow=2,byrow=TRUE))
 
 }
 
@@ -275,6 +292,7 @@ plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
     septemberTarget <- 60
     decemberTarget <- 65
     marchTarget <- 85
+    juneTarget <- 95
   }else{
     #get data into the right format
     data <- get_delivery_data(data, remove_prototypes, UDAorUOA = "UOA")
@@ -284,6 +302,7 @@ plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
     septemberTarget <- 80
     decemberTarget <- 85
     marchTarget <- 90
+    juneTarget <- 100
   }
 
   #plot code
@@ -307,6 +326,9 @@ plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
     geom_segment(aes(x = as.Date("2022-01-01"), y = marchTarget, xend = as.Date("2022-03-01"), yend = marchTarget),
                  colour = "#0072B2",
                  linetype = "dashed") +
+    geom_segment(aes(x = as.Date("2022-04-01"), y = juneTarget, xend = as.Date("2022-06-01"), yend = juneTarget),
+                 colour = "#0072B2",
+                 linetype = "dashed") +
     
     annotate(geom = "text", 
              x = as.Date("2021-04-01") + lubridate::weeks(2), 
@@ -324,6 +346,12 @@ plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
              x = as.Date("2022-01-01") + lubridate::weeks(2), 
              y = marchTarget - 5, 
              label = "Q4 threshold", 
+             size = 3,
+             colour = "#0072B2") +
+    annotate(geom = "text", 
+             x = as.Date("2022-04-01") + lubridate::weeks(2), 
+             y = juneTarget - 5, 
+             label = "Q1 threshold", 
              size = 3,
              colour = "#0072B2") +
     
@@ -348,9 +376,6 @@ plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
 
 
 ################################################################################
-#function to create graph on slide 5
-#current data source: Dental activity annual running total.xlsx sent by email by Caroline
-#current data is in teams folder "Monthly performance data\April 21 to September 21 data\Scheduled data\April to Sept UDA 2020-2021 (May).xlsx"
 plot_UDA_UOA_delivery_calendar <- function(data = UDA_calendar_data, 
                                   scheduled_data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
@@ -397,6 +422,7 @@ plot_UDA_UOA_delivery_calendar <- function(data = UDA_calendar_data,
     septemberTarget <- 60
     decemberTarget <- 65
     marchTarget <- 85
+    juneTarget <- 95
   }else{
     
     #get data into the right format
@@ -407,6 +433,7 @@ plot_UDA_UOA_delivery_calendar <- function(data = UDA_calendar_data,
     septemberTarget <- 80
     decemberTarget <- 85
     marchTarget <- 90
+    juneTarget <- 100
   }
   
   captionTitle <- "*Excluding prototype contracts and those with annual contracted UDA < 100
@@ -507,6 +534,13 @@ plot_UDA_UOA_delivery_calendar <- function(data = UDA_calendar_data,
                   colour = "#0072B2",
                   linetype = "dashed") +
      
+     geom_segment(aes(x = as.Date("2022-04-01"), 
+                      y = juneTarget, 
+                      xend = as.Date("2022-06-01"), 
+                      yend = juneTarget),
+                  colour = "#0072B2",
+                  linetype = "dashed") +
+     
     
      annotate(geom = "text", 
               x = as.Date("2021-04-01") + lubridate::weeks(2), 
@@ -529,6 +563,13 @@ plot_UDA_UOA_delivery_calendar <- function(data = UDA_calendar_data,
               size = 3,
               colour = "#0072B2") +
      
+     annotate(geom = "text", 
+              x = as.Date("2022-04-01") + lubridate::weeks(2), 
+              y = juneTarget - 3, 
+              label = "Q1 threshold", 
+              size = 3,
+              colour = "#0072B2") +
+     
      scale_x_date(date_breaks = "1 month", 
                   date_labels = "%b-%y") +
      scale_y_continuous(limits = c(0, max(c(data$scaled_perc_UDA_UOA_delivered, 90), na.rm = T) + 10),
@@ -537,18 +578,6 @@ plot_UDA_UOA_delivery_calendar <- function(data = UDA_calendar_data,
    
    if(regional_lines == F & cat_lines == F){
      g <- g +
-       # annotate(geom = "text", 
-       #          x = as.Date("2021-04-01") + lubridate::weeks(2), 
-       #          y = septemberTarget - 3, 
-       #          label = "H1 threshold", 
-       #          size = 3,
-       #          colour = "#0072B2") + 
-       # annotate(geom = "text", 
-       #          x = as.Date("2021-10-01") + lubridate::weeks(2), 
-       #          y = decemberTarget - 3, 
-       #          label = "Q3 threshold", 
-       #          size = 3,
-       #         colour = "#0072B2") +
        labs(title = title, 
             x = "Month",
             y = ylab, 
@@ -1115,7 +1144,6 @@ plot_breakdown_111_referrals <- function(data = dental_data_111){
 
 
 ################################################################################
-#hand back scatter
 plot_delivery_vs_contract_size_scatter_corporate <- function(data = UDA_scheduled_data,
                                                              calendar_data = UDA_calendar_data,
                                                              demographics_data = contract_demographics,
@@ -1189,25 +1217,23 @@ plot_delivery_vs_contract_size_scatter_corporate <- function(data = UDA_schedule
     p <- ggplot(data_to_plot, aes(x = annual_contracted_UDA, y = UDA_delivery)) +
       geom_point(aes(colour = Corporate.Status)) +
       theme_bw() +
-      geom_hline(yintercept = 0.85,
+      geom_hline(yintercept = 0.95,
                  colour = "orangered4",
                  linetype = "dashed") +
       annotate(geom = "text",
                x = max(data_to_plot$annual_contracted_UDA) - 8000,
-               y = 0.79,
-               label = "85% Q4 threshold",
+               y = 0.87,
+               label = "95% Q1 threshold",
                size = 3,
-               #label.size = 0,
                colour = "orangered4") +
       geom_hline(yintercept = 1,
                  colour = "grey40",
                  linetype = "dashed") +
       annotate(geom = "text",
                x = max(data_to_plot$annual_contracted_UDA),
-               y = 0.94,
+               y = 1.08,
                label = "100%",
                size = 3,
-               #label.size = 0,
                colour = "grey40") +
       scale_colour_manual(values = c("steelblue", "coral"), labels = c("non-corporate", "corporate")) +
       scale_x_continuous(breaks = seq(0, 175000, 20000),

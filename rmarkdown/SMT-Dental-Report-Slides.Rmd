@@ -259,7 +259,7 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
 ## UDA cumulative activity data
 
 ```{r UDA_cumulative_activity, echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
-plot_Q3_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
+plot_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
                                   UDAorUOA = "UDA",
                                   level = params$level,
                                   region_STP_name = params$region_STP_name)
@@ -407,7 +407,7 @@ plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
 ## UOA cumulative activity data
 
 ```{r UOA_cumulative_delivery, echo = FALSE, warning = FALSE, message = FALSE, fig.height=4}
-plot_Q3_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
+plot_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
                                   UDAorUOA = "UOA",
                                   level = params$level,
                                   region_STP_name = params$region_STP_name)
