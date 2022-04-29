@@ -182,7 +182,7 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
                                   regional_lines = F, 
                                   STP_lines = F,
                                   cat_lines = F,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
 * This graph shows the average monthly performance of the **`r get_num_contracts(level = params$level, region_STP_name = params$region_STP_name)`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (60% for Apr-Sep 21, 65% for Oct-Dec, 85% for Jan-Mar and 95% for Apr-Jun 22).
@@ -202,7 +202,7 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
                                   regional_lines = T,
                                   STP_lines = F,
                                   cat_lines = F,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
 
@@ -218,7 +218,7 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
 <!--                                   regional_lines = F, -->
 <!--                                   STP_lines = T, -->
 <!--                                   cat_lines = F, -->
-<!--                                   plot_chart = T) -->
+<!--                                   plotChart = T) -->
 <!-- ``` -->
 
 
@@ -235,7 +235,7 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
                                   regional_lines = F,
                                   STP_lines = F,
                                   cat_lines = T,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
 ##
@@ -251,7 +251,7 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
                                   regional_lines = F,
                                   STP_lines = F,
                                   cat_lines = T,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
 
@@ -332,7 +332,7 @@ plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
                                   regional_lines = F, 
                                   STP_lines = F,
                                   cat_lines = F,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
 * This graph shows the average monthly performance of the
@@ -354,7 +354,7 @@ plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
                                   regional_lines = T,
                                   STP_lines = F,
                                   cat_lines = F,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
 <!-- ## UOA activity data by STP -->
@@ -369,7 +369,7 @@ plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
 <!--                                   regional_lines = F, -->
 <!--                                   STP_lines = T, -->
 <!--                                   cat_lines = F, -->
-<!--                                   plot_chart = T) -->
+<!--                                   plotChart = T) -->
 <!-- ``` -->
 
 ## UOA activity data by MY Category
@@ -385,7 +385,7 @@ plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
                                   regional_lines = F,
                                   STP_lines = F,
                                   cat_lines = T,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
 ##
@@ -401,7 +401,7 @@ plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
                                   regional_lines = F,
                                   STP_lines = F,
                                   cat_lines = T,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
 

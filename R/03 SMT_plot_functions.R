@@ -6,7 +6,8 @@ library(tidyverse)
 plot_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data, 
                                               UDAorUOA = "UDA", 
                                               level = "National",
-                                              region_STP_name = NULL){
+                                              region_STP_name = NULL,
+                                              plotChart = TRUE){
   
   #filter for region or STP
   if(level == "Regional"){
@@ -101,7 +102,7 @@ plot_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data,
       seq(from = juneTarget/3, to = juneTarget, length.out = 3)))
 
   #plot code
-  ggplot(data_to_plot) +
+  p <- ggplot(data_to_plot) +
     theme_bw() +
     geom_bar(aes(x = month,
                  y = cumulative_perc_of_contracted_UDA_UOAs_delivered),
@@ -149,6 +150,13 @@ plot_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data,
     theme(legend.position = "bottom"#, legend.box="vertical", legend.margin=margin()
           ) +
     guides(colour=guide_legend(nrow=2,byrow=TRUE))
+  
+  if(plotChart == TRUE){
+    p
+  }else{
+    data %>%
+      select(-target_period)
+  }
 
 }
 
@@ -156,14 +164,12 @@ plot_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data,
 
 
 ################################################################################
-#function to create graph on slide 8
-#current data source: Dental activity annual running total.xlsx sent by email by Caroline
 plot_banded_CoT <- function(data = UDA_scheduled_data, 
                             calendar_data = UDA_calendar_data,
                             historic_data = historical_UDA_scheduled_data, 
                             level = "National",
                             region_STP_name = NULL,
-                            plot_chart = TRUE){
+                            plotChart = TRUE){
   
   #avoid standard form on axes
   options(scipen = 100)
@@ -204,7 +210,7 @@ plot_banded_CoT <- function(data = UDA_scheduled_data,
     mutate(month = as.Date(month)) %>%
     rename(band = variable, CoTs = value)
   
-  if(plot_chart == TRUE){
+  if(plotChart == TRUE){
     
     #plot code
     ggplot(data) +    
@@ -245,15 +251,13 @@ plot_banded_CoT <- function(data = UDA_scheduled_data,
 
 
 ################################################################################
-#function to create graph on slide 5
-#current data source: Dental activity annual running total.xlsx sent by email by Caroline
-#current data is in teams folder "Monthly performance data\April 21 to September 21 data\Scheduled data\April to Sept UDA 2020-2021 (May).xlsx"
 plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data, 
                                   calendar_data = UDA_calendar_data,
                                   UDAorUOA = "UDA",
                                   level = "National",
                                   region_STP_name = NULL,
-                                  remove_prototypes = T){
+                                  remove_prototypes = T, 
+                                  plotChart = TRUE){
   
   data <- data %>%
     mutate(month = as.Date(month))
@@ -306,7 +310,7 @@ plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
   }
 
   #plot code
-  ggplot(data) +
+  p <- ggplot(data) +
     theme_bw() +
     #theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
     geom_line(aes(x = month, 
@@ -371,6 +375,12 @@ plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
              label = paste0(data$perc_UDA_UOA_delivered, "%"), 
              size = 3) +
     theme(axis.text.x = element_text(angle = 90))
+  
+  if(plotChart == TRUE){
+    p
+  }else{
+    data
+  }
 }
 
 
@@ -386,7 +396,7 @@ plot_UDA_UOA_delivery_calendar <- function(data = UDA_calendar_data,
                                   regional_lines = F, 
                                   STP_lines = F,
                                   cat_lines = F,
-                                  plot_chart = T){
+                                  plotChart = T){
   
   data <- data %>%
     mutate(month = as.Date(month))
@@ -597,7 +607,7 @@ plot_UDA_UOA_delivery_calendar <- function(data = UDA_calendar_data,
    }
     
    
-   if(plot_chart){
+   if(plotChart){
      g
    }else{
      data
@@ -677,7 +687,8 @@ plot_urgent_form_submissions <- function(data = UDA_scheduled_data,
                                          calendar_data = UDA_calendar_data,
                                          historic_data = historical_UDA_scheduled_data, 
                                          level = "National",
-                                         region_STP_name = "Cheshire and Merseyside STP"){
+                                         region_STP_name = "Cheshire and Merseyside STP",
+                                         plotChart = TRUE){
   
   #avoid standard form on axes
   options(scipen = 100)
@@ -723,7 +734,7 @@ plot_urgent_form_submissions <- function(data = UDA_scheduled_data,
 
 
   #plot code
-  ggplot(data) +
+  p <- ggplot(data) +
     theme_bw() +
     theme(legend.title = element_blank()) +
     geom_line(aes(x = factor(lubridate::month(date, label=TRUE, abbr=TRUE),
@@ -743,6 +754,13 @@ plot_urgent_form_submissions <- function(data = UDA_scheduled_data,
          is equivalent to 1 UDA, a band 2 FP17 = 3 UDAs, 
          a band 3 FP17 = 12 UDAs, an urgent FP17 = 1.2 
          UDAs and an 'other' FP17 = 0.6 UDAs. Scheduled data used.")
+  
+  if(plotChart == TRUE){
+    p
+  }else{
+    data %>% 
+      select(month, urgent, financial_year)
+  }
     
     
 }
@@ -1148,7 +1166,8 @@ get_num_urgent_forms_2019 <- function(data = UDA_scheduled_data,
   
 
 ################################################################################
-plot_111_referrals <- function(data = dental_data_111){
+plot_111_referrals <- function(data = dental_data_111,
+                               plotChart = TRUE){
   
   data <- data %>% 
     mutate(month = as.Date(month)) %>%
@@ -1156,7 +1175,7 @@ plot_111_referrals <- function(data = dental_data_111){
     summarise(monthly_case_volume = sum(monthly_case_volume))
   
   #plot code
-  ggplot(data) +
+  p <- ggplot(data) +
     theme_bw() +
     theme(axis.text.x = element_text(angle = 90)) +
     geom_line(aes(x = month, 
@@ -1181,12 +1200,18 @@ plot_111_referrals <- function(data = dental_data_111){
   #          label = data$monthly_case_volume, 
   #          size = 3) 
   
+  if(plotChart == TRUE){
+    p
+  }else{
+    data
+  }
   
 }
 
 
 ################################################################################  
-plot_breakdown_111_referrals <- function(data = dental_data_111){
+plot_breakdown_111_referrals <- function(data = dental_data_111,
+                                         plotChart = TRUE){
   
   data <- data %>% 
     mutate(disposition_text = if_else(disposition_text == "Attend Emergency Dental Treatment Centre within 4",
@@ -1208,7 +1233,7 @@ plot_breakdown_111_referrals <- function(data = dental_data_111){
                                              ))
   
   #plot code
-  ggplot(data) +
+  p <- ggplot(data) +
     theme_bw() +
     theme(axis.text.x = element_text(angle = 90)) +
     geom_line(aes(x = month, 
@@ -1233,6 +1258,11 @@ plot_breakdown_111_referrals <- function(data = dental_data_111){
   #          label = data$monthly_case_volume, 
   #          size = 3) 
   
+  if(plotChart == TRUE){
+    p
+  }else{
+    data
+  }
   
 }
 

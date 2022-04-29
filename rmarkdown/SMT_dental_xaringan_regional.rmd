@@ -324,7 +324,7 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
                                   regional_lines = F, 
                                   STP_lines = F,
                                   cat_lines = F,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
 * This graph shows the average monthly performance of the **`r get_num_contracts(level = "National", region_STP_name = NULL)`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (60% for Apr-Sep 21, 65% for Oct-Dec, 85% for Jan-Mar and 95% for Apr-Jun 22).
@@ -344,7 +344,7 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
                                   regional_lines = F, 
                                   STP_lines = F,
                                   cat_lines = F,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
 * This graph shows the average monthly performance of the **`r get_num_contracts(level = "Regional", region_STP_name = "South East")`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (60% for Apr-Sep 21, 65% for Oct-Dec, 85% for Jan-Mar and 95% for Apr-Jun 22).
@@ -364,7 +364,7 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
                                   regional_lines = F, 
                                   STP_lines = F,
                                   cat_lines = F,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
 * This graph shows the average monthly performance of the **`r get_num_contracts(level = "Regional", region_STP_name = "South West")`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (60% for Apr-Sep 21, 65% for Oct-Dec, 85% for Jan-Mar and 95% for Apr-Jun 22).
@@ -384,7 +384,7 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
                                   regional_lines = F, 
                                   STP_lines = F,
                                   cat_lines = F,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
 * This graph shows the average monthly performance of the **`r get_num_contracts(level = "Regional", region_STP_name = "North West")`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (60% for Apr-Sep 21, 65% for Oct-Dec, 85% for Jan-Mar and 95% for Apr-Jun 22).
@@ -404,7 +404,7 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
                                   regional_lines = F, 
                                   STP_lines = F,
                                   cat_lines = F,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
 * This graph shows the average monthly performance of the **`r get_num_contracts(level = "Regional", region_STP_name = "North East and Yorkshire")`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (60% for Apr-Sep 21, 65% for Oct-Dec, 85% for Jan-Mar and 95% for Apr-Jun 22).
@@ -424,7 +424,7 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
                                   regional_lines = F, 
                                   STP_lines = F,
                                   cat_lines = F,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
 * This graph shows the average monthly performance of the **`r get_num_contracts(level = "Regional", region_STP_name = "London")`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (60% for Apr-Sep 21, 65% for Oct-Dec, 85% for Jan-Mar and 95% for Apr-Jun 22).
@@ -444,7 +444,7 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
                                   regional_lines = F, 
                                   STP_lines = F,
                                   cat_lines = F,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
 * This graph shows the average monthly performance of the **`r get_num_contracts(level = "Regional", region_STP_name = "Midlands")`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (60% for Apr-Sep 21, 65% for Oct-Dec, 85% for Jan-Mar and 95% for Apr-Jun 22).
@@ -464,7 +464,7 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
                                   regional_lines = F, 
                                   STP_lines = F,
                                   cat_lines = F,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
 * This graph shows the average monthly performance of the **`r get_num_contracts(level = "Regional", region_STP_name = "East of England")`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (60% for Apr-Sep 21, 65% for Oct-Dec, 85% for Jan-Mar and 95% for Apr-Jun 22).
@@ -484,9 +484,28 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
                                   regional_lines = T,
                                   STP_lines = F,
                                   cat_lines = F,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
+]
+.panel[.panel-name[National level data]
+```{r echo=FALSE, results='asis',warning=FALSE, fig.width=3, fig.height=3}
+
+DT::datatable(plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data, 
+                                  scheduled_data = UDA_scheduled_data,
+                                  contractor_cats = contractor_categories,
+                                  UDAorUOA = "UDA",
+                                  level = "National",
+                                  region_STP_name = NULL,
+                                  remove_prototypes = T,
+                                  regional_lines = F, 
+                                  STP_lines = F,
+                                  cat_lines = F,
+                                  plotChart = F),
+              rownames=FALSE,  extensions = 'Buttons', options = list(dom='Bt', buttons = c('excel'),
+  bPaginate = FALSE, pageLength=35, columnDefs = list(list(className = 'dt-left', targets = 0:4)),searching=FALSE,scrollY ='350px', scrollX ='500px'))%>%
+  DT::formatStyle(columns = 1:5, fontSize = '90%')
+```
 ]
 ]
 
@@ -513,7 +532,7 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
                                   regional_lines = F,
                                   STP_lines = F,
                                   cat_lines = T,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
 ]
@@ -529,7 +548,7 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
                                   regional_lines = F,
                                   STP_lines = F,
                                   cat_lines = T,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
 
@@ -546,7 +565,7 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
                                   regional_lines = F,
                                   STP_lines = F,
                                   cat_lines = T,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
 
@@ -563,7 +582,7 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
                                   regional_lines = F,
                                   STP_lines = F,
                                   cat_lines = T,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
 
@@ -580,7 +599,7 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
                                   regional_lines = F,
                                   STP_lines = F,
                                   cat_lines = T,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
 
@@ -597,7 +616,7 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
                                   regional_lines = F,
                                   STP_lines = F,
                                   cat_lines = T,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
 
@@ -614,7 +633,7 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
                                   regional_lines = F,
                                   STP_lines = F,
                                   cat_lines = T,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
 
@@ -631,10 +650,29 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
                                   regional_lines = F,
                                   STP_lines = F,
                                   cat_lines = T,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
 
+]
+.panel[.panel-name[National level data]
+```{r echo=FALSE, results='asis',warning=FALSE, fig.width=3, fig.height=3}
+
+DT::datatable(plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
+                                  scheduled_data = UDA_scheduled_data,
+                                  contractor_cats = contractor_categories,
+                                  UDAorUOA = "UDA",
+                                  level = "National",
+                                  region_STP_name = NULL,
+                                  remove_prototypes = F,
+                                  regional_lines = F,
+                                  STP_lines = F,
+                                  cat_lines = T,
+                                  plotChart = F),
+              rownames=FALSE,  extensions = 'Buttons', options = list(dom='Bt', buttons = c('excel'),
+  bPaginate = FALSE, pageLength=35, columnDefs = list(list(className = 'dt-left', targets = 0:4)),searching=FALSE,scrollY ='350px', scrollX ='500px'))%>%
+  DT::formatStyle(columns = c(1, 2, 3, 4, 5), fontSize = '90%')
+```
 ]
 ]
 
@@ -662,7 +700,7 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
                                   regional_lines = F,
                                   STP_lines = F,
                                   cat_lines = T,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
 ]
@@ -678,7 +716,7 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
                                   regional_lines = F,
                                   STP_lines = F,
                                   cat_lines = T,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
 ]
@@ -694,7 +732,7 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
                                   regional_lines = F,
                                   STP_lines = F,
                                   cat_lines = T,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
 
@@ -711,7 +749,7 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
                                   regional_lines = F,
                                   STP_lines = F,
                                   cat_lines = T,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
 
@@ -728,7 +766,7 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
                                   regional_lines = F,
                                   STP_lines = F,
                                   cat_lines = T,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
 ]
@@ -744,7 +782,7 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
                                   regional_lines = F,
                                   STP_lines = F,
                                   cat_lines = T,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
 ]
@@ -760,7 +798,7 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
                                   regional_lines = F,
                                   STP_lines = F,
                                   cat_lines = T,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
 ]
@@ -776,9 +814,28 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
                                   regional_lines = F,
                                   STP_lines = F,
                                   cat_lines = T,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
+]
+.panel[.panel-name[National level data]
+```{r echo=FALSE, results='asis',warning=FALSE, fig.width=3, fig.height=3}
+
+DT::datatable(plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
+                                  scheduled_data = UDA_scheduled_data,
+                                  contractor_cats = contractor_categories,
+                                  UDAorUOA = "UDA",
+                                  level = "National",
+                                  region_STP_name = NULL,
+                                  remove_prototypes = T,
+                                  regional_lines = F,
+                                  STP_lines = F,
+                                  cat_lines = T,
+                                  plotChart = F),
+              rownames=FALSE,  extensions = 'Buttons', options = list(dom='Bt', buttons = c('excel'),
+  bPaginate = FALSE, pageLength=35, columnDefs = list(list(className = 'dt-left', targets = 0:4)),searching=FALSE,scrollY ='350px', scrollX ='500px'))%>%
+  DT::formatStyle(columns = c(1, 2, 3, 4, 5), fontSize = '90%')
+```
 ]
 ]
 
@@ -950,6 +1007,19 @@ contracts (
 
 
 ]
+.panel[.panel-name[National level data]
+```{r echo=FALSE, results='asis',warning=FALSE, fig.width=3, fig.height=3}
+
+DT::datatable(plot_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
+                                  UDAorUOA = "UDA",
+                                  level = "National",
+                                  region_STP_name = NULL,
+                                  plotChart = F),
+              rownames=FALSE,  extensions = 'Buttons', options = list(dom='Bt', buttons = c('excel'),
+  bPaginate = FALSE, pageLength=35, columnDefs = list(list(className = 'dt-left', targets = 0:4)),searching=FALSE,scrollY ='350px', scrollX ='500px'))%>%
+  DT::formatStyle(columns = c(1, 2, 3, 4, 5), fontSize = '90%')
+```
+]
 ]
 
 ---
@@ -1055,6 +1125,18 @@ plot_UDA_UOA_delivery(data = UDA_scheduled_data,  UDAorUOA = "UDA",
 activity which is fixed. This may be thought of as "UDAs submitted" in each month rather than delivered.
 
 
+]
+.panel[.panel-name[National level data]
+```{r echo=FALSE, results='asis',warning=FALSE, fig.width=3, fig.height=3}
+
+DT::datatable(plot_UDA_UOA_delivery(data = UDA_scheduled_data,  UDAorUOA = "UDA",
+                                  level = "National",
+                                  region_STP_name = NULL,
+                                  plotChart = F),
+              rownames=FALSE,  extensions = 'Buttons', options = list(dom='Bt', buttons = c('excel'),
+  bPaginate = FALSE, pageLength=35, columnDefs = list(list(className = 'dt-left', targets = 0:4)),searching=FALSE,scrollY ='350px', scrollX ='500px'))%>%
+  DT::formatStyle(columns = c(1, 2, 3, 4, 5), fontSize = '90%')
+```
 ]
 ]
 
@@ -1422,6 +1504,20 @@ month is annualised. This uses scheduled data.
 
 
  ]
+ .panel[.panel-name[National level data]
+```{r echo=FALSE, results='asis',warning=FALSE, fig.width=3, fig.height=3}
+
+DT::datatable(plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
+                          calendar_data = UDA_calendar_data,
+                          UDAorUOA = "UDA",
+                          level = "National",
+                          region_STP_name = NULL,
+                          plotChart = F),
+              rownames=FALSE,  extensions = 'Buttons', options = list(dom='Bt', buttons = c('excel'),
+  bPaginate = FALSE, pageLength=35, columnDefs = list(list(className = 'dt-left', targets = 0:4)),searching=FALSE,scrollY ='350px', scrollX ='500px'))%>%
+  DT::formatStyle(columns = c(1, 2, 3, 4, 5), fontSize = '90%')
+```
+ ]
  ]
 
 ---
@@ -1447,7 +1543,7 @@ plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
                                   regional_lines = F, 
                                   STP_lines = F,
                                   cat_lines = F,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
 * This graph shows the average monthly performance of the
@@ -1469,7 +1565,7 @@ plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
                                   regional_lines = F, 
                                   STP_lines = F,
                                   cat_lines = F,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
 * This graph shows the average monthly performance of the
@@ -1492,7 +1588,7 @@ plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
                                   regional_lines = F, 
                                   STP_lines = F,
                                   cat_lines = F,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
 * This graph shows the average monthly performance of the
@@ -1515,7 +1611,7 @@ plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
                                   regional_lines = F, 
                                   STP_lines = F,
                                   cat_lines = F,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
 * This graph shows the average monthly performance of the
@@ -1538,7 +1634,7 @@ plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
                                   regional_lines = F, 
                                   STP_lines = F,
                                   cat_lines = F,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
 * This graph shows the average monthly performance of the
@@ -1561,7 +1657,7 @@ plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
                                   regional_lines = F, 
                                   STP_lines = F,
                                   cat_lines = F,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
 * This graph shows the average monthly performance of the
@@ -1583,7 +1679,7 @@ plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
                                   regional_lines = F, 
                                   STP_lines = F,
                                   cat_lines = F,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
 * This graph shows the average monthly performance of the
@@ -1606,7 +1702,7 @@ plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
                                   regional_lines = F, 
                                   STP_lines = F,
                                   cat_lines = F,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
 * This graph shows the average monthly performance of the
@@ -1629,11 +1725,30 @@ plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
                                   regional_lines = T,
                                   STP_lines = F,
                                   cat_lines = F,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
 
  ]
+ .panel[.panel-name[National level data]
+```{r echo=FALSE, results='asis',warning=FALSE, fig.width=3, fig.height=3}
+
+DT::datatable(plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data, 
+                                  scheduled_data = UOA_scheduled_data,
+                                  contractor_cats = contractor_categories,
+                                  UDAorUOA = "UOA",
+                                  level = "National",
+                                  region_STP_name = NULL,
+                                  remove_prototypes = T,
+                                  regional_lines = F, 
+                                  STP_lines = F,
+                                  cat_lines = F,
+                                  plotChart = F),
+              rownames=FALSE,  extensions = 'Buttons', options = list(dom='Bt', buttons = c('excel'),
+  bPaginate = FALSE, pageLength=35, columnDefs = list(list(className = 'dt-left', targets = 0:4)),searching=FALSE,scrollY ='350px', scrollX ='500px'))%>%
+  DT::formatStyle(columns = c(1, 2, 3, 4, 5), fontSize = '90%')
+```
+]
  ]
 
 
@@ -1661,7 +1776,7 @@ plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
                                   regional_lines = F,
                                   STP_lines = F,
                                   cat_lines = T,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
 
@@ -1678,7 +1793,7 @@ plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
                                   regional_lines = F,
                                   STP_lines = F,
                                   cat_lines = T,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
 
@@ -1695,7 +1810,7 @@ plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
                                   regional_lines = F,
                                   STP_lines = F,
                                   cat_lines = T,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
 
@@ -1713,7 +1828,7 @@ plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
                                   regional_lines = F,
                                   STP_lines = F,
                                   cat_lines = T,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
 
@@ -1730,7 +1845,7 @@ plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
                                   regional_lines = F,
                                   STP_lines = F,
                                   cat_lines = T,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
 
@@ -1748,7 +1863,7 @@ plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
                                   regional_lines = F,
                                   STP_lines = F,
                                   cat_lines = T,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
 
@@ -1765,7 +1880,7 @@ plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
                                   regional_lines = F,
                                   STP_lines = F,
                                   cat_lines = T,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
 
@@ -1782,10 +1897,29 @@ plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
                                   regional_lines = F,
                                   STP_lines = F,
                                   cat_lines = T,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
  ]
+  .panel[.panel-name[National level data]
+```{r echo=FALSE, results='asis',warning=FALSE, fig.width=3, fig.height=3}
+
+DT::datatable(plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
+                                  scheduled_data = UOA_scheduled_data,
+                                  contractor_cats = contractor_categories,
+                                  UDAorUOA = "UOA",
+                                  level = "National",
+                                  region_STP_name = NULL,
+                                  remove_prototypes = F,
+                                  regional_lines = F,
+                                  STP_lines = F,
+                                  cat_lines = T,
+                                  plotChart = F),
+              rownames=FALSE,  extensions = 'Buttons', options = list(dom='Bt', buttons = c('excel'),
+  bPaginate = FALSE, pageLength=35, columnDefs = list(list(className = 'dt-left', targets = 0:4)),searching=FALSE,scrollY ='350px', scrollX ='500px'))%>%
+  DT::formatStyle(columns = c(1, 2, 3, 4, 5), fontSize = '90%')
+```
+]
  ]
 
 ---
@@ -1811,7 +1945,7 @@ plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
                                   regional_lines = F,
                                   STP_lines = F,
                                   cat_lines = T,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
  ]
@@ -1827,7 +1961,7 @@ plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
                                   regional_lines = F,
                                   STP_lines = F,
                                   cat_lines = T,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
 
@@ -1844,7 +1978,7 @@ plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
                                   regional_lines = F,
                                   STP_lines = F,
                                   cat_lines = T,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
 
@@ -1861,7 +1995,7 @@ plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
                                   regional_lines = F,
                                   STP_lines = F,
                                   cat_lines = T,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
 
@@ -1878,7 +2012,7 @@ plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
                                   regional_lines = F,
                                   STP_lines = F,
                                   cat_lines = T,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
 
@@ -1895,7 +2029,7 @@ plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
                                   regional_lines = F,
                                   STP_lines = F,
                                   cat_lines = T,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
  ]
@@ -1911,7 +2045,7 @@ plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
                                   regional_lines = F,
                                   STP_lines = F,
                                   cat_lines = T,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
  ]
@@ -1927,10 +2061,29 @@ plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
                                   regional_lines = F,
                                   STP_lines = F,
                                   cat_lines = T,
-                                  plot_chart = T)
+                                  plotChart = T)
 ```
 
  ]
+   .panel[.panel-name[National level data]
+```{r echo=FALSE, results='asis',warning=FALSE, fig.width=3, fig.height=3}
+
+DT::datatable(plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
+                                  scheduled_data = UOA_scheduled_data,
+                                  contractor_cats = contractor_categories,
+                                  UDAorUOA = "UOA",
+                                  level = "National",
+                                  region_STP_name = NULL,
+                                  remove_prototypes = T,
+                                  regional_lines = F,
+                                  STP_lines = F,
+                                  cat_lines = T,
+                                  plotChart = F),
+              rownames=FALSE,  extensions = 'Buttons', options = list(dom='Bt', buttons = c('excel'),
+  bPaginate = FALSE, pageLength=35, columnDefs = list(list(className = 'dt-left', targets = 0:4)),searching=FALSE,scrollY ='350px', scrollX ='500px'))%>%
+  DT::formatStyle(columns = c(1, 2, 3, 4, 5), fontSize = '90%')
+```
+]
  ]
  
 ---
@@ -2092,6 +2245,19 @@ contracts (
 
 
  ]
+ .panel[.panel-name[National level data]
+```{r echo=FALSE, results='asis',warning=FALSE, fig.width=3, fig.height=3}
+
+DT::datatable(plot_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
+                                  UDAorUOA = "UOA",
+                                  level = "National",
+                                  region_STP_name = NULL,
+                                  plotChart = F),
+              rownames=FALSE,  extensions = 'Buttons', options = list(dom='Bt', buttons = c('excel'),
+  bPaginate = FALSE, pageLength=35, columnDefs = list(list(className = 'dt-left', targets = 0:4)),searching=FALSE,scrollY ='350px', scrollX ='500px'))%>%
+  DT::formatStyle(columns = c(1, 2, 3, 4, 5), fontSize = '90%')
+```
+ ]
  ]
  
 ---
@@ -2205,6 +2371,19 @@ plot_UDA_UOA_delivery(data = UOA_scheduled_data,
 activity which is fixed. This may be thought of as "UOAs submitted" in each month rather than delivered.
 
 
+ ]
+ .panel[.panel-name[National level data]
+```{r echo=FALSE, results='asis',warning=FALSE, fig.width=3, fig.height=3}
+
+DT::datatable(plot_UDA_UOA_delivery(data = UOA_scheduled_data,
+                      UDAorUOA = "UOA",
+                                  level = "National",
+                                  region_STP_name = NULL,
+                      plotChart = F),
+              rownames=FALSE,  extensions = 'Buttons', options = list(dom='Bt', buttons = c('excel'),
+  bPaginate = FALSE, pageLength=35, columnDefs = list(list(className = 'dt-left', targets = 0:4)),searching=FALSE,scrollY ='350px', scrollX ='500px'))%>%
+  DT::formatStyle(columns = c(1, 2, 3, 4, 5), fontSize = '90%')
+```
  ]
  ]
  
@@ -2343,6 +2522,20 @@ This uses scheduled data.
 
 
  ]
+ .panel[.panel-name[National level data]
+```{r echo=FALSE, results='asis',warning=FALSE, fig.width=3, fig.height=3}
+
+DT::datatable(plot_UDA_UOA_delivery_profile(data = UOA_scheduled_data,
+                          calendar_data = UOA_calendar_data,
+                          UDAorUOA = "UOA",
+                          level = "National",
+                          region_STP_name = NULL,
+                          plotChart = F),
+              rownames=FALSE,  extensions = 'Buttons', options = list(dom='Bt', buttons = c('excel'),
+  bPaginate = FALSE, pageLength=35, columnDefs = list(list(className = 'dt-left', targets = 0:4)),searching=FALSE,scrollY ='350px', scrollX ='500px'))%>%
+  DT::formatStyle(columns = c(1, 2, 3, 4, 5), fontSize = '90%')
+```
+]
  ]
  
 
@@ -2438,6 +2631,20 @@ plot_banded_CoT(data = UDA_scheduled_data,
 ```
 
  ]
+  .panel[.panel-name[National level data]
+```{r echo=FALSE, results='asis',warning=FALSE, fig.width=3, fig.height=3}
+
+DT::datatable(plot_banded_CoT(data = UDA_scheduled_data,
+                calendar_data = UDA_calendar_data,
+                historic_data = historical_UDA_scheduled_data,
+                level = "National",
+                region_STP_name = NULL,
+                plotChart = F),
+              rownames=FALSE,  extensions = 'Buttons', options = list(dom='Bt', buttons = c('excel'),
+  bPaginate = FALSE, pageLength=35, columnDefs = list(list(className = 'dt-left', targets = 0:4)),searching=FALSE,scrollY ='350px', scrollX ='500px'))%>%
+  DT::formatStyle(columns = c(1, 2, 3), fontSize = '90%')
+```
+]
  ]
  
 ---
@@ -2646,6 +2853,20 @@ this number was
 change from the pre-COVID world.
 
  ]
+   .panel[.panel-name[National level data]
+```{r echo=FALSE, results='asis',warning=FALSE, fig.width=3, fig.height=3}
+
+DT::datatable(plot_urgent_form_submissions(data = UDA_scheduled_data,
+                calendar_data = UDA_calendar_data,
+                historic_data = historical_UDA_scheduled_data,
+                level = "National",
+                region_STP_name = NULL,
+                plotChart = F),
+              rownames=FALSE,  extensions = 'Buttons', options = list(dom='Bt', buttons = c('excel'),
+  bPaginate = FALSE, pageLength=35, columnDefs = list(list(className = 'dt-left', targets = 0:4)),searching=FALSE,scrollY ='350px', scrollX ='500px'))%>%
+  DT::formatStyle(columns = c(1, 2, 3), fontSize = '90%')
+```
+]
  ]
  
 
@@ -2653,18 +2874,57 @@ change from the pre-COVID world.
 
 ### 111 dental related call volumes
 
-```{r 111_volumes, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval=evaluate_111}
+```{r xaringan-panelset-111_volumes, echo=FALSE}
+xaringanExtra::use_panelset()
+```
+ <font size="2">
+.panelset[
+
+ .panel[.panel-name[National]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval=evaluate_111}
 plot_111_referrals()
 ```
 
+
+ ]
+ .panel[.panel-name[National level data]
+```{r echo=FALSE, results='asis',warning=FALSE, fig.width=3, fig.height=3}
+
+DT::datatable(plot_111_referrals(plotChart = F),
+              rownames=FALSE,  extensions = 'Buttons', options = list(dom='Bt', buttons = c('excel'),
+  bPaginate = FALSE, pageLength=35, columnDefs = list(list(className = 'dt-left', targets = 0:4)),searching=FALSE,scrollY ='350px', scrollX ='500px'))%>%
+  DT::formatStyle(columns = c(1, 2), fontSize = '90%')
+```
+ ]
+ ]
 
 ---
 
 ### 111 dental related call volumes by disposition
 
-```{r 111_volumes_breakdown, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval=evaluate_111}
+```{r xaringan-panelset-111_volumes_breakdown, echo=FALSE}
+xaringanExtra::use_panelset()
+```
+ <font size="2">
+.panelset[
+
+ .panel[.panel-name[National]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval=evaluate_111}
 plot_breakdown_111_referrals()
 ```
+
+
+ ]
+ .panel[.panel-name[National level data]
+```{r echo=FALSE, results='asis',warning=FALSE, fig.width=3, fig.height=3}
+
+DT::datatable(plot_breakdown_111_referrals(plotChart = F),
+              rownames=FALSE,  extensions = 'Buttons', options = list(dom='Bt', buttons = c('excel'),
+  bPaginate = FALSE, pageLength=35, columnDefs = list(list(className = 'dt-left', targets = 0:4)),searching=FALSE,scrollY ='350px', scrollX ='500px'))%>%
+  DT::formatStyle(columns = c(1, 2, 3, 4, 5), fontSize = '90%')
+```
+ ]
+ ]
 
 ---
 
@@ -2804,6 +3064,21 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
 **`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "East of England", plotChart = F,remove_prototypes = T, get_perc = T)` %**
 of pre-pandemic levels.
 
+ ]
+  .panel[.panel-name[National level data]
+```{r echo=FALSE, results='asis',warning=FALSE, fig.width=3, fig.height=3}
+
+DT::datatable(plot_unique_patients_rolling(data = unique_patients_rolling,
+                                     calendar_data = UDA_calendar_data,
+                                     scheduled_data = UDA_scheduled_data,
+                                     level = "National",
+                                     region_STP_name = NULL,
+                                     plotChart = FALSE,
+                                     remove_prototypes = TRUE),
+              rownames=FALSE,  extensions = 'Buttons', options = list(dom='Bt', buttons = c('excel'),
+  bPaginate = FALSE, pageLength=35, columnDefs = list(list(className = 'dt-left', targets = 0:4)),searching=FALSE,scrollY ='350px', scrollX ='500px'))%>%
+  DT::formatStyle(columns = c(1, 2, 3), fontSize = '90%')
+```
  ]
  ]
  
@@ -2954,7 +3229,7 @@ of pre-pandemic levels.
 <!-- ```{r echo=FALSE, results='asis',warning=FALSE, fig.width=3, fig.height=3} -->
 
 <!-- DT::datatable(CVDclaims,rownames=FALSE,  extensions = 'Buttons', options = list(dom='Bt', buttons = c('excel'), -->
-<!--   bPaginate = FALSE, pageLength=50, columnDefs = list(list(className = 'dt-left', targets = 0:4)),searching=FALSE,scrollY ='500px'))%>% -->
+<!--   bPaginate = FALSE, pageLength=35, columnDefs = list(list(className = 'dt-left', targets = 0:4)),searching=FALSE,scrollY ='350px', scrollX ='500px'))%>% -->
 <!--   DT::formatStyle(columns = c(1, 2, 3, 4, 5), fontSize = '130%') -->
 <!-- ``` -->
 <!-- ] -->
