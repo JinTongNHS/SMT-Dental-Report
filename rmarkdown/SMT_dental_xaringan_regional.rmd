@@ -95,7 +95,7 @@ options(scipen=999)
 * Contract size vs delivery scatter plot [10]
 * UDA delivery profile across months [11]
 * Banded courses of treatment time series [18]
-* Urgent treatment form submissions [19]☻
+* Urgent treatment form submissions [19]
 * 111 call volumes [20]
 * 111 call volumes by disposition [21]
 * Unique patients seen rolling 12 months [22]
@@ -327,7 +327,7 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
                                   plot_chart = T)
 ```
 
-* This graph shows the average monthly performance of the **`r get_num_contracts(level = "National", region_STP_name = NULL)`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (65% for Oct-Dec, 60% for Apr-Sep).
+* This graph shows the average monthly performance of the **`r get_num_contracts(level = "National", region_STP_name = NULL)`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (60% for Apr-Sep 21, 65% for Oct-Dec, 85% for Jan-Mar and 95% for Apr-Jun 22).
 * N.B. Previous month's delivery may be marginally higher to what was reported last month
 due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported. 
 
@@ -347,7 +347,7 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
                                   plot_chart = T)
 ```
 
-* This graph shows the average monthly performance of the **`r get_num_contracts(level = "Regional", region_STP_name = "South East")`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (65% for Oct-Dec, 60% for Apr-Sep).
+* This graph shows the average monthly performance of the **`r get_num_contracts(level = "Regional", region_STP_name = "South East")`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (60% for Apr-Sep 21, 65% for Oct-Dec, 85% for Jan-Mar and 95% for Apr-Jun 22).
 * N.B. Previous month's delivery may be marginally higher to what was reported last month
 due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported. 
 
@@ -367,7 +367,7 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
                                   plot_chart = T)
 ```
 
-* This graph shows the average monthly performance of the **`r get_num_contracts(level = "Regional", region_STP_name = "South West")`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (65% for Oct-Dec, 60% for Apr-Sep).
+* This graph shows the average monthly performance of the **`r get_num_contracts(level = "Regional", region_STP_name = "South West")`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (60% for Apr-Sep 21, 65% for Oct-Dec, 85% for Jan-Mar and 95% for Apr-Jun 22).
 * N.B. Previous month's delivery may be marginally higher to what was reported last month
 due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported. 
 
@@ -387,7 +387,7 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
                                   plot_chart = T)
 ```
 
-* This graph shows the average monthly performance of the **`r get_num_contracts(level = "Regional", region_STP_name = "North West")`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (65% for Oct-Dec, 60% for Apr-Sep).
+* This graph shows the average monthly performance of the **`r get_num_contracts(level = "Regional", region_STP_name = "North West")`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (60% for Apr-Sep 21, 65% for Oct-Dec, 85% for Jan-Mar and 95% for Apr-Jun 22).
 * N.B. Previous month's delivery may be marginally higher to what was reported last month
 due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported. 
 
@@ -407,7 +407,7 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
                                   plot_chart = T)
 ```
 
-* This graph shows the average monthly performance of the **`r get_num_contracts(level = "Regional", region_STP_name = "North East and Yorkshire")`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (65% for Oct-Dec, 60% for Apr-Sep).
+* This graph shows the average monthly performance of the **`r get_num_contracts(level = "Regional", region_STP_name = "North East and Yorkshire")`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (60% for Apr-Sep 21, 65% for Oct-Dec, 85% for Jan-Mar and 95% for Apr-Jun 22).
 * N.B. Previous month's delivery may be marginally higher to what was reported last month
 due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported. 
 
@@ -427,7 +427,7 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
                                   plot_chart = T)
 ```
 
-* This graph shows the average monthly performance of the **`r get_num_contracts(level = "Regional", region_STP_name = "London")`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (65% for Oct-Dec, 60% for Apr-Sep).
+* This graph shows the average monthly performance of the **`r get_num_contracts(level = "Regional", region_STP_name = "London")`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (60% for Apr-Sep 21, 65% for Oct-Dec, 85% for Jan-Mar and 95% for Apr-Jun 22).
 * N.B. Previous month's delivery may be marginally higher to what was reported last month
 due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported. 
 
@@ -447,7 +447,7 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
                                   plot_chart = T)
 ```
 
-* This graph shows the average monthly performance of the **`r get_num_contracts(level = "Regional", region_STP_name = "Midlands")`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (65% for Oct-Dec, 60% for Apr-Sep).
+* This graph shows the average monthly performance of the **`r get_num_contracts(level = "Regional", region_STP_name = "Midlands")`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (60% for Apr-Sep 21, 65% for Oct-Dec, 85% for Jan-Mar and 95% for Apr-Jun 22).
 * N.B. Previous month's delivery may be marginally higher to what was reported last month
 due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported. 
 
@@ -467,7 +467,7 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
                                   plot_chart = T)
 ```
 
-* This graph shows the average monthly performance of the **`r get_num_contracts(level = "Regional", region_STP_name = "East of England")`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (65% for Oct-Dec, 60% for Apr-Sep).
+* This graph shows the average monthly performance of the **`r get_num_contracts(level = "Regional", region_STP_name = "East of England")`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (60% for Apr-Sep 21, 65% for Oct-Dec, 85% for Jan-Mar and 95% for Apr-Jun 22).
 * N.B. Previous month's delivery may be marginally higher to what was reported last month
 due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported. 
 
@@ -794,7 +794,7 @@ xaringanExtra::use_panelset()
 
 .panel[.panel-name[National]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_Q3_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
+plot_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
                                   UDAorUOA = "UDA",
                                   level = "National",
                                   region_STP_name = NULL)
@@ -803,17 +803,17 @@ plot_Q3_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
 * This graph shows the cumulative activity by quarter of the 
 **`r get_num_contracts(level = "National", region_STP_name = NULL)`** 
 GDS/PDS/PDS+
-contracts measured against the expected monthly total activity to achieve the quarterly thresholds (85% for Jan-Mar).
-* From January to `r format(Sys.Date() - lubridate::month(1), "%B")` 
+contracts measured against the expected monthly total activity to achieve the quarterly thresholds (95% for Apr-Jun 22).
+* From the start of April to the end of `r format(Sys.Date() - lubridate::month(1), "%B")` 
 **`r get_Q4_num_contracts_on_target(level = "National", region_STP_name = NULL)`**
 contracts (
-**`r round(get_Q4_num_contracts_on_target(level = "National", region_STP_name = NULL)*100/get_num_contracts(level = "National", region_STP_name = NULL))`%**
-) have delivered the required UDAs or more to be on track towards the Q4 threshold (85%) by the end of March 2022.
+**`r round(get_Q4_num_contracts_on_target(level = "National", region_STP_name = NULL)*100/get_num_contracts(level = "National", region_STP_name = NULL))` %**
+) have delivered the required UDAs or more to be on track towards the Q1 threshold (95%) by the end of June 2022.
 
 ]
 .panel[.panel-name[South East]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_Q3_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
+plot_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
                                   UDAorUOA = "UDA",
                                   level = "Regional",
                                   region_STP_name = "South East")
@@ -822,18 +822,18 @@ plot_Q3_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
 * This graph shows the cumulative activity by quarter of the 
 **`r get_num_contracts(level = "Regional", region_STP_name = "South East")`** 
 GDS/PDS/PDS+
-contracts measured against the expected monthly total activity to achieve the quarterly thresholds (85% for Jan-Mar).
-* From January to `r format(Sys.Date() - lubridate::month(1), "%B")` 
+contracts measured against the expected monthly total activity to achieve the quarterly thresholds (95% for Apr-Jun 22).
+* From the start of April to the end of `r format(Sys.Date() - lubridate::month(1), "%B")`  
 **`r get_Q4_num_contracts_on_target(level = "Regional", region_STP_name = "South East")`**
 contracts (
-**`r round(get_Q4_num_contracts_on_target(level = "Regional", region_STP_name = "South East")*100/get_num_contracts(level = "Regional", region_STP_name = "South East"))`%**
-) have delivered the required UDAs or more to be on track towards the Q4 threshold (85%) by the end of March 2022.
+**`r round(get_Q4_num_contracts_on_target(level = "Regional", region_STP_name = "South East")*100/get_num_contracts(level = "Regional", region_STP_name = "South East"))` %**
+) have delivered the required UDAs or more to be on track towards the Q1 threshold (95%) by the end of June 2022.
 
 
 ]
 .panel[.panel-name[South West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_Q3_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
+plot_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
                                   UDAorUOA = "UDA",
                                   level = "Regional",
                                   region_STP_name = "South West")
@@ -842,18 +842,18 @@ plot_Q3_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
 * This graph shows the cumulative activity by quarter of the 
 **`r get_num_contracts(level = "Regional", region_STP_name = "South West")`** 
 GDS/PDS/PDS+
-contracts measured against the expected monthly total activity to achieve the quarterly thresholds (85% for Jan-Mar).
-* From January to `r format(Sys.Date() - lubridate::month(1), "%B")` 
+contracts measured against the expected monthly total activity to achieve the quarterly thresholds (95% for Apr-Jun 22).
+* From the start of April to the end of `r format(Sys.Date() - lubridate::month(1), "%B")`  
 **`r get_Q4_num_contracts_on_target(level = "Regional", region_STP_name = "South West")`**
 contracts (
-**`r round(get_Q4_num_contracts_on_target(level = "Regional", region_STP_name = "South West")*100/get_num_contracts(level = "Regional", region_STP_name = "South West"))`%**
-) have delivered the required UDAs or more to be on track towards the Q4 threshold (85%) by the end of March 2022.
+**`r round(get_Q4_num_contracts_on_target(level = "Regional", region_STP_name = "South West")*100/get_num_contracts(level = "Regional", region_STP_name = "South West"))` %**
+) have delivered the required UDAs or more to be on track towards the Q1 threshold (95%) by the end of June 2022.
 
 
 ]
 .panel[.panel-name[North West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_Q3_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
+plot_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
                                   UDAorUOA = "UDA",
                                   level = "Regional",
                                   region_STP_name = "North West")
@@ -862,18 +862,18 @@ plot_Q3_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
 * This graph shows the cumulative activity by quarter of the 
 **`r get_num_contracts(level = "Regional", region_STP_name = "North West")`** 
 GDS/PDS/PDS+
-contracts measured against the expected monthly total activity to achieve the quarterly thresholds (85% for Jan-Mar).
-* From January to `r format(Sys.Date() - lubridate::month(1), "%B")` 
+contracts measured against the expected monthly total activity to achieve the quarterly thresholds (95% for Apr-Jun 22).
+* From the start of April to the end of `r format(Sys.Date() - lubridate::month(1), "%B")`  
 **`r get_Q4_num_contracts_on_target(level = "Regional", region_STP_name = "North West")`**
 contracts (
-**`r round(get_Q4_num_contracts_on_target(level = "Regional", region_STP_name = "North West")*100/get_num_contracts(level = "Regional", region_STP_name = "North West"))`%**
-) have delivered the required UDAs or more to be on track towards the Q4 threshold (85%) by the end of March 2022.
+**`r round(get_Q4_num_contracts_on_target(level = "Regional", region_STP_name = "North West")*100/get_num_contracts(level = "Regional", region_STP_name = "North West"))` %**
+) have delivered the required UDAs or more to be on track towards the Q1 threshold (95%) by the end of June 2022.
 
 
 ]
 .panel[.panel-name[North East and Yorkshire]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_Q3_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
+plot_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
                                   UDAorUOA = "UDA",
                                   level = "Regional",
                                   region_STP_name = "North East and Yorkshire")
@@ -882,18 +882,18 @@ plot_Q3_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
 * This graph shows the cumulative activity by quarter of the 
 **`r get_num_contracts(level = "Regional", region_STP_name = "North East and Yorkshire")`** 
 GDS/PDS/PDS+
-contracts measured against the expected monthly total activity to achieve the quarterly thresholds (85% for Jan-Mar).
-* From January to `r format(Sys.Date() - lubridate::month(1), "%B")` 
+contracts measured against the expected monthly total activity to achieve the quarterly thresholds (95% for Apr-Jun 22).
+* From the start of April to the end of `r format(Sys.Date() - lubridate::month(1), "%B")`  
 **`r get_Q4_num_contracts_on_target(level = "Regional", region_STP_name = "North East and Yorkshire")`**
 contracts (
-**`r round(get_Q4_num_contracts_on_target(level = "Regional", region_STP_name = "North East and Yorkshire")*100/get_num_contracts(level = "Regional", region_STP_name = "North East and Yorkshire"))`%**
-) have delivered the required UDAs or more to be on track towards the Q4 threshold (85%) by the end of March 2022.
+**`r round(get_Q4_num_contracts_on_target(level = "Regional", region_STP_name = "North East and Yorkshire")*100/get_num_contracts(level = "Regional", region_STP_name = "North East and Yorkshire"))` %**
+) have delivered the required UDAs or more to be on track towards the Q1 threshold (95%) by the end of June 2022.
 
 
 ]
 .panel[.panel-name[London]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_Q3_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
+plot_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
                                   UDAorUOA = "UDA",
                                   level = "Regional",
                                   region_STP_name = "London")
@@ -902,17 +902,17 @@ plot_Q3_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
 * This graph shows the cumulative activity by quarter of the 
 **`r get_num_contracts(level = "Regional", region_STP_name = "London")`** 
 GDS/PDS/PDS+
-contracts measured against the expected monthly total activity to achieve the quarterly thresholds (85% for Jan-Mar).
-* From January to `r format(Sys.Date() - lubridate::month(1), "%B")` 
+contracts measured against the expected monthly total activity to achieve the quarterly thresholds (95% for Apr-Jun 22).
+* From the start of April to the end of `r format(Sys.Date() - lubridate::month(1), "%B")`  
 **`r get_Q4_num_contracts_on_target(level = "Regional", region_STP_name = "London")`**
 contracts (
-**`r round(get_Q4_num_contracts_on_target(level = "Regional", region_STP_name = "London")*100/get_num_contracts(level = "Regional", region_STP_name = "London"))`%**
-) have delivered the required UDAs or more to be on track towards the Q4 threshold (85%) by the end of March 2022.
+**`r round(get_Q4_num_contracts_on_target(level = "Regional", region_STP_name = "London")*100/get_num_contracts(level = "Regional", region_STP_name = "London"))` %**
+) have delivered the required UDAs or more to be on track towards the Q1 threshold (95%) by the end of June 2022.
 
 ]
 .panel[.panel-name[Midlands]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_Q3_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
+plot_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
                                   UDAorUOA = "UDA",
                                   level = "Regional",
                                   region_STP_name = "Midlands")
@@ -921,18 +921,18 @@ plot_Q3_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
 * This graph shows the cumulative activity by quarter of the 
 **`r get_num_contracts(level = "Regional", region_STP_name = "Midlands")`** 
 GDS/PDS/PDS+
-contracts measured against the expected monthly total activity to achieve the quarterly thresholds (85% for Jan-Mar).
-* From January to `r format(Sys.Date() - lubridate::month(1), "%B")` 
+contracts measured against the expected monthly total activity to achieve the quarterly thresholds (95% for Apr-Jun 22).
+* From the start of April to the end of `r format(Sys.Date() - lubridate::month(1), "%B")`  
 **`r get_Q4_num_contracts_on_target(level = "Regional", region_STP_name = "Midlands")`**
 contracts (
-**`r round(get_Q4_num_contracts_on_target(level = "Regional", region_STP_name = "Midlands")*100/get_num_contracts(level = "Regional", region_STP_name = "Midlands"))`%**
-) have delivered the required UDAs or more to be on track towards the Q4 threshold (85%) by the end of March 2022.
+**`r round(get_Q4_num_contracts_on_target(level = "Regional", region_STP_name = "Midlands")*100/get_num_contracts(level = "Regional", region_STP_name = "Midlands"))` %**
+) have delivered the required UDAs or more to be on track towards the Q1 threshold (95%) by the end of June 2022.
 
 
 ]
 .panel[.panel-name[East of England]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_Q3_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
+plot_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
                                   UDAorUOA = "UDA",
                                   level = "Regional",
                                   region_STP_name = "East of England")
@@ -941,12 +941,12 @@ plot_Q3_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
 * This graph shows the cumulative activity by quarter of the 
 **`r get_num_contracts(level = "Regional", region_STP_name = "East of England")`** 
 GDS/PDS/PDS+
-contracts measured against the expected monthly total activity to achieve the quarterly thresholds (85% for Jan-Mar).
-* From January to `r format(Sys.Date() - lubridate::month(1), "%B")` 
+contracts measured against the expected monthly total activity to achieve the quarterly thresholds (95% for Apr-Jun 22).
+* From the start of April to the end of `r format(Sys.Date() - lubridate::month(1), "%B")`  
 **`r get_Q4_num_contracts_on_target(level = "Regional", region_STP_name = "East of England")`**
 contracts (
-**`r round(get_Q4_num_contracts_on_target(level = "Regional", region_STP_name = "East of England")*100/get_num_contracts(level = "Regional", region_STP_name = "East of England"))`%**
-) have delivered the required UDAs or more to be on track towards the Q4 threshold (85%) by the end of March 2022.
+**`r round(get_Q4_num_contracts_on_target(level = "Regional", region_STP_name = "East of England")*100/get_num_contracts(level = "Regional", region_STP_name = "East of England"))` %**
+) have delivered the required UDAs or more to be on track towards the Q1 threshold (95%) by the end of June 2022.
 
 
 ]
@@ -1081,11 +1081,13 @@ plot_delivery_vs_contract_size_scatter_corporate(data = UDA_scheduled_data,
 ```
 
 * The scatter plot shows the relationship between contract size and delivery for the current month.
-* The number of contracts delivering above 85% contracted value for this month is 
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "National", region_STP_name = NULL, get_num_above = 0.85)[1]`**
-(out of **`r get_num_contracts(level = "National", region_STP_name = NULL)`** contracts),
+* The number of contracts delivering above 95% contracted value for this month is 
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "National", region_STP_name = NULL, get_num_above = 0.95)[1]`**
+(
+**`r round(as.numeric(plot_delivery_vs_contract_size_scatter_corporate(level = "National", region_STP_name = NULL, get_num_above = 0.95)[1]) *100 / get_num_contracts(level = "National", region_STP_name = NULL))`** 
+% of contracts),
 with a mean contract size of 
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "National", region_STP_name = NULL, get_num_above = 0.85)[2]`** 
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "National", region_STP_name = NULL, get_num_above = 0.95)[2]`** 
 UDAs.
 * The number of contracts delivering above 100% contracted value for this month is 
 **`r plot_delivery_vs_contract_size_scatter_corporate(level = "National", region_STP_name = NULL, get_num_above = 1)[1]`**,
@@ -1106,11 +1108,13 @@ plot_delivery_vs_contract_size_scatter_corporate(data = UDA_scheduled_data,
 ```
 
 * The scatter plot shows the relationship between contract size and delivery for the current month.
-* The number of contracts delivering above 85% contracted value for this month is 
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "South East", get_num_above = 0.85)[1]`**
-(out of **`r get_num_contracts(level = "Regional", region_STP_name = "South East")`** contracts),
+* The number of contracts delivering above 95% contracted value for this month is 
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "South East", get_num_above = 0.95)[1]`**
+( 
+**`r round(as.numeric(plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "South East", get_num_above = 0.95)[1]) *100 / get_num_contracts(level = "Regional", region_STP_name = "South East"))`**  
+% of contracts),
 with a mean contract size of 
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "South East", get_num_above = 0.85)[2]`** 
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "South East", get_num_above = 0.95)[2]`** 
 UDAs.
 * The number of contracts delivering above 100% contracted value for this month is 
 **`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "South East", get_num_above = 1)[1]`**,
@@ -1132,11 +1136,13 @@ plot_delivery_vs_contract_size_scatter_corporate(data = UDA_scheduled_data,
 ```
 
 * The scatter plot shows the relationship between contract size and delivery for the current month.
-* The number of contracts delivering above 85% contracted value for this month is 
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "South West", get_num_above = 0.85)[1]`**
-(out of **`r get_num_contracts(level = "Regional", region_STP_name = "South West")`** contracts),
+* The number of contracts delivering above 95% contracted value for this month is 
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "South West", get_num_above = 0.95)[1]`**
+( 
+**`r round(as.numeric(plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "South West", get_num_above = 0.95)[1]) *100 / get_num_contracts(level = "Regional", region_STP_name = "South West"))`**  
+% of contracts),
 with a mean contract size of 
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "South West", get_num_above = 0.85)[2]`** 
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "South West", get_num_above = 0.95)[2]`** 
 UDAs.
 * The number of contracts delivering above 100% contracted value for this month is 
 **`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "South West", get_num_above = 1)[1]`**,
@@ -1158,11 +1164,13 @@ plot_delivery_vs_contract_size_scatter_corporate(data = UDA_scheduled_data,
 ```
 
 * The scatter plot shows the relationship between contract size and delivery for the current month.
-* The number of contracts delivering above 85% contracted value for this month is 
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "North West", get_num_above = 0.85)[1]`**
-(out of **`r get_num_contracts(level = "Regional", region_STP_name = "North West")`** contracts),
+* The number of contracts delivering above 95% contracted value for this month is 
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "North West", get_num_above = 0.95)[1]`**
+( 
+**`r round(as.numeric(plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "North West", get_num_above = 0.95)[1]) *100 / get_num_contracts(level = "Regional", region_STP_name = "North West"))`**  
+% of contracts),
 with a mean contract size of 
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "North West", get_num_above = 0.85)[2]`** 
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "North West", get_num_above = 0.95)[2]`** 
 UDAs.
 * The number of contracts delivering above 100% contracted value for this month is 
 **`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "North West", get_num_above = 1)[1]`**,
@@ -1184,11 +1192,13 @@ plot_delivery_vs_contract_size_scatter_corporate(data = UDA_scheduled_data,
 ```
 
 * The scatter plot shows the relationship between contract size and delivery for the current month.
-* The number of contracts delivering above 85% contracted value for this month is 
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "North East and Yorkshire", get_num_above = 0.85)[1]`**
-(out of **`r get_num_contracts(level = "Regional", region_STP_name = "North East and Yorkshire")`** contracts),
+* The number of contracts delivering above 95% contracted value for this month is 
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "North East and Yorkshire", get_num_above = 0.95)[1]`**
+( 
+**`r round(as.numeric(plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "North East and Yorkshire", get_num_above = 0.95)[1]) *100 / get_num_contracts(level = "Regional", region_STP_name = "North East and Yorkshire"))`**  
+% of contracts),
 with a mean contract size of 
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "North East and Yorkshire", get_num_above = 0.85)[2]`** 
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "North East and Yorkshire", get_num_above = 0.95)[2]`** 
 UDAs.
 * The number of contracts delivering above 100% contracted value for this month is 
 **`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "North East and Yorkshire", get_num_above = 1)[1]`**,
@@ -1210,11 +1220,13 @@ plot_delivery_vs_contract_size_scatter_corporate(data = UDA_scheduled_data,
 ```
 
 * The scatter plot shows the relationship between contract size and delivery for the current month.
-* The number of contracts delivering above 85% contracted value for this month is 
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "London", get_num_above = 0.85)[1]`**
-(out of **`r get_num_contracts(level = "Regional", region_STP_name = "London")`** contracts),
+* The number of contracts delivering above 95% contracted value for this month is 
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "London", get_num_above = 0.95)[1]`**
+( 
+**`r round(as.numeric(plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "London", get_num_above = 0.95)[1]) *100 / get_num_contracts(level = "Regional", region_STP_name = "London"))`**  
+% of contracts),
 with a mean contract size of 
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "London", get_num_above = 0.85)[2]`** 
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "London", get_num_above = 0.95)[2]`** 
 UDAs.
 * The number of contracts delivering above 100% contracted value for this month is 
 **`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "London", get_num_above = 1)[1]`**,
@@ -1235,11 +1247,13 @@ plot_delivery_vs_contract_size_scatter_corporate(data = UDA_scheduled_data,
 ```
 
 * The scatter plot shows the relationship between contract size and delivery for the current month.
-* The number of contracts delivering above 85% contracted value for this month is 
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "Midlands", get_num_above = 0.85)[1]`**
-(out of **`r get_num_contracts(level = "Regional", region_STP_name = "Midlands")`** contracts),
+* The number of contracts delivering above 95% contracted value for this month is 
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "Midlands", get_num_above = 0.95)[1]`**
+( 
+**`r round(as.numeric(plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "Midlands", get_num_above = 0.95)[1]) *100 / get_num_contracts(level = "Regional", region_STP_name = "Midlands"))`**  
+% of contracts),
 with a mean contract size of 
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "Midlands", get_num_above = 0.85)[2]`** 
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "Midlands", get_num_above = 0.95)[2]`** 
 UDAs.
 * The number of contracts delivering above 100% contracted value for this month is 
 **`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "Midlands", get_num_above = 1)[1]`**,
@@ -1261,11 +1275,13 @@ plot_delivery_vs_contract_size_scatter_corporate(data = UDA_scheduled_data,
 ```
 
 * The scatter plot shows the relationship between contract size and delivery for the current month.
-* The number of contracts delivering above 85% contracted value for this month is 
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "East of England", get_num_above = 0.85)[1]`**
-(out of **`r get_num_contracts(level = "Regional", region_STP_name = "East of England")`** contracts),
+* The number of contracts delivering above 95% contracted value for this month is 
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "East of England", get_num_above = 0.95)[1]`**
+( 
+**`r round(as.numeric(plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "East of England", get_num_above = 0.95)[1]) *100 / get_num_contracts(level = "Regional", region_STP_name = "East of England"))`**  
+% of contracts),
 with a mean contract size of 
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "East of England", get_num_above = 0.85)[2]`** 
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "East of England", get_num_above = 0.95)[2]`** 
 UDAs.
 * The number of contracts delivering above 100% contracted value for this month is 
 **`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "East of England", get_num_above = 1)[1]`**,
@@ -1436,7 +1452,7 @@ plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
 
 * This graph shows the average monthly performance of the
 **`r get_num_contracts(data = UOA_calendar_data, remove_prototypes = T, scheduled_data = UOA_scheduled_data, UDAorUOA = "UOA", level = "National", region_STP_name = NULL)`**
-GDS/PDS contracts scaled up by 12 months measured against the delivery thresholds (85% for Oct-Dec, 80% for Apr-Sep).
+GDS/PDS contracts scaled up by 12 months measured against the delivery thresholds (80% for Apr-Sep 21, 85% for Oct-Dec, 90% for Jan-Mar, 100% for Apr-Jun 22).
 * N.B. Previous month's delivery may be marginally different to what was reported last month
 due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported.
 
@@ -1458,7 +1474,7 @@ plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
 
 * This graph shows the average monthly performance of the
 **`r get_num_contracts(data = UOA_calendar_data, remove_prototypes = T, scheduled_data = UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "South East")`**
-GDS/PDS contracts scaled up by 12 months measured against the delivery thresholds (85% for Oct-Dec, 80% for Apr-Sep).
+GDS/PDS contracts scaled up by 12 months measured against the delivery thresholds (80% for Apr-Sep 21, 85% for Oct-Dec, 90% for Jan-Mar, 100% for Apr-Jun 22).
 * N.B. Previous month's delivery may be marginally different to what was reported last month
 due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported.
 
@@ -1481,7 +1497,7 @@ plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
 
 * This graph shows the average monthly performance of the
 **`r get_num_contracts(data = UOA_calendar_data, remove_prototypes = T, scheduled_data = UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "South West")`**
-GDS/PDS contracts scaled up by 12 months measured against the delivery thresholds (85% for Oct-Dec, 80% for Apr-Sep).
+GDS/PDS contracts scaled up by 12 months measured against the delivery thresholds (80% for Apr-Sep 21, 85% for Oct-Dec, 90% for Jan-Mar, 100% for Apr-Jun 22).
 * N.B. Previous month's delivery may be marginally different to what was reported last month
 due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported.
 
@@ -1504,7 +1520,7 @@ plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
 
 * This graph shows the average monthly performance of the
 **`r get_num_contracts(data = UOA_calendar_data, remove_prototypes = T, scheduled_data = UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "North West")`**
-GDS/PDS contracts scaled up by 12 months measured against the delivery thresholds (85% for Oct-Dec, 80% for Apr-Sep).
+GDS/PDS contracts scaled up by 12 months measured against the delivery thresholds (80% for Apr-Sep 21, 85% for Oct-Dec, 90% for Jan-Mar, 100% for Apr-Jun 22).
 * N.B. Previous month's delivery may be marginally different to what was reported last month
 due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported.
 
@@ -1527,7 +1543,7 @@ plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
 
 * This graph shows the average monthly performance of the
 **`r get_num_contracts(data = UOA_calendar_data, remove_prototypes = T, scheduled_data = UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "North East and Yorkshire")`**
-GDS/PDS contracts scaled up by 12 months measured against the delivery thresholds (85% for Oct-Dec, 80% for Apr-Sep).
+GDS/PDS contracts scaled up by 12 months measured against the delivery thresholds (80% for Apr-Sep 21, 85% for Oct-Dec, 90% for Jan-Mar, 100% for Apr-Jun 22).
 * N.B. Previous month's delivery may be marginally different to what was reported last month
 due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported.
 
@@ -1550,7 +1566,7 @@ plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
 
 * This graph shows the average monthly performance of the
 **`r get_num_contracts(data = UOA_calendar_data, remove_prototypes = T, scheduled_data = UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "London")`**
-GDS/PDS contracts scaled up by 12 months measured against the delivery thresholds (85% for Oct-Dec, 80% for Apr-Sep).
+GDS/PDS contracts scaled up by 12 months measured against the delivery thresholds (80% for Apr-Sep 21, 85% for Oct-Dec, 90% for Jan-Mar, 100% for Apr-Jun 22).
 * N.B. Previous month's delivery may be marginally different to what was reported last month
 due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported.
 
@@ -1572,7 +1588,7 @@ plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
 
 * This graph shows the average monthly performance of the
 **`r get_num_contracts(data = UOA_calendar_data, remove_prototypes = T, scheduled_data = UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "Midlands")`**
-GDS/PDS contracts scaled up by 12 months measured against the delivery thresholds (85% for Oct-Dec, 80% for Apr-Sep).
+GDS/PDS contracts scaled up by 12 months measured against the delivery thresholds (80% for Apr-Sep 21, 85% for Oct-Dec, 90% for Jan-Mar, 100% for Apr-Jun 22).
 * N.B. Previous month's delivery may be marginally different to what was reported last month
 due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported.
 
@@ -1595,7 +1611,7 @@ plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
 
 * This graph shows the average monthly performance of the
 **`r get_num_contracts(data = UOA_calendar_data, remove_prototypes = T, scheduled_data = UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "East of England")`**
-GDS/PDS contracts scaled up by 12 months measured against the delivery thresholds (85% for Oct-Dec, 80% for Apr-Sep).
+GDS/PDS contracts scaled up by 12 months measured against the delivery thresholds (80% for Apr-Sep 21, 85% for Oct-Dec, 90% for Jan-Mar, 100% for Apr-Jun 22).
 * N.B. Previous month's delivery may be marginally different to what was reported last month
 due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported.
 
@@ -1929,7 +1945,7 @@ xaringanExtra::use_panelset()
 
  .panel[.panel-name[National]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_Q3_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
+plot_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
                                   UDAorUOA = "UOA",
                                   level = "National",
                                   region_STP_name = NULL)
@@ -1937,17 +1953,17 @@ plot_Q3_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
 
 * This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "National", region_STP_name = NULL)`**
 GDS/PDS contracts) measured against the
-expected monthly total activity to achieve the quarterly thresholds (90% for Jan-Mar).
-* From January to `r format(Sys.Date() - lubridate::month(1), "%B")` 
+expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
+* From the start of April to the end of `r format(Sys.Date() - lubridate::month(1), "%B")`  
 **`r get_Q4_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "National", region_STP_name = NULL)`** 
 contracts (
-**`r round(get_Q4_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "National", region_STP_name = NULL)*100/get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "National", region_STP_name = NULL))`%**
-) have delivered the required UOAs or more to be on track towards the Q4 threshold (90%) by the end of March 2022.
+**`r round(get_Q4_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "National", region_STP_name = NULL)*100/get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "National", region_STP_name = NULL))` %**
+) have delivered the required UOAs or more to be on track towards the Q1 threshold (100%) by the end of June 2022.
 
  ]
  .panel[.panel-name[South East]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_Q3_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
+plot_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
                                   UDAorUOA = "UOA",
                                   level = "Regional",
                                   region_STP_name = "South East")
@@ -1955,18 +1971,18 @@ plot_Q3_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
 
 * This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "Regional", region_STP_name = "South East")`**
 GDS/PDS contracts) measured against the
-expected monthly total activity to achieve the quarterly thresholds (90% for Jan-Mar).
-* From January to `r format(Sys.Date() - lubridate::month(1), "%B")` 
+expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
+* From the start of April to the end of `r format(Sys.Date() - lubridate::month(1), "%B")`  
 **`r get_Q4_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "South East")`** 
 contracts (
-**`r round(get_Q4_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "South East")*100/get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "Regional", region_STP_name = "South East"))`%**
-) have delivered the required UOAs or more to be on track towards the Q4 threshold (90%) by the end of March 2022.
+**`r round(get_Q4_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "South East")*100/get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "Regional", region_STP_name = "South East"))` %**
+) have delivered the required UOAs or more to be on track towards the Q1 threshold (100%) by the end of June 2022.
 
 
  ]
  .panel[.panel-name[South West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_Q3_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
+plot_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
                                   UDAorUOA = "UOA",
                                   level = "Regional",
                                   region_STP_name = "South West")
@@ -1974,18 +1990,18 @@ plot_Q3_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
 
 * This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "Regional", region_STP_name = "South West")`**
 GDS/PDS contracts) measured against the
-expected monthly total activity to achieve the quarterly thresholds (90% for Jan-Mar).
-* From January to `r format(Sys.Date() - lubridate::month(1), "%B")` 
+expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
+* From the start of April to the end of `r format(Sys.Date() - lubridate::month(1), "%B")`  
 **`r get_Q4_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "South West")`** 
 contracts (
-**`r round(get_Q4_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "South West")*100/get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "Regional", region_STP_name = "South West"))`%**
-) have delivered the required UOAs or more to be on track towards the Q4 threshold (90%) by the end of March 2022.
+**`r round(get_Q4_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "South West")*100/get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "Regional", region_STP_name = "South West"))` %**
+) have delivered the required UOAs or more to be on track towards the Q1 threshold (100%) by the end of June 2022.
 
 
  ]
  .panel[.panel-name[North West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_Q3_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
+plot_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
                                   UDAorUOA = "UOA",
                                   level = "Regional",
                                   region_STP_name = "North West")
@@ -1993,17 +2009,17 @@ plot_Q3_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
 
 * This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "Regional", region_STP_name = "North West")`**
 GDS/PDS contracts) measured against the
-expected monthly total activity to achieve the quarterly thresholds (90% for Jan-Mar).
-* From January to `r format(Sys.Date() - lubridate::month(1), "%B")` 
+expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
+* From the start of April to the end of `r format(Sys.Date() - lubridate::month(1), "%B")`  
 **`r get_Q4_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "North West")`** 
 contracts (
-**`r round(get_Q4_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "North West")*100/get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "Regional", region_STP_name = "North West"))`%**
-) have delivered the required UOAs or more to be on track towards the Q4 threshold (90%) by the end of March 2022.
+**`r round(get_Q4_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "North West")*100/get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "Regional", region_STP_name = "North West"))` %**
+) have delivered the required UOAs or more to be on track towards the Q1 threshold (100%) by the end of June 2022.
 
  ]
  .panel[.panel-name[North East and Yorkshire]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_Q3_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
+plot_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
                                   UDAorUOA = "UOA",
                                   level = "Regional",
                                   region_STP_name = "North East and Yorkshire")
@@ -2011,18 +2027,18 @@ plot_Q3_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
 
 * This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "Regional", region_STP_name = "North East and Yorkshire")`**
 GDS/PDS contracts) measured against the
-expected monthly total activity to achieve the quarterly thresholds (90% for Jan-Mar).
-* From January to `r format(Sys.Date() - lubridate::month(1), "%B")` 
+expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
+* From the start of April to the end of `r format(Sys.Date() - lubridate::month(1), "%B")`  
 **`r get_Q4_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "North East and Yorkshire")`** 
 contracts (
-**`r round(get_Q4_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "North East and Yorkshire")*100/get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "Regional", region_STP_name = "North East and Yorkshire"))`%**
-) have delivered the required UOAs or more to be on track towards the Q4 threshold (90%) by the end of March 2022.
+**`r round(get_Q4_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "North East and Yorkshire")*100/get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "Regional", region_STP_name = "North East and Yorkshire"))` %**
+) have delivered the required UOAs or more to be on track towards the Q1 threshold (100%) by the end of June 2022.
 
 
  ]
 .panel[.panel-name[London]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_Q3_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
+plot_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
                                   UDAorUOA = "UOA",
                                   level = "Regional",
                                   region_STP_name = "London")
@@ -2030,17 +2046,17 @@ plot_Q3_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
 
 * This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "Regional", region_STP_name = "London")`**
 GDS/PDS contracts) measured against the
-expected monthly total activity to achieve the quarterly thresholds (90% for Jan-Mar).
-* From January to `r format(Sys.Date() - lubridate::month(1), "%B")` 
+expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
+* From the start of April to the end of `r format(Sys.Date() - lubridate::month(1), "%B")`  
 **`r get_Q4_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "London")`** 
 contracts (
-**`r round(get_Q4_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "London")*100/get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "Regional", region_STP_name = "London"))`%**
-) have delivered the required UOAs or more to be on track towards the Q4 threshold (90%) by the end of March 2022.
+**`r round(get_Q4_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "London")*100/get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "Regional", region_STP_name = "London"))` %**
+) have delivered the required UOAs or more to be on track towards the Q1 threshold (100%) by the end of June 2022.
 
  ]
  .panel[.panel-name[Midlands]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_Q3_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
+plot_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
                                   UDAorUOA = "UOA",
                                   level = "Regional",
                                   region_STP_name = "Midlands")
@@ -2048,18 +2064,18 @@ plot_Q3_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
 
 * This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "Regional", region_STP_name = "Midlands")`**
 GDS/PDS contracts) measured against the
-expected monthly total activity to achieve the quarterly thresholds (90% for Jan-Mar).
-* From January to `r format(Sys.Date() - lubridate::month(1), "%B")` 
+expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
+* From the start of April to the end of `r format(Sys.Date() - lubridate::month(1), "%B")`  
 **`r get_Q4_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "Midlands")`** 
 contracts (
-**`r round(get_Q4_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "Midlands")*100/get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "Regional", region_STP_name = "Midlands"))`%**
-) have delivered the required UOAs or more to be on track towards the Q4 threshold (90%) by the end of March 2022.
+**`r round(get_Q4_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "Midlands")*100/get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "Regional", region_STP_name = "Midlands"))` %**
+) have delivered the required UOAs or more to be on track towards the Q1 threshold (100%) by the end of June 2022.
 
 
  ]
  .panel[.panel-name[East of England]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_Q3_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
+plot_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
                                   UDAorUOA = "UOA",
                                   level = "Regional",
                                   region_STP_name = "East of England")
@@ -2067,12 +2083,12 @@ plot_Q3_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
 
 * This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "Regional", region_STP_name = "East of England")`**
 GDS/PDS contracts) measured against the
-expected monthly total activity to achieve the quarterly thresholds (90% for Jan-Mar).
-* From January to `r format(Sys.Date() - lubridate::month(1), "%B")` 
+expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
+* From the start of April to the end of `r format(Sys.Date() - lubridate::month(1), "%B")`  
 **`r get_Q4_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "East of England")`** 
 contracts (
-**`r round(get_Q4_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "East of England")*100/get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "Regional", region_STP_name = "East of England"))`%**
-) have delivered the required UOAs or more to be on track towards the Q4 threshold (90%) by the end of March 2022.
+**`r round(get_Q4_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "East of England")*100/get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "Regional", region_STP_name = "East of England"))` %**
+) have delivered the required UOAs or more to be on track towards the Q1 threshold (100%) by the end of June 2022.
 
 
  ]
@@ -2454,7 +2470,7 @@ was
 this number was
 **`r get_num_urgent_forms_2019(level = "National", region_STP_name = NULL)`**
 , which is a 
-**`r round((get_num_urgent_forms(level = "National", region_STP_name = NULL) - get_num_urgent_forms_2019(level = "National", region_STP_name = NULL)) *100 / get_num_urgent_forms_2019(level = "National", region_STP_name = NULL))`%** 
+**`r round((get_num_urgent_forms(level = "National", region_STP_name = NULL) - get_num_urgent_forms_2019(level = "National", region_STP_name = NULL)) *100 / get_num_urgent_forms_2019(level = "National", region_STP_name = NULL))` %** 
 change from the pre-COVID world.
 
  ]
@@ -2478,7 +2494,7 @@ was
 this number was
 **`r get_num_urgent_forms_2019(level = "Regional", region_STP_name = "South East")`**
 , which is a 
-**`r round((get_num_urgent_forms(level = "Regional", region_STP_name = "South East") - get_num_urgent_forms_2019(level = "Regional", region_STP_name = "South East")) *100 / get_num_urgent_forms_2019(level = "Regional", region_STP_name = "South East"))`%** 
+**`r round((get_num_urgent_forms(level = "Regional", region_STP_name = "South East") - get_num_urgent_forms_2019(level = "Regional", region_STP_name = "South East")) *100 / get_num_urgent_forms_2019(level = "Regional", region_STP_name = "South East"))` %** 
 change from the pre-COVID world.
 
 
@@ -2503,7 +2519,7 @@ was
 this number was
 **`r get_num_urgent_forms_2019(level = "Regional", region_STP_name = "South West")`**
 , which is a 
-**`r round((get_num_urgent_forms(level = "Regional", region_STP_name = "South West") - get_num_urgent_forms_2019(level = "Regional", region_STP_name = "South West")) *100 / get_num_urgent_forms_2019(level = "Regional", region_STP_name = "South West"))`%** 
+**`r round((get_num_urgent_forms(level = "Regional", region_STP_name = "South West") - get_num_urgent_forms_2019(level = "Regional", region_STP_name = "South West")) *100 / get_num_urgent_forms_2019(level = "Regional", region_STP_name = "South West"))` %** 
 change from the pre-COVID world.
 
 
@@ -2528,7 +2544,7 @@ was
 this number was
 **`r get_num_urgent_forms_2019(level = "Regional", region_STP_name = "North West")`**
 , which is a 
-**`r round((get_num_urgent_forms(level = "Regional", region_STP_name = "North West") - get_num_urgent_forms_2019(level = "Regional", region_STP_name = "North West")) *100 / get_num_urgent_forms_2019(level = "Regional", region_STP_name = "North West"))`%** 
+**`r round((get_num_urgent_forms(level = "Regional", region_STP_name = "North West") - get_num_urgent_forms_2019(level = "Regional", region_STP_name = "North West")) *100 / get_num_urgent_forms_2019(level = "Regional", region_STP_name = "North West"))` %** 
 change from the pre-COVID world.
 
 
@@ -2553,7 +2569,7 @@ was
 this number was
 **`r get_num_urgent_forms_2019(level = "Regional", region_STP_name = "North East and Yorkshire")`**
 , which is a 
-**`r round((get_num_urgent_forms(level = "Regional", region_STP_name = "North East and Yorkshire") - get_num_urgent_forms_2019(level = "Regional", region_STP_name = "North East and Yorkshire")) *100 / get_num_urgent_forms_2019(level = "Regional", region_STP_name = "North East and Yorkshire"))`%** 
+**`r round((get_num_urgent_forms(level = "Regional", region_STP_name = "North East and Yorkshire") - get_num_urgent_forms_2019(level = "Regional", region_STP_name = "North East and Yorkshire")) *100 / get_num_urgent_forms_2019(level = "Regional", region_STP_name = "North East and Yorkshire"))` %** 
 change from the pre-COVID world.
 
 
@@ -2578,7 +2594,7 @@ was
 this number was
 **`r get_num_urgent_forms_2019(level = "Regional", region_STP_name = "London")`**
 , which is a 
-**`r round((get_num_urgent_forms(level = "Regional", region_STP_name = "London") - get_num_urgent_forms_2019(level = "Regional", region_STP_name = "London")) *100 / get_num_urgent_forms_2019(level = "Regional", region_STP_name = "London"))`%** 
+**`r round((get_num_urgent_forms(level = "Regional", region_STP_name = "London") - get_num_urgent_forms_2019(level = "Regional", region_STP_name = "London")) *100 / get_num_urgent_forms_2019(level = "Regional", region_STP_name = "London"))` %** 
 change from the pre-COVID world.
 
  ]
@@ -2602,7 +2618,7 @@ was
 this number was
 **`r get_num_urgent_forms_2019(level = "Regional", region_STP_name = "Midlands")`**
 , which is a 
-**`r round((get_num_urgent_forms(level = "Regional", region_STP_name = "Midlands") - get_num_urgent_forms_2019(level = "Regional", region_STP_name = "Midlands")) *100 / get_num_urgent_forms_2019(level = "Regional", region_STP_name = "Midlands"))`%** 
+**`r round((get_num_urgent_forms(level = "Regional", region_STP_name = "Midlands") - get_num_urgent_forms_2019(level = "Regional", region_STP_name = "Midlands")) *100 / get_num_urgent_forms_2019(level = "Regional", region_STP_name = "Midlands"))` %** 
 change from the pre-COVID world.
 
  ]
@@ -2626,7 +2642,7 @@ was
 this number was
 **`r get_num_urgent_forms_2019(level = "Regional", region_STP_name = "East of England")`**
 , which is a 
-**`r round((get_num_urgent_forms(level = "Regional", region_STP_name = "East of England") - get_num_urgent_forms_2019(level = "Regional", region_STP_name = "East of England")) *100 / get_num_urgent_forms_2019(level = "Regional", region_STP_name = "East of England"))`%** 
+**`r round((get_num_urgent_forms(level = "Regional", region_STP_name = "East of England") - get_num_urgent_forms_2019(level = "Regional", region_STP_name = "East of England")) *100 / get_num_urgent_forms_2019(level = "Regional", region_STP_name = "East of England"))` %** 
 change from the pre-COVID world.
 
  ]
@@ -2672,7 +2688,7 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
 ```
 
 * The number of unique patients seen in the last 12 months is currently around 
-**`r plot_unique_patients_rolling(level = "National",region_STP_name = NULL, plotChart = F,remove_prototypes = T, get_perc = T)`%**
+**`r plot_unique_patients_rolling(level = "National",region_STP_name = NULL, plotChart = F,remove_prototypes = T, get_perc = T)` %**
 of pre-pandemic levels.
 
  ]
@@ -2688,7 +2704,7 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
 ```
 
 * The number of unique patients seen in the last 12 months is currently around 
-**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "South East", plotChart = F,remove_prototypes = T, get_perc = T)`%**
+**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "South East", plotChart = F,remove_prototypes = T, get_perc = T)` %**
 of pre-pandemic levels.
 
  ]
@@ -2704,7 +2720,7 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
 ```
 
 * The number of unique patients seen in the last 12 months is currently around 
-**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "South West", plotChart = F,remove_prototypes = T, get_perc = T)`%**
+**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "South West", plotChart = F,remove_prototypes = T, get_perc = T)` %**
 of pre-pandemic levels.
 
  ]
@@ -2720,7 +2736,7 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
 ```
 
 * The number of unique patients seen in the last 12 months is currently around 
-**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "North West", plotChart = F,remove_prototypes = T, get_perc = T)`%**
+**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "North West", plotChart = F,remove_prototypes = T, get_perc = T)` %**
 of pre-pandemic levels.
 
  ]
@@ -2736,7 +2752,7 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
 ```
 
 * The number of unique patients seen in the last 12 months is currently around 
-**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "North East and Yorkshire", plotChart = F,remove_prototypes = T, get_perc = T)`%**
+**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "North East and Yorkshire", plotChart = F,remove_prototypes = T, get_perc = T)` %**
 of pre-pandemic levels.
 
 
@@ -2753,7 +2769,7 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
 ```
 
 * The number of unique patients seen in the last 12 months is currently around 
-**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "London", plotChart = F,remove_prototypes = T, get_perc = T)`%**
+**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "London", plotChart = F,remove_prototypes = T, get_perc = T)` %**
 of pre-pandemic levels.
 
  ]
@@ -2769,7 +2785,7 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
 ```
 
 * The number of unique patients seen in the last 12 months is currently around 
-**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "Midlands", plotChart = F,remove_prototypes = T, get_perc = T)`%**
+**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "Midlands", plotChart = F,remove_prototypes = T, get_perc = T)` %**
 of pre-pandemic levels.
 
  ]
@@ -2785,7 +2801,7 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
 ```
 
 * The number of unique patients seen in the last 12 months is currently around 
-**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "East of England", plotChart = F,remove_prototypes = T, get_perc = T)`%**
+**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "East of England", plotChart = F,remove_prototypes = T, get_perc = T)` %**
 of pre-pandemic levels.
 
  ]

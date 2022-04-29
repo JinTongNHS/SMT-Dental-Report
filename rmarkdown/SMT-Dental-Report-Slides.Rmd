@@ -185,7 +185,7 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
                                   plot_chart = T)
 ```
 
-* This graph shows the average monthly performance of the **`r get_num_contracts(level = params$level, region_STP_name = params$region_STP_name)`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (65% for Oct-Dec, 60% for Apr-Sep).
+* This graph shows the average monthly performance of the **`r get_num_contracts(level = params$level, region_STP_name = params$region_STP_name)`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (60% for Apr-Sep 21, 65% for Oct-Dec, 85% for Jan-Mar and 95% for Apr-Jun 22).
 * N.B. Previous month's delivery may be marginally higher to what was reported last month
 due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported. 
 
@@ -266,10 +266,10 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
 ```
 
 * This graph shows the cumulative activity by quarter of the **`r get_num_contracts(level = params$level, region_STP_name = params$region_STP_name)`** GDS/PDS/PDS+
-contracts measured against the expected monthly total activity to achieve the quarterly thresholds (85% for Jan-Mar).
-* From January to `r format(Sys.Date() - lubridate::month(1), "%B")` **`r get_Q4_num_contracts_on_target(level = params$level, region_STP_name = params$region_STP_name)`**
+contracts measured against the expected monthly total activity to achieve the quarterly thresholds (95% for Apr-Jun 22).
+* From the start of April to the end of `r format(Sys.Date() - lubridate::month(1), "%B")`  **`r get_Q4_num_contracts_on_target(level = params$level, region_STP_name = params$region_STP_name)`**
 contracts (**`r round(get_Q4_num_contracts_on_target(level = params$level, region_STP_name = params$region_STP_name)*100/get_num_contracts(level = params$level, region_STP_name = params$region_STP_name))`%**)
-have delivered the required UDAs or more to be on track towards the Q4 threshold (85%) by the end of March 2022.
+have delivered the required UDAs or more to be on track towards the Q1 threshold (95%) by the end of June 2022.
 
 
 ## Scheduled UDAs
@@ -296,9 +296,11 @@ plot_delivery_vs_contract_size_scatter_corporate(data = UDA_scheduled_data,
 ```
 
 * The scatter plot shows the relationship between contract size and delivery for the current month.
-* The number of contracts delivering above 85% contracted value for this month is **`r plot_delivery_vs_contract_size_scatter_corporate(level = params$level, region_STP_name = params$region_STP_name, get_num_above = 0.85)[1]`**
-(out of **`r get_num_contracts(level = params$level, region_STP_name = params$region_STP_name)`** contracts),
-with a mean contract size of **`r plot_delivery_vs_contract_size_scatter_corporate(level = params$level, region_STP_name = params$region_STP_name, get_num_above = 0.85)[2]`** UDAs.
+* The number of contracts delivering above 95% contracted value for this month is **`r plot_delivery_vs_contract_size_scatter_corporate(level = params$level, region_STP_name = params$region_STP_name, get_num_above = 0.95)[1]`**
+( 
+**`r round(as.numeric(plot_delivery_vs_contract_size_scatter_corporate(level = params$level, region_STP_name = params$region_STP_name, get_num_above = 0.95)[1]) *100 / get_num_contracts(level = params$level, region_STP_name = params$region_STP_name))`**  
+% of contracts),
+with a mean contract size of **`r plot_delivery_vs_contract_size_scatter_corporate(level = params$level, region_STP_name = params$region_STP_name, get_num_above = 0.95)[2]`** UDAs.
 * The number of contracts delivering above 100% contracted value for this month is **`r plot_delivery_vs_contract_size_scatter_corporate(level = params$level, region_STP_name = params$region_STP_name, get_num_above = 1)[1]`**,
 with a mean contract size of **`r plot_delivery_vs_contract_size_scatter_corporate(level = params$level, region_STP_name = params$region_STP_name, get_num_above = 1)[2]`** UDAs.
 
@@ -335,7 +337,7 @@ plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
 
 * This graph shows the average monthly performance of the
 **`r get_num_contracts(data = UOA_calendar_data, remove_prototypes = T, scheduled_data = UOA_scheduled_data, UDAorUOA = "UOA", level = params$level, region_STP_name = params$region_STP_name)`**
-GDS/PDS contracts scaled up by 12 months measured against the delivery thresholds (85% for Oct-Dec, 80% for Apr-Sep).
+GDS/PDS contracts scaled up by 12 months measured against the delivery thresholds (80% for Apr-Sep 21, 85% for Oct-Dec, 90% for Jan-Mar, 100% for Apr-Jun 22).
 * N.B. Previous month's delivery may be marginally different to what was reported last month
 due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported.
 
@@ -416,8 +418,8 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
 * This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = params$level, region_STP_name = params$region_STP_name)`**
 GDS/PDS contracts) measured against the
 expected monthly total activity to achieve the quarterly thresholds (90% for Jan-Mar).
-* From January to `r format(Sys.Date() - lubridate::month(1), "%B")` **`r get_Q4_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = params$level, region_STP_name = params$region_STP_name)`** contracts (**`r round(get_Q4_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = params$level, region_STP_name = params$region_STP_name)*100/get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = params$level, region_STP_name = params$region_STP_name))`%**) have delivered
-the required UOAs or more to be on track towards the Q4 threshold (90%) by the end of March 2022.
+* From the start of April to the end of `r format(Sys.Date() - lubridate::month(1), "%B")`  **`r get_Q4_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = params$level, region_STP_name = params$region_STP_name)`** contracts (**`r round(get_Q4_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = params$level, region_STP_name = params$region_STP_name)*100/get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = params$level, region_STP_name = params$region_STP_name))`%**) have delivered
+the required UOAs or more to be on track towards the Q1 threshold (100%) by the end of June 2022.
 
 
 ## UOA scheduled delivery

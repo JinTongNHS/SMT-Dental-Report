@@ -810,7 +810,10 @@ plot_UDA_UOA_delivery_profile <- function(data = UDA_scheduled_data,
            x = "Month",
            y = "Percentage of contracts delivering in this band",
            fill = legTitle,
-           subtitle = subtitle) +
+           subtitle = subtitle,
+           caption = "*Excluding prototype contracts and those with annual contracted UDA < 100 
+                    **These are scheduled months and April data is for the reporting period 1st April - 
+                    21st April therefore the April data has been scaled up by 18 instead of 12.") +
       #scale_fill_manual(values = cbPalette) +
       scale_x_datetime(breaks = data$month, 
                        labels = scales::date_format("%b-%y")) +
@@ -968,6 +971,99 @@ get_Q4_num_contracts_on_target <- function(data = UDA_calendar_data,
   no_on_target <- data[2, "n"]
   as.integer(no_on_target)
 
+}
+
+
+################################################################################
+get_Q1_22_num_contracts_on_target <- function(data = UDA_calendar_data, 
+                                           remove_prototypes = T,
+                                           scheduled_data = UDA_scheduled_data,
+                                           UDAorUOA = "UDA",
+                                           level = "National",
+                                           region_STP_name = NULL){
+  
+  #filter for STP or region
+  if(level == "Regional"){
+    data <- data %>% 
+      filter(region_name == region_STP_name )
+  }else if(level == "STP"){
+    data <- data %>% 
+      filter(commissioner_name == region_STP_name)
+    subtitle <- region_STP_name
+  }
+  
+  if(UDAorUOA == "UDA"){
+    #get contracted UDAs
+    contracted_UDA_UOAs <- scheduled_data %>%
+      select(month, contract_number, annual_contracted_UDA) %>%
+      mutate(UDA_financial_half_target = case_when(month < as.Date("2021-10-01") ~ 0.6 * annual_contracted_UDA/4,
+                                                   month < as.Date("2022-01-01") ~ 0.65 * annual_contracted_UDA/4,
+                                                   month < as.Date("2022-04-01") ~ 0.85 * annual_contracted_UDA/4,
+                                                   month < as.Date("2022-07-01") ~ 0.95 * annual_contracted_UDA/4))
+  }else{
+    #get contracted UOAs
+    contracted_UDA_UOAs <- scheduled_data %>%
+      select(month, contract_number, annual_contracted_UOA) %>%
+      mutate(UDA_financial_half_target = case_when(month < as.Date("2021-10-01") ~ 0.8 * annual_contracted_UOA/4,
+                                                   month < as.Date("2022-01-01") ~ 0.85 * annual_contracted_UOA/4,
+                                                   month < as.Date("2022-04-01") ~ 0.90 * annual_contracted_UOA/4,
+                                                   month < as.Date("2022-07-01") ~ 1 * annual_contracted_UOA/4))
+  }
+  
+  
+  
+  #join in contracted UDA/UOAs from scheduled data
+  data <- data %>%
+    left_join(contracted_UDA_UOAs, by = c("month", "contract_number")) %>%
+    filter(month >= as.Date("2022-04-01"))
+  
+  #create not in function
+  `%notin%` = Negate(`%in%`)
+  
+  #remove prototype contracts if specified
+  if(remove_prototypes & UDAorUOA == "UDA"){
+    data <- data %>%
+      filter(contract_number %notin% prototype_contracts$prototype_contract_number)%>%
+      filter(annual_contracted_UDA > 100)
+  }else if(remove_prototypes & UDAorUOA == "UOA"){
+    data <- data %>%
+      filter(contract_number %notin% prototype_contracts$prototype_contract_number)%>%
+      filter(annual_contracted_UOA > 0)
+  }
+  
+  #way to progress through the months
+  if(max(data$month) == as.Date("2022-04-01")){
+    month_factor <- 1
+  }
+  if(max(data$month) == as.Date("2022-05-01")){
+    month_factor <- 2
+  }
+  if(max(data$month) == as.Date("2022-06-01")){
+    month_factor <- 3
+  }
+  
+  if(UDAorUOA == "UDA"){
+    #count number of contracts meeting target
+    data <- data %>%
+      group_by(contract_number) %>%
+      summarise(mean_annual_contracted_UDA = mean(annual_contracted_UDA),
+                YTD_UDA_delivered = sum(UDA_total)) %>%
+      mutate(mean_Q4_UDA_target = mean_annual_contracted_UDA * 0.95 / 4) %>%
+      count(YTD_UDA_delivered >= (mean_Q4_UDA_target) * month_factor / 3)
+  }else{
+    #count number of contracts meeting target
+    data <- data %>%
+      group_by(contract_number) %>%
+      summarise(mean_annual_contracted_UOA = mean(annual_contracted_UOA),
+                YTD_UOA_delivered = sum(UOA_total)) %>%
+      mutate(mean_Q4_UOA_target = mean_annual_contracted_UOA * 1 / 4) %>%
+      count(YTD_UOA_delivered >= (mean_Q4_UOA_target) * month_factor / 3)
+  }
+  
+  
+  no_on_target <- data[2, "n"]
+  as.integer(no_on_target)
+  
 }
 
 
