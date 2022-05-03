@@ -56,8 +56,8 @@ get_data_for_cumulative_plot_UOA <- function(data = UOA_calendar_data,
     
     
     data <- data %>%
-      filter(contract_number %notin% prototype_contracts$prototype_contract_number)#%>%
-    #filter(annual_contracted_UOA > 0)
+      filter(contract_number %notin% prototype_contracts$prototype_contract_number) %>%
+    filter(annual_contracted_UOA > 0)
   }
   
   #group by month and sum UDAs delivered
@@ -97,8 +97,8 @@ get_delivery_data <- function(data = UDA_scheduled_data,
       filter(annual_contracted_UDA > 100)
   }else if(remove_prototypes & UDAorUOA == "UOA"){
     data <- data %>%
-      filter(contract_number %notin% prototype_contracts$prototype_contract_number)#%>%
-      #filter(annual_contracted_UOA > 0)
+      filter(contract_number %notin% prototype_contracts$prototype_contract_number) %>%
+      filter(annual_contracted_UOA > 0)
   }
   
   if(STP_lines){
@@ -185,12 +185,12 @@ get_delivery_data_calendar <- function(calendar_data = UDA_calendar_data,
   #remove prototype contracts if specified
   if(remove_prototypes & UDAorUOA == "UDA"){
     data <- data %>%
-      filter(contract_number %notin% prototype_contracts$prototype_contract_number)%>%
+      filter(contract_number %notin% prototype_contracts$prototype_contract_number) %>%
       filter(annual_contracted_UDA > 100)
   }else if(remove_prototypes & UDAorUOA == "UOA"){
     data <- data %>%
-      filter(contract_number %notin% prototype_contracts$prototype_contract_number)#%>%
-      #filter(annual_contracted_UOA > 0)
+      filter(contract_number %notin% prototype_contracts$prototype_contract_number) %>%
+      filter(annual_contracted_UOA > 0)
   }
   
   if(regional_lines){
@@ -302,8 +302,8 @@ get_delivery_profile_data <- function(data = UDA_scheduled_data,
       filter(annual_contracted_UDA > 100)
   }else if(remove_prototypes & UDAorUOA == "UOA"){
     data <- data %>%
-      filter(contract_number %notin% prototype_contracts$prototype_contract_number)#%>%
-      #filter(annual_contracted_UOA > 0)
+      filter(contract_number %notin% prototype_contracts$prototype_contract_number) %>%
+      filter(annual_contracted_UOA > 0)
   }
   
   if(UDAorUOA == "UDA"){

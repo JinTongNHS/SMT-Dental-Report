@@ -30,6 +30,8 @@ plot_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data,
     juneTarget <- 95
     title <- "Cumulative monthly % of quarterly contracted UDAs delivered"
     ylab <- "Cumulative % of quarterly \ncontracted UDAs delivered"
+    captionTitle <- "*Excluding prototype contracts and those with annual contracted UDA < 100
+                   **This is calendar data which means that data may change as more CoTs are registered"
     barCol <- "coral"
     
     #get raw data into the right format
@@ -42,6 +44,8 @@ plot_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data,
     juneTarget <- 100
     title <- "Cumulative monthly % of quarterly contracted UOAs delivered"
     ylab <- "Cumulative % of quarterly \ncontracted UOAs delivered"
+    captionTitle <- "*Excluding prototype contracts and those with zero annual contracted UOAs
+                   **This is calendar data which means that data may change as more CoTs are registered"
     barCol <- "seagreen3"
     
     #get raw data into fight format
@@ -146,7 +150,8 @@ plot_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data,
          x = "Month",
          y = ylab,
          subtitle = subtitle,
-         colour = "") +
+         colour = "",
+         caption = captionTitle) +
     theme(legend.position = "bottom"#, legend.box="vertical", legend.margin=margin()
           ) +
     guides(colour=guide_legend(nrow=2,byrow=TRUE))
@@ -291,6 +296,9 @@ plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
     data <- get_delivery_data(data, remove_prototypes, UDAorUOA = "UDA")
     title <- "Scheduled monthly percentage of usual annual contracted UDAs \nsubmitted across all contracts* scaled up to 12 months**"
     ylab <- "% of contracted UDAs submitted"
+    captionTitle <- "*Excluding prototype contracts and those with annual contracted UDA < 100 
+                    **These are scheduled months and April data is for the reporting period 1st April - 
+                    21st April therefore the April data has been scaled up by 18 instead of 12."
     lineCol <- "coral"
     lineCol <- "#CC79A7"
     septemberTarget <- 60
@@ -302,6 +310,9 @@ plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
     data <- get_delivery_data(data, remove_prototypes, UDAorUOA = "UOA")
     title <- "Scheduled monthly percentage of usual annual contracted UOAs \nsubmitted across all contracts* scaled up to 12 months**"
     ylab <- "% of contracted UOAs submitted"
+    captionTitle <- "*Excluding prototype contracts and with zero annual contracted UOAs 
+                    **These are scheduled months and April data is for the reporting period 1st April - 
+                    21st April therefore the April data has been scaled up by 18 instead of 12."
     lineCol <- "steelblue"
     septemberTarget <- 80
     decemberTarget <- 85
@@ -366,9 +377,7 @@ plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
          x = "Month",
          y = ylab, 
          subtitle = subtitle,
-         caption = "*Excluding prototype contracts and those with annual contracted UDA < 100 
-                    **These are scheduled months and April data is for the reporting period 1st April - 
-                    21st April therefore the April data has been scaled up by 18 instead of 12.") +
+         caption = captionTitle) +
     annotate(geom = "text", 
              x = data$month, 
              y = data$perc_UDA_UOA_delivered + 3, 
@@ -427,8 +436,9 @@ plot_UDA_UOA_delivery_calendar <- function(data = UDA_calendar_data,
     data <- get_delivery_data_calendar(data, scheduled_data, remove_prototypes, UDAorUOA = "UDA", regional_lines, STP_lines, cat_lines)
     title <- "Calendar monthly percentage of usual annual contracted UDAs \ndelivered across all contracts* scaled up to 12 months"
     ylab <- "% of contracted UDAs delivered"
+    captionTitle <- "*Excluding prototype contracts and those with annual contracted UDA < 100
+                   **This is calendar data which means that data may change as more CoTs are registered"
     lineCol <- "coral"
-    #lineCol <- "#CC79A7"
     septemberTarget <- 60
     decemberTarget <- 65
     marchTarget <- 85
@@ -439,6 +449,8 @@ plot_UDA_UOA_delivery_calendar <- function(data = UDA_calendar_data,
     data <- get_delivery_data_calendar(data, scheduled_data, remove_prototypes, UDAorUOA = "UOA", regional_lines, STP_lines, cat_lines)
     title <- "Calendar monthly percentage of usual annual contracted UOAs \ndelivered across all contracts* scaled up to 12 months"
     ylab <- "% of contracted UOAs delivered"
+    captionTitle <- "*Excluding prototype contracts and those with zero annual contracted UOAs
+                   **This is calendar data which means that data may change as more CoTs are registered"
     lineCol <- "#009E73"
     septemberTarget <- 80
     decemberTarget <- 85
@@ -446,8 +458,7 @@ plot_UDA_UOA_delivery_calendar <- function(data = UDA_calendar_data,
     juneTarget <- 100
   }
   
-  captionTitle <- "*Excluding prototype contracts and those with annual contracted UDA < 100
-                   **This is calendar data which means that data may change as more CoTs are registered"
+  
   subtitle_addition <- ""
   
   if(regional_lines){
@@ -592,8 +603,7 @@ plot_UDA_UOA_delivery_calendar <- function(data = UDA_calendar_data,
             x = "Month",
             y = ylab, 
             subtitle = paste0(subtitle, subtitle_addition),
-            caption = "*Excluding prototype contracts and those with annual contracted UDA < 100 
-                    **This is calendar data which means that data may change as more CoTs are registered")
+            caption = captionTitle)
 
    }else{
      g <- g +
@@ -802,9 +812,15 @@ plot_UDA_UOA_delivery_profile <- function(data = UDA_scheduled_data,
   if(UDAorUOA == "UDA"){
     title <- "Proportion of contracts delivering in each performance band \nof total contracted UDA per month"
     legTitle <- "Performance band of \nUDA delivery"
+    captionTitle <- "*Excluding prototype contracts and those with annual contracted UDA < 100 
+                    **These are scheduled months and April data is for the reporting period 1st April - 
+                    21st April therefore the April data has been scaled up by 18 instead of 12."
   }else{
     title <- "Proportion of contracts delivering in each performance band \nof total contracted UOA per month"
     legTitle <- "Performance band of \nUOA delivery"
+    captionTitle <- "*Excluding prototype contracts and those with zero annual contracted UOAs 
+                    **These are scheduled months and April data is for the reporting period 1st April - 
+                    21st April therefore the April data has been scaled up by 18 instead of 12."
   }
   
   #get bars in the correct order
@@ -829,9 +845,7 @@ plot_UDA_UOA_delivery_profile <- function(data = UDA_scheduled_data,
            y = "Percentage of contracts delivering in this band",
            fill = legTitle,
            subtitle = subtitle,
-           caption = "*Excluding prototype contracts and those with annual contracted UDA < 100 
-                    **These are scheduled months and April data is for the reporting period 1st April - 
-                    21st April therefore the April data has been scaled up by 18 instead of 12.") +
+           caption = captionTitle) +
       #scale_fill_manual(values = cbPalette) +
       scale_x_datetime(breaks = data$month, 
                        labels = scales::date_format("%b-%y")) +
