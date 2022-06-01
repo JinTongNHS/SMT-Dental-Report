@@ -1,5 +1,180 @@
 library(tidyverse)
 
+################################################################################
+pull_UDA_calendar_data <- function(){
+  
+  con <- dbConnect(odbc::odbc(), "NCDR")
+  
+  sql <- "SELECT [data_month]
+      ,[contract_number]
+      ,[latest_contract_type]
+      ,[name_or_company_name]
+      ,[commissioner_name]
+      ,[region_name]
+      ,[paid_by_BSA]
+      ,[contract_start_date]
+      ,[contract_end_date]
+      ,[UDA_total]
+      ,[UDA_band_1_total]
+      ,[UDA_band_2_total]
+      ,[UDA_band_3_total]
+      ,[UDA_urgent_total]
+      ,[UDA_other_total]
+      ,[total_FP17s]
+      ,[total_band_1_FP17s]
+      ,[total_band_2_FP17s]
+      ,[total_band_3_FP17s]
+      ,[total_urgent_FP17s]
+      ,[total_other_FP17s]
+  FROM [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UDA_calendar]"
+  result <- dbSendQuery(con, sql)
+  UDA_calendar_data <- dbFetch(result)
+  dbClearResult(result)
+  
+  UDA_calendar_data
+}
+
+################################################################################
+pull_UOA_calendar_data <- function(){
+  
+  con <- dbConnect(odbc::odbc(), "NCDR")
+  
+  sql <- "SELECT [data_month]
+      ,[contract_number]
+      ,[contract_type]
+      ,[name_or_company_name]
+      ,[commissioner_name]
+      ,[paid_by_BSA]
+      ,[contract_start_date]
+      ,[contract_end_date]
+      ,[UOA_total]
+  FROM [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UOA_calendar]"
+  result <- dbSendQuery(con, sql)
+  UOA_calendar_data <- dbFetch(result)
+  dbClearResult(result)
+  
+  UOA_calendar_data
+}
+
+
+################################################################################
+pull_UDA_scheduled_data <- function(){
+  
+  con <- dbConnect(odbc::odbc(), "NCDR")
+  
+  sql <- "SELECT [data_month]
+      ,[contract_number]
+      ,[name_or_company_name]
+      ,[commissioner_name]
+      ,[contract_type]
+      ,[paid_by_BSA]
+      ,[contract_start_date]
+      ,[contract_end_date]
+      ,[annual_contracted_UDA]
+      ,[annual_contracted_UOA]
+      ,[UDA_delivered]
+      ,[general_FP17s]
+      ,[UDA_delivered_prev_year]
+      ,[general_FP17s_prev_year]
+      ,[UDA_delivered_prev_2_year]
+      ,[general_FP17s_prev_2_year]
+      ,[UDA_band_1]
+      ,[UDA_band_2]
+      ,[UDA_band_3]
+      ,[UDA_urgent]
+      ,[UDA_other]
+      ,[FP17s_band_1]
+      ,[FP17s_band_2]
+      ,[FP17s_band_3]
+      ,[FP17s_band_urgent]
+      ,[FP17s_band_other]
+      ,[UDA_band_1_prev_year]
+      ,[UDA_band_2_prev_year]
+      ,[UDA_band_3_prev_year]
+      ,[UDA_urgent_prev_year]
+      ,[UDA_other_prev_year]
+      ,[FP17s_band_1_prev_year]
+      ,[FP17s_band_2_prev_year]
+      ,[FP17s_band3_prev_year]
+      ,[FP17s_urgent_prev_year]
+      ,[FP17s_other_prev_year]
+      ,[UDA_band_1_prev_2_year]
+      ,[UDA_band_2_prev_2_year]
+      ,[UDA_band_3_prev_2_year]
+      ,[UDA_urgent_prev_2_year]
+      ,[UDA_other_prev_2_year]
+      ,[FP17s_band_1_prev_2_year]
+      ,[FP17s_band_2_prev_2_year]
+      ,[FP17s_band_3_prev_2_year]
+      ,[FP17s_urgent_prev_2_year]
+      ,[FP17s_other_prev_2_year]
+  FROM [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UDA_scheduled]"
+  result <- dbSendQuery(con, sql)
+  UDA_scheduled_data <- dbFetch(result)
+  dbClearResult(result)
+  
+  UDA_scheduled_data
+}
+
+################################################################################
+pull_UOA_scheduled_data <- function(){
+  
+  con <- dbConnect(odbc::odbc(), "NCDR")
+  
+  sql <- "SELECT [data_month]
+      ,[contract_number]
+      ,[contract_type]
+      ,[name_or_company_name]
+      ,[commissioner_name]
+      ,[paid_by_BSA]
+      ,[contract_start_date]
+      ,[contract_end_date]
+      ,[annual_contracted_UOA]
+      ,[annual_contracted_UDA]
+      ,[UOA_delivered]
+      ,[UOA_delivered_prev_year]
+      ,[UOA_delivered_prev_2_year]
+      ,[orthodontic_FP17s]
+      ,[orthodontic_FP17s_prev_year]
+      ,[orthodontic_FP17s_prev_2_year]
+      ,[orthodontic_starts]
+      ,[orthodontic_completions]
+      ,[UOA_financial_half_target]
+  FROM [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UOA_scheduled]"
+  result <- dbSendQuery(con, sql)
+  UOA_scheduled_data <- dbFetch(result)
+  dbClearResult(result)
+  
+  UOA_scheduled_data
+}
+
+################################################################################
+pull_UDA_scheduled_historical_data <- function(){
+  
+  con <- dbConnect(odbc::odbc(), "NCDR")
+  
+  sql <- "SELECT [month]
+      ,[contract_number]
+      ,[band1_FP17]
+      ,[band2_FP17]
+      ,[band3_FP17]
+      ,[other_FP17]
+      ,[urgent_FP17]
+      ,[band1_UDA]
+      ,[band2_UDA]
+      ,[band3_UDA]
+      ,[other_UDA]
+      ,[urgent_UDA]
+      ,[total_FP17s]
+      ,[total_UDAs]
+  FROM [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UDA_scheduled_historical]"
+  result <- dbSendQuery(con, sql)
+  UOA_scheduled_historical_data <- dbFetch(result)
+  dbClearResult(result)
+  
+  UOA_scheduled_historical_data
+}
+
 
 ################################################################################
 get_data_for_cumulative_plot <- function(data = UDA_calendar_data, 

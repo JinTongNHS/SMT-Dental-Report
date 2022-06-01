@@ -56,11 +56,6 @@ plot_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data,
   #add blanks for future dates
   if(nrow(data) < 16){
 
-  
-    if(!(as.Date("2022-05-01") %in% data$month)){
-      data <- data %>% add_row(month = as.Date("2022-05-01"))
-    }
-    
     if(!(as.Date("2022-06-01") %in% data$month)){
       data <- data %>% add_row(month = as.Date("2022-06-01"))
     }
