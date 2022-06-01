@@ -27,13 +27,15 @@ get_data_for_cumulative_plot <- function(data = UDA_calendar_data,
     group_by(month) %>%
     summarise(monthly_UDA_UOAs_delivered = sum(UDA_total, na.rm = T),
               total_annual_UDA_UOAs_contracted = sum(annual_contracted_UDA)) %>%
-    mutate(target_perc = if_else(month >= as.Date("2021-04-01") & month < as.Date("2021-10-01"),
-                                 0.6,
-                                 0.65)) %>%
-    mutate(target_period = if_else(month >= as.Date("2021-04-01") & month < as.Date("2021-10-01"),
-                                   lubridate::interval(as.Date("2021-04-01"), as.Date("2021-09-30")),
-                                   lubridate::interval(as.Date("2021-10-01"), as.Date("2021-12-31")))) %>%
-    mutate(target_UDA_UOAs_delivered_in_target_period = total_annual_UDA_UOAs_contracted * target_perc * lubridate::time_length(target_period, "month")/ 12) 
+    mutate(threshold_perc = case_when(month >= as.Date("2021-04-01") & month < as.Date("2021-10-01") ~ 0.6,
+                                   month >= as.Date("2021-10-01") & month < as.Date("2022-01-01") ~ 0.65,
+                                   month >= as.Date("2022-01-01") & month < as.Date("2022-04-01") ~ 0.85,
+                                   month >= as.Date("2022-04-01") & month < as.Date("2022-07-01") ~ 0.95)) %>%
+    mutate(threshold_period = case_when(month >= as.Date("2021-04-01") & month < as.Date("2021-10-01") ~ lubridate::interval(as.Date("2021-04-01"), as.Date("2021-09-30")),
+                                      month >= as.Date("2021-10-01") & month < as.Date("2022-01-01") ~ lubridate::interval(as.Date("2021-10-01"), as.Date("2021-12-31")),
+                                      month >= as.Date("2022-01-01") & month < as.Date("2022-04-01") ~ lubridate::interval(as.Date("2022-01-01"), as.Date("2022-03-31")),
+                                      month >= as.Date("2022-04-01") & month < as.Date("2022-07-01") ~ lubridate::interval(as.Date("2022-04-01"), as.Date("2022-06-30")))) %>%
+    mutate(threshold_UDA_UOAs_contracted_in_threshold_period = total_annual_UDA_UOAs_contracted * threshold_perc * lubridate::time_length(threshold_period, "month")/ 12) 
   
 }
 
@@ -65,13 +67,21 @@ get_data_for_cumulative_plot_UOA <- function(data = UOA_calendar_data,
     group_by(month) %>%
     summarise(monthly_UDA_UOAs_delivered = sum(UOA_total, na.rm = T),
               total_annual_UDA_UOAs_contracted = sum(annual_contracted_UOA, na.rm = T)) %>%
-    mutate(target_perc = if_else(month >= as.Date("2021-04-01") & month < as.Date("2021-10-01"),
-                                                0.8,
-                                                0.85)) %>%
-    mutate(target_period = if_else(month >= as.Date("2021-04-01") & month < as.Date("2021-10-01"),
-                                   lubridate::interval(as.Date("2021-04-01"), as.Date("2021-09-30")),
-                                   lubridate::interval(as.Date("2021-10-01"), as.Date("2021-12-31")))) %>%
-    mutate(target_UDA_UOAs_delivered_in_target_period = total_annual_UDA_UOAs_contracted * target_perc * lubridate::time_length(target_period, "month")/ 12) 
+    # mutate(threshold_perc = if_else(month >= as.Date("2021-04-01") & month < as.Date("2021-10-01"),
+    #                                             0.8,
+    #                                             0.85)) %>%
+    # mutate(threshold_period = if_else(month >= as.Date("2021-04-01") & month < as.Date("2021-10-01"),
+    #                                lubridate::interval(as.Date("2021-04-01"), as.Date("2021-09-30")),
+    #                                lubridate::interval(as.Date("2021-10-01"), as.Date("2021-12-31")))) %>%
+    mutate(threshold_perc = case_when(month >= as.Date("2021-04-01") & month < as.Date("2021-10-01") ~ 0.8,
+                                      month >= as.Date("2021-10-01") & month < as.Date("2022-01-01") ~ 0.85,
+                                      month >= as.Date("2022-01-01") & month < as.Date("2022-04-01") ~ 0.90,
+                                      month >= as.Date("2022-04-01") & month < as.Date("2022-07-01") ~ 1)) %>%
+    mutate(threshold_period = case_when(month >= as.Date("2021-04-01") & month < as.Date("2021-10-01") ~ lubridate::interval(as.Date("2021-04-01"), as.Date("2021-09-30")),
+                                        month >= as.Date("2021-10-01") & month < as.Date("2022-01-01") ~ lubridate::interval(as.Date("2021-10-01"), as.Date("2021-12-31")),
+                                        month >= as.Date("2022-01-01") & month < as.Date("2022-04-01") ~ lubridate::interval(as.Date("2022-01-01"), as.Date("2022-03-31")),
+                                        month >= as.Date("2022-04-01") & month < as.Date("2022-07-01") ~ lubridate::interval(as.Date("2022-04-01"), as.Date("2022-06-30")))) %>%
+    mutate(threshold_UDA_UOAs_contracted_in_threshold_period = total_annual_UDA_UOAs_contracted * threshold_perc * lubridate::time_length(threshold_period, "month")/ 12) 
 }
 
 
@@ -121,7 +131,8 @@ get_delivery_data <- function(data = UDA_scheduled_data,
   
   new_data <- UDA_UOAs_delivered %>%
     #April data needs scaling differently
-    mutate(scaled_monthly_UDA_UOAs_delivered = if_else(month != as.Date("2021-04-01") & month != as.Date("2020-04-01") & month != as.Date("2019-04-01"),
+    mutate(scaled_monthly_UDA_UOAs_delivered = if_else(month != as.Date("2021-04-01") & month != as.Date("2020-04-01") 
+                                                       & month != as.Date("2019-04-01") & month != as.Date("2022-04-01"),
                                                        monthly_UDA_UOAs_delivered * 12,
                                                        monthly_UDA_UOAs_delivered * 18)) %>%
     mutate(perc_UDA_UOA_delivered = round(scaled_monthly_UDA_UOAs_delivered * 100 / annual_contracted_UDA_UOA)) 
@@ -309,13 +320,13 @@ get_delivery_profile_data <- function(data = UDA_scheduled_data,
   if(UDAorUOA == "UDA"){
     #create column for 12 month scaled % of UDAs delivered. April must be scaled differently.
     performance_table <- data %>%
-      mutate(monthly_perc_scaled = if_else(month != as.Date("2021-04-01"),
+      mutate(monthly_perc_scaled = if_else(month != as.Date("2021-04-01") & month != as.Date("2022-04-01"),
                                            round(UDA_delivered * 12 * 100 / annual_contracted_UDA),
                                            round(UDA_delivered * 18 * 100 / annual_contracted_UDA))) 
   }else{
     #create column for 12 month scaled % of UOAs delivered 
     performance_table <- data %>%
-      mutate(monthly_perc_scaled = if_else(month != as.Date("2021-04-01"),
+      mutate(monthly_perc_scaled = if_else(month != as.Date("2021-04-01") & month != as.Date("2022-04-01"),
                                            round(UOA_delivered * 12 * 100 / annual_contracted_UOA),
                                            round(UOA_delivered * 18 * 100 / annual_contracted_UOA)))
   }

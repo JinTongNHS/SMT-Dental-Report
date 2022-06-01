@@ -56,10 +56,7 @@ plot_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data,
   #add blanks for future dates
   if(nrow(data) < 16){
 
-    if(!(as.Date("2022-04-01") %in% data$month)){
-      data <- data %>% add_row(month = as.Date("2022-04-01"))
-    }
-    
+  
     if(!(as.Date("2022-05-01") %in% data$month)){
       data <- data %>% add_row(month = as.Date("2022-05-01"))
     }
@@ -72,7 +69,7 @@ plot_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data,
   #get data in the right format
   data <- data %>%
     mutate(month = as.Date(month)) %>%
-    mutate(perc_of_UDA_UOA_target_delivered = monthly_UDA_UOAs_delivered * 100 / target_UDA_UOAs_delivered_in_target_period) %>%
+    mutate(perc_of_UDA_UOA_threshold_delivered = monthly_UDA_UOAs_delivered * 100 / threshold_UDA_UOAs_contracted_in_threshold_period) %>%
     mutate(perc_of_contracted_UDA_UOAs_delivered = monthly_UDA_UOAs_delivered * 100 * 4/ total_annual_UDA_UOAs_contracted) %>%
     mutate(financial_quarter = case_when(month < as.Date("2021-07-01") ~ "Apr-Jun (Q1)",
                                          month < as.Date("2021-10-01") ~ "Jul-Sep (Q2)",
@@ -160,7 +157,7 @@ plot_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data,
     p
   }else{
     data %>%
-      select(-target_period)
+      select(-threshold_period)
   }
 
 }
@@ -736,12 +733,11 @@ plot_urgent_form_submissions <- function(data = UDA_scheduled_data,
   data <- get_banded_COTs_data(data, historic_data = historic_data, remove_prototypes = F)
   data <- data %>%
     mutate(date = as.Date(month)) %>%
-    mutate(financial_year = if_else(month >= as.Date("2019-04-01") & month < as.Date("2020-04-01"),
-                                    "2019/20",
-                                    if_else(month >= as.Date("2020-04-01") & month < as.Date("2021-04-01"),
-                                            "2020/21",
-                                            "2021/22")))
-
+    mutate(financial_year = case_when(month >= as.Date("2019-04-01") & month < as.Date("2020-04-01") ~ "2019/20",
+                                      month >= as.Date("2020-04-01") & month < as.Date("2021-04-01") ~ "2020/21",
+                                      month >= as.Date("2021-04-01") & month < as.Date("2022-04-01") ~ "2021/22",
+                                      month >= as.Date("2022-04-01") & month < as.Date("2023-04-01") ~ "2022/23"
+                                        ))
 
   #plot code
   p <- ggplot(data) +
@@ -753,6 +749,11 @@ plot_urgent_form_submissions <- function(data = UDA_scheduled_data,
                   group = factor(financial_year),
                   colour = factor(financial_year)),
               size = 1) +
+    geom_point(aes(x = factor(lubridate::month(date, label=TRUE, abbr=TRUE),
+                             levels = c("Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar")),
+                  y = urgent,
+                  group = factor(financial_year),
+                  colour = factor(financial_year))) +
     scale_y_continuous(breaks = scales::breaks_pretty(),
                        limits = c(0, max(data$urgent))) +
     labs(title = "Urgent treatment form submissions",
@@ -1170,11 +1171,11 @@ get_num_urgent_forms_2019 <- function(data = UDA_scheduled_data,
                                  remove_prototypes = remove_prototypes)
   
   data <- data %>%
-    filter(month == max(data$month) - lubridate::years(2))
+    filter(month == max(data$month) - lubridate::years(3))
 
   num_urgent_forms <- data[1, "urgent"]
   as.integer(num_urgent_forms)
-  
+
 }
 
   
@@ -1337,15 +1338,19 @@ plot_delivery_vs_contract_size_scatter_corporate <- function(data = UDA_schedule
       filter(annual_contracted_UDA > 100)
   }else if(remove_prototypes & UDAorUOA == "UOA"){
     data <- data %>%
-      filter(contract_number %notin% prototype_contracts$prototype_contract_number)#%>%
-      #filter(annual_contracted_UOA > 100)
+      filter(contract_number %notin% prototype_contracts$prototype_contract_number) %>%
+      filter(annual_contracted_UOA > 100)
   }
+  
+  #scale up April by 18
+  scaleFactor <- if_else(plot_month == as.Date("2022-04-01"), 18, 12)
 
   data <- data %>%
     filter(month == plot_month) %>%
     select(contract_number, annual_contracted_UDA, UDA_delivered,
            Region, Dental.Group, Corporate.Status, Average.UDA.value) %>%
-    mutate(UDA_delivery = UDA_delivered * 12 / annual_contracted_UDA) 
+    mutate(UDA_delivery = UDA_delivered * scaleFactor / annual_contracted_UDA) 
+  
   
   data_to_plot <- data %>%
     mutate(Corporate.Status = if_else(Corporate.Status == 1, T, F)) %>%
@@ -1384,12 +1389,13 @@ plot_delivery_vs_contract_size_scatter_corporate <- function(data = UDA_schedule
       scale_y_continuous(breaks = seq(0, 3, 0.5),
                          limits = c(0, 3),
                          labels = scales::percent_format(accuracy = 1)) +
-      labs(title = "UDA contract size Vs UDA delivery scaled up 12 months",
+      labs(title = "UDA contract size Vs UDA delivery scaled up 12** months",
            subtitle = paste(format(plot_month, "%B %Y"), "scheduled delivery -", subtitle),
            x = "Annual contracted UDAs",
            y = "Percentage of annual contracted UDAs delivered \n scaled up 12 months",
            caption = "*Excluding prototype contracts and contracts with annual contracted UDA < 100.
-         Also excluding contracts with delivery > 300% for plot purposes.",
+         Also excluding contracts with delivery > 300% for plot purposes.
+           **April is scaled up by 18 due to short schedule period for April",
            colour = "Corporate status"
       )
     

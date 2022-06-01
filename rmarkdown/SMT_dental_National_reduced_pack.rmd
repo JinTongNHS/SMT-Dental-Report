@@ -1,0 +1,506 @@
+---
+title: "Dental Data Pack"
+subtitle: "`r params$region_STP_name`"
+date: "`r paste(format(Sys.time(), '%B, %Y'), ' - Reporting up to end of', format(Sys.Date() - lubridate::weeks(4), '%B, %Y'))`"
+output:
+  xaringan::moon_reader:
+    css: [theme.css, nhsr-fonts.css]
+    self_contained: true
+    lib_dir: libs
+    nature:
+      ratio: '16:9'
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+params:
+  level: "National"
+  region_STP_name: NULL
+---
+
+
+```{r setup, include=FALSE}
+
+library(tidyverse)
+library(readxl)
+source("../R/03 SMT_plot_functions.R")
+source("../R/02 format_SMT_data.R")
+#load in raw data
+UDA_calendar_data <- read_excel("../data/cleaned_data_up_to_april/UDA_calendar_data.xlsx")
+UOA_calendar_data <- read_excel("../data/cleaned_data_up_to_april/UOA_calendar_data.xlsx")
+UDA_scheduled_data <- read_excel("../data/cleaned_data_up_to_april/UDA_scheduled_data.xlsx")
+UOA_scheduled_data <- read_excel("../data/cleaned_data_up_to_april/UOA_scheduled_data.xlsx")
+historical_UDA_scheduled_data <- read_excel("../data/cleaned_data_up_to_february/historical_UDA_scheduled_data.xlsx")
+UDA_calendar_data <- rename(UDA_calendar_data, month = data_month)
+UOA_calendar_data <- UOA_calendar_data %>%
+  rename(month = data_month) %>%
+  mutate(contract_number = as.numeric(contract_number),
+         UOA_total = as.numeric(UOA_total)) 
+    #add a region column to the data
+    region_STP_lookup <- UDA_calendar_data %>%
+      select(contract_number, name_or_company_name, commissioner_name, region_name) %>%
+      distinct()
+    
+    UOA_calendar_data <- left_join(UOA_calendar_data, region_STP_lookup, by = c("contract_number", "name_or_company_name", "commissioner_name"))
+UDA_scheduled_data <- rename(UDA_scheduled_data, month = data_month)
+UOA_scheduled_data <- rename(UOA_scheduled_data, month = data_month)
+dental_data_111 <- read_excel("../data/cleaned_data_up_to_march/dental_data_111_Mar22.xls")
+prototype_contracts <- read_excel("../data/prototype_contracts.xlsx")
+contractor_categories <- readRDS("../data/cleaned_data_up_to_october/contractor_categories.RDS")
+UDA_delivery_calendar <- get_delivery_data_calendar(STP_lines = T, renameColumns = T)
+UDA_delivery_scheduled <- get_delivery_data(STP_lines = T, renameColumns = T)
+#prototype_delivery <- readRDS("~/R-Projects/SMT-Dental-Report/data/prototype_delivery.RDS")
+contract_demographics <- readRDS("../data/contract_demographics.rds")
+#read in unique patients
+unique_patients_static <- readRDS("../data/unique_patients/unique_patients_static.rds")
+unique_patients_rolling <- readRDS("../data/unique_patients/unique_patients_rolling.rds")
+#evaluate chunks based on pack level
+if(params$level == "National"){
+  evaluate_contents_1 <- TRUE
+  evaluate_contents_2 <- FALSE
+  evaluate_regional <- TRUE
+  evaluate_STP <- FALSE
+  evaluate_111 <- TRUE
+}else if(params$level == "Regional"){
+  evaluate_contents_1 <- TRUE
+  evaluate_contents_2 <- FALSE
+  evaluate_regional <- FALSE
+  evaluate_STP <- TRUE
+  evaluate_111 <- FALSE
+}else{
+  evaluate_contents_1 <- FALSE
+  evaluate_contents_2 <- TRUE
+  evaluate_regional <- FALSE
+  evaluate_STP <- FALSE
+  evaluate_111 <- FALSE
+}
+
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+
+#avoid standard form
+options(scipen=999)
+
+```
+
+
+### UDA Activity Data
+
+```{r xaringan-panelset-UDA-activity, echo=FALSE}
+xaringanExtra::use_panelset()
+```
+ <font size="2">
+.panelset[
+
+.panel[.panel-name[National]
+```{r UDA_activity_Calendar1, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
+plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data, 
+                                  scheduled_data = UDA_scheduled_data,
+                                  contractor_cats = contractor_categories,
+                                  UDAorUOA = "UDA",
+                                  level = "National",
+                                  region_STP_name = NULL,
+                                  remove_prototypes = T,
+                                  regional_lines = F, 
+                                  STP_lines = F,
+                                  cat_lines = F,
+                                  plotChart = T)
+```
+
+* This graph shows the average monthly performance of the **`r get_num_contracts(level = "National", region_STP_name = NULL)`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (60% for Apr-Sep 21, 65% for Oct-Dec, 85% for Jan-Mar and 95% for Apr-Jun 22).
+* N.B. Previous month's delivery may be marginally higher to what was reported last month
+due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported. 
+
+]
+.panel[.panel-name[Regions]
+```{r UDA_activity_Calendar9, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
+plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
+                                  scheduled_data = UDA_scheduled_data,
+                                  contractor_cats = contractor_categories,
+                                  UDAorUOA = "UDA",
+                                  level = params$level,
+                                  region_STP_name = params$region_STP_name,
+                                  remove_prototypes = T,
+                                  regional_lines = T,
+                                  STP_lines = F,
+                                  cat_lines = F,
+                                  plotChart = T)
+```
+
+]
+.panel[.panel-name[National level data]
+```{r echo=FALSE, results='asis',warning=FALSE, fig.width=3, fig.height=3}
+
+DT::datatable(plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data, 
+                                  scheduled_data = UDA_scheduled_data,
+                                  contractor_cats = contractor_categories,
+                                  UDAorUOA = "UDA",
+                                  level = "National",
+                                  region_STP_name = NULL,
+                                  remove_prototypes = T,
+                                  regional_lines = F, 
+                                  STP_lines = F,
+                                  cat_lines = F,
+                                  plotChart = F),
+              rownames=FALSE,  extensions = 'Buttons', options = list(dom='Bt', buttons = c('excel'),
+  bPaginate = FALSE, pageLength=35, columnDefs = list(list(className = 'dt-left', targets = 0:4)),searching=FALSE,scrollY ='350px', scrollX ='500px'))%>%
+  DT::formatStyle(columns = 1:5, fontSize = '90%')
+```
+]
+]
+
+---
+
+### UDA cumulative activity data
+
+```{r xaringan-panelset-UDA_cumulative_activity, echo=FALSE}
+xaringanExtra::use_panelset()
+```
+ <font size="2">
+.panelset[
+
+.panel[.panel-name[National]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
+                                  UDAorUOA = "UDA",
+                                  level = "National",
+                                  region_STP_name = NULL)
+```
+
+* This graph shows the cumulative activity by quarter of the 
+**`r get_num_contracts(level = "National", region_STP_name = NULL)`** 
+GDS/PDS/PDS+
+contracts measured against the expected monthly total activity to achieve the quarterly thresholds (95% for Apr-Jun 22).
+* From the start of April to the end of `r format(Sys.Date() - lubridate::month(1), "%B")` 
+**`r get_Q1_22_num_contracts_on_target(level = "National", region_STP_name = NULL)`**
+contracts (
+**`r round(get_Q1_22_num_contracts_on_target(level = "National", region_STP_name = NULL)*100/get_num_contracts(level = "National", region_STP_name = NULL))` %**
+) have delivered the required UDAs or more to be on track towards the Q1 threshold (95%) by the end of June 2022.
+
+]
+.panel[.panel-name[National level data]
+```{r echo=FALSE, results='asis',warning=FALSE, fig.width=3, fig.height=3}
+
+DT::datatable(plot_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
+                                  UDAorUOA = "UDA",
+                                  level = "National",
+                                  region_STP_name = NULL,
+                                  plotChart = F),
+              rownames=FALSE,  extensions = 'Buttons', options = list(dom='Bt', buttons = c('excel'),
+  bPaginate = FALSE, pageLength=35, columnDefs = list(list(className = 'dt-left', targets = 0:4)),searching=FALSE,scrollY ='350px', scrollX ='500px'))%>%
+  DT::formatStyle(columns = c(1, 2, 3, 4, 5), fontSize = '90%')
+```
+]
+]
+
+---
+
+### Scheduled UDAs
+
+```{r xaringan-panelset-UDA_activity_scheduled, echo=FALSE}
+xaringanExtra::use_panelset()
+```
+ <font size="2">
+.panelset[
+
+.panel[.panel-name[National]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_UDA_UOA_delivery(data = UDA_scheduled_data,  UDAorUOA = "UDA",
+                                  level = "National",
+                                  region_STP_name = NULL)
+```
+
+* This graph shows the monthly percentage of usual annual contracted UDAs scaled up to 12 months (18 months for April) submitted. The graph uses scheduled data to measure the
+activity which is fixed. This may be thought of as "UDAs submitted" in each month rather than delivered.
+
+]
+.panel[.panel-name[National level data]
+```{r echo=FALSE, results='asis',warning=FALSE, fig.width=3, fig.height=3}
+
+DT::datatable(plot_UDA_UOA_delivery(data = UDA_scheduled_data,  UDAorUOA = "UDA",
+                                  level = "National",
+                                  region_STP_name = NULL,
+                                  plotChart = F),
+              rownames=FALSE,  extensions = 'Buttons', options = list(dom='Bt', buttons = c('excel'),
+  bPaginate = FALSE, pageLength=35, columnDefs = list(list(className = 'dt-left', targets = 0:4)),searching=FALSE,scrollY ='350px', scrollX ='500px'))%>%
+  DT::formatStyle(columns = c(1, 2, 3, 4, 5), fontSize = '90%')
+```
+]
+]
+
+
+---
+
+### UDA delivery profile
+
+```{r xaringan-panelset-UDA_delivery_profile, echo=FALSE}
+xaringanExtra::use_panelset()
+```
+ <font size="2">
+.panelset[
+
+ .panel[.panel-name[National]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
+                          calendar_data = UDA_calendar_data,
+                          UDAorUOA = "UDA",
+                          level = "National",
+                          region_STP_name = NULL)
+```
+
+* The graph shows the proportion of practices delivering
+between a certain % group of contracted UDA activity if performance for that
+month is annualised. This uses scheduled data.
+
+ ]
+ .panel[.panel-name[National level data]
+```{r echo=FALSE, results='asis',warning=FALSE, fig.width=3, fig.height=3}
+
+DT::datatable(plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
+                          calendar_data = UDA_calendar_data,
+                          UDAorUOA = "UDA",
+                          level = "National",
+                          region_STP_name = NULL,
+                          plotChart = F),
+              rownames=FALSE,  extensions = 'Buttons', options = list(dom='Bt', buttons = c('excel'),
+  bPaginate = FALSE, pageLength=35, columnDefs = list(list(className = 'dt-left', targets = 0:4)),searching=FALSE,scrollY ='350px', scrollX ='500px'))%>%
+  DT::formatStyle(columns = c(1, 2, 3, 4, 5), fontSize = '90%')
+```
+ ]
+ ]
+
+---
+
+### UOA activity data
+
+
+```{r xaringan-panelset-UOA_activity, echo=FALSE}
+xaringanExtra::use_panelset()
+```
+ <font size="2">
+.panelset[
+
+ .panel[.panel-name[National]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data, 
+                                  scheduled_data = UOA_scheduled_data,
+                                  contractor_cats = contractor_categories,
+                                  UDAorUOA = "UOA",
+                                  level = "National",
+                                  region_STP_name = NULL,
+                                  remove_prototypes = T,
+                                  regional_lines = F, 
+                                  STP_lines = F,
+                                  cat_lines = F,
+                                  plotChart = T)
+```
+
+* This graph shows the average monthly performance of the
+**`r get_num_contracts(data = UOA_calendar_data, remove_prototypes = T, scheduled_data = UOA_scheduled_data, UDAorUOA = "UOA", level = "National", region_STP_name = NULL)`**
+GDS/PDS contracts scaled up by 12 months measured against the delivery thresholds (80% for Apr-Sep 21, 85% for Oct-Dec, 90% for Jan-Mar, 100% for Apr-Jun 22).
+* N.B. Previous month's delivery may be marginally different to what was reported last month
+due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported.
+
+ ]
+  .panel[.panel-name[Regions]
+```{r UOA_activity_regional, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval=evaluate_regional}
+plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
+                                  scheduled_data = UOA_scheduled_data,
+                                  contractor_cats = contractor_categories,
+                                  UDAorUOA = "UOA",
+                                  level = params$level,
+                                  region_STP_name = params$region_STP_name,
+                                  remove_prototypes = T,
+                                  regional_lines = T,
+                                  STP_lines = F,
+                                  cat_lines = F,
+                                  plotChart = T)
+```
+
+ ]
+ .panel[.panel-name[National level data]
+```{r echo=FALSE, results='asis',warning=FALSE, fig.width=3, fig.height=3}
+
+DT::datatable(plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data, 
+                                  scheduled_data = UOA_scheduled_data,
+                                  contractor_cats = contractor_categories,
+                                  UDAorUOA = "UOA",
+                                  level = "National",
+                                  region_STP_name = NULL,
+                                  remove_prototypes = T,
+                                  regional_lines = F, 
+                                  STP_lines = F,
+                                  cat_lines = F,
+                                  plotChart = F),
+              rownames=FALSE,  extensions = 'Buttons', options = list(dom='Bt', buttons = c('excel'),
+  bPaginate = FALSE, pageLength=35, columnDefs = list(list(className = 'dt-left', targets = 0:4)),searching=FALSE,scrollY ='350px', scrollX ='500px'))%>%
+  DT::formatStyle(columns = c(1, 2, 3, 4, 5), fontSize = '90%')
+```
+]
+ ]
+
+---
+
+### UOA cumulative activity data
+
+```{r xaringan-panelset-UOA_cumulative, echo=FALSE}
+xaringanExtra::use_panelset()
+```
+ <font size="2">
+.panelset[
+
+ .panel[.panel-name[National]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
+                                  UDAorUOA = "UOA",
+                                  level = "National",
+                                  region_STP_name = NULL)
+```
+
+* This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "National", region_STP_name = NULL)`**
+GDS/PDS contracts measured against the
+expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
+* From the start of April to the end of `r format(Sys.Date() - lubridate::month(1), "%B")`  
+**`r get_Q1_22_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "National", region_STP_name = NULL)`** 
+contracts (
+**`r round(get_Q1_22_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "National", region_STP_name = NULL)*100/get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "National", region_STP_name = NULL))` %**
+) have delivered the required UOAs or more to be on track towards the Q1 threshold (100%) by the end of June 2022.
+
+ ]
+ .panel[.panel-name[National level data]
+```{r echo=FALSE, results='asis',warning=FALSE, fig.width=3, fig.height=3}
+
+DT::datatable(plot_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
+                                  UDAorUOA = "UOA",
+                                  level = "National",
+                                  region_STP_name = NULL,
+                                  plotChart = F),
+              rownames=FALSE,  extensions = 'Buttons', options = list(dom='Bt', buttons = c('excel'),
+  bPaginate = FALSE, pageLength=35, columnDefs = list(list(className = 'dt-left', targets = 0:4)),searching=FALSE,scrollY ='350px', scrollX ='500px'))%>%
+  DT::formatStyle(columns = c(1, 2, 3, 4, 5), fontSize = '90%')
+```
+ ]
+ ]
+ 
+---
+
+### UOA scheduled delivery
+
+```{r xaringan-panelset-UOA_activity_scheduled, echo=FALSE}
+xaringanExtra::use_panelset()
+```
+ <font size="2">
+.panelset[
+
+ .panel[.panel-name[National]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_UDA_UOA_delivery(data = UOA_scheduled_data,
+                      UDAorUOA = "UOA",
+                                  level = "National",
+                                  region_STP_name = NULL)
+```
+
+* This graph shows the monthly percentage of usual annual contracted UOAs scaled up to 12 months (18 months for April) submitted. The graph uses scheduled data to measure the
+activity which is fixed. This may be thought of as "UOAs submitted" in each month rather than delivered.
+
+ ]
+ .panel[.panel-name[National level data]
+```{r echo=FALSE, results='asis',warning=FALSE, fig.width=3, fig.height=3}
+
+DT::datatable(plot_UDA_UOA_delivery(data = UOA_scheduled_data,
+                      UDAorUOA = "UOA",
+                                  level = "National",
+                                  region_STP_name = NULL,
+                      plotChart = F),
+              rownames=FALSE,  extensions = 'Buttons', options = list(dom='Bt', buttons = c('excel'),
+  bPaginate = FALSE, pageLength=35, columnDefs = list(list(className = 'dt-left', targets = 0:4)),searching=FALSE,scrollY ='350px', scrollX ='500px'))%>%
+  DT::formatStyle(columns = c(1, 2, 3, 4, 5), fontSize = '90%')
+```
+ ]
+ ]
+ 
+---
+
+### UOA delivery profile
+
+```{r xaringan-panelset-UOA_delivery_profile, echo=FALSE}
+xaringanExtra::use_panelset()
+```
+ <font size="2">
+.panelset[
+
+ .panel[.panel-name[National]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_UDA_UOA_delivery_profile(data = UOA_scheduled_data,
+                          calendar_data = UOA_calendar_data,
+                          UDAorUOA = "UOA",
+                          level = "National",
+                          region_STP_name = NULL)
+```
+
+* The graph shows the proportion of practices delivering
+between a certain % group of contracted UOA activity if performance for that
+month is annualised.
+This uses scheduled data.
+
+ ]
+ .panel[.panel-name[National level data]
+```{r echo=FALSE, results='asis',warning=FALSE, fig.width=3, fig.height=3}
+
+DT::datatable(plot_UDA_UOA_delivery_profile(data = UOA_scheduled_data,
+                          calendar_data = UOA_calendar_data,
+                          UDAorUOA = "UOA",
+                          level = "National",
+                          region_STP_name = NULL,
+                          plotChart = F),
+              rownames=FALSE,  extensions = 'Buttons', options = list(dom='Bt', buttons = c('excel'),
+  bPaginate = FALSE, pageLength=35, columnDefs = list(list(className = 'dt-left', targets = 0:4)),searching=FALSE,scrollY ='350px', scrollX ='500px'))%>%
+  DT::formatStyle(columns = c(1, 2, 3, 4, 5), fontSize = '90%')
+```
+]
+ ]
+ 
+
+---
+
+### Urgent treatment form submissions
+
+```{r xaringan-panelset-Urgent-forms, echo=FALSE}
+xaringanExtra::use_panelset()
+```
+ <font size="2">
+.panelset[
+
+ .panel[.panel-name[National]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_urgent_form_submissions(data = UDA_scheduled_data,
+                calendar_data = UDA_calendar_data,
+                historic_data = historical_UDA_scheduled_data,
+                level = "National",
+                region_STP_name = NULL)
+```
+
+* This graph shows the number of urgent treatment forms
+declared per month across financial years.
+* The urgent treatment form count in 
+**`r format(Sys.Date() - lubridate::weeks(4), "%B")` 2022** 
+was
+**`r get_num_urgent_forms(level = "National", region_STP_name = NULL)`**
+, whilst in 
+**`r format(Sys.Date() - lubridate::weeks(4), "%B")` 2019** 
+this number was
+**`r get_num_urgent_forms_2019(level = "National", region_STP_name = NULL)`**
+, which is a 
+**`r round((get_num_urgent_forms(level = "National", region_STP_name = NULL) - get_num_urgent_forms_2019(level = "National", region_STP_name = NULL)) *100 / get_num_urgent_forms_2019(level = "National", region_STP_name = NULL))` %** 
+change from the pre-COVID world.
+
+ ]
+ .panel[.panel-name[National level data]
+```{r echo=FALSE, results='asis',warning=FALSE, fig.width=3, fig.height=3}
+
+DT::datatable(plot_111_referrals(plotChart = F),
+              rownames=FALSE,  extensions = 'Buttons', options = list(dom='Bt', buttons = c('excel'),
+  bPaginate = FALSE, pageLength=35, columnDefs = list(list(className = 'dt-left', targets = 0:1)),searching=FALSE,scrollY ='350px', scrollX ='500px'))%>%
+  DT::formatStyle(columns = c(1, 2), fontSize = '90%')
+```
+ ]
+ ]
+
