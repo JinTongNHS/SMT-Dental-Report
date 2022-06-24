@@ -18,33 +18,36 @@ params:
 ```{r include = FALSE}
 library(tidyverse)
 library(readxl)
+library(DBI)
+library(odbc)
 source("../R/03 SMT_plot_functions.R")
 source("../R/02 format_SMT_data.R")
 
-#load in raw data
-UDA_calendar_data <- read_excel("../data/cleaned_data_up_to_april/UDA_calendar_data.xlsx")
-UOA_calendar_data <- read_excel("../data/cleaned_data_up_to_april/UOA_calendar_data.xlsx")
-UDA_scheduled_data <- read_excel("../data/cleaned_data_up_to_april/UDA_scheduled_data.xlsx")
-UOA_scheduled_data <- read_excel("../data/cleaned_data_up_to_april/UOA_scheduled_data.xlsx")
-historical_UDA_scheduled_data <- read_excel("../data/cleaned_data_up_to_february/historical_UDA_scheduled_data.xlsx")
+#pull data from NCDR
+UDA_calendar_data <- pull_UDA_calendar_data()
+UOA_calendar_data <- pull_UOA_calendar_data()
+UDA_scheduled_data <- pull_UDA_scheduled_data()
+UOA_scheduled_data <- pull_UOA_scheduled_data()
 
+historical_UDA_scheduled_data <- pull_UDA_scheduled_historical_data()
+
+#change column names and add regions
 UDA_calendar_data <- rename(UDA_calendar_data, month = data_month)
 UOA_calendar_data <- UOA_calendar_data %>%
   rename(month = data_month) %>%
   mutate(contract_number = as.numeric(contract_number),
          UOA_total = as.numeric(UOA_total)) 
-
     #add a region column to the data
     region_STP_lookup <- UDA_calendar_data %>%
       select(contract_number, name_or_company_name, commissioner_name, region_name) %>%
       distinct()
     
     UOA_calendar_data <- left_join(UOA_calendar_data, region_STP_lookup, by = c("contract_number", "name_or_company_name", "commissioner_name"))
-
 UDA_scheduled_data <- rename(UDA_scheduled_data, month = data_month)
 UOA_scheduled_data <- rename(UOA_scheduled_data, month = data_month)
 
-dental_data_111 <- read_excel("../data/cleaned_data_up_to_march/dental_data_111_Mar22.xls")
+#Read local 111 file
+dental_data_111 <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental/raw_eDEN_dental_data/111_pathways_data/dental_data_111.xls")
 
 prototype_contracts <- read_excel("../data/prototype_contracts.xlsx")
 contractor_categories <- readRDS("../data/cleaned_data_up_to_october/contractor_categories.RDS")
