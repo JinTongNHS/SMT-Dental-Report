@@ -21,5 +21,5 @@ for(s in STPs){
   rmarkdown::render(input = "rmarkdown/SMT-Dental-Report-Slides.Rmd",
                     output_format = "beamer_presentation",
                     params = list(level = "STP", region_STP_name = s),
-                    output_file = paste0("../reports/STP_packs/April STP Packs/SMT data pres April ",s, " ",Sys.Date()," v1.pdf"))
+                    output_file = paste0("../reports/STP_packs/STP_packs_May/SMT data pres May ",s, " ",Sys.Date()," v1.pdf"))
 }

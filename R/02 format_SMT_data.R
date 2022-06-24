@@ -179,7 +179,8 @@ pull_UDA_scheduled_historical_data <- function(){
 ################################################################################
 get_data_for_cumulative_plot <- function(data = UDA_calendar_data, 
                                             scheduled_data = UDA_scheduled_data,
-                                            remove_prototypes = T){
+                                            remove_prototypes = T,
+                                         all_regions_and_STPs = F){
   
   #join in contracted UDAs from scheduled data
   contracted_UDAs <- scheduled_data %>%
@@ -196,10 +197,18 @@ get_data_for_cumulative_plot <- function(data = UDA_calendar_data,
       filter(contract_number %notin% prototype_contracts$prototype_contract_number) %>%
       filter(annual_contracted_UDA > 100)
   }
+  
+  #option to have data for all regions and STPs in one
+  if(all_regions_and_STPs == TRUE){
+    UDAs_delivered <- data %>%
+      group_by(month, region_name, commissioner_name)
+  }else{
+    UDAs_delivered <- data %>%
+      group_by(month)
+  }
 
   #group by month and sum UDAs delivered
-  UDAs_delivered <- data %>%
-    group_by(month) %>%
+  UDAs_delivered <- UDAs_delivered %>%
     summarise(monthly_UDA_UOAs_delivered = sum(UDA_total, na.rm = T),
               total_annual_UDA_UOAs_contracted = sum(annual_contracted_UDA)) %>%
     mutate(threshold_perc = case_when(month >= as.Date("2021-04-01") & month < as.Date("2021-10-01") ~ 0.6,
@@ -217,7 +226,8 @@ get_data_for_cumulative_plot <- function(data = UDA_calendar_data,
 ################################################################################
 get_data_for_cumulative_plot_UOA <- function(data = UOA_calendar_data, 
                                             scheduled_data = UOA_scheduled_data,
-                                            remove_prototypes = T){
+                                            remove_prototypes = TRUE,
+                                            all_regions_and_STPs = FALSE){
   
   #join in contracted UDAs from scheduled data
   contracted_UOAs <- scheduled_data %>%
@@ -237,17 +247,17 @@ get_data_for_cumulative_plot_UOA <- function(data = UOA_calendar_data,
     filter(annual_contracted_UOA > 0)
   }
   
+  if(all_regions_and_STPs == FALSE){
+    UOAs_delivered <- data %>%
+      group_by(month)
+  }else{
+    UOAs_delivered <- data %>%
+      group_by(month, region_name, commissioner_name)
+  }
   #group by month and sum UDAs delivered
-  UOAs_delivered <- data %>%
-    group_by(month) %>%
+  UOAs_delivered <- UOAs_delivered %>%
     summarise(monthly_UDA_UOAs_delivered = sum(UOA_total, na.rm = T),
               total_annual_UDA_UOAs_contracted = sum(annual_contracted_UOA, na.rm = T)) %>%
-    # mutate(threshold_perc = if_else(month >= as.Date("2021-04-01") & month < as.Date("2021-10-01"),
-    #                                             0.8,
-    #                                             0.85)) %>%
-    # mutate(threshold_period = if_else(month >= as.Date("2021-04-01") & month < as.Date("2021-10-01"),
-    #                                lubridate::interval(as.Date("2021-04-01"), as.Date("2021-09-30")),
-    #                                lubridate::interval(as.Date("2021-10-01"), as.Date("2021-12-31")))) %>%
     mutate(threshold_perc = case_when(month >= as.Date("2021-04-01") & month < as.Date("2021-10-01") ~ 0.8,
                                       month >= as.Date("2021-10-01") & month < as.Date("2022-01-01") ~ 0.85,
                                       month >= as.Date("2022-01-01") & month < as.Date("2022-04-01") ~ 0.90,
@@ -268,7 +278,7 @@ get_delivery_data <- function(data = UDA_scheduled_data,
                                    #existing_data = slide5_UDA_delivery_historic, 
                                    remove_prototypes = T,
                                    UDAorUOA = "UDA",
-                                   STP_lines = F,
+                                   all_regions_and_STPs = F,
                                    renameColumns = F){
   
 
@@ -286,9 +296,15 @@ get_delivery_data <- function(data = UDA_scheduled_data,
       filter(annual_contracted_UOA > 0)
   }
   
-  if(STP_lines){
+  if(all_regions_and_STPs){
+    # #add a region column to the data
+    # region_STP_lookup <- calendar_data %>%
+    #   select(commissioner_name, region_name) %>%
+    #   distinct()
+    # 
+    # data <- left_join(data, region_STP_lookup, by = c("commissioner_name"))
     data <- data %>%
-      group_by(month, commissioner_name)
+      group_by(month, region_name, commissioner_name)
   }else{
     data <- data %>%
       group_by(month)
@@ -384,7 +400,7 @@ get_delivery_data_calendar <- function(calendar_data = UDA_calendar_data,
       group_by(month, region_name)
   }else if(STP_lines){
     data <- data %>%
-      group_by(month, commissioner_name)
+      group_by(month, region_name, commissioner_name)
   }else if(cat_lines){
     data <- data %>%
       group_by(month, category_sub_type)
@@ -472,7 +488,8 @@ get_banded_COTs_data <- function(data = UDA_scheduled_data,
 ################################################################################
 get_delivery_profile_data <- function(data = UDA_scheduled_data,
                              UDAorUOA = "UDA",
-                             remove_prototypes = T){
+                             remove_prototypes = T,
+                             all_regions_and_STPs = FALSE){
   
   #filter out ended contracts
   data <- data %>%
@@ -529,8 +546,17 @@ get_delivery_profile_data <- function(data = UDA_scheduled_data,
                                       )
     )) %>%
     #exclude NAs
-    filter(!is.na(performance_band)) %>%
-    group_by(month) %>%
+    filter(!is.na(performance_band)) 
+  
+  if(all_regions_and_STPs == FALSE){
+    performance_table <- performance_table %>%
+      group_by(month)
+  }else{
+    performance_table <- performance_table %>%
+      group_by(month, region_name, commissioner_name)
+  }
+  
+  performance_table <- performance_table %>%
     count(performance_band) %>%
     mutate(no_of_contracts = sum(n)) %>%
     ungroup() %>%
@@ -541,3 +567,25 @@ get_delivery_profile_data <- function(data = UDA_scheduled_data,
 }
 
 
+################################################################################
+clean_workforce_returns <- function(data = dental_workforce_returns){
+  
+  data <- data %>%
+    rename(total_workforce_returns_due = workforce_returns_due) %>%
+    pivot_longer(cols = starts_with("workforce_returns"),
+                 names_to = "old_column_names") %>%
+    mutate(year = substr(old_column_names, 19, 22)) %>%
+    mutate(month = substr(old_column_names, 23, 24)) %>%
+    mutate(date = as.Date(paste0(year,"-", month,"-01"))) %>%
+    rename(workforce_returns = value)
+}
+
+################################################################################
+clean_dental_recalls <- function(data = dental_recalls_STP_2021_22){
+  
+  data <- data %>%
+    pivot_longer(cols = c("Band_1", "Band_2", "Band_3", "Other", "Urgent"),
+                 names_to = "Band",
+                 values_to = "forms")
+  
+}
