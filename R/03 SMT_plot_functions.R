@@ -848,7 +848,8 @@ plot_banded_CoT <- function(data = UDA_scheduled_data,
                             historic_data = historical_UDA_scheduled_data, 
                             level = "National",
                             region_STP_name = NULL,
-                            plotChart = TRUE){
+                            plotChart = TRUE, 
+                            all_regions_and_STPs = FALSE){
   
   #avoid standard form on axes
   options(scipen = 100)
@@ -883,8 +884,8 @@ plot_banded_CoT <- function(data = UDA_scheduled_data,
   }
   
   #get data into the right format
-  data <- get_banded_COTs_data(data, historic_data = historic_data, remove_prototypes = F)
-  data <- reshape2::melt(data, id.vars = "month")
+  data_to_print <- get_banded_COTs_data(data, historic_data = historic_data, remove_prototypes = F, all_regions_and_STPs = all_regions_and_STPs)
+  data <- reshape2::melt(data_to_print, id.vars = "month")
   data <- data %>%
     mutate(month = as.Date(month)) %>%
     rename(band = variable, CoTs = value)
@@ -920,7 +921,16 @@ plot_banded_CoT <- function(data = UDA_scheduled_data,
          UDAs and an 'other' FP17 = 0.6 UDAs. Scheduled data used.")
     
   }else{
-    data
+    data_to_print %>%
+      mutate(month = as.Date(month)) %>%
+      rename(Month = month,
+             `Region Name` = region_name,
+             `Commissioner Name` = commissioner_name,
+             `Band 1` = band1,
+             `Band 2` = band2,
+             `Band 3` = band3,
+             `Other` = other,
+             `Urgent` = urgent)
   }
   
   
@@ -936,7 +946,8 @@ plot_urgent_form_submissions <- function(data = UDA_scheduled_data,
                                          historic_data = historical_UDA_scheduled_data, 
                                          level = "National",
                                          region_STP_name = "Cheshire and Merseyside STP",
-                                         plotChart = TRUE){
+                                         plotChart = TRUE,
+                                         all_regions_and_STPs = TRUE){
   
   #avoid standard form on axes
   options(scipen = 100)
@@ -971,7 +982,7 @@ plot_urgent_form_submissions <- function(data = UDA_scheduled_data,
   }
   
   #get data in the right format
-  data <- get_banded_COTs_data(data, historic_data = historic_data, remove_prototypes = F)
+  data <- get_banded_COTs_data(data, historic_data = historic_data, remove_prototypes = F, all_regions_and_STPs = all_regions_and_STPs)
   data <- data %>%
     mutate(date = as.Date(month)) %>%
     mutate(financial_year = case_when(month >= as.Date("2019-04-01") & month < as.Date("2020-04-01") ~ "2019/20",
@@ -1010,8 +1021,17 @@ plot_urgent_form_submissions <- function(data = UDA_scheduled_data,
   if(plotChart == TRUE){
     p
   }else{
+    
+    new_cols <- c(Month = "month",
+                  `Region Name` = "region_name",
+                  `Commissioner Name` = "commissioner_name",
+                  `Urgent forms` = "urgent",
+                  `Financial year` = "financial_year")
+
     data %>% 
-      select(month, urgent, financial_year)
+      mutate(month = as.Date(month)) %>%
+      select(-c(band1, band2, band3, other, date)) %>%
+      rename(any_of(new_cols))
   }
   
   
@@ -1128,7 +1148,8 @@ plot_unique_patients_rolling <- function(data = unique_patients_rolling,
                                          region_STP_name = NULL,
                                          plotChart = TRUE,
                                          remove_prototypes = TRUE,
-                                         get_perc = FALSE){
+                                         get_perc = FALSE,
+                                         all_regiona_and_STPs = FALSE){
   
   #avoid standard form notation
   options(scipen = 5)
@@ -1172,13 +1193,22 @@ plot_unique_patients_rolling <- function(data = unique_patients_rolling,
     subtitle <- "England"
   }
   
-  data <- data %>%
-    group_by(month) %>%
+  if(all_regiona_and_STPs == TRUE){
+    data <- data %>%
+      group_by(month, region_name, commissioner_name)
+  }else{
+    data <- data %>%
+      group_by(month)
+  }
+  
+  data_to_print <- data %>%
     summarise(unique_patients_rolling_12M = sum(unique_patients_rolling_12M, na.rm = TRUE),
               band1_unique_patients_rolling_12M = sum(band1_unique_patients_rolling_12M, na.rm = TRUE),
               band2_or_3_unique_patients_rolling_12M = sum(band2_or_3_unique_patients_rolling_12M, na.rm = TRUE),
               band1_urgent_unique_patients_rolling_12M = sum(band1_urgent_unique_patients_rolling_12M, na.rm = TRUE),
-              band_other_unique_patients_rolling_12M = sum(band_other_unique_patients_rolling_12M, na.rm = TRUE)) %>%
+              band_other_unique_patients_rolling_12M = sum(band_other_unique_patients_rolling_12M, na.rm = TRUE)) 
+  
+  data <- data_to_print %>%
     pivot_longer(c(unique_patients_rolling_12M,
                    band1_unique_patients_rolling_12M,
                    band2_or_3_unique_patients_rolling_12M,
@@ -1212,11 +1242,6 @@ plot_unique_patients_rolling <- function(data = unique_patients_rolling,
       geom_point(aes(x = month,
                      y = total_unique_patients,
                      colour = band)) +
-      # geom_text(aes(x =band,
-      #               y = total_unique_patients + 0.05*total_unique_patients,
-      #               label = format( round(total_unique_patients), big.mark = ",", scientific = FALSE)
-      # ),
-      # size = 2.5) +
       scale_y_continuous(labels=function(x) format(x, big.mark = ",", scientific = FALSE)) +
       labs(title = "Total number of unique patients seen over a rolling 12 month period by band",
            x = "12 month rolling period end date",
@@ -1229,7 +1254,17 @@ plot_unique_patients_rolling <- function(data = unique_patients_rolling,
       theme(axis.text.x = element_text(angle = 90))
     #theme(legend.position = "bottom")
   }else if(plotChart == FALSE & get_perc == FALSE){
-    data
+    data_to_print <- data_to_print %>%
+      mutate(month = as.Date(month)) %>%
+      rename(`12 month period end` = month,
+             `Region Name` = region_name,
+             `Commissioner Name` = commissioner_name,
+             `Any band unique patients rolling 12 month` = unique_patients_rolling_12M,
+             `Band 1 unique patients rolling 12 month` = band1_unique_patients_rolling_12M,
+             `Band 2 or 3 unique patients rolling 12 month` = band2_or_3_unique_patients_rolling_12M,
+             `Urgent band 1 unique patients rolling 12 month` = band1_urgent_unique_patients_rolling_12M,
+             `Other unique patients rolling 12 month` = band_other_unique_patients_rolling_12M
+             )
   }else{
     #percentage of pre-covid levels
     data <- data %>%

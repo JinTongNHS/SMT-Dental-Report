@@ -1931,7 +1931,7 @@ due to the nature of calendar data (see slide 3). This month's figure is likely 
 
  ]
   .panel[.panel-name[All]
-```{r UOA_activity_regional, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval=evaluate_regional}
+```{r UOA_activity_regional, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
                                   scheduled_data = UOA_scheduled_data,
                                   contractor_cats = contractor_categories,
@@ -1989,6 +1989,7 @@ reactable(
                                   STP_lines = T,
                                   cat_lines = F,
                                   plotChart = F),
+  height = 400,
   filterable = TRUE,
   paginateSubRows = TRUE,
   minRows = 5,
@@ -2201,6 +2202,7 @@ reactable(
                                   STP_lines = T,
                                   cat_lines = T,
                                   plotChart = F),
+  height = 400,
   filterable = TRUE,
   paginateSubRows = TRUE,
   minRows = 5,
@@ -2404,6 +2406,7 @@ reactable(
                                   STP_lines = T,
                                   cat_lines = T,
                                   plotChart = F),
+  height = 400,
   filterable = TRUE,
   paginateSubRows = TRUE,
   minRows = 5,
@@ -2615,6 +2618,7 @@ reactable(
                                   region_STP_name = NULL,
                                   plotChart = F,
                                   all_regions_and_STPs = T),
+  height = 400,
   filterable = TRUE,
   paginateSubRows = TRUE,
   minRows = 5,
@@ -2779,6 +2783,7 @@ reactable(
                                   region_STP_name = NULL,
                       plotChart = F,
                       all_regions_and_STPs = T),
+  height = 400,
   filterable = TRUE,
   paginateSubRows = TRUE,
   minRows = 5,
@@ -2799,776 +2804,930 @@ reactable(
 
 ---
 
-<!-- ### UOA delivery profile -->
-
-<!-- ```{r xaringan-panelset-UOA_delivery_profile, echo=FALSE} -->
-<!-- xaringanExtra::use_panelset() -->
-<!-- ``` -->
-<!--  <font size="2"> -->
-<!-- .panelset[ -->
-
-<!--  .panel[.panel-name[National] -->
-<!-- ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5} -->
-<!-- plot_UDA_UOA_delivery_profile(data = UOA_scheduled_data, -->
-<!--                           calendar_data = UOA_calendar_data, -->
-<!--                           UDAorUOA = "UOA", -->
-<!--                           level = "National", -->
-<!--                           region_STP_name = NULL) -->
-<!-- ``` -->
-
-<!-- * The graph shows the proportion of practices delivering -->
-<!-- between a certain % group of contracted UOA activity if performance for that -->
-<!-- month is annualised. -->
-<!-- This uses scheduled data. -->
-
-<!--  ] -->
-<!--  .panel[.panel-name[South East] -->
-<!-- ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5} -->
-<!-- plot_UDA_UOA_delivery_profile(data = UOA_scheduled_data, -->
-<!--                           calendar_data = UOA_calendar_data, -->
-<!--                           UDAorUOA = "UOA", -->
-<!--                           level = "Regional", -->
-<!--                           region_STP_name = "South East") -->
-<!-- ``` -->
-
-<!-- * The graph shows the proportion of practices delivering -->
-<!-- between a certain % group of contracted UOA activity if performance for that -->
-<!-- month is annualised. -->
-<!-- This uses scheduled data. -->
-
-
-<!--  ] -->
-<!--  .panel[.panel-name[South West] -->
-<!-- ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5} -->
-<!-- plot_UDA_UOA_delivery_profile(data = UOA_scheduled_data, -->
-<!--                           calendar_data = UOA_calendar_data, -->
-<!--                           UDAorUOA = "UOA", -->
-<!--                           level = "Regional", -->
-<!--                           region_STP_name = "South West") -->
-<!-- ``` -->
-
-<!-- * The graph shows the proportion of practices delivering -->
-<!-- between a certain % group of contracted UOA activity if performance for that -->
-<!-- month is annualised. -->
-<!-- This uses scheduled data. -->
-
-
-<!--  ] -->
-<!--  .panel[.panel-name[North West] -->
-<!-- ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5} -->
-<!-- plot_UDA_UOA_delivery_profile(data = UOA_scheduled_data, -->
-<!--                           calendar_data = UOA_calendar_data, -->
-<!--                           UDAorUOA = "UOA", -->
-<!--                           level = "Regional", -->
-<!--                           region_STP_name = "North West") -->
-<!-- ``` -->
-
-<!-- * The graph shows the proportion of practices delivering -->
-<!-- between a certain % group of contracted UOA activity if performance for that -->
-<!-- month is annualised. -->
-<!-- This uses scheduled data. -->
-
-<!--  ] -->
-<!--  .panel[.panel-name[North East and Yorkshire] -->
-<!-- ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5} -->
-<!-- plot_UDA_UOA_delivery_profile(data = UOA_scheduled_data, -->
-<!--                           calendar_data = UOA_calendar_data, -->
-<!--                           UDAorUOA = "UOA", -->
-<!--                           level = "Regional", -->
-<!--                           region_STP_name = "North East and Yorkshire") -->
-<!-- ``` -->
-
-<!-- * The graph shows the proportion of practices delivering -->
-<!-- between a certain % group of contracted UOA activity if performance for that -->
-<!-- month is annualised. -->
-<!-- This uses scheduled data. -->
-
-
-<!--  ] -->
-<!-- .panel[.panel-name[London] -->
-<!-- ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5} -->
-<!-- plot_UDA_UOA_delivery_profile(data = UOA_scheduled_data, -->
-<!--                           calendar_data = UOA_calendar_data, -->
-<!--                           UDAorUOA = "UOA", -->
-<!--                           level = "Regional", -->
-<!--                           region_STP_name = "London") -->
-<!-- ``` -->
-
-<!-- * The graph shows the proportion of practices delivering -->
-<!-- between a certain % group of contracted UOA activity if performance for that -->
-<!-- month is annualised. -->
-<!-- This uses scheduled data. -->
-
-<!--  ] -->
-<!--  .panel[.panel-name[Midlands] -->
-<!-- ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5} -->
-<!-- plot_UDA_UOA_delivery_profile(data = UOA_scheduled_data, -->
-<!--                           calendar_data = UOA_calendar_data, -->
-<!--                           UDAorUOA = "UOA", -->
-<!--                           level = "Regional", -->
-<!--                           region_STP_name = "Midlands") -->
-<!-- ``` -->
-
-<!-- * The graph shows the proportion of practices delivering -->
-<!-- between a certain % group of contracted UOA activity if performance for that -->
-<!-- month is annualised. -->
-<!-- This uses scheduled data. -->
-
-
-<!--  ] -->
-<!--  .panel[.panel-name[East of England] -->
-<!-- ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5} -->
-<!-- plot_UDA_UOA_delivery_profile(data = UOA_scheduled_data, -->
-<!--                           calendar_data = UOA_calendar_data, -->
-<!--                           UDAorUOA = "UOA", -->
-<!--                           level = "Regional", -->
-<!--                           region_STP_name = "East of England") -->
-<!-- ``` -->
-
-<!-- * The graph shows the proportion of practices delivering -->
-<!-- between a certain % group of contracted UOA activity if performance for that -->
-<!-- month is annualised. -->
-<!-- This uses scheduled data. -->
-
-
-<!--  ] -->
-<!--  .panel[.panel-name[Data] -->
-<!-- ```{r echo=FALSE, results='asis',warning=FALSE, fig.width=3, fig.height=3} -->
-
-<!-- DT::datatable(plot_UDA_UOA_delivery_profile(data = UOA_scheduled_data, -->
-<!--                           calendar_data = UOA_calendar_data, -->
-<!--                           UDAorUOA = "UOA", -->
-<!--                           level = "National", -->
-<!--                           region_STP_name = NULL, -->
-<!--                           plotChart = F), -->
-<!--               rownames=FALSE,  extensions = 'Buttons', options = list(dom='Bt', buttons = c('excel'), -->
-<!--   bPaginate = FALSE, pageLength=35, columnDefs = list(list(className = 'dt-left', targets = 0:4)),searching=FALSE,scrollY ='350px', scrollX ='500px'))%>% -->
-<!--   DT::formatStyle(columns = c(1, 2, 3, 4, 5), fontSize = '90%') -->
-<!-- ``` -->
-<!-- ] -->
-<!--  ] -->
-
-
-<!-- --- -->
-
-<!-- ### Time series of banded Courses of Treatment -->
-
-<!-- ```{r xaringan-panelset-CoTs, echo=FALSE} -->
-<!-- xaringanExtra::use_panelset() -->
-<!-- ``` -->
-<!--  <font size="2"> -->
-<!-- .panelset[ -->
-
-<!--  .panel[.panel-name[National] -->
-<!-- ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5} -->
-<!-- plot_banded_CoT(data = UDA_scheduled_data, -->
-<!--                 calendar_data = UDA_calendar_data, -->
-<!--                 historic_data = historical_UDA_scheduled_data, -->
-<!--                 level = "National", -->
-<!--                 region_STP_name = NULL) -->
-<!-- ``` -->
-
-
-<!--  ] -->
-<!--  .panel[.panel-name[South East] -->
-<!-- ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5} -->
-<!-- plot_banded_CoT(data = UDA_scheduled_data, -->
-<!--                 calendar_data = UDA_calendar_data, -->
-<!--                 historic_data = historical_UDA_scheduled_data, -->
-<!--                 level = "Regional", -->
-<!--                 region_STP_name = "South East") -->
-<!-- ``` -->
-
-<!--  ] -->
-<!--  .panel[.panel-name[South West] -->
-<!-- ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5} -->
-<!-- plot_banded_CoT(data = UDA_scheduled_data, -->
-<!--                 calendar_data = UDA_calendar_data, -->
-<!--                 historic_data = historical_UDA_scheduled_data, -->
-<!--                 level = "Regional", -->
-<!--                 region_STP_name = "South West") -->
-<!-- ``` -->
-
-<!--  ] -->
-<!--  .panel[.panel-name[North West] -->
-<!-- ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5} -->
-<!-- plot_banded_CoT(data = UDA_scheduled_data, -->
-<!--                 calendar_data = UDA_calendar_data, -->
-<!--                 historic_data = historical_UDA_scheduled_data, -->
-<!--                 level = "Regional", -->
-<!--                 region_STP_name = "North West") -->
-<!-- ``` -->
-
-<!--  ] -->
-<!--  .panel[.panel-name[North East and Yorkshire] -->
-<!-- ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5} -->
-<!-- plot_banded_CoT(data = UDA_scheduled_data, -->
-<!--                 calendar_data = UDA_calendar_data, -->
-<!--                 historic_data = historical_UDA_scheduled_data, -->
-<!--                 level = "Regional", -->
-<!--                 region_STP_name = "North East and Yorkshire") -->
-<!-- ``` -->
-
-<!--  ] -->
-<!-- .panel[.panel-name[London] -->
-<!-- ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5} -->
-<!-- plot_banded_CoT(data = UDA_scheduled_data, -->
-<!--                 calendar_data = UDA_calendar_data, -->
-<!--                 historic_data = historical_UDA_scheduled_data, -->
-<!--                 level = "Regional", -->
-<!--                 region_STP_name = "London") -->
-<!-- ``` -->
-
-<!--  ] -->
-<!--  .panel[.panel-name[Midlands] -->
-<!-- ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5} -->
-<!-- plot_banded_CoT(data = UDA_scheduled_data, -->
-<!--                 calendar_data = UDA_calendar_data, -->
-<!--                 historic_data = historical_UDA_scheduled_data, -->
-<!--                 level = "Regional", -->
-<!--                 region_STP_name = "Midlands") -->
-<!-- ``` -->
-
-
-<!--  ] -->
-<!--  .panel[.panel-name[East of England] -->
-<!-- ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5} -->
-<!-- plot_banded_CoT(data = UDA_scheduled_data, -->
-<!--                 calendar_data = UDA_calendar_data, -->
-<!--                 historic_data = historical_UDA_scheduled_data, -->
-<!--                 level = "Regional", -->
-<!--                 region_STP_name = "East of England") -->
-<!-- ``` -->
-
-<!--  ] -->
-<!--   .panel[.panel-name[Data] -->
-<!-- ```{r echo=FALSE, results='asis',warning=FALSE, fig.width=3, fig.height=3} -->
-
-<!-- DT::datatable(plot_banded_CoT(data = UDA_scheduled_data, -->
-<!--                 calendar_data = UDA_calendar_data, -->
-<!--                 historic_data = historical_UDA_scheduled_data, -->
-<!--                 level = "National", -->
-<!--                 region_STP_name = NULL, -->
-<!--                 plotChart = F), -->
-<!--               rownames=FALSE,  extensions = 'Buttons', options = list(dom='Bt', buttons = c('excel'), -->
-<!--   bPaginate = FALSE, pageLength=35, columnDefs = list(list(className = 'dt-left', targets = 0:2)),searching=FALSE,scrollY ='350px', scrollX ='500px'))%>% -->
-<!--   DT::formatStyle(columns = c(1, 2, 3), fontSize = '90%') -->
-<!-- ``` -->
-<!-- ] -->
-<!--  ] -->
-
-<!-- --- -->
-
-<!-- ### Urgent treatment form submissions -->
-
-<!-- ```{r xaringan-panelset-Urgent-forms, echo=FALSE} -->
-<!-- xaringanExtra::use_panelset() -->
-<!-- ``` -->
-<!--  <font size="2"> -->
-<!-- .panelset[ -->
-
-<!--  .panel[.panel-name[National] -->
-<!-- ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5} -->
-<!-- plot_urgent_form_submissions(data = UDA_scheduled_data, -->
-<!--                 calendar_data = UDA_calendar_data, -->
-<!--                 historic_data = historical_UDA_scheduled_data, -->
-<!--                 level = "National", -->
-<!--                 region_STP_name = NULL) -->
-<!-- ``` -->
-
-<!-- * This graph shows the number of urgent treatment forms -->
-<!-- declared per month across financial years. -->
-<!-- * The urgent treatment form count in  -->
-<!-- **`r format(Sys.Date() - lubridate::weeks(4), "%B")` 2022**  -->
-<!-- was -->
-<!-- **`r get_num_urgent_forms(level = "National", region_STP_name = NULL)`** -->
-<!-- , whilst in  -->
-<!-- **`r format(Sys.Date() - lubridate::weeks(4), "%B")` 2019**  -->
-<!-- this number was -->
-<!-- **`r get_num_urgent_forms_2019(level = "National", region_STP_name = NULL)`** -->
-<!-- , which is a  -->
-<!-- **`r round((get_num_urgent_forms(level = "National", region_STP_name = NULL) - get_num_urgent_forms_2019(level = "National", region_STP_name = NULL)) *100 / get_num_urgent_forms_2019(level = "National", region_STP_name = NULL))` %**  -->
-<!-- change from the pre-COVID world. -->
-
-<!--  ] -->
-<!--  .panel[.panel-name[South East] -->
-<!-- ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5} -->
-<!-- plot_urgent_form_submissions(data = UDA_scheduled_data, -->
-<!--                 calendar_data = UDA_calendar_data, -->
-<!--                 historic_data = historical_UDA_scheduled_data, -->
-<!--                 level = "Regional", -->
-<!--                 region_STP_name = "South East") -->
-<!-- ``` -->
-
-<!-- * This graph shows the number of urgent treatment forms -->
-<!-- declared per month across financial years. -->
-<!-- * The urgent treatment form count in  -->
-<!-- **`r format(Sys.Date() - lubridate::weeks(4), "%B")` 2021**  -->
-<!-- was -->
-<!-- **`r get_num_urgent_forms(level = "Regional", region_STP_name = "South East")`** -->
-<!-- , whilst in  -->
-<!-- **`r format(Sys.Date() - lubridate::weeks(4), "%B")` 2019**  -->
-<!-- this number was -->
-<!-- **`r get_num_urgent_forms_2019(level = "Regional", region_STP_name = "South East")`** -->
-<!-- , which is a  -->
-<!-- **`r round((get_num_urgent_forms(level = "Regional", region_STP_name = "South East") - get_num_urgent_forms_2019(level = "Regional", region_STP_name = "South East")) *100 / get_num_urgent_forms_2019(level = "Regional", region_STP_name = "South East"))` %**  -->
-<!-- change from the pre-COVID world. -->
-
-
-<!--  ] -->
-<!--  .panel[.panel-name[South West] -->
-<!-- ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5} -->
-<!-- plot_urgent_form_submissions(data = UDA_scheduled_data, -->
-<!--                 calendar_data = UDA_calendar_data, -->
-<!--                 historic_data = historical_UDA_scheduled_data, -->
-<!--                 level = "Regional", -->
-<!--                 region_STP_name = "South West") -->
-<!-- ``` -->
-
-<!-- * This graph shows the number of urgent treatment forms -->
-<!-- declared per month across financial years. -->
-<!-- * The urgent treatment form count in  -->
-<!-- **`r format(Sys.Date() - lubridate::weeks(4), "%B")` 2021**  -->
-<!-- was -->
-<!-- **`r get_num_urgent_forms(level = "Regional", region_STP_name = "South West")`** -->
-<!-- , whilst in  -->
-<!-- **`r format(Sys.Date() - lubridate::weeks(4), "%B")` 2019**  -->
-<!-- this number was -->
-<!-- **`r get_num_urgent_forms_2019(level = "Regional", region_STP_name = "South West")`** -->
-<!-- , which is a  -->
-<!-- **`r round((get_num_urgent_forms(level = "Regional", region_STP_name = "South West") - get_num_urgent_forms_2019(level = "Regional", region_STP_name = "South West")) *100 / get_num_urgent_forms_2019(level = "Regional", region_STP_name = "South West"))` %**  -->
-<!-- change from the pre-COVID world. -->
-
-
-<!--  ] -->
-<!--  .panel[.panel-name[North West] -->
-<!-- ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5} -->
-<!-- plot_urgent_form_submissions(data = UDA_scheduled_data, -->
-<!--                 calendar_data = UDA_calendar_data, -->
-<!--                 historic_data = historical_UDA_scheduled_data, -->
-<!--                 level = "Regional", -->
-<!--                 region_STP_name = "North West") -->
-<!-- ``` -->
-
-<!-- * This graph shows the number of urgent treatment forms -->
-<!-- declared per month across financial years. -->
-<!-- * The urgent treatment form count in  -->
-<!-- **`r format(Sys.Date() - lubridate::weeks(4), "%B")` 2021**  -->
-<!-- was -->
-<!-- **`r get_num_urgent_forms(level = "Regional", region_STP_name = "North West")`** -->
-<!-- , whilst in  -->
-<!-- **`r format(Sys.Date() - lubridate::weeks(4), "%B")` 2019**  -->
-<!-- this number was -->
-<!-- **`r get_num_urgent_forms_2019(level = "Regional", region_STP_name = "North West")`** -->
-<!-- , which is a  -->
-<!-- **`r round((get_num_urgent_forms(level = "Regional", region_STP_name = "North West") - get_num_urgent_forms_2019(level = "Regional", region_STP_name = "North West")) *100 / get_num_urgent_forms_2019(level = "Regional", region_STP_name = "North West"))` %**  -->
-<!-- change from the pre-COVID world. -->
-
-
-<!--  ] -->
-<!--  .panel[.panel-name[North East and Yorkshire] -->
-<!-- ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5} -->
-<!-- plot_urgent_form_submissions(data = UDA_scheduled_data, -->
-<!--                 calendar_data = UDA_calendar_data, -->
-<!--                 historic_data = historical_UDA_scheduled_data, -->
-<!--                 level = "Regional", -->
-<!--                 region_STP_name = "North East and Yorkshire") -->
-<!-- ``` -->
-
-<!-- * This graph shows the number of urgent treatment forms -->
-<!-- declared per month across financial years. -->
-<!-- * The urgent treatment form count in  -->
-<!-- **`r format(Sys.Date() - lubridate::weeks(4), "%B")` 2021**  -->
-<!-- was -->
-<!-- **`r get_num_urgent_forms(level = "Regional", region_STP_name = "North East and Yorkshire")`** -->
-<!-- , whilst in  -->
-<!-- **`r format(Sys.Date() - lubridate::weeks(4), "%B")` 2019**  -->
-<!-- this number was -->
-<!-- **`r get_num_urgent_forms_2019(level = "Regional", region_STP_name = "North East and Yorkshire")`** -->
-<!-- , which is a  -->
-<!-- **`r round((get_num_urgent_forms(level = "Regional", region_STP_name = "North East and Yorkshire") - get_num_urgent_forms_2019(level = "Regional", region_STP_name = "North East and Yorkshire")) *100 / get_num_urgent_forms_2019(level = "Regional", region_STP_name = "North East and Yorkshire"))` %**  -->
-<!-- change from the pre-COVID world. -->
-
-
-<!--  ] -->
-<!-- .panel[.panel-name[London] -->
-<!-- ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5} -->
-<!-- plot_urgent_form_submissions(data = UDA_scheduled_data, -->
-<!--                 calendar_data = UDA_calendar_data, -->
-<!--                 historic_data = historical_UDA_scheduled_data, -->
-<!--                 level = "Regional", -->
-<!--                 region_STP_name = "London") -->
-<!-- ``` -->
-
-<!-- * This graph shows the number of urgent treatment forms -->
-<!-- declared per month across financial years. -->
-<!-- * The urgent treatment form count in  -->
-<!-- **`r format(Sys.Date() - lubridate::weeks(4), "%B")` 2021**  -->
-<!-- was -->
-<!-- **`r get_num_urgent_forms(level = "Regional", region_STP_name = "London")`** -->
-<!-- , whilst in  -->
-<!-- **`r format(Sys.Date() - lubridate::weeks(4), "%B")` 2019**  -->
-<!-- this number was -->
-<!-- **`r get_num_urgent_forms_2019(level = "Regional", region_STP_name = "London")`** -->
-<!-- , which is a  -->
-<!-- **`r round((get_num_urgent_forms(level = "Regional", region_STP_name = "London") - get_num_urgent_forms_2019(level = "Regional", region_STP_name = "London")) *100 / get_num_urgent_forms_2019(level = "Regional", region_STP_name = "London"))` %**  -->
-<!-- change from the pre-COVID world. -->
-
-<!--  ] -->
-<!--  .panel[.panel-name[Midlands] -->
-<!-- ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5} -->
-<!-- plot_urgent_form_submissions(data = UDA_scheduled_data, -->
-<!--                 calendar_data = UDA_calendar_data, -->
-<!--                 historic_data = historical_UDA_scheduled_data, -->
-<!--                 level = "Regional", -->
-<!--                 region_STP_name = "Midlands") -->
-<!-- ``` -->
-
-<!-- * This graph shows the number of urgent treatment forms -->
-<!-- declared per month across financial years. -->
-<!-- * The urgent treatment form count in  -->
-<!-- **`r format(Sys.Date() - lubridate::weeks(4), "%B")` 2021**  -->
-<!-- was -->
-<!-- **`r get_num_urgent_forms(level = "Regional", region_STP_name = "Midlands")`** -->
-<!-- , whilst in  -->
-<!-- **`r format(Sys.Date() - lubridate::weeks(4), "%B")` 2019**  -->
-<!-- this number was -->
-<!-- **`r get_num_urgent_forms_2019(level = "Regional", region_STP_name = "Midlands")`** -->
-<!-- , which is a  -->
-<!-- **`r round((get_num_urgent_forms(level = "Regional", region_STP_name = "Midlands") - get_num_urgent_forms_2019(level = "Regional", region_STP_name = "Midlands")) *100 / get_num_urgent_forms_2019(level = "Regional", region_STP_name = "Midlands"))` %**  -->
-<!-- change from the pre-COVID world. -->
-
-<!--  ] -->
-<!--  .panel[.panel-name[East of England] -->
-<!-- ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5} -->
-<!-- plot_urgent_form_submissions(data = UDA_scheduled_data, -->
-<!--                 calendar_data = UDA_calendar_data, -->
-<!--                 historic_data = historical_UDA_scheduled_data, -->
-<!--                 level = "Regional", -->
-<!--                 region_STP_name = "East of England") -->
-<!-- ``` -->
-
-<!-- * This graph shows the number of urgent treatment forms -->
-<!-- declared per month across financial years. -->
-<!-- * The urgent treatment form count in  -->
-<!-- **`r format(Sys.Date() - lubridate::weeks(4), "%B")` 2021**  -->
-<!-- was -->
-<!-- **`r get_num_urgent_forms(level = "Regional", region_STP_name = "East of England")`** -->
-<!-- , whilst in  -->
-<!-- **`r format(Sys.Date() - lubridate::weeks(4), "%B")` 2019**  -->
-<!-- this number was -->
-<!-- **`r get_num_urgent_forms_2019(level = "Regional", region_STP_name = "East of England")`** -->
-<!-- , which is a  -->
-<!-- **`r round((get_num_urgent_forms(level = "Regional", region_STP_name = "East of England") - get_num_urgent_forms_2019(level = "Regional", region_STP_name = "East of England")) *100 / get_num_urgent_forms_2019(level = "Regional", region_STP_name = "East of England"))` %**  -->
-<!-- change from the pre-COVID world. -->
-
-<!--  ] -->
-<!--    .panel[.panel-name[Data] -->
-<!-- ```{r echo=FALSE, results='asis',warning=FALSE, fig.width=3, fig.height=3} -->
-
-<!-- DT::datatable(plot_urgent_form_submissions(data = UDA_scheduled_data, -->
-<!--                 calendar_data = UDA_calendar_data, -->
-<!--                 historic_data = historical_UDA_scheduled_data, -->
-<!--                 level = "National", -->
-<!--                 region_STP_name = NULL, -->
-<!--                 plotChart = F), -->
-<!--               rownames=FALSE,  extensions = 'Buttons', options = list(dom='Bt', buttons = c('excel'), -->
-<!--   bPaginate = FALSE, pageLength=35, columnDefs = list(list(className = 'dt-left', targets = 0:2)),searching=FALSE,scrollY ='350px', scrollX ='500px'))%>% -->
-<!--   DT::formatStyle(columns = c(1, 2, 3), fontSize = '90%') -->
-<!-- ``` -->
-<!-- ] -->
-<!--  ] -->
-
-
-<!-- --- -->
-
-<!-- ### 111 dental related call volumes -->
-
-<!-- ```{r xaringan-panelset-111_volumes, echo=FALSE} -->
-<!-- xaringanExtra::use_panelset() -->
-<!-- ``` -->
-<!--  <font size="2"> -->
-<!-- .panelset[ -->
-
-<!--  .panel[.panel-name[National] -->
-<!-- ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval=evaluate_111} -->
-<!-- plot_111_referrals() -->
-<!-- ``` -->
-
-
-<!--  ] -->
-<!--  .panel[.panel-name[Data] -->
-<!-- ```{r echo=FALSE, results='asis',warning=FALSE, fig.width=3, fig.height=3} -->
-
-<!-- DT::datatable(plot_111_referrals(plotChart = F), -->
-<!--               rownames=FALSE,  extensions = 'Buttons', options = list(dom='Bt', buttons = c('excel'), -->
-<!--   bPaginate = FALSE, pageLength=35, columnDefs = list(list(className = 'dt-left', targets = 0:1)),searching=FALSE,scrollY ='350px', scrollX ='500px'))%>% -->
-<!--   DT::formatStyle(columns = c(1, 2), fontSize = '90%') -->
-<!-- ``` -->
-<!--  ] -->
-<!--  ] -->
-
-<!-- --- -->
-
-<!-- ### 111 dental related call volumes by disposition -->
-
-<!-- ```{r xaringan-panelset-111_volumes_breakdown, echo=FALSE} -->
-<!-- xaringanExtra::use_panelset() -->
-<!-- ``` -->
-<!--  <font size="2"> -->
-<!-- .panelset[ -->
-
-<!--  .panel[.panel-name[National] -->
-<!-- ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval=evaluate_111} -->
-<!-- plot_breakdown_111_referrals() -->
-<!-- ``` -->
-
-
-<!--  ] -->
-<!--  .panel[.panel-name[Data] -->
-<!-- ```{r echo=FALSE, results='asis',warning=FALSE, fig.width=3, fig.height=3} -->
-
-<!-- DT::datatable(plot_breakdown_111_referrals(plotChart = F), -->
-<!--               rownames=FALSE,  extensions = 'Buttons', options = list(dom='Bt', buttons = c('excel'), -->
-<!--   bPaginate = FALSE, pageLength=35, columnDefs = list(list(className = 'dt-left', targets = 0:4)),searching=FALSE,scrollY ='350px', scrollX ='500px'))%>% -->
-<!--   DT::formatStyle(columns = c(1, 2, 3, 4, 5), fontSize = '90%') -->
-<!-- ``` -->
-<!--  ] -->
-<!--  ] -->
-
-<!-- --- -->
-
-<!-- ### Unique dental patients seen -->
-
-<!-- ```{r xaringan-panelset-Unique-patients, echo=FALSE} -->
-<!-- xaringanExtra::use_panelset() -->
-<!-- ``` -->
-<!--  <font size="2"> -->
-<!-- .panelset[ -->
-
-<!--  .panel[.panel-name[National] -->
-<!-- ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5} -->
-<!-- plot_unique_patients_rolling(data = unique_patients_rolling, -->
-<!--                                      calendar_data = UDA_calendar_data, -->
-<!--                                      scheduled_data = UDA_scheduled_data, -->
-<!--                                      level = "National", -->
-<!--                                      region_STP_name = NULL, -->
-<!--                                      plotChart = TRUE, -->
-<!--                                      remove_prototypes = TRUE) -->
-<!-- ``` -->
-
-<!-- * The number of unique patients seen in the last 12 months is currently around  -->
-<!-- **`r plot_unique_patients_rolling(level = "National",region_STP_name = NULL, plotChart = F,remove_prototypes = T, get_perc = T)` %** -->
-<!-- of pre-pandemic levels. -->
-
-<!--  ] -->
-<!--  .panel[.panel-name[South East] -->
-<!-- ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5} -->
-<!-- plot_unique_patients_rolling(data = unique_patients_rolling, -->
-<!--                                      calendar_data = UDA_calendar_data, -->
-<!--                                      scheduled_data = UDA_scheduled_data, -->
-<!--                                      level = "Regional", -->
-<!--                                      region_STP_name = "South East", -->
-<!--                                      plotChart = TRUE, -->
-<!--                                      remove_prototypes = TRUE) -->
-<!-- ``` -->
-
-<!-- * The number of unique patients seen in the last 12 months is currently around  -->
-<!-- **`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "South East", plotChart = F,remove_prototypes = T, get_perc = T)` %** -->
-<!-- of pre-pandemic levels. -->
-
-<!--  ] -->
-<!--  .panel[.panel-name[South West] -->
-<!-- ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5} -->
-<!-- plot_unique_patients_rolling(data = unique_patients_rolling, -->
-<!--                                      calendar_data = UDA_calendar_data, -->
-<!--                                      scheduled_data = UDA_scheduled_data, -->
-<!--                                      level = "Regional", -->
-<!--                                      region_STP_name = "South West", -->
-<!--                                      plotChart = TRUE, -->
-<!--                                      remove_prototypes = TRUE) -->
-<!-- ``` -->
-
-<!-- * The number of unique patients seen in the last 12 months is currently around  -->
-<!-- **`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "South West", plotChart = F,remove_prototypes = T, get_perc = T)` %** -->
-<!-- of pre-pandemic levels. -->
-
-<!--  ] -->
-<!--  .panel[.panel-name[North West] -->
-<!-- ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5} -->
-<!-- plot_unique_patients_rolling(data = unique_patients_rolling, -->
-<!--                                      calendar_data = UDA_calendar_data, -->
-<!--                                      scheduled_data = UDA_scheduled_data, -->
-<!--                                      level = "Regional", -->
-<!--                                      region_STP_name = "North West", -->
-<!--                                      plotChart = TRUE, -->
-<!--                                      remove_prototypes = TRUE) -->
-<!-- ``` -->
-
-<!-- * The number of unique patients seen in the last 12 months is currently around  -->
-<!-- **`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "North West", plotChart = F,remove_prototypes = T, get_perc = T)` %** -->
-<!-- of pre-pandemic levels. -->
-
-<!--  ] -->
-<!--  .panel[.panel-name[North East and Yorkshire] -->
-<!-- ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5} -->
-<!-- plot_unique_patients_rolling(data = unique_patients_rolling, -->
-<!--                                      calendar_data = UDA_calendar_data, -->
-<!--                                      scheduled_data = UDA_scheduled_data, -->
-<!--                                      level = "Regional", -->
-<!--                                      region_STP_name = "North East and Yorkshire", -->
-<!--                                      plotChart = TRUE, -->
-<!--                                      remove_prototypes = TRUE) -->
-<!-- ``` -->
-
-<!-- * The number of unique patients seen in the last 12 months is currently around  -->
-<!-- **`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "North East and Yorkshire", plotChart = F,remove_prototypes = T, get_perc = T)` %** -->
-<!-- of pre-pandemic levels. -->
-
-
-<!--  ] -->
-<!-- .panel[.panel-name[London] -->
-<!-- ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5} -->
-<!-- plot_unique_patients_rolling(data = unique_patients_rolling, -->
-<!--                                      calendar_data = UDA_calendar_data, -->
-<!--                                      scheduled_data = UDA_scheduled_data, -->
-<!--                                      level = "Regional", -->
-<!--                                      region_STP_name = "London", -->
-<!--                                      plotChart = TRUE, -->
-<!--                                      remove_prototypes = TRUE) -->
-<!-- ``` -->
-
-<!-- * The number of unique patients seen in the last 12 months is currently around  -->
-<!-- **`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "London", plotChart = F,remove_prototypes = T, get_perc = T)` %** -->
-<!-- of pre-pandemic levels. -->
-
-<!--  ] -->
-<!--  .panel[.panel-name[Midlands] -->
-<!-- ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5} -->
-<!-- plot_unique_patients_rolling(data = unique_patients_rolling, -->
-<!--                                      calendar_data = UDA_calendar_data, -->
-<!--                                      scheduled_data = UDA_scheduled_data, -->
-<!--                                      level = "Regional", -->
-<!--                                      region_STP_name = "Midlands", -->
-<!--                                      plotChart = TRUE, -->
-<!--                                      remove_prototypes = TRUE) -->
-<!-- ``` -->
-
-<!-- * The number of unique patients seen in the last 12 months is currently around  -->
-<!-- **`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "Midlands", plotChart = F,remove_prototypes = T, get_perc = T)` %** -->
-<!-- of pre-pandemic levels. -->
-
-<!--  ] -->
-<!--  .panel[.panel-name[East of England] -->
-<!-- ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5} -->
-<!-- plot_unique_patients_rolling(data = unique_patients_rolling, -->
-<!--                                      calendar_data = UDA_calendar_data, -->
-<!--                                      scheduled_data = UDA_scheduled_data, -->
-<!--                                      level = "Regional", -->
-<!--                                      region_STP_name = "East of England", -->
-<!--                                      plotChart = TRUE, -->
-<!--                                      remove_prototypes = TRUE) -->
-<!-- ``` -->
-
-<!-- * The number of unique patients seen in the last 12 months is currently around  -->
-<!-- **`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "East of England", plotChart = F,remove_prototypes = T, get_perc = T)` %** -->
-<!-- of pre-pandemic levels. -->
-
-<!--  ] -->
-<!--   .panel[.panel-name[Data] -->
-<!-- ```{r echo=FALSE, results='asis',warning=FALSE, fig.width=3, fig.height=3} -->
-
-<!-- DT::datatable(plot_unique_patients_rolling(data = unique_patients_rolling, -->
-<!--                                      calendar_data = UDA_calendar_data, -->
-<!--                                      scheduled_data = UDA_scheduled_data, -->
-<!--                                      level = "National", -->
-<!--                                      region_STP_name = NULL, -->
-<!--                                      plotChart = FALSE, -->
-<!--                                      remove_prototypes = TRUE), -->
-<!--               rownames=FALSE,  extensions = 'Buttons', options = list(dom='Bt', buttons = c('excel'), -->
-<!--   bPaginate = FALSE, pageLength=35, columnDefs = list(list(className = 'dt-left', targets = 0:2)),searching=FALSE,scrollY ='350px', scrollX ='500px'))%>% -->
-<!--   DT::formatStyle(columns = c(1, 2, 3), fontSize = '90%') -->
-<!-- ``` -->
-<!--  ] -->
-<!--  ] -->
-
-<!-- --- -->
-
-<!-- ### Appendix -->
-<!-- #### MY Category classification breakdown: -->
-
-<!--  <font size="2"> -->
-<!-- * Cat 1 -->
-<!--   + Details in CoMPASS Correct -->
-<!-- * Cat 2 -->
-<!--   + Carry Forward - Other -->
-<!--   + Flexibly Commissioned Contract -->
-<!--   + Force majeure accepted -->
-<!--   + Force majeure o/s -->
-<!--   + In-year incorporation/merge (Parent contract - letter will be sent) -->
-<!--   + Incomplete OOH/other access services -->
-<!--   + Late subs processed -->
-<!--   + Mixed / CoT Contract -->
-<!--   + Non-recurring activity -->
-<!--   + Open in-year -->
-<!--   + Other -->
-<!--   + Request to re-base -->
-<!--   + Review Carry Forward -->
-<!--   + Sub Contracts (Parent contract - letter will be sent) -->
-<!--   + UDA Value below £15.00 -->
-<!--   + UDA Value exceeds £49.99 -->
-<!--   + UDC -->
-<!--   + UOA Value exceeds £75.00 -->
-<!--   + Closed in-year -->
-<!--   + Incomplete service line entries -->
-
-
-<!-- --- -->
-
-<!--  <font size="2"> -->
-<!-- * Cat 3 -->
-<!--   + CDS -->
-<!--   + Closed in year -->
-<!--   + Contract End Date before 01/04/2020 -->
-<!--   + Contract End Date before 01/04/2021 -->
-<!--   + Contract End Date before 01/04/2022 -->
-<!--   + DCO req to resolve locally -->
-<!--   + Domiciliary/ Sedation -->
-<!--   + IMOS/MOS -->
-<!--   + In-year incorporation/merge (Child contract - letter will not be sent) -->
-<!--   + Incomplete OOH/other access services -->
-<!--   + Known performance/contract issues -->
-<!--   + No Contracted activity -->
-<!--   + No Contracted value -->
-<!--   + Not paid by the NHSBSA -->
-<!--   + Open in year -->
-<!--   + Other -->
-<!--   + Other - Please state why -->
-<!--   + Other Advanced/Additional Services -->
-<!--   + PDS Plus -->
-<!--   + Prison -->
-<!--   + Sub Contracts (Child contract - letter will not be sent) -->
-<!-- * Cat 4 -->
-<!--   + Dental Contract Reform -->
-
-<!-- --- -->
-
-<!-- #### Data sources -->
-
-<!--  <font size="2"> -->
-<!-- * BSA calendar and scheduled UDA data downloaded from the "NHS England Central Dashboard" on eDEN. This data is downloaded monthly and put on the NCDR.  -->
-<!-- * Tables are: -->
-<!--   + [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UDA_calendar] -->
-<!--   + [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UDA_scheduled] -->
-<!--   + [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UOA_calendar] -->
-<!--   + [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UOA_scheduled] -->
-<!-- * A list of prototype contracts are also available in: -->
-<!--   + [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[prototype_contracts] -->
-<!-- * Tables of UDA delivery on STP level in calendar and scheduled format available in: -->
-<!--   + [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UDA_delivery_calendar] -->
-<!--   + [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UDA_delivery_scheduled] -->
-
-<!-- * 111 data comes from the pathways tool which is received monthly by email. -->
+name: uoa-delivery-profile
+
+### UOA delivery profile
+
+```{r xaringan-panelset-UOA_delivery_profile, echo=FALSE}
+xaringanExtra::use_panelset()
+```
+ <font size="2">
+.panelset[
+
+ .panel[.panel-name[National]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_UDA_UOA_delivery_profile(data = UOA_scheduled_data,
+                          calendar_data = UOA_calendar_data,
+                          UDAorUOA = "UOA",
+                          level = "National",
+                          region_STP_name = NULL)
+```
+
+* The graph shows the proportion of practices delivering
+between a certain % group of contracted UOA activity if performance for that
+month is annualised.
+This uses scheduled data.
+
+ ]
+ .panel[.panel-name[South East]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_UDA_UOA_delivery_profile(data = UOA_scheduled_data,
+                          calendar_data = UOA_calendar_data,
+                          UDAorUOA = "UOA",
+                          level = "Regional",
+                          region_STP_name = "South East")
+```
+
+* The graph shows the proportion of practices delivering
+between a certain % group of contracted UOA activity if performance for that
+month is annualised.
+This uses scheduled data.
+
+
+ ]
+ .panel[.panel-name[South West]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_UDA_UOA_delivery_profile(data = UOA_scheduled_data,
+                          calendar_data = UOA_calendar_data,
+                          UDAorUOA = "UOA",
+                          level = "Regional",
+                          region_STP_name = "South West")
+```
+
+* The graph shows the proportion of practices delivering
+between a certain % group of contracted UOA activity if performance for that
+month is annualised.
+This uses scheduled data.
+
+
+ ]
+ .panel[.panel-name[North West]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_UDA_UOA_delivery_profile(data = UOA_scheduled_data,
+                          calendar_data = UOA_calendar_data,
+                          UDAorUOA = "UOA",
+                          level = "Regional",
+                          region_STP_name = "North West")
+```
+
+* The graph shows the proportion of practices delivering
+between a certain % group of contracted UOA activity if performance for that
+month is annualised.
+This uses scheduled data.
+
+ ]
+ .panel[.panel-name[North East and Yorkshire]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_UDA_UOA_delivery_profile(data = UOA_scheduled_data,
+                          calendar_data = UOA_calendar_data,
+                          UDAorUOA = "UOA",
+                          level = "Regional",
+                          region_STP_name = "North East and Yorkshire")
+```
+
+* The graph shows the proportion of practices delivering
+between a certain % group of contracted UOA activity if performance for that
+month is annualised.
+This uses scheduled data.
+
+
+ ]
+.panel[.panel-name[London]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_UDA_UOA_delivery_profile(data = UOA_scheduled_data,
+                          calendar_data = UOA_calendar_data,
+                          UDAorUOA = "UOA",
+                          level = "Regional",
+                          region_STP_name = "London")
+```
+
+* The graph shows the proportion of practices delivering
+between a certain % group of contracted UOA activity if performance for that
+month is annualised.
+This uses scheduled data.
+
+ ]
+ .panel[.panel-name[Midlands]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_UDA_UOA_delivery_profile(data = UOA_scheduled_data,
+                          calendar_data = UOA_calendar_data,
+                          UDAorUOA = "UOA",
+                          level = "Regional",
+                          region_STP_name = "Midlands")
+```
+
+* The graph shows the proportion of practices delivering
+between a certain % group of contracted UOA activity if performance for that
+month is annualised.
+This uses scheduled data.
+
+
+ ]
+ .panel[.panel-name[East of England]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_UDA_UOA_delivery_profile(data = UOA_scheduled_data,
+                          calendar_data = UOA_calendar_data,
+                          UDAorUOA = "UOA",
+                          level = "Regional",
+                          region_STP_name = "East of England")
+```
+
+* The graph shows the proportion of practices delivering
+between a certain % group of contracted UOA activity if performance for that
+month is annualised.
+This uses scheduled data.
+
+
+ ]
+ .panel[.panel-name[Data]
+
+<font size="1">
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+
+data <- plot_UDA_UOA_delivery_profile(data = UOA_scheduled_data,
+                          calendar_data = UOA_calendar_data,
+                          UDAorUOA = "UOA",
+                          level = "National",
+                          region_STP_name = NULL,
+                          plotChart = F,
+                          all_regions_and_STPs = T)
+
+data %>%
+  download_this(
+    output_name = "UOA_delivery_profile_data",
+    output_extension = ".xlsx",
+    button_label = "Download data",
+    button_type = "warning",
+    has_icon = TRUE,
+    icon = "fa fa-save"
+  )
+```
+ 
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+reactable(
+  plot_UDA_UOA_delivery_profile(data = UOA_scheduled_data,
+                          calendar_data = UOA_calendar_data,
+                          UDAorUOA = "UOA",
+                          level = "National",
+                          region_STP_name = NULL,
+                          plotChart = F,
+                          all_regions_and_STPs = T),
+  height = 400,
+  filterable = TRUE,
+  paginateSubRows = TRUE,
+  minRows = 5,
+  highlight = TRUE,
+  groupBy = c("Month", "Performance band", "Region Name"),
+  columns = list(
+    `Total number of contracts`= colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE),
+    `Number of contracts in performance band` = colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE),
+    `Percentage of contracts in performance band` = colDef(aggregate = "mean", format = colFormat(suffix = "%", digits = 1), filterable = FALSE)
+  )
+)
+```
+]
+ ]
+
+[Return to contents](#contents)
+
+---
+
+### Time series of banded Courses of Treatment
+
+```{r xaringan-panelset-CoTs, echo=FALSE}
+xaringanExtra::use_panelset()
+```
+ <font size="2">
+.panelset[
+
+ .panel[.panel-name[National]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
+plot_banded_CoT(data = UDA_scheduled_data,
+                calendar_data = UDA_calendar_data,
+                historic_data = historical_UDA_scheduled_data,
+                level = "National",
+                region_STP_name = NULL)
+```
+
+
+ ]
+ .panel[.panel-name[South East]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
+plot_banded_CoT(data = UDA_scheduled_data,
+                calendar_data = UDA_calendar_data,
+                historic_data = historical_UDA_scheduled_data,
+                level = "Regional",
+                region_STP_name = "South East")
+```
+
+ ]
+ .panel[.panel-name[South West]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
+plot_banded_CoT(data = UDA_scheduled_data,
+                calendar_data = UDA_calendar_data,
+                historic_data = historical_UDA_scheduled_data,
+                level = "Regional",
+                region_STP_name = "South West")
+```
+
+ ]
+ .panel[.panel-name[North West]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
+plot_banded_CoT(data = UDA_scheduled_data,
+                calendar_data = UDA_calendar_data,
+                historic_data = historical_UDA_scheduled_data,
+                level = "Regional",
+                region_STP_name = "North West")
+```
+
+ ]
+ .panel[.panel-name[North East and Yorkshire]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
+plot_banded_CoT(data = UDA_scheduled_data,
+                calendar_data = UDA_calendar_data,
+                historic_data = historical_UDA_scheduled_data,
+                level = "Regional",
+                region_STP_name = "North East and Yorkshire")
+```
+
+ ]
+.panel[.panel-name[London]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
+plot_banded_CoT(data = UDA_scheduled_data,
+                calendar_data = UDA_calendar_data,
+                historic_data = historical_UDA_scheduled_data,
+                level = "Regional",
+                region_STP_name = "London")
+```
+
+ ]
+ .panel[.panel-name[Midlands]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
+plot_banded_CoT(data = UDA_scheduled_data,
+                calendar_data = UDA_calendar_data,
+                historic_data = historical_UDA_scheduled_data,
+                level = "Regional",
+                region_STP_name = "Midlands")
+```
+
+
+ ]
+ .panel[.panel-name[East of England]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
+plot_banded_CoT(data = UDA_scheduled_data,
+                calendar_data = UDA_calendar_data,
+                historic_data = historical_UDA_scheduled_data,
+                level = "Regional",
+                region_STP_name = "East of England")
+```
+
+ ]
+  .panel[.panel-name[Data]
+
+<font size="1">
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+
+data <- plot_banded_CoT(data = UDA_scheduled_data,
+                calendar_data = UDA_calendar_data,
+                historic_data = historical_UDA_scheduled_data,
+                level = "National",
+                region_STP_name = NULL,
+                plotChart = F,
+                all_regions_and_STPs = T)
+
+data %>%
+  download_this(
+    output_name = "banded_CoT_data",
+    output_extension = ".xlsx",
+    button_label = "Download data",
+    button_type = "warning",
+    has_icon = TRUE,
+    icon = "fa fa-save"
+  )
+```
+ 
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+reactable(
+  plot_banded_CoT(data = UDA_scheduled_data,
+                calendar_data = UDA_calendar_data,
+                historic_data = historical_UDA_scheduled_data,
+                level = "National",
+                region_STP_name = NULL,
+                plotChart = F,
+                all_regions_and_STPs = T),
+  height = 400,
+  filterable = TRUE,
+  paginateSubRows = TRUE,
+  minRows = 5,
+  highlight = TRUE,
+  groupBy = c("Month", "Region Name"),
+  columns = list(
+    `Band 1`= colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE),
+    `Band 2` = colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE),
+    `Band 3`= colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE),
+    `Urgent` = colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE),
+    `Other`= colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE)
+  )
+)
+```
+]
+ ]
+
+[Return to contents](#contents)
+
+---
+
+### Urgent treatment form submissions
+
+```{r xaringan-panelset-Urgent-forms, echo=FALSE}
+xaringanExtra::use_panelset()
+```
+ <font size="2">
+.panelset[
+
+ .panel[.panel-name[National]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_urgent_form_submissions(data = UDA_scheduled_data,
+                calendar_data = UDA_calendar_data,
+                historic_data = historical_UDA_scheduled_data,
+                level = "National",
+                region_STP_name = NULL)
+```
+
+* This graph shows the number of urgent treatment forms
+declared per month across financial years.
+* The urgent treatment form count in
+**`r format(Sys.Date() - lubridate::weeks(4), "%B")` 2022**
+was
+**`r get_num_urgent_forms(level = "National", region_STP_name = NULL)`**
+, whilst in
+**`r format(Sys.Date() - lubridate::weeks(4), "%B")` 2019**
+this number was
+**`r get_num_urgent_forms_2019(level = "National", region_STP_name = NULL)`**
+, which is a
+**`r round((get_num_urgent_forms(level = "National", region_STP_name = NULL) - get_num_urgent_forms_2019(level = "National", region_STP_name = NULL)) *100 / get_num_urgent_forms_2019(level = "National", region_STP_name = NULL))` %**
+change from the pre-COVID world.
+
+ ]
+ .panel[.panel-name[South East]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_urgent_form_submissions(data = UDA_scheduled_data,
+                calendar_data = UDA_calendar_data,
+                historic_data = historical_UDA_scheduled_data,
+                level = "Regional",
+                region_STP_name = "South East")
+```
+
+* This graph shows the number of urgent treatment forms
+declared per month across financial years.
+* The urgent treatment form count in
+**`r format(Sys.Date() - lubridate::weeks(4), "%B")` 2021**
+was
+**`r get_num_urgent_forms(level = "Regional", region_STP_name = "South East")`**
+, whilst in
+**`r format(Sys.Date() - lubridate::weeks(4), "%B")` 2019**
+this number was
+**`r get_num_urgent_forms_2019(level = "Regional", region_STP_name = "South East")`**
+, which is a
+**`r round((get_num_urgent_forms(level = "Regional", region_STP_name = "South East") - get_num_urgent_forms_2019(level = "Regional", region_STP_name = "South East")) *100 / get_num_urgent_forms_2019(level = "Regional", region_STP_name = "South East"))` %**
+change from the pre-COVID world.
+
+
+ ]
+ .panel[.panel-name[South West]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_urgent_form_submissions(data = UDA_scheduled_data,
+                calendar_data = UDA_calendar_data,
+                historic_data = historical_UDA_scheduled_data,
+                level = "Regional",
+                region_STP_name = "South West")
+```
+
+* This graph shows the number of urgent treatment forms
+declared per month across financial years.
+* The urgent treatment form count in
+**`r format(Sys.Date() - lubridate::weeks(4), "%B")` 2021**
+was
+**`r get_num_urgent_forms(level = "Regional", region_STP_name = "South West")`**
+, whilst in
+**`r format(Sys.Date() - lubridate::weeks(4), "%B")` 2019**
+this number was
+**`r get_num_urgent_forms_2019(level = "Regional", region_STP_name = "South West")`**
+, which is a
+**`r round((get_num_urgent_forms(level = "Regional", region_STP_name = "South West") - get_num_urgent_forms_2019(level = "Regional", region_STP_name = "South West")) *100 / get_num_urgent_forms_2019(level = "Regional", region_STP_name = "South West"))` %**
+change from the pre-COVID world.
+
+
+ ]
+ .panel[.panel-name[North West]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_urgent_form_submissions(data = UDA_scheduled_data,
+                calendar_data = UDA_calendar_data,
+                historic_data = historical_UDA_scheduled_data,
+                level = "Regional",
+                region_STP_name = "North West")
+```
+
+* This graph shows the number of urgent treatment forms
+declared per month across financial years.
+* The urgent treatment form count in
+**`r format(Sys.Date() - lubridate::weeks(4), "%B")` 2021**
+was
+**`r get_num_urgent_forms(level = "Regional", region_STP_name = "North West")`**
+, whilst in
+**`r format(Sys.Date() - lubridate::weeks(4), "%B")` 2019**
+this number was
+**`r get_num_urgent_forms_2019(level = "Regional", region_STP_name = "North West")`**
+, which is a
+**`r round((get_num_urgent_forms(level = "Regional", region_STP_name = "North West") - get_num_urgent_forms_2019(level = "Regional", region_STP_name = "North West")) *100 / get_num_urgent_forms_2019(level = "Regional", region_STP_name = "North West"))` %**
+change from the pre-COVID world.
+
+
+ ]
+ .panel[.panel-name[North East and Yorkshire]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_urgent_form_submissions(data = UDA_scheduled_data,
+                calendar_data = UDA_calendar_data,
+                historic_data = historical_UDA_scheduled_data,
+                level = "Regional",
+                region_STP_name = "North East and Yorkshire")
+```
+
+* This graph shows the number of urgent treatment forms
+declared per month across financial years.
+* The urgent treatment form count in
+**`r format(Sys.Date() - lubridate::weeks(4), "%B")` 2021**
+was
+**`r get_num_urgent_forms(level = "Regional", region_STP_name = "North East and Yorkshire")`**
+, whilst in
+**`r format(Sys.Date() - lubridate::weeks(4), "%B")` 2019**
+this number was
+**`r get_num_urgent_forms_2019(level = "Regional", region_STP_name = "North East and Yorkshire")`**
+, which is a
+**`r round((get_num_urgent_forms(level = "Regional", region_STP_name = "North East and Yorkshire") - get_num_urgent_forms_2019(level = "Regional", region_STP_name = "North East and Yorkshire")) *100 / get_num_urgent_forms_2019(level = "Regional", region_STP_name = "North East and Yorkshire"))` %**
+change from the pre-COVID world.
+
+
+ ]
+.panel[.panel-name[London]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_urgent_form_submissions(data = UDA_scheduled_data,
+                calendar_data = UDA_calendar_data,
+                historic_data = historical_UDA_scheduled_data,
+                level = "Regional",
+                region_STP_name = "London")
+```
+
+* This graph shows the number of urgent treatment forms
+declared per month across financial years.
+* The urgent treatment form count in
+**`r format(Sys.Date() - lubridate::weeks(4), "%B")` 2021**
+was
+**`r get_num_urgent_forms(level = "Regional", region_STP_name = "London")`**
+, whilst in
+**`r format(Sys.Date() - lubridate::weeks(4), "%B")` 2019**
+this number was
+**`r get_num_urgent_forms_2019(level = "Regional", region_STP_name = "London")`**
+, which is a
+**`r round((get_num_urgent_forms(level = "Regional", region_STP_name = "London") - get_num_urgent_forms_2019(level = "Regional", region_STP_name = "London")) *100 / get_num_urgent_forms_2019(level = "Regional", region_STP_name = "London"))` %**
+change from the pre-COVID world.
+
+ ]
+ .panel[.panel-name[Midlands]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_urgent_form_submissions(data = UDA_scheduled_data,
+                calendar_data = UDA_calendar_data,
+                historic_data = historical_UDA_scheduled_data,
+                level = "Regional",
+                region_STP_name = "Midlands")
+```
+
+* This graph shows the number of urgent treatment forms
+declared per month across financial years.
+* The urgent treatment form count in
+**`r format(Sys.Date() - lubridate::weeks(4), "%B")` 2021**
+was
+**`r get_num_urgent_forms(level = "Regional", region_STP_name = "Midlands")`**
+, whilst in
+**`r format(Sys.Date() - lubridate::weeks(4), "%B")` 2019**
+this number was
+**`r get_num_urgent_forms_2019(level = "Regional", region_STP_name = "Midlands")`**
+, which is a
+**`r round((get_num_urgent_forms(level = "Regional", region_STP_name = "Midlands") - get_num_urgent_forms_2019(level = "Regional", region_STP_name = "Midlands")) *100 / get_num_urgent_forms_2019(level = "Regional", region_STP_name = "Midlands"))` %**
+change from the pre-COVID world.
+
+ ]
+ .panel[.panel-name[East of England]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_urgent_form_submissions(data = UDA_scheduled_data,
+                calendar_data = UDA_calendar_data,
+                historic_data = historical_UDA_scheduled_data,
+                level = "Regional",
+                region_STP_name = "East of England")
+```
+
+* This graph shows the number of urgent treatment forms
+declared per month across financial years.
+* The urgent treatment form count in
+**`r format(Sys.Date() - lubridate::weeks(4), "%B")` 2021**
+was
+**`r get_num_urgent_forms(level = "Regional", region_STP_name = "East of England")`**
+, whilst in
+**`r format(Sys.Date() - lubridate::weeks(4), "%B")` 2019**
+this number was
+**`r get_num_urgent_forms_2019(level = "Regional", region_STP_name = "East of England")`**
+, which is a
+**`r round((get_num_urgent_forms(level = "Regional", region_STP_name = "East of England") - get_num_urgent_forms_2019(level = "Regional", region_STP_name = "East of England")) *100 / get_num_urgent_forms_2019(level = "Regional", region_STP_name = "East of England"))` %**
+change from the pre-COVID world.
+
+ ]
+   .panel[.panel-name[Data]
+
+<font size="1">
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+
+data <- plot_urgent_form_submissions(data = UDA_scheduled_data,
+                calendar_data = UDA_calendar_data,
+                historic_data = historical_UDA_scheduled_data,
+                level = "National",
+                region_STP_name = NULL,
+                plotChart = F,
+                all_regions_and_STPs = T)
+
+data %>%
+  download_this(
+    output_name = "urgent_forms_data",
+    output_extension = ".xlsx",
+    button_label = "Download data",
+    button_type = "warning",
+    has_icon = TRUE,
+    icon = "fa fa-save"
+  )
+```
+ 
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+reactable(
+  plot_urgent_form_submissions(data = UDA_scheduled_data,
+                calendar_data = UDA_calendar_data,
+                historic_data = historical_UDA_scheduled_data,
+                level = "National",
+                region_STP_name = NULL,
+                plotChart = F,
+                all_regions_and_STPs = T),
+  height = 400,
+  filterable = TRUE,
+  paginateSubRows = TRUE,
+  minRows = 5,
+  highlight = TRUE,
+  groupBy = c("Month", "Region Name"),
+  columns = list(
+    `Urgent forms` = colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE)
+  )
+)
+```
+]
+ ]
+
+[Return to contents](#contents)
+
+---
+
+### 111 dental related call volumes
+
+```{r xaringan-panelset-111_volumes, echo=FALSE}
+xaringanExtra::use_panelset()
+```
+ <font size="2">
+.panelset[
+
+ .panel[.panel-name[National]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval=evaluate_111}
+plot_111_referrals()
+```
+
+
+ ]
+ .panel[.panel-name[Data]
+```{r echo=FALSE, results='asis',warning=FALSE, fig.width=3, fig.height=3}
+
+DT::datatable(plot_111_referrals(plotChart = F),
+              rownames=FALSE,  extensions = 'Buttons', options = list(dom='Bt', buttons = c('excel'),
+  bPaginate = FALSE, pageLength=35, columnDefs = list(list(className = 'dt-left', targets = 0:1)),searching=FALSE,scrollY ='350px', scrollX ='500px'))%>%
+  DT::formatStyle(columns = c(1, 2), fontSize = '90%')
+```
+ ]
+ ]
+ 
+ [Return to contents](#contents)
+
+
+---
+
+### 111 dental related call volumes by disposition
+
+```{r xaringan-panelset-111_volumes_breakdown, echo=FALSE}
+xaringanExtra::use_panelset()
+```
+ <font size="2">
+.panelset[
+
+ .panel[.panel-name[National]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval=evaluate_111}
+plot_breakdown_111_referrals()
+```
+
+
+ ]
+ .panel[.panel-name[Data]
+```{r echo=FALSE, results='asis',warning=FALSE, fig.width=3, fig.height=3}
+
+DT::datatable(plot_breakdown_111_referrals(plotChart = F),
+              rownames=FALSE,  extensions = 'Buttons', options = list(dom='Bt', buttons = c('excel'),
+  bPaginate = FALSE, pageLength=35, columnDefs = list(list(className = 'dt-left', targets = 0:4)),searching=FALSE,scrollY ='350px', scrollX ='500px'))%>%
+  DT::formatStyle(columns = c(1, 2, 3, 4, 5), fontSize = '90%')
+```
+ ]
+ ]
+ 
+[Return to contents](#contents)
+
+
+---
+
+### Unique dental patients seen
+
+```{r xaringan-panelset-Unique-patients, echo=FALSE}
+xaringanExtra::use_panelset()
+```
+ <font size="2">
+.panelset[
+
+ .panel[.panel-name[National]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_unique_patients_rolling(data = unique_patients_rolling,
+                                     calendar_data = UDA_calendar_data,
+                                     scheduled_data = UDA_scheduled_data,
+                                     level = "National",
+                                     region_STP_name = NULL,
+                                     plotChart = TRUE,
+                                     remove_prototypes = TRUE)
+```
+
+* The number of unique patients seen in the last 12 months is currently around
+**`r plot_unique_patients_rolling(level = "National",region_STP_name = NULL, plotChart = F,remove_prototypes = T, get_perc = T)` %**
+of pre-pandemic levels.
+
+ ]
+ .panel[.panel-name[South East]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_unique_patients_rolling(data = unique_patients_rolling,
+                                     calendar_data = UDA_calendar_data,
+                                     scheduled_data = UDA_scheduled_data,
+                                     level = "Regional",
+                                     region_STP_name = "South East",
+                                     plotChart = TRUE,
+                                     remove_prototypes = TRUE)
+```
+
+* The number of unique patients seen in the last 12 months is currently around
+**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "South East", plotChart = F,remove_prototypes = T, get_perc = T)` %**
+of pre-pandemic levels.
+
+ ]
+ .panel[.panel-name[South West]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_unique_patients_rolling(data = unique_patients_rolling,
+                                     calendar_data = UDA_calendar_data,
+                                     scheduled_data = UDA_scheduled_data,
+                                     level = "Regional",
+                                     region_STP_name = "South West",
+                                     plotChart = TRUE,
+                                     remove_prototypes = TRUE)
+```
+
+* The number of unique patients seen in the last 12 months is currently around
+**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "South West", plotChart = F,remove_prototypes = T, get_perc = T)` %**
+of pre-pandemic levels.
+
+ ]
+ .panel[.panel-name[North West]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_unique_patients_rolling(data = unique_patients_rolling,
+                                     calendar_data = UDA_calendar_data,
+                                     scheduled_data = UDA_scheduled_data,
+                                     level = "Regional",
+                                     region_STP_name = "North West",
+                                     plotChart = TRUE,
+                                     remove_prototypes = TRUE)
+```
+
+* The number of unique patients seen in the last 12 months is currently around
+**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "North West", plotChart = F,remove_prototypes = T, get_perc = T)` %**
+of pre-pandemic levels.
+
+ ]
+ .panel[.panel-name[North East and Yorkshire]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_unique_patients_rolling(data = unique_patients_rolling,
+                                     calendar_data = UDA_calendar_data,
+                                     scheduled_data = UDA_scheduled_data,
+                                     level = "Regional",
+                                     region_STP_name = "North East and Yorkshire",
+                                     plotChart = TRUE,
+                                     remove_prototypes = TRUE)
+```
+
+* The number of unique patients seen in the last 12 months is currently around
+**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "North East and Yorkshire", plotChart = F,remove_prototypes = T, get_perc = T)` %**
+of pre-pandemic levels.
+
+
+ ]
+.panel[.panel-name[London]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_unique_patients_rolling(data = unique_patients_rolling,
+                                     calendar_data = UDA_calendar_data,
+                                     scheduled_data = UDA_scheduled_data,
+                                     level = "Regional",
+                                     region_STP_name = "London",
+                                     plotChart = TRUE,
+                                     remove_prototypes = TRUE)
+```
+
+* The number of unique patients seen in the last 12 months is currently around
+**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "London", plotChart = F,remove_prototypes = T, get_perc = T)` %**
+of pre-pandemic levels.
+
+ ]
+ .panel[.panel-name[Midlands]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_unique_patients_rolling(data = unique_patients_rolling,
+                                     calendar_data = UDA_calendar_data,
+                                     scheduled_data = UDA_scheduled_data,
+                                     level = "Regional",
+                                     region_STP_name = "Midlands",
+                                     plotChart = TRUE,
+                                     remove_prototypes = TRUE)
+```
+
+* The number of unique patients seen in the last 12 months is currently around
+**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "Midlands", plotChart = F,remove_prototypes = T, get_perc = T)` %**
+of pre-pandemic levels.
+
+ ]
+ .panel[.panel-name[East of England]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_unique_patients_rolling(data = unique_patients_rolling,
+                                     calendar_data = UDA_calendar_data,
+                                     scheduled_data = UDA_scheduled_data,
+                                     level = "Regional",
+                                     region_STP_name = "East of England",
+                                     plotChart = TRUE,
+                                     remove_prototypes = TRUE)
+```
+
+* The number of unique patients seen in the last 12 months is currently around
+**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "East of England", plotChart = F,remove_prototypes = T, get_perc = T)` %**
+of pre-pandemic levels.
+
+ ]
+  .panel[.panel-name[Data]
+
+<font size="1">
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+
+data <- plot_unique_patients_rolling(data = unique_patients_rolling,
+                                     calendar_data = UDA_calendar_data,
+                                     scheduled_data = UDA_scheduled_data,
+                                     level = "National",
+                                     region_STP_name = NULL,
+                                     plotChart = FALSE,
+                                     remove_prototypes = TRUE,
+                                     all_regiona_and_STPs = TRUE)
+
+data %>%
+  download_this(
+    output_name = "unique_patients_12_month_rolling_data",
+    output_extension = ".xlsx",
+    button_label = "Download data",
+    button_type = "warning",
+    has_icon = TRUE,
+    icon = "fa fa-save"
+  )
+```
+ 
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+reactable(
+  plot_unique_patients_rolling(data = unique_patients_rolling,
+                                     calendar_data = UDA_calendar_data,
+                                     scheduled_data = UDA_scheduled_data,
+                                     level = "National",
+                                     region_STP_name = NULL,
+                                     plotChart = FALSE,
+                                     remove_prototypes = TRUE,
+                                     all_regiona_and_STPs = TRUE),
+  height = 400,
+  filterable = TRUE,
+  paginateSubRows = TRUE,
+  minRows = 5,
+  highlight = TRUE,
+  groupBy = c("12 month period end", "Region Name"),
+  columns = list(
+    `Any band unique patients rolling 12 month` = colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE),
+    `Band 1 unique patients rolling 12 month` = colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE),
+    `Band 2 or 3 unique patients rolling 12 month` = colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE),
+    `Urgent band 1 unique patients rolling 12 month` = colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE),
+    `Other unique patients rolling 12 month` = colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE)
+  )
+)
+```
+ ]
+ ]
+ 
+[Return to contents](#contents)
+
+
+---
+
+### Appendix
+#### MY Category classification breakdown:
+
+ <font size="2">
+* Cat 1
+  + Details in CoMPASS Correct
+* Cat 2
+  + Carry Forward - Other
+  + Flexibly Commissioned Contract
+  + Force majeure accepted
+  + Force majeure o/s
+  + In-year incorporation/merge (Parent contract - letter will be sent)
+  + Incomplete OOH/other access services
+  + Late subs processed
+  + Mixed / CoT Contract
+  + Non-recurring activity
+  + Open in-year
+  + Other
+  + Request to re-base
+  + Review Carry Forward
+  + Sub Contracts (Parent contract - letter will be sent)
+  + UDA Value below £15.00
+  + UDA Value exceeds £49.99
+  + UDC
+  + UOA Value exceeds £75.00
+  + Closed in-year
+  + Incomplete service line entries
+
+
+---
+
+ <font size="2">
+* Cat 3
+  + CDS
+  + Closed in year
+  + Contract End Date before 01/04/2020
+  + Contract End Date before 01/04/2021
+  + Contract End Date before 01/04/2022
+  + DCO req to resolve locally
+  + Domiciliary/ Sedation
+  + IMOS/MOS
+  + In-year incorporation/merge (Child contract - letter will not be sent)
+  + Incomplete OOH/other access services
+  + Known performance/contract issues
+  + No Contracted activity
+  + No Contracted value
+  + Not paid by the NHSBSA
+  + Open in year
+  + Other
+  + Other - Please state why
+  + Other Advanced/Additional Services
+  + PDS Plus
+  + Prison
+  + Sub Contracts (Child contract - letter will not be sent)
+* Cat 4
+  + Dental Contract Reform
+
+---
+
+#### Data sources
+
+ <font size="2">
+* BSA calendar and scheduled UDA data downloaded from the "NHS England Central Dashboard" on eDEN. This data is downloaded monthly and put on the NCDR.
+* Tables are:
+  + [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UDA_calendar]
+  + [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UDA_scheduled]
+  + [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UOA_calendar]
+  + [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UOA_scheduled]
+* A list of prototype contracts are also available in:
+  + [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[prototype_contracts]
+* Tables of UDA delivery on STP level in calendar and scheduled format available in:
+  + [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UDA_delivery_calendar]
+  + [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UDA_delivery_scheduled]
+
+* 111 data comes from the pathways tool which is received monthly by email.
 
 
 

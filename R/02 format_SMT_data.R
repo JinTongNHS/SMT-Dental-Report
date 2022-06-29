@@ -448,7 +448,8 @@ get_delivery_data_calendar <- function(calendar_data = UDA_calendar_data,
 ################################################################################
 get_banded_COTs_data <- function(data = UDA_scheduled_data, 
                                    historic_data = historical_UDA_scheduled_data,
-                                   remove_prototypes = F){
+                                   remove_prototypes = FALSE,
+                                 all_regions_and_STPs = FALSE){
   
   #bind old data to new data 
   data <- data %>%
@@ -471,16 +472,24 @@ get_banded_COTs_data <- function(data = UDA_scheduled_data,
       filter(annual_contracted_UDA > 100)
   }
   
-  #group by month and sum UDAs delivered
-  new_data <- data %>%
-    group_by(month) %>%
+  if(all_regions_and_STPs == FALSE){
+    #group by month and sum UDAs delivered
+    new_data <- data %>%
+      group_by(month) 
+
+  }else{
+    #group by month and sum UDAs delivered
+    new_data <- data %>%
+      group_by(month, region_name, commissioner_name) 
+  }
+  
+  new_data <- new_data %>%
     summarise(band1 = sum(band1_FP17, na.rm = T),
               band2 = sum(band2_FP17, na.rm = T),
               band3 = sum(band3_FP17, na.rm = T),
               other = sum(other_FP17, na.rm = T),
               urgent = sum(urgent_FP17, na.rm = T)
-              ) #%>%
-    #filter(month == max(month))
+    )
 
 }
 
