@@ -23,13 +23,13 @@ import_clean_combine_upload_all_data <- function(raw_UDA_scheduled_data_folder_p
 
   #UDA calendar data
   UDA_calendar_data_latest <- import_and_clean_calendar_UDA_data(data_path = paste0(raw_UDA_calendar_data_folder_path, "UDA_calendar_Apr_", data_month_name,".xlsx"))
-  
+
   #UOA calendar data
   UOA_calendar_data_latest <- import_and_clean_calendar_UOA_data(data_path = paste0(raw_UOA_calendar_data_folder_path, "UOA_calendar_Apr_", data_month_name,".xlsx"))
-  
+
   #Append schedule data and overwrite calendar data in NCDR
   con <- dbConnect(odbc::odbc(), "NCDR")
-  
+
   #Append UDA scheduled data
   dbWriteTable(con, Id(catalog="NHSE_Sandbox_PrimaryCareNHSContracts",schema="Dental",table="UDA_scheduled"),
                value = UDA_scheduled_data_latest, row.names = FALSE, append=TRUE)
@@ -95,11 +95,41 @@ import_clean_combine_upload_all_data <- function(raw_UDA_scheduled_data_folder_p
 
   dbWriteTable(con, Id(catalog="NHSE_Sandbox_PrimaryCareNHSContracts",schema="Dental",table="UOA_calendar"),
                value = UOA_calendar_data_latest, row.names = FALSE, append = FALSE, overwrite = TRUE)
-  
+
 
 }
 
 
+################################################################################
+upload_delivery_data <- function(calendar_data = UDA_calendar_data,  
+                                 scheduled_data = UDA_scheduled_data){
+  
+  UDA_delivery_calendar <- get_delivery_data_calendar(calendar_data = calendar_data,  
+                                                      scheduled_data = scheduled_data,
+                                                      remove_prototypes = T,
+                                                      UDAorUOA = "UDA",
+                                                      regional_lines = F,
+                                                      STP_lines = T,
+                                                      cat_lines = F, 
+                                                      renameColumns = T)
+  
+  UDA_delivery_scheduled <- get_delivery_data(data = scheduled_data,
+                                               calendar_data = calendar_data,
+                                               remove_prototypes = T,
+                                               UDAorUOA = "UDA",
+                                               all_regions_and_STPs = T,
+                                               renameColumns = T)
+  
+  #Overwrite data in NCDR
+  con <- dbConnect(odbc::odbc(), "NCDR")
+  
+  dbWriteTable(con, Id(catalog="NHSE_Sandbox_PrimaryCareNHSContracts",schema="Dental",table="UDA_delivery_calendar"),
+               value = UDA_delivery_calendar, row.names = FALSE, append = FALSE, overwrite = TRUE)
+  
+  dbWriteTable(con, Id(catalog="NHSE_Sandbox_PrimaryCareNHSContracts",schema="Dental",table="UDA_delivery_scheduled"),
+               value = UDA_delivery_scheduled, row.names = FALSE, append = FALSE, overwrite = TRUE)
+
+}
 
 ################################################################################
 #function to import and clean data
@@ -265,7 +295,36 @@ import_and_clean_calendar_UDA_data <- function(data_path = "data/raw_data/dashbo
     ) 
   
   
-  UDA_calendar_data <- bind_rows(data_apr, data_may)
+  #add column for date and rename columns, split data for just june
+  data_jun <- data %>%
+    mutate(data_month = as.Date("2022-06-01")) %>%
+    select(data_month, X__1, X__2, X__3, X__4, X__5, X__6, X__7, X__8, 
+           X__33, X__34, X__35, X__36, X__37, X__38, X__39, X__40, X__41, X__42, X__43, X__44) %>%
+    rename(contract_number = X__1,
+           latest_contract_type = X__2,
+           name_or_company_name = X__3,
+           commissioner_name = X__4,
+           region_name = X__5,
+           paid_by_BSA = X__6,
+           contract_start_date = X__7, 
+           contract_end_date = X__8, 
+           
+           UDA_total = X__33, 
+           UDA_band_1_total = X__34,
+           UDA_band_2_total = X__35,
+           UDA_band_3_total = X__36, 
+           UDA_urgent_total = X__37, 
+           UDA_other_total = X__38, 
+           total_FP17s = X__39, 
+           total_band_1_FP17s  = X__40,
+           total_band_2_FP17s = X__41,
+           total_band_3_FP17s = X__42,
+           total_urgent_FP17s = X__43,
+           total_other_FP17s = X__44
+    ) 
+  
+  
+  UDA_calendar_data <- bind_rows(data_apr, data_may, data_jun)
   
 }
 
@@ -323,7 +382,39 @@ import_and_clean_calendar_UOA_data <- function(data_path = "data/raw_data/dashbo
            UOA_total = X__9
     )
   
-  UOA_calendar_data <- bind_rows(data_apr, data_may)
+  #add column for date and rename columns, split data for just may
+  data_may <- data %>%
+    mutate(data_month = as.Date("2022-05-01")) %>%
+    select(data_month, X__1, X__2, X__3, X__4, X__5, X__6, X__7, 
+           X__9) %>%
+    rename(contract_number = X__1,
+           contract_type = X__2,
+           name_or_company_name = X__3,
+           commissioner_name = X__4,
+           paid_by_BSA = X__5,
+           contract_start_date = X__6, 
+           contract_end_date = X__7, 
+           
+           UOA_total = X__9
+    )
+  
+  #add column for date and rename columns, split data for just jun
+  data_jun <- data %>%
+    mutate(data_month = as.Date("2022-06-01")) %>%
+    select(data_month, X__1, X__2, X__3, X__4, X__5, X__6, X__7, 
+           X__10) %>%
+    rename(contract_number = X__1,
+           contract_type = X__2,
+           name_or_company_name = X__3,
+           commissioner_name = X__4,
+           paid_by_BSA = X__5,
+           contract_start_date = X__6, 
+           contract_end_date = X__7, 
+           
+           UOA_total = X__10
+    )
+  
+  UOA_calendar_data <- bind_rows(data_apr, data_may, data_jun)
   
 }
 
