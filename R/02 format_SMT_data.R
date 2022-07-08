@@ -177,6 +177,23 @@ pull_UDA_scheduled_historical_data <- function(){
 
 
 ################################################################################
+correct_STP_ICBs <- function(data = UDA_scheduled_data, 
+                             lookup = STP_ICB_lookup,
+                             output = "UDA scheduled"){
+
+  lookup <- lookup %>%
+    rename(commissioner_name = commissioner_name_STP)
+  
+  data <- data %>%
+    left_join(lookup, by = "commissioner_name") %>%
+    mutate(commissioner_name = if_else(is.na(commissioner_name_ICB), 
+                                        commissioner_name, 
+                                        commissioner_name_ICB)) %>%
+    select(-commissioner_name_ICB)
+  
+}
+
+################################################################################
 get_data_for_cumulative_plot <- function(data = UDA_calendar_data, 
                                             scheduled_data = UDA_scheduled_data,
                                             remove_prototypes = T,
@@ -296,15 +313,21 @@ get_delivery_data <- function(data = UDA_scheduled_data,
       filter(annual_contracted_UOA > 0)
   }
   
+  if(renameColumns){
+    #add a region column to the data
+    region_STP_lookup <- calendar_data %>%
+      select(commissioner_name, region_name) %>%
+      distinct()
+    
+    data <- left_join(data, region_STP_lookup, by = c("commissioner_name"))
+  }
+  
   if(all_regions_and_STPs){
-    # #add a region column to the data
-    # region_STP_lookup <- calendar_data %>%
-    #   select(commissioner_name, region_name) %>%
-    #   distinct()
-    # 
-    # data <- left_join(data, region_STP_lookup, by = c("commissioner_name"))
+
     data <- data %>%
       group_by(month, region_name, commissioner_name)
+    
+    
   }else{
     data <- data %>%
       group_by(month)
@@ -330,14 +353,7 @@ get_delivery_data <- function(data = UDA_scheduled_data,
   
   #for PCOR and SOF table
   if(renameColumns){
-    
-    #add a region column to the data
-    region_STP_lookup <- calendar_data %>%
-      select(commissioner_name, region_name) %>%
-      distinct()
-    
-    new_data <- left_join(new_data, region_STP_lookup, by = c("commissioner_name"))
-    
+
     new_data <- new_data %>%
       select(scheduled_month = month,
              commissioner_name,
@@ -345,7 +361,11 @@ get_delivery_data <- function(data = UDA_scheduled_data,
              monthly_UDAs_delivered = monthly_UDA_UOAs_delivered,
              scaled_monthly_UDAs_delivered = scaled_monthly_UDA_UOAs_delivered,
              annual_contracted_UDAs = annual_contracted_UDA_UOA,
-             scaled_perc_UDAs_delivered = perc_UDA_UOA_delivered)
+             scaled_perc_UDAs_delivered = perc_UDA_UOA_delivered) %>%
+      mutate(threshold_perc = case_when(scheduled_month >= as.Date("2021-04-01") & scheduled_month < as.Date("2021-10-01") ~ "60",
+                                        scheduled_month >= as.Date("2021-10-01") & scheduled_month < as.Date("2022-01-01") ~ "65",
+                                        scheduled_month >= as.Date("2022-01-01") & scheduled_month < as.Date("2022-04-01") ~ "85",
+                                        scheduled_month >= as.Date("2022-04-01") & scheduled_month < as.Date("2022-07-01") ~ "95"))
   }
   
   new_data
@@ -424,13 +444,6 @@ get_delivery_data_calendar <- function(calendar_data = UDA_calendar_data,
   #for PCOR and SOF table
   if(renameColumns){
 
-    #add a region column to the data
-    region_STP_lookup <- calendar_data %>%
-      select(commissioner_name, region_name) %>%
-      distinct()
-
-    data <- left_join(data, region_STP_lookup, by = c("commissioner_name"))
-
     data <- data %>%
       select(calendar_month = month,
              commissioner_name,
@@ -438,7 +451,11 @@ get_delivery_data_calendar <- function(calendar_data = UDA_calendar_data,
              monthly_UDAs_delivered = monthly_UDA_UOAs_delivered,
              scaled_monthly_UDAs_delivered = scaled_monthly_UDA_UOAs_delivered,
              annual_contracted_UDAs = annual_contracted_UDA_UOA,
-             scaled_perc_UDAs_delivered = scaled_perc_UDA_UOA_delivered)
+             scaled_perc_UDAs_delivered = scaled_perc_UDA_UOA_delivered) %>%
+      mutate(threshold_perc = case_when(calendar_month >= as.Date("2021-04-01") & calendar_month < as.Date("2021-10-01") ~ "60",
+                                        calendar_month >= as.Date("2021-10-01") & calendar_month < as.Date("2022-01-01") ~ "65",
+                                        calendar_month >= as.Date("2022-01-01") & calendar_month < as.Date("2022-04-01") ~ "85",
+                                        calendar_month >= as.Date("2022-04-01") & calendar_month < as.Date("2022-07-01") ~ "95"))
   }
 
   data

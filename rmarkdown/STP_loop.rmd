@@ -1,0 +1,73 @@
+#### `r '{{value.to.match}}'`: Patient re-attendance intervals
+
+```{r echo=FALSE}
+xaringanExtra::use_panelset()
+```
+ <font size="2">
+.panelset[
+
+ .panel[.panel-name[Band 1]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=12, fig.height=6}
+value.to.match <- '{{value.to.match}}'
+plot_patient_recalls_facet(data = dental_recalls_STP_2018_22,
+                                 treatment_band = "Band_1",
+                                 level = "STP",
+                                 region_STP_name = value.to.match,
+                                 calendar_data = UDA_calendar_data,
+                                 plotChart = TRUE)
+```
+
+ ]
+ .panel[.panel-name[Band 2]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=12, fig.height=6}
+value.to.match <- '{{value.to.match}}'
+plot_patient_recalls_facet(data = dental_recalls_STP_2018_22,
+                                 treatment_band = "Band_2",
+                                 level = "STP",
+                                 region_STP_name = value.to.match,
+                                 calendar_data = UDA_calendar_data,
+                                 plotChart = TRUE)
+```
+
+ ]
+ .panel[.panel-name[Band 3]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=12, fig.height=6}
+value.to.match <- '{{value.to.match}}'
+plot_patient_recalls_facet(data = dental_recalls_STP_2018_22,
+                                 treatment_band = "Band_3",
+                                 level = "STP",
+                                 region_STP_name = value.to.match,
+                                 calendar_data = UDA_calendar_data,
+                                 plotChart = TRUE)
+```
+
+ ]
+ .panel[.panel-name[Urgent]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=12, fig.height=6}
+value.to.match <- '{{value.to.match}}'
+plot_patient_recalls_facet(data = dental_recalls_STP_2018_22,
+                                 treatment_band = "Urgent",
+                                 level = "STP",
+                                 region_STP_name = value.to.match,
+                                 calendar_data = UDA_calendar_data,
+                                 plotChart = TRUE)
+```
+
+ ]
+  .panel[.panel-name[Other]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=12, fig.height=6}
+value.to.match <- '{{value.to.match}}'
+plot_patient_recalls_facet(data = dental_recalls_STP_2018_22,
+                                 treatment_band = "Other",
+                                 level = "STP",
+                                 region_STP_name = value.to.match,
+                                 calendar_data = UDA_calendar_data,
+                                 plotChart = TRUE)
+```
+
+ ]
+ ]
+
+[Return to contents](#contents)
+
+---

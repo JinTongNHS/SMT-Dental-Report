@@ -1,6 +1,6 @@
 ---
 title: "Dental Data Pack"
-subtitle: "`r params$region_STP_name`"
+subtitle: "National"
 date: "`r paste(format(Sys.time(), '%B, %Y'), ' - Reporting up to end of', format(Sys.Date() - lubridate::weeks(4), '%B, %Y'))`"
 output:
   xaringan::moon_reader:
@@ -12,9 +12,6 @@ output:
       highlightStyle: github
       highlightLines: true
       countIncrementalSlides: false
-params:
-  level: "National"
-  region_STP_name: NULL
 ---
 
 
@@ -52,14 +49,19 @@ UOA_calendar_data <- UOA_calendar_data %>%
 UDA_scheduled_data <- rename(UDA_scheduled_data, month = data_month)
 UOA_scheduled_data <- rename(UOA_scheduled_data, month = data_month)
 
+#sort out STP ICB changes
+STP_ICB_lookup <- read_excel("../data/STP_ICB_lookup.xlsx")
+UDA_scheduled_data <- correct_STP_ICBs(UDA_scheduled_data)
+UDA_calendar_data <- correct_STP_ICBs(UDA_calendar_data)
+UOA_scheduled_data <- correct_STP_ICBs(UOA_scheduled_data)
+UOA_calendar_data <- correct_STP_ICBs(UOA_calendar_data)
+
 #Read local 111 file
 dental_data_111 <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental/raw_eDEN_dental_data/111_pathways_data/dental_data_111.xls")
 
 #############still to fix
 prototype_contracts <- read_excel("../data/prototype_contracts.xlsx")
 contractor_categories <- readRDS("../data/contractor_categories.RDS")
-#UDA_delivery_calendar <- get_delivery_data_calendar(STP_lines = T, renameColumns = T)
-#UDA_delivery_scheduled <- get_delivery_data(STP_lines = T, renameColumns = T)
 contract_demographics <- readRDS("../data/contract_demographics.rds")
 
 #read in unique patients
@@ -67,7 +69,10 @@ unique_patients_static <- readRDS("../data/unique_patients/unique_patients_stati
 unique_patients_rolling <- readRDS("../data/unique_patients/unique_patients_rolling.rds")
 
 #read in recalls 
-readRDS("../data/recalls/dental_recalls_2021_22.rds")
+dental_recalls_STP_2018_22 <- readRDS("../data/recalls/dental_recalls_STP_2018_22.rds")
+
+#read in CDS data
+CDS_data <- read_excel("../data/CDS/CDS_Data_for_r.xlsx")
 
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 
@@ -96,8 +101,12 @@ name: contents
  * [Banded courses of treatment time series](#banded-cots)
  * [Urgent treatment form submissions](#urgent-forms)
  * [111 call volumes](#111-call-volumes)
- * [111 call volumes by disposition](#111-breakdown)
  * [Unique patients seen rolling 12 months](#unique-patients)
+ * [Patient re-attendance intervals](#reattendance)
+ * [Community Dental Services (CDS) Patients waiting for assessment](#cds)
+ * [CDS Patients waiting for treatment](#cds-treatment)
+ * [CDS Patients waiting for assessment](#cds-wait-weeks-assessment)
+ * [CDS Patients waiting for treatment](#cds-wait-weeks-treatment)
  
 #### Orthodontic 
  * [Calendar UOA activity](#calendar-uoa-activity)
@@ -110,11 +119,9 @@ name: contents
  * [MY Category classification breakdown](#my-cat-breakdown)
  * [Data sources](#data-sources)
 
-
+<font size="1">
 #### NOTE 
-This is an interactive markdown report.  You can navigate from slide to slide by either clicking the mouse on the screen or by using the cursor keys.  **Press ? for help.** 
-Some pages have selection buttons across regions, click on the region in order to explore the data for that area.  
-This format also works on mobile devices in browser with no further software required, but has been optimised for 16:9 screen ratio.
+This is an interactive markdown report.  You can navigate from slide to slide by either clicking the mouse on the screen or by using the cursor keys.  **Press ? for help.** Some pages have selection buttons across regions, click on the region in order to explore the data for that area.  
 
 ---
 
@@ -138,7 +145,7 @@ occurring in February.
 scheduled data. However, if for example a COT was completed on May 1st, but reported to the BSA after the end of the
 reporting period (April 21st – May 19th), that activity would go into the following scheduled period. As a result, the
 scheduling period can be considered fixed.
-* N.B.Scheduled data for April is from 1st April - 21st April. This has been taken into account when scaling up to annual delivery.
+* N.B. Scheduled data for April is from 1st April - 21st April. This has been taken into account when scaling up to annual delivery.
 
 ---
 name: contracts-table
@@ -157,7 +164,7 @@ name: contracts-table
     }
 ```
 
-### Number of contracts by Mid-Year (MY) category 
+### Number of contracts by Mid-Year (MY) category
 (see appendix for category descriptions)
 
 ```{r xaringan-panelset-contracts, echo=FALSE}
@@ -318,14 +325,14 @@ xaringanExtra::use_panelset()
 
 .panel[.panel-name[National]
 ```{r UDA_activity_Calendar1, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
-plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data, 
+plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
                                   scheduled_data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
                                   level = "National",
                                   region_STP_name = NULL,
                                   remove_prototypes = T,
-                                  regional_lines = F, 
+                                  regional_lines = F,
                                   STP_lines = F,
                                   cat_lines = F,
                                   plotChart = T)
@@ -333,19 +340,19 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
 
 * This graph shows the average monthly performance of the **`r get_num_contracts(level = "National", region_STP_name = NULL)`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (60% for Apr-Sep 21, 65% for Oct-Dec, 85% for Jan-Mar and 95% for Apr-Jun 22).
 * N.B. Previous month's delivery may be marginally higher to what was reported last month
-due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported. 
+due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported.
 
 ]
 .panel[.panel-name[South East]
 ```{r UDA_activity_Calendar2, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
-plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data, 
+plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
                                   scheduled_data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
                                   level = "Regional",
                                   region_STP_name = "South East",
                                   remove_prototypes = T,
-                                  regional_lines = F, 
+                                  regional_lines = F,
                                   STP_lines = F,
                                   cat_lines = F,
                                   plotChart = T)
@@ -353,19 +360,19 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
 
 * This graph shows the average monthly performance of the **`r get_num_contracts(level = "Regional", region_STP_name = "South East")`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (60% for Apr-Sep 21, 65% for Oct-Dec, 85% for Jan-Mar and 95% for Apr-Jun 22).
 * N.B. Previous month's delivery may be marginally higher to what was reported last month
-due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported. 
+due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported.
 
 ]
 .panel[.panel-name[South West]
 ```{r UDA_activity_Calendar3, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
-plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data, 
+plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
                                   scheduled_data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
                                   level = "Regional",
                                   region_STP_name = "South West",
                                   remove_prototypes = T,
-                                  regional_lines = F, 
+                                  regional_lines = F,
                                   STP_lines = F,
                                   cat_lines = F,
                                   plotChart = T)
@@ -373,19 +380,19 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
 
 * This graph shows the average monthly performance of the **`r get_num_contracts(level = "Regional", region_STP_name = "South West")`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (60% for Apr-Sep 21, 65% for Oct-Dec, 85% for Jan-Mar and 95% for Apr-Jun 22).
 * N.B. Previous month's delivery may be marginally higher to what was reported last month
-due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported. 
+due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported.
 
 ]
 .panel[.panel-name[North West]
 ```{r UDA_activity_Calendar4, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
-plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data, 
+plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
                                   scheduled_data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
                                   level = "Regional",
                                   region_STP_name = "North West",
                                   remove_prototypes = T,
-                                  regional_lines = F, 
+                                  regional_lines = F,
                                   STP_lines = F,
                                   cat_lines = F,
                                   plotChart = T)
@@ -393,19 +400,19 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
 
 * This graph shows the average monthly performance of the **`r get_num_contracts(level = "Regional", region_STP_name = "North West")`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (60% for Apr-Sep 21, 65% for Oct-Dec, 85% for Jan-Mar and 95% for Apr-Jun 22).
 * N.B. Previous month's delivery may be marginally higher to what was reported last month
-due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported. 
+due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported.
 
 ]
 .panel[.panel-name[North East and Yorkshire]
 ```{r UDA_activity_Calendar5, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
-plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data, 
+plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
                                   scheduled_data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
                                   level = "Regional",
                                   region_STP_name = "North East and Yorkshire",
                                   remove_prototypes = T,
-                                  regional_lines = F, 
+                                  regional_lines = F,
                                   STP_lines = F,
                                   cat_lines = F,
                                   plotChart = T)
@@ -413,19 +420,19 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
 
 * This graph shows the average monthly performance of the **`r get_num_contracts(level = "Regional", region_STP_name = "North East and Yorkshire")`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (60% for Apr-Sep 21, 65% for Oct-Dec, 85% for Jan-Mar and 95% for Apr-Jun 22).
 * N.B. Previous month's delivery may be marginally higher to what was reported last month
-due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported. 
+due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported.
 
 ]
 .panel[.panel-name[London]
 ```{r UDA_activity_Calendar6, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
-plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data, 
+plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
                                   scheduled_data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
                                   level = "Regional",
                                   region_STP_name = "London",
                                   remove_prototypes = T,
-                                  regional_lines = F, 
+                                  regional_lines = F,
                                   STP_lines = F,
                                   cat_lines = F,
                                   plotChart = T)
@@ -433,19 +440,19 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
 
 * This graph shows the average monthly performance of the **`r get_num_contracts(level = "Regional", region_STP_name = "London")`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (60% for Apr-Sep 21, 65% for Oct-Dec, 85% for Jan-Mar and 95% for Apr-Jun 22).
 * N.B. Previous month's delivery may be marginally higher to what was reported last month
-due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported. 
+due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported.
 
 ]
 .panel[.panel-name[Midlands]
 ```{r UDA_activity_Calendar7, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
-plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data, 
+plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
                                   scheduled_data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
                                   level = "Regional",
                                   region_STP_name = "Midlands",
                                   remove_prototypes = T,
-                                  regional_lines = F, 
+                                  regional_lines = F,
                                   STP_lines = F,
                                   cat_lines = F,
                                   plotChart = T)
@@ -453,19 +460,19 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
 
 * This graph shows the average monthly performance of the **`r get_num_contracts(level = "Regional", region_STP_name = "Midlands")`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (60% for Apr-Sep 21, 65% for Oct-Dec, 85% for Jan-Mar and 95% for Apr-Jun 22).
 * N.B. Previous month's delivery may be marginally higher to what was reported last month
-due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported. 
+due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported.
 
 ]
 .panel[.panel-name[East of England]
 ```{r UDA_activity_Calendar8, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
-plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data, 
+plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
                                   scheduled_data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
                                   level = "Region",
                                   region_STP_name = "East of England",
                                   remove_prototypes = T,
-                                  regional_lines = F, 
+                                  regional_lines = F,
                                   STP_lines = F,
                                   cat_lines = F,
                                   plotChart = T)
@@ -473,7 +480,7 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
 
 * This graph shows the average monthly performance of the **`r get_num_contracts(level = "Regional", region_STP_name = "East of England")`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (60% for Apr-Sep 21, 65% for Oct-Dec, 85% for Jan-Mar and 95% for Apr-Jun 22).
 * N.B. Previous month's delivery may be marginally higher to what was reported last month
-due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported. 
+due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported.
 
 ]
 .panel[.panel-name[All]
@@ -482,8 +489,8 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
                                   scheduled_data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
-                                  level = params$level,
-                                  region_STP_name = params$region_STP_name,
+                                  level = "National",
+                                  region_STP_name = NULL,
                                   remove_prototypes = T,
                                   regional_lines = T,
                                   STP_lines = F,
@@ -510,7 +517,7 @@ data %>%
     icon = "fa fa-save"
   )
 ```
- 
+
 ```{r UDA_activity_Calendar_data, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 reactable(
   plot_UDA_UOA_delivery_calendar(plotChart = F, STP_lines = T),
@@ -708,7 +715,7 @@ data %>%
     icon = "fa fa-save"
   )
 ```
- 
+
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 reactable(
   plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
@@ -909,7 +916,7 @@ data %>%
     icon = "fa fa-save"
   )
 ```
- 
+
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 reactable(
   plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
@@ -1135,7 +1142,7 @@ data %>%
     icon = "fa fa-save"
   )
 ```
- 
+
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 reactable(
   plot_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
@@ -1290,7 +1297,7 @@ data %>%
     icon = "fa fa-save"
   )
 ```
- 
+
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 reactable(
   plot_UDA_UOA_delivery(data = UDA_scheduled_data,  UDAorUOA = "UDA",
@@ -1708,7 +1715,7 @@ data %>%
     icon = "fa fa-save"
   )
 ```
- 
+
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 reactable(
   plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
@@ -1936,8 +1943,8 @@ plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
                                   scheduled_data = UOA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UOA",
-                                  level = params$level,
-                                  region_STP_name = params$region_STP_name,
+                                  level = "National",
+                                  region_STP_name = NULL,
                                   remove_prototypes = T,
                                   regional_lines = T,
                                   STP_lines = F,
@@ -1975,7 +1982,7 @@ data %>%
     icon = "fa fa-save"
   )
 ```
- 
+
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 reactable(
   plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
@@ -2006,7 +2013,7 @@ reactable(
 
 ]
 ]
- 
+
  [Return to contents](#contents)
 
 
@@ -2188,7 +2195,7 @@ data %>%
     icon = "fa fa-save"
   )
 ```
- 
+
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 reactable(
   plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
@@ -2392,7 +2399,7 @@ data %>%
     icon = "fa fa-save"
   )
 ```
- 
+
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 reactable(
   plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
@@ -2609,7 +2616,7 @@ data %>%
     icon = "fa fa-save"
   )
 ```
- 
+
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 reactable(
   plot_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
@@ -2636,7 +2643,7 @@ reactable(
  ]
 
  [Return to contents](#contents)
- 
+
 ---
 
 name: scheduled-uoas
@@ -2774,7 +2781,7 @@ data %>%
     icon = "fa fa-save"
   )
 ```
- 
+
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 reactable(
   plot_UDA_UOA_delivery(data = UOA_scheduled_data,
@@ -2799,7 +2806,7 @@ reactable(
 ```
  ]
  ]
- 
+
  [Return to contents](#contents)
 
 ---
@@ -2963,7 +2970,7 @@ data %>%
     icon = "fa fa-save"
   )
 ```
- 
+
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 reactable(
   plot_UDA_UOA_delivery_profile(data = UOA_scheduled_data,
@@ -2992,6 +2999,8 @@ reactable(
 [Return to contents](#contents)
 
 ---
+
+name: banded-cots
 
 ### Time series of banded Courses of Treatment
 
@@ -3107,7 +3116,7 @@ data %>%
     icon = "fa fa-save"
   )
 ```
- 
+
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 reactable(
   plot_banded_CoT(data = UDA_scheduled_data,
@@ -3138,6 +3147,8 @@ reactable(
 [Return to contents](#contents)
 
 ---
+
+name: urgent-forms
 
 ### Urgent treatment form submissions
 
@@ -3367,7 +3378,7 @@ data %>%
     icon = "fa fa-save"
   )
 ```
- 
+
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 reactable(
   plot_urgent_form_submissions(data = UDA_scheduled_data,
@@ -3395,67 +3406,71 @@ reactable(
 
 ---
 
+name: 111-call-volumes
+
 ### 111 dental related call volumes
 
-```{r xaringan-panelset-111_volumes, echo=FALSE}
+```{r xaringan-panelset-111_volumes_breakdown, echo=FALSE}
 xaringanExtra::use_panelset()
 ```
+
  <font size="2">
 .panelset[
 
  .panel[.panel-name[National]
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval=evaluate_111}
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_111_referrals()
 ```
 
 
  ]
- .panel[.panel-name[Data]
-```{r echo=FALSE, results='asis',warning=FALSE, fig.width=3, fig.height=3}
-
-DT::datatable(plot_111_referrals(plotChart = F),
-              rownames=FALSE,  extensions = 'Buttons', options = list(dom='Bt', buttons = c('excel'),
-  bPaginate = FALSE, pageLength=35, columnDefs = list(list(className = 'dt-left', targets = 0:1)),searching=FALSE,scrollY ='350px', scrollX ='500px'))%>%
-  DT::formatStyle(columns = c(1, 2), fontSize = '90%')
-```
- ]
- ]
- 
- [Return to contents](#contents)
-
-
----
-
-### 111 dental related call volumes by disposition
-
-```{r xaringan-panelset-111_volumes_breakdown, echo=FALSE}
-xaringanExtra::use_panelset()
-```
- <font size="2">
-.panelset[
-
- .panel[.panel-name[National]
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval=evaluate_111}
+  .panel[.panel-name[National breakdown by disposition]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_breakdown_111_referrals()
 ```
 
 
  ]
  .panel[.panel-name[Data]
-```{r echo=FALSE, results='asis',warning=FALSE, fig.width=3, fig.height=3}
+<font size="1">
 
-DT::datatable(plot_breakdown_111_referrals(plotChart = F),
-              rownames=FALSE,  extensions = 'Buttons', options = list(dom='Bt', buttons = c('excel'),
-  bPaginate = FALSE, pageLength=35, columnDefs = list(list(className = 'dt-left', targets = 0:4)),searching=FALSE,scrollY ='350px', scrollX ='500px'))%>%
-  DT::formatStyle(columns = c(1, 2, 3, 4, 5), fontSize = '90%')
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+
+data <- plot_breakdown_111_referrals(plotChart = F)
+
+data %>%
+  download_this(
+    output_name = "dental_111_data",
+    output_extension = ".xlsx",
+    button_label = "Download data",
+    button_type = "warning",
+    has_icon = TRUE,
+    icon = "fa fa-save"
+  )
+```
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+reactable(
+  plot_breakdown_111_referrals(plotChart = F),
+  height = 400,
+  filterable = TRUE,
+  paginateSubRows = TRUE,
+  minRows = 5,
+  highlight = TRUE,
+  columns = list(
+    `Monthly case volume` = colDef(filterable = FALSE)
+  )
+)
 ```
  ]
  ]
- 
+
 [Return to contents](#contents)
 
 
 ---
+
+name: unique-patients
 
 ### Unique dental patients seen
 
@@ -3619,7 +3634,7 @@ data %>%
     icon = "fa fa-save"
   )
 ```
- 
+
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 reactable(
   plot_unique_patients_rolling(data = unique_patients_rolling,
@@ -3647,16 +3662,555 @@ reactable(
 ```
  ]
  ]
- 
+
 [Return to contents](#contents)
 
 
 ---
 
+name: reattendance
+
+### Patient re-attendance intervals
+
+```{r xaringan-panelset-reattendance, echo=FALSE}
+xaringanExtra::use_panelset()
+```
+ <font size="2">
+.panelset[
+
+ .panel[.panel-name[Band 1]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=12, fig.height=6}
+plot_patient_recalls_facet(data = dental_recalls_STP_2018_22,
+                                 treatment_band = "Band_1",
+                                 level = "National",
+                                 region_STP_name = NULL,
+                                 calendar_data = UDA_calendar_data,
+                                 plotChart = TRUE)
+```
+
+ ]
+ .panel[.panel-name[Band 2]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=12, fig.height=6}
+plot_patient_recalls_facet(data = dental_recalls_STP_2018_22,
+                                 treatment_band = "Band_2",
+                                 level = "National",
+                                 region_STP_name = NULL,
+                                 calendar_data = UDA_calendar_data,
+                                 plotChart = TRUE)
+```
+
+ ]
+ .panel[.panel-name[Band 3]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=12, fig.height=6}
+plot_patient_recalls_facet(data = dental_recalls_STP_2018_22,
+                                 treatment_band = "Band_3",
+                                 level = "National",
+                                 region_STP_name = NULL,
+                                 calendar_data = UDA_calendar_data,
+                                 plotChart = TRUE)
+```
+
+ ]
+ .panel[.panel-name[Urgent]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=12, fig.height=6}
+plot_patient_recalls_facet(data = dental_recalls_STP_2018_22,
+                                 treatment_band = "Urgent",
+                                 level = "National",
+                                 region_STP_name = NULL,
+                                 calendar_data = UDA_calendar_data,
+                                 plotChart = TRUE)
+```
+
+ ]
+  .panel[.panel-name[Other]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=12, fig.height=6}
+plot_patient_recalls_facet(data = dental_recalls_STP_2018_22,
+                                 treatment_band = "Other",
+                                 level = "National",
+                                 region_STP_name = NULL,
+                                 calendar_data = UDA_calendar_data,
+                                 plotChart = TRUE)
+```
+
+ ]
+  .panel[.panel-name[Data - Regional and Commissioner]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=6}
+
+data <- plot_patient_recalls_facet(data = dental_recalls_STP_2018_22,
+                                 treatment_band = "Band_1",
+                                 level = "National",
+                                 region_STP_name = NULL,
+                                 calendar_data = UDA_calendar_data,
+                                 plotChart = FALSE)
+
+data %>%
+  download_this(
+    output_name = "patient_reattandance_data",
+    output_extension = ".xlsx",
+    button_label = "Download data",
+    button_type = "warning",
+    has_icon = TRUE,
+    icon = "fa fa-save"
+  )
+```
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+reactable(
+  plot_patient_recalls_facet(data = dental_recalls_STP_2018_22,
+                                 treatment_band = "Band_1",
+                                 level = "National",
+                                 region_STP_name = NULL,
+                                 calendar_data = UDA_calendar_data,
+                                 plotChart = FALSE),
+  height = 400,
+  filterable = TRUE,
+  paginateSubRows = TRUE,
+  minRows = 5,
+  highlight = TRUE,
+  groupBy = c("Financial Year", "Region Name", "Commissioner Name", "Patient Group" ),
+  columns = list(
+    `Months Since Last Visit` = colDef(filterable = FALSE),
+    `Band 1` = colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE),
+    `Band 2` = colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE),
+    `Band 3` = colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE),
+    `Other` = colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE),
+    `Urgent` = colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE)
+  )
+)
+```
+ ]
+ ]
+
+[Return to contents](#contents)
+
+---
+
+name: cds
+
+### Community Dental Services (CDS) - Patients waiting for assessment
+
+```{r xaringan-panelset-CDS1, echo=FALSE}
+xaringanExtra::use_panelset()
+```
+ <font size="2">
+.panelset[
+
+ .panel[.panel-name[National]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_CDS_patients_waiting_for_assessment(data = CDS_data,
+                                                     calendar_data = UDA_calendar_data,
+                                                     level = "National",
+                                                     region_STP_name = NULL,
+                                                     all_regions_and_STPs = FALSE)
+```
+
+ ]
+ .panel[.panel-name[South East]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_CDS_patients_waiting_for_assessment(data = CDS_data,
+                                                     calendar_data = UDA_calendar_data,
+                                                     level = "Regional",
+                                                     region_STP_name = "South East",
+                                                     all_regions_and_STPs = FALSE)
+```
+
+ ]
+ .panel[.panel-name[South West]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_CDS_patients_waiting_for_assessment(data = CDS_data,
+                                                     calendar_data = UDA_calendar_data,
+                                                     level = "Regional",
+                                                     region_STP_name = "South West",
+                                                     all_regions_and_STPs = FALSE)
+```
+
+
+ ]
+ .panel[.panel-name[North West]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_CDS_patients_waiting_for_assessment(data = CDS_data,
+                                                     calendar_data = UDA_calendar_data,
+                                                     level = "Regional",
+                                                     region_STP_name = "North West",
+                                                     all_regions_and_STPs = FALSE)
+```
+
+
+ ]
+ .panel[.panel-name[North East and Yorkshire]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_CDS_patients_waiting_for_assessment(data = CDS_data,
+                                                     calendar_data = UDA_calendar_data,
+                                                     level = "Regional",
+                                                     region_STP_name = "North East and Yorkshire",
+                                                     all_regions_and_STPs = FALSE)
+```
+
+ ]
+.panel[.panel-name[London]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_CDS_patients_waiting_for_assessment(data = CDS_data,
+                                                     calendar_data = UDA_calendar_data,
+                                                     level = "Regional",
+                                                     region_STP_name = "London",
+                                                     all_regions_and_STPs = FALSE)
+```
+
+
+ ]
+ .panel[.panel-name[Midlands]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_CDS_patients_waiting_for_assessment(data = CDS_data,
+                                                     calendar_data = UDA_calendar_data,
+                                                     level = "Regional",
+                                                     region_STP_name = "Midlands",
+                                                     all_regions_and_STPs = FALSE)
+```
+
+
+ ]
+ .panel[.panel-name[East of England]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_CDS_patients_waiting_for_assessment(data = CDS_data,
+                                                     calendar_data = UDA_calendar_data,
+                                                     level = "Regional",
+                                                     region_STP_name = "East of England",
+                                                     all_regions_and_STPs = FALSE)
+```
+
+
+ ]
+ ]
+
+[Return to contents](#contents)
+
+---
+
+name: cds-treatment
+
+### CDS - Patients waiting for treatment
+
+```{r xaringan-panelset-CDS2, echo=FALSE}
+xaringanExtra::use_panelset()
+```
+ <font size="2">
+.panelset[
+
+ .panel[.panel-name[National]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_CDS_patients_waiting_for_treatment(data = CDS_data,
+                                                     calendar_data = UDA_calendar_data,
+                                                     level = "National",
+                                                     region_STP_name = NULL,
+                                                     all_regions_and_STPs = FALSE)
+```
+
+ ]
+ .panel[.panel-name[South East]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_CDS_patients_waiting_for_treatment(data = CDS_data,
+                                                     calendar_data = UDA_calendar_data,
+                                                     level = "Regional",
+                                                     region_STP_name = "South East",
+                                                     all_regions_and_STPs = FALSE)
+```
+
+ ]
+ .panel[.panel-name[South West]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_CDS_patients_waiting_for_treatment(data = CDS_data,
+                                                     calendar_data = UDA_calendar_data,
+                                                     level = "Regional",
+                                                     region_STP_name = "South West",
+                                                     all_regions_and_STPs = FALSE)
+```
+
+
+ ]
+ .panel[.panel-name[North West]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_CDS_patients_waiting_for_treatment(data = CDS_data,
+                                                     calendar_data = UDA_calendar_data,
+                                                     level = "Regional",
+                                                     region_STP_name = "North West",
+                                                     all_regions_and_STPs = FALSE)
+```
+
+
+ ]
+ .panel[.panel-name[North East and Yorkshire]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_CDS_patients_waiting_for_treatment(data = CDS_data,
+                                                     calendar_data = UDA_calendar_data,
+                                                     level = "Regional",
+                                                     region_STP_name = "North East and Yorkshire",
+                                                     all_regions_and_STPs = FALSE)
+```
+
+ ]
+.panel[.panel-name[London]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_CDS_patients_waiting_for_treatment(data = CDS_data,
+                                                     calendar_data = UDA_calendar_data,
+                                                     level = "Regional",
+                                                     region_STP_name = "London",
+                                                     all_regions_and_STPs = FALSE)
+```
+
+
+ ]
+ .panel[.panel-name[Midlands]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_CDS_patients_waiting_for_treatment(data = CDS_data,
+                                                     calendar_data = UDA_calendar_data,
+                                                     level = "Regional",
+                                                     region_STP_name = "Midlands",
+                                                     all_regions_and_STPs = FALSE)
+```
+
+
+ ]
+ .panel[.panel-name[East of England]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_CDS_patients_waiting_for_treatment(data = CDS_data,
+                                                     calendar_data = UDA_calendar_data,
+                                                     level = "Regional",
+                                                     region_STP_name = "East of England",
+                                                     all_regions_and_STPs = FALSE)
+```
+
+
+ ]
+ ]
+
+[Return to contents](#contents)
+
+---
+
+name: cds-wait-weeks-assessment
+
+### CDS - Wait times for assessment
+
+```{r xaringan-panelset-CDS3, echo=FALSE}
+xaringanExtra::use_panelset()
+```
+
+ <font size="2">
+.panelset[
+
+ .panel[.panel-name[National]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_CDS_wait_times_for_assessment(data = CDS_data,
+                                                     calendar_data = UDA_calendar_data,
+                                                     level = "National",
+                                                     region_STP_name = NULL,
+                                                     all_regions_and_STPs = FALSE)
+```
+
+ ]
+ .panel[.panel-name[South East]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_CDS_wait_times_for_assessment(data = CDS_data,
+                                                     calendar_data = UDA_calendar_data,
+                                                     level = "Regional",
+                                                     region_STP_name = "South East",
+                                                     all_regions_and_STPs = FALSE)
+```
+
+ ]
+ .panel[.panel-name[South West]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_CDS_wait_times_for_assessment(data = CDS_data,
+                                                     calendar_data = UDA_calendar_data,
+                                                     level = "Regional",
+                                                     region_STP_name = "South West",
+                                                     all_regions_and_STPs = FALSE)
+```
+
+
+ ]
+ .panel[.panel-name[North West]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_CDS_wait_times_for_assessment(data = CDS_data,
+                                                     calendar_data = UDA_calendar_data,
+                                                     level = "Regional",
+                                                     region_STP_name = "North West",
+                                                     all_regions_and_STPs = FALSE)
+```
+
+
+ ]
+ .panel[.panel-name[North East and Yorkshire]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_CDS_wait_times_for_assessment(data = CDS_data,
+                                                     calendar_data = UDA_calendar_data,
+                                                     level = "Regional",
+                                                     region_STP_name = "North East and Yorkshire",
+                                                     all_regions_and_STPs = FALSE)
+```
+
+ ]
+.panel[.panel-name[London]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_CDS_wait_times_for_assessment(data = CDS_data,
+                                                     calendar_data = UDA_calendar_data,
+                                                     level = "Regional",
+                                                     region_STP_name = "London",
+                                                     all_regions_and_STPs = FALSE)
+```
+
+
+ ]
+ .panel[.panel-name[Midlands]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_CDS_wait_times_for_assessment(data = CDS_data,
+                                                     calendar_data = UDA_calendar_data,
+                                                     level = "Regional",
+                                                     region_STP_name = "Midlands",
+                                                     all_regions_and_STPs = FALSE)
+```
+
+
+ ]
+ .panel[.panel-name[East of England]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_CDS_wait_times_for_assessment(data = CDS_data,
+                                                     calendar_data = UDA_calendar_data,
+                                                     level = "Regional",
+                                                     region_STP_name = "East of England",
+                                                     all_regions_and_STPs = FALSE)
+```
+
+
+ ]
+ ]
+
+[Return to contents](#contents)
+
+---
+
+name: cds-wait-weeks-treatment
+
+### CDS - Wait times for treatment
+
+```{r xaringan-panelset-CDS4, echo=FALSE}
+xaringanExtra::use_panelset()
+```
+
+ <font size="2">
+.panelset[
+
+ .panel[.panel-name[National]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_CDS_wait_times_for_treatment(data = CDS_data,
+                                                     calendar_data = UDA_calendar_data,
+                                                     level = "National",
+                                                     region_STP_name = NULL,
+                                                     all_regions_and_STPs = FALSE)
+```
+
+ ]
+ .panel[.panel-name[South East]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_CDS_wait_times_for_treatment(data = CDS_data,
+                                                     calendar_data = UDA_calendar_data,
+                                                     level = "Regional",
+                                                     region_STP_name = "South East",
+                                                     all_regions_and_STPs = FALSE)
+```
+
+ ]
+ .panel[.panel-name[South West]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_CDS_wait_times_for_treatment(data = CDS_data,
+                                                     calendar_data = UDA_calendar_data,
+                                                     level = "Regional",
+                                                     region_STP_name = "South West",
+                                                     all_regions_and_STPs = FALSE)
+```
+
+
+ ]
+ .panel[.panel-name[North West]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_CDS_wait_times_for_treatment(data = CDS_data,
+                                                     calendar_data = UDA_calendar_data,
+                                                     level = "Regional",
+                                                     region_STP_name = "North West",
+                                                     all_regions_and_STPs = FALSE)
+```
+
+
+ ]
+ .panel[.panel-name[North East and Yorkshire]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_CDS_wait_times_for_treatment(data = CDS_data,
+                                                     calendar_data = UDA_calendar_data,
+                                                     level = "Regional",
+                                                     region_STP_name = "North East and Yorkshire",
+                                                     all_regions_and_STPs = FALSE)
+```
+
+ ]
+.panel[.panel-name[London]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_CDS_wait_times_for_treatment(data = CDS_data,
+                                                     calendar_data = UDA_calendar_data,
+                                                     level = "Regional",
+                                                     region_STP_name = "London",
+                                                     all_regions_and_STPs = FALSE)
+```
+
+
+ ]
+ .panel[.panel-name[Midlands]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_CDS_wait_times_for_treatment(data = CDS_data,
+                                                     calendar_data = UDA_calendar_data,
+                                                     level = "Regional",
+                                                     region_STP_name = "Midlands",
+                                                     all_regions_and_STPs = FALSE)
+```
+
+
+ ]
+ .panel[.panel-name[East of England]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_CDS_wait_times_for_treatment(data = CDS_data,
+                                                     calendar_data = UDA_calendar_data,
+                                                     level = "Regional",
+                                                     region_STP_name = "East of England",
+                                                     all_regions_and_STPs = FALSE)
+```
+
+
+ ]
+ ]
+
+[Return to contents](#contents)
+
+---
+
+name: my-cat-breakdown
+
 ### Appendix
 #### MY Category classification breakdown:
 
  <font size="2">
+
 * Cat 1
   + Details in CoMPASS Correct
 * Cat 2
@@ -3681,10 +4235,10 @@ reactable(
   + Closed in-year
   + Incomplete service line entries
 
-
 ---
 
  <font size="2">
+
 * Cat 3
   + CDS
   + Closed in year
@@ -3712,6 +4266,8 @@ reactable(
 
 ---
 
+name: data-sources
+
 #### Data sources
 
  <font size="2">
@@ -3728,6 +4284,9 @@ reactable(
   + [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UDA_delivery_scheduled]
 
 * 111 data comes from the pathways tool which is received monthly by email.
+* Rolling unique patients data is received monthly by email from the BSA and saved on the NCDR in the following table:
+  + [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[unique_patients_rolling_12_month]
+* CDS data is downloaded from the [CDS dashboard](#https://miteam.shinyapps.io/CDS_Dashboard/)
 
 
 
@@ -3786,20 +4345,3 @@ reactable(
 
 
 
-<!-- --- -->
-<!-- ### Download data: Pharmacy sign-up -->
-
-<!-- ```{r xaringan-panelset-data-sign-ups, echo=FALSE} -->
-<!-- xaringanExtra::use_panelset() -->
-<!-- ``` -->
-<!--  <font size="1"> -->
-<!-- .panelset[ -->
-<!-- .panel[.panel-name[Pharmacy Sign-up data] -->
-<!-- ```{r echo=FALSE, results='asis',warning=FALSE, fig.width=3, fig.height=3} -->
-
-<!-- DT::datatable(CVDclaims,rownames=FALSE,  extensions = 'Buttons', options = list(dom='Bt', buttons = c('excel'), -->
-<!--   bPaginate = FALSE, pageLength=35, columnDefs = list(list(className = 'dt-left', targets = 0:4)),searching=FALSE,scrollY ='350px', scrollX ='500px'))%>% -->
-<!--   DT::formatStyle(columns = c(1, 2, 3, 4, 5), fontSize = '130%') -->
-<!-- ``` -->
-<!-- ] -->
-<!-- ] -->

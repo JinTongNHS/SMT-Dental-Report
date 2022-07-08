@@ -306,13 +306,13 @@ plot_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data,
     
   }
   
-  #add blanks for future dates if on single level
-  if(all_regions_and_STPs == FALSE & nrow(data) < 16){
-    
-    if(!(as.Date("2022-06-01") %in% data$month)){
-      data <- data %>% add_row(month = as.Date("2022-06-01"))
-    }
-  }
+  # #add blanks for future dates if on single level
+  # if(all_regions_and_STPs == FALSE & nrow(data) < 16){
+  #   
+  #   if(!(as.Date("2022-06-01") %in% data$month)){
+  #     data <- data %>% add_row(month = as.Date("2022-06-01"))
+  #   }
+  # }
   
   #get data in the right format
   data <- data %>%
@@ -947,7 +947,7 @@ plot_urgent_form_submissions <- function(data = UDA_scheduled_data,
                                          level = "National",
                                          region_STP_name = "Cheshire and Merseyside STP",
                                          plotChart = TRUE,
-                                         all_regions_and_STPs = TRUE){
+                                         all_regions_and_STPs = FALSE){
   
   #avoid standard form on axes
   options(scipen = 100)
@@ -1133,7 +1133,10 @@ plot_breakdown_111_referrals <- function(data = dental_data_111,
   if(plotChart == TRUE){
     p
   }else{
-    data
+    data %>%
+      select(`Month` = month,
+             `Disposition` = disposition_text,
+             `Monthly case volume` = monthly_case_volume)
   }
   
 }
@@ -1672,7 +1675,8 @@ plot_patient_recalls <- function(data = dental_recalls_STP_2018_22,
                                  level = "National",
                                  region_STP_name = NULL,
                                  calendar_data = UDA_calendar_data,
-                                 year = "2021/22"){
+                                 year = "2021/22",
+                                 plotChart = TRUE){
   
   data <- clean_dental_recalls(data)
   
@@ -1686,7 +1690,7 @@ plot_patient_recalls <- function(data = dental_recalls_STP_2018_22,
     distinct()
   
   data <- data %>%
-    left_join(region_STP_lookup, by = "contract_number")
+    left_join(region_STP_lookup, by = "commissioner_name")
   
   subtitle <- "England"
   
@@ -1705,7 +1709,7 @@ plot_patient_recalls <- function(data = dental_recalls_STP_2018_22,
   }
   
   data <- data %>%
-    group_by(Months_Last_Visit, patient_group) %>%
+    group_by(Months_Last_Visit, patient_group) %>% 
     summarise(forms = sum(forms, na.rm = TRUE))
   
   data$Months_Last_Visit <- factor(data$Months_Last_Visit,
@@ -1726,18 +1730,131 @@ plot_patient_recalls <- function(data = dental_recalls_STP_2018_22,
                                               "No Previous Visit"
                                               ))
   
-  ggplot(data) +
-    geom_col(aes(x = Months_Last_Visit,
-                 y = forms,
-                 fill = patient_group),
-             position = "dodge") +
-    theme_bw() +
-    theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.2)) +
-    labs(title = paste0(year, " - Adult and Child Re-attendance Intervals"),
-         subtitle = paste0(str_replace(treatment_band, "_", " "), "\n", region_STP_name),
-         x = "Months since last visit",
-         y = "Total form count")
+  if(plotChart == TRUE){
+    ggplot(data) +
+      geom_col(aes(x = Months_Last_Visit,
+                   y = forms,
+                   fill = patient_group),
+               position = "dodge") +
+      theme_bw() +
+      theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.2)) +
+      scale_fill_manual(values = c("royalblue2", "limegreen")) +
+      labs(title = paste0(year, " - Adult and Child Re-attendance Intervals"),
+           subtitle = paste0(str_replace(treatment_band, "_", " "), "\n", region_STP_name),
+           x = "Months since last visit",
+           y = "Total form count",
+           fill = "") +
+      scale_y_continuous(labels=function(x) format(x, big.mark = ",", scientific = FALSE)) 
+  }else{
+    data
+  }
+
   
+}
+
+################################################################################
+plot_patient_recalls_facet <- function(data = dental_recalls_STP_2018_22,
+                                       ICB_lookup = STP_ICB_lookup,
+                                 treatment_band = "Band_1",
+                                 level = "National",
+                                 region_STP_name = NULL,
+                                 calendar_data = UDA_calendar_data,
+                                 plotChart = TRUE){
+
+  #add a region column to the data
+  region_STP_lookup <- calendar_data %>%
+    select(commissioner_name, region_name) %>%
+    distinct()
+  
+  #sort out STP ICB issue
+  ICB_lookup <- ICB_lookup %>%
+    rename(commissioner_name = commissioner_name_STP)
+  
+  #for output when plotChart == FALSE
+  data_output <- data %>%
+    left_join(ICB_lookup, by = "commissioner_name") %>%
+    mutate(commissioner_name = commissioner_name_ICB) %>%
+    select(-commissioner_name_ICB) %>%
+    left_join(region_STP_lookup, by = "commissioner_name")
+  
+  data <- clean_dental_recalls(data_output)
+  
+  data <- data %>% 
+    filter(Band == treatment_band) 
+  
+  subtitle <- "England"
+
+  if(level == "Regional"){
+    data <- data %>%
+      filter(region_name == region_STP_name)
+
+    subtitle <- region_STP_name
+
+  }else if(level == "STP"){
+    data <- data %>%
+      filter(commissioner_name == region_STP_name)
+
+    subtitle <- region_STP_name
+
+  }
+
+  data <- data %>%
+    group_by(Months_Last_Visit, patient_group, financial_year) %>%
+  summarise(forms = sum(forms, na.rm = TRUE))
+
+  data$Months_Last_Visit <- factor(data$Months_Last_Visit,
+                                   levels = c("1 Month",
+                                              "2 Months",
+                                              "3 Months",
+                                              "4 Months",
+                                              "5 Months",
+                                              "6 Months",
+                                              "7 Months",
+                                              "8 Months",
+                                              "9 Months",
+                                              "10 Months",
+                                              "11 Months",
+                                              "12 Months",
+                                              "12-18 Months",
+                                              "19-24 Months",
+                                              "No Previous Visit"
+                                   ))
+
+  if(plotChart == TRUE){
+    ggplot(data) +
+      geom_col(aes(x = Months_Last_Visit,
+                   y = forms,
+                   fill = patient_group),
+               position = "dodge") +
+      theme_bw() +
+      theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.2)) +
+      scale_fill_manual(values = c("royalblue2", "limegreen")) +
+      scale_y_continuous(labels=function(x) format(x, big.mark = ",", scientific = FALSE)) +
+      labs(title = "Adult and Child Re-attendance Intervals",
+           subtitle = paste0(str_replace(treatment_band, "_", " "), "\n", region_STP_name),
+           x = "Months since last visit",
+           y = "Total form count",
+           fill = "") +
+      facet_wrap(vars(financial_year),
+                 #scales = "free_y",
+                 nrow = 2)
+  }else{
+
+    data_output <- data_output %>%
+      select(`Financial Year` = financial_year,
+             `Region Name` = region_name,
+             `Commissioner Name` = commissioner_name,
+             `Patient Group` = patient_group,
+             `Months Since Last Visit` = Months_Last_Visit,
+             `Band 1` = Band_1,
+             `Band 2` = Band_2,
+             `Band 3` = Band_3,
+             Other,
+             Urgent
+             )
+
+  }
+
 }
 
 ################################################################################
@@ -1885,3 +2002,402 @@ plot_delivery_vs_workforce_returns <- function(data = UDA_scheduled_data,
     p
 
 }
+
+
+################################################################################
+plot_CDS_patients_waiting_for_assessment <- function(data = CDS_data,
+                                                     calendar_data = UDA_calendar_data,
+                                                     level = "National",
+                                                     region_STP_name = NULL,
+                                                     all_regions_and_STPs = FALSE){
+
+  data <- data %>% 
+    rename(region_name = NHSREGION,
+           quarter = Month)
+  
+  subtitle <- "England"
+  
+  if(level == "Regional"){
+    data <- data %>%
+      filter(region_name == region_STP_name)
+    
+    subtitle <- region_STP_name
+  }else if(level == "STP"){
+    data <- data %>%
+      filter(commissioner_name == region_STP_name)
+    
+    subtitle <- region_STP_name
+  }
+    
+  data <- data %>%
+    select(quarter,
+           region_name,
+           routine_num_patients_waiting_for_first_assessment_adult, 
+           routine_num_patients_waiting_for_first_assessment_child,
+           GA_num_patients_waiting_for_first_assessment_adult,
+           GA_num_patients_waiting_for_first_assessment_child,
+           SS_num_patients_waiting_for_first_assessment_adult,
+           SS_num_patients_waiting_for_first_assessment_child
+    ) %>%
+    mutate(routine_num_patients_waiting_for_first_assessment_adult = as.numeric(routine_num_patients_waiting_for_first_assessment_adult), 
+           routine_num_patients_waiting_for_first_assessment_child = as.numeric(routine_num_patients_waiting_for_first_assessment_child),
+           GA_num_patients_waiting_for_first_assessment_adult = as.numeric(GA_num_patients_waiting_for_first_assessment_adult),
+           GA_num_patients_waiting_for_first_assessment_child = as.numeric(GA_num_patients_waiting_for_first_assessment_child),
+           SS_num_patients_waiting_for_first_assessment_adult = as.numeric(SS_num_patients_waiting_for_first_assessment_adult),
+           SS_num_patients_waiting_for_first_assessment_child = as.numeric(SS_num_patients_waiting_for_first_assessment_child)
+    ) 
+  
+    
+    if(all_regions_and_STPs == TRUE){
+      data <- data %>%
+        group_by(quarter, region_name)
+    }else{
+      data <- data %>%
+        group_by(quarter)
+    }
+     
+    data <- data %>% 
+      summarise(routine_adult = mean(routine_num_patients_waiting_for_first_assessment_adult, na.rm = TRUE), 
+                routine_child = mean(routine_num_patients_waiting_for_first_assessment_child, na.rm = TRUE),
+                GA_adult = mean(GA_num_patients_waiting_for_first_assessment_adult, na.rm = TRUE),
+                GA_child = mean(GA_num_patients_waiting_for_first_assessment_child, na.rm = TRUE),
+                SS_adult = mean(SS_num_patients_waiting_for_first_assessment_adult, na.rm = TRUE),
+                SS_child = mean(SS_num_patients_waiting_for_first_assessment_child, na.rm = TRUE)) %>%
+      ungroup() %>%
+      pivot_longer(cols = c(routine_adult, 
+                            routine_child,
+                            GA_adult,
+                            GA_child,
+                            SS_adult,
+                            SS_child),
+                   names_to = "variable",
+                   values_to = "patients_waiting") %>%
+      mutate(patient_group = sub(".*\\_", "", variable),
+             appointment_type = sub("\\_.*", "", variable))
+    
+    
+    
+    ggplot(data) +
+      geom_line(aes(x = quarter,
+                    y = patients_waiting,
+                    colour = appointment_type)) +
+      geom_point(aes(x = quarter,
+                    y = patients_waiting,
+                    colour = appointment_type
+                    )) +
+      ggrepel::geom_text_repel(aes(x = quarter,
+                          y = patients_waiting,
+                          colour = appointment_type,
+                          label = round(patients_waiting)),
+        size=3, box.padding = unit(0.2, "lines")
+      ) +
+      theme_bw() +
+      labs(title = "Quarterly mean number of patients per contract waiting for first assessment",
+           subtitle = subtitle,
+           x = "Quarter start date",
+           y = "Mean number of paitings waiting",
+           colour = "") +
+      facet_wrap(vars(patient_group), 
+                 #scales = "free_y", 
+                 nrow = 1) +
+      theme(axis.text.x = element_text(angle = 90))
+      
+  
+  
+}
+
+
+################################################################################
+plot_CDS_patients_waiting_for_treatment <- function(data = CDS_data,
+                                                     calendar_data = UDA_calendar_data,
+                                                     level = "National",
+                                                     region_STP_name = NULL,
+                                                     all_regions_and_STPs = FALSE){
+  
+  data <- data %>% 
+    rename(region_name = NHSREGION,
+           quarter = Month)
+  
+  subtitle <- "England"
+  
+  if(level == "Regional"){
+    data <- data %>%
+      filter(region_name == region_STP_name)
+    
+    subtitle <- region_STP_name
+  }
+  
+  data <- data %>%
+    select(quarter,
+           region_name,
+           routine_num_patients_waitng_for_first_treatment_adult, 
+           routine_num_patients_waitng_for_first_treatment_child,
+           GA_num_patients_waitng_for_first_treatment_adult,
+           GA_num_patients_waitng_for_first_treatment_child,
+           SS_num_patients_waitng_for_first_treatment_adult,
+           SS_num_patients_waitng_for_first_treatment_child
+    ) %>%
+    mutate(routine_num_patients_waitng_for_first_treatment_adult = as.numeric(routine_num_patients_waitng_for_first_treatment_adult), 
+           routine_num_patients_waitng_for_first_treatment_child = as.numeric(routine_num_patients_waitng_for_first_treatment_child),
+           GA_num_patients_waitng_for_first_treatment_adult = as.numeric(GA_num_patients_waitng_for_first_treatment_adult),
+           GA_num_patients_waitng_for_first_treatment_child = as.numeric(GA_num_patients_waitng_for_first_treatment_child),
+           SS_num_patients_waitng_for_first_treatment_adult = as.numeric(SS_num_patients_waitng_for_first_treatment_adult),
+           SS_num_patients_waitng_for_first_treatment_child = as.numeric(SS_num_patients_waitng_for_first_treatment_child)
+    ) 
+  
+  
+  if(all_regions_and_STPs == TRUE){
+    data <- data %>%
+      group_by(quarter, region_name)
+  }else{
+    data <- data %>%
+      group_by(quarter)
+  }
+  
+  data <- data %>% 
+    summarise(routine_adult = mean(routine_num_patients_waitng_for_first_treatment_adult, na.rm = TRUE), 
+              routine_child = mean(routine_num_patients_waitng_for_first_treatment_child, na.rm = TRUE),
+              GA_adult = mean(GA_num_patients_waitng_for_first_treatment_adult, na.rm = TRUE),
+              GA_child = mean(GA_num_patients_waitng_for_first_treatment_child, na.rm = TRUE),
+              SS_adult = mean(SS_num_patients_waitng_for_first_treatment_adult, na.rm = TRUE),
+              SS_child = mean(SS_num_patients_waitng_for_first_treatment_child, na.rm = TRUE)) %>%
+    ungroup() %>%
+    pivot_longer(cols = c(routine_adult, 
+                          routine_child,
+                          GA_adult,
+                          GA_child,
+                          SS_adult,
+                          SS_child),
+                 names_to = "variable",
+                 values_to = "patients_waiting") %>%
+    mutate(patient_group = sub(".*\\_", "", variable),
+           appointment_type = sub("\\_.*", "", variable))
+  
+  
+  
+  ggplot(data) +
+    geom_line(aes(x = quarter,
+                  y = patients_waiting,
+                  colour = appointment_type)) +
+    geom_point(aes(x = quarter,
+                   y = patients_waiting,
+                   colour = appointment_type)) +
+    ggrepel::geom_text_repel(aes(x = quarter,
+                                 y = patients_waiting,
+                                 colour = appointment_type,
+                                 label = round(patients_waiting)),
+                             size=3, box.padding = unit(0.2, "lines")
+    ) +
+    theme_bw() +
+    labs(title = "Quarterly mean number of patients per contract waiting for first treatment",
+         subtitle = subtitle,
+         x = "Quarter start date",
+         y = "Mean number of paitings waiting",
+         colour = "") +
+    facet_wrap(vars(patient_group), 
+               #scales = "free_y", 
+               nrow = 1) +
+    theme(axis.text.x = element_text(angle = 90))
+  
+  
+  
+}
+
+
+################################################################################
+plot_CDS_wait_times_for_assessment <- function(data = CDS_data,
+                                                    calendar_data = UDA_calendar_data,
+                                                    level = "National",
+                                                    region_STP_name = NULL,
+                                                    all_regions_and_STPs = FALSE){
+  
+  data <- data %>% 
+    rename(region_name = NHSREGION,
+           quarter = Month)
+  
+  subtitle <- "England"
+  
+  if(level == "Regional"){
+    data <- data %>%
+      filter(region_name == region_STP_name)
+    
+    subtitle <- region_STP_name
+  }
+  
+  data <- data %>%
+    select(quarter,
+           region_name,
+           routine_average_weeks_waiting_for_assessment_adult, 
+           routine_averag_weeks_waiting_for_assessment_child,
+           GA_average_weeks_waiting_for_assessment_adult,
+           GA_averag_weeks_waiting_for_assessment_child,
+           SS_average_weeks_waiting_for_assessment_adult,
+           SS_averag_weeks_waiting_for_treatment_child
+    ) %>%
+    mutate(routine_average_weeks_waiting_for_assessment_adult = as.numeric(routine_average_weeks_waiting_for_assessment_adult), 
+           routine_averag_weeks_waiting_for_assessment_child = as.numeric(routine_averag_weeks_waiting_for_assessment_child),
+           GA_average_weeks_waiting_for_assessment_adult = as.numeric(GA_average_weeks_waiting_for_assessment_adult),
+           GA_averag_weeks_waiting_for_assessment_child = as.numeric(GA_averag_weeks_waiting_for_assessment_child),
+           SS_average_weeks_waiting_for_assessment_adult = as.numeric(SS_average_weeks_waiting_for_assessment_adult),
+           SS_averag_weeks_waiting_for_treatment_child = as.numeric(SS_averag_weeks_waiting_for_treatment_child)
+    ) 
+  
+  
+  if(all_regions_and_STPs == TRUE){
+    data <- data %>%
+      group_by(quarter, region_name)
+  }else{
+    data <- data %>%
+      group_by(quarter)
+  }
+  
+  data <- data %>% 
+    summarise(routine_adult = mean(routine_average_weeks_waiting_for_assessment_adult, na.rm = TRUE), 
+              routine_child = mean(routine_averag_weeks_waiting_for_assessment_child, na.rm = TRUE),
+              GA_adult = mean(GA_average_weeks_waiting_for_assessment_adult, na.rm = TRUE),
+              GA_child = mean(GA_averag_weeks_waiting_for_assessment_child, na.rm = TRUE),
+              SS_adult = mean(SS_average_weeks_waiting_for_assessment_adult, na.rm = TRUE),
+              SS_child = mean(SS_averag_weeks_waiting_for_treatment_child, na.rm = TRUE)) %>%
+    ungroup() %>%
+    pivot_longer(cols = c(routine_adult, 
+                          routine_child,
+                          GA_adult,
+                          GA_child,
+                          SS_adult,
+                          SS_child),
+                 names_to = "variable",
+                 values_to = "weeks_waiting") %>%
+    mutate(patient_group = sub(".*\\_", "", variable),
+           appointment_type = sub("\\_.*", "", variable))
+  
+  
+  
+  ggplot(data) +
+    geom_line(aes(x = quarter,
+                  y = weeks_waiting,
+                  colour = appointment_type)) +
+    geom_point(aes(x = quarter,
+                   y = weeks_waiting,
+                   colour = appointment_type)) +
+    ggrepel::geom_text_repel(aes(x = quarter,
+                                 y = weeks_waiting,
+                                 colour = appointment_type,
+                                 label = round(weeks_waiting)),
+                             size=3, box.padding = unit(0.2, "lines")
+    ) +
+    theme_bw() +
+    labs(title = "Quarterly mean number of weeks waiting for first assessment",
+         subtitle = subtitle,
+         x = "Quarter start date",
+         y = "Mean number of paitings waiting",
+         colour = "") +
+    facet_wrap(vars(patient_group), 
+               #scales = "free_y", 
+               nrow = 1) +
+    theme(axis.text.x = element_text(angle = 90))
+  
+  
+  
+}
+
+
+
+################################################################################
+plot_CDS_wait_times_for_treatment <- function(data = CDS_data,
+                                               calendar_data = UDA_calendar_data,
+                                               level = "National",
+                                               region_STP_name = NULL,
+                                               all_regions_and_STPs = FALSE){
+  
+  data <- data %>% 
+    rename(region_name = NHSREGION,
+           quarter = Month)
+  
+  subtitle <- "England"
+  
+  if(level == "Regional"){
+    data <- data %>%
+      filter(region_name == region_STP_name)
+    
+    subtitle <- region_STP_name
+  }
+  
+  data <- data %>%
+    select(quarter,
+           region_name,
+           routine_averag_weeks_waiting_for_treatment_adult, 
+           routine_averag_weeks_waiting_for_treatment_child,
+           GA_averag_weeks_waiting_for_treatment_adult,
+           GA_averag_weeks_waiting_for_treatment_child,
+           SS_averag_weeks_waiting_for_treatment_adult,
+           SS_averag_weeks_waiting_for_treatment_child
+    ) %>%
+    mutate(routine_averag_weeks_waiting_for_treatment_adult = as.numeric(routine_averag_weeks_waiting_for_treatment_adult), 
+           routine_averag_weeks_waiting_for_treatment_child = as.numeric(routine_averag_weeks_waiting_for_treatment_child),
+           GA_averag_weeks_waiting_for_treatment_adult = as.numeric(GA_averag_weeks_waiting_for_treatment_adult),
+           GA_averag_weeks_waiting_for_treatment_child = as.numeric(GA_averag_weeks_waiting_for_treatment_child),
+           SS_averag_weeks_waiting_for_treatment_adult = as.numeric(SS_averag_weeks_waiting_for_treatment_adult),
+           SS_averag_weeks_waiting_for_treatment_child = as.numeric(SS_averag_weeks_waiting_for_treatment_child)
+    ) 
+  
+  
+  if(all_regions_and_STPs == TRUE){
+    data <- data %>%
+      group_by(quarter, region_name)
+  }else{
+    data <- data %>%
+      group_by(quarter)
+  }
+  
+  data <- data %>% 
+    summarise(routine_adult = mean(routine_averag_weeks_waiting_for_treatment_adult, na.rm = TRUE), 
+              routine_child = mean(routine_averag_weeks_waiting_for_treatment_child, na.rm = TRUE),
+              GA_adult = mean(GA_averag_weeks_waiting_for_treatment_adult, na.rm = TRUE),
+              GA_child = mean(GA_averag_weeks_waiting_for_treatment_child, na.rm = TRUE),
+              SS_adult = mean(SS_averag_weeks_waiting_for_treatment_adult, na.rm = TRUE),
+              SS_child = mean(SS_averag_weeks_waiting_for_treatment_child, na.rm = TRUE)) %>%
+    ungroup() %>%
+    pivot_longer(cols = c(routine_adult, 
+                          routine_child,
+                          GA_adult,
+                          GA_child,
+                          SS_adult,
+                          SS_child),
+                 names_to = "variable",
+                 values_to = "weeks_waiting") %>%
+    mutate(patient_group = sub(".*\\_", "", variable),
+           appointment_type = sub("\\_.*", "", variable))
+  
+  
+  
+  ggplot(data) +
+    geom_line(aes(x = quarter,
+                  y = weeks_waiting,
+                  colour = appointment_type)) +
+    geom_point(aes(x = quarter,
+                   y = weeks_waiting,
+                   colour = appointment_type)) +
+    ggrepel::geom_text_repel(aes(x = quarter,
+                                 y = weeks_waiting,
+                                 colour = appointment_type,
+                                 label = round(weeks_waiting)),
+                             size=3, box.padding = unit(0.2, "lines")
+    ) +
+    theme_bw() +
+    labs(title = "Quarterly mean number of weeks waiting for first treatment",
+         subtitle = subtitle,
+         x = "Quarter start date",
+         y = "Mean number of paitings waiting",
+         colour = "") +
+    facet_wrap(vars(patient_group), 
+               #scales = "free_y", 
+               nrow = 1) +
+    theme(axis.text.x = element_text(angle = 90))
+  
+  
+  
+}
+
+
+
+

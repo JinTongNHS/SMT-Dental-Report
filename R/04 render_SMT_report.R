@@ -10,16 +10,9 @@ rmarkdown::render(input = "rmarkdown/SMT-Dental-Report-Slides.Rmd",
 
 
 for(r in regions){
-  rmarkdown::render(input = "rmarkdown/SMT-Dental-Report-Slides.Rmd",
+  rmarkdown::render(input = "rmarkdown/SMT_dental_xaringan_ICB.Rmd",
                     output_format = "beamer_presentation",
                     params = list(level = "Regional", region_STP_name = r),
                     output_file = paste0("../reports/regional_packs_Apr/SMT data pres April ",r, " ",Sys.Date()," v1.pdf"))
 }
 
-
-for(s in STPs){
-  rmarkdown::render(input = "rmarkdown/SMT-Dental-Report-Slides.Rmd",
-                    output_format = "beamer_presentation",
-                    params = list(level = "STP", region_STP_name = s),
-                    output_file = paste0("../reports/STP_packs/STP_packs_May/SMT data pres May ",s, " ",Sys.Date()," v1.pdf"))
-}
