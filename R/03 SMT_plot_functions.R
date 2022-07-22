@@ -463,26 +463,44 @@ plot_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data,
 ################################################################################
 plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data, 
                                   calendar_data = UDA_calendar_data,
+                                  historic_data = historical_UDA_scheduled_data,
                                   UDAorUOA = "UDA",
                                   level = "National",
                                   region_STP_name = NULL,
                                   remove_prototypes = TRUE, 
                                   plotChart = TRUE, 
-                                  all_regions_and_STPs = FALSE){
-  
+                                  all_regions_and_STPs = FALSE,
+                                  include_historic = TRUE){
+
   data <- data %>%
     mutate(month = as.Date(month))
-  
+
   calendar_data <- calendar_data %>%
-    mutate(month = as.Date(month)) 
-  
+    mutate(month = as.Date(month))
+
   #add a region column to the data
   region_STP_lookup <- calendar_data %>%
     select(contract_number, name_or_company_name, region_name) %>%
     distinct()
   
-  # data <- left_join(data, region_STP_lookup, by = c("contract_number", "name_or_company_name", "commissioner_name"))
   data <- left_join(data, region_STP_lookup, by = c("contract_number"))
+  
+  #bind in historic data if required
+  if(include_historic == TRUE & UDAorUOA == "UDA"){
+    data <- data %>%
+      select(month, contract_number, commissioner_name, region_name, 
+             annual_contracted_UDA, UDA_delivered)
+    
+    historic_data <- historic_data %>%
+      mutate(month = as.Date(month)) %>%
+      filter(!is.na(annual_contracted_UDAs)) %>% #filters out contracts with no data on contracted UDAs
+      select(month, contract_number, commissioner_name, region_name, 
+             annual_contracted_UDA = annual_contracted_UDAs, 
+             UDA_delivered = total_UDAs)
+    
+    data <- bind_rows(data, historic_data)
+
+  }
   
   #filter for STP or region
   if(level == "Regional"){
@@ -754,11 +772,13 @@ plot_delivery_vs_contract_size_scatter_corporate <- function(data = UDA_schedule
 #function to plt delivery profile month by month 
 plot_UDA_UOA_delivery_profile <- function(data = UDA_scheduled_data, 
                                           calendar_data = UDA_calendar_data,
+                                          historic_data = historical_UDA_scheduled_data,
                                           UDAorUOA = "UDA",
                                           level = "National",
                                           region_STP_name = NULL,
                                           plotChart = TRUE,
-                                          all_regions_and_STPs = FALSE){
+                                          all_regions_and_STPs = FALSE,
+                                          include_historic = TRUE){
   
   #add a region column to the data
   region_STP_lookup <- calendar_data %>%
@@ -766,6 +786,23 @@ plot_UDA_UOA_delivery_profile <- function(data = UDA_scheduled_data,
     distinct()
   
   data <- left_join(data, region_STP_lookup, by = c("contract_number", "name_or_company_name", "commissioner_name"))
+  
+  #bind in historic data if required
+  if(include_historic == TRUE & UDAorUOA == "UDA"){
+    data <- data %>%
+      select(month, contract_number, commissioner_name, region_name, 
+             annual_contracted_UDA, UDA_delivered)
+    
+    historic_data <- historic_data %>%
+      mutate(month = as.Date(month)) %>%
+      filter(!is.na(annual_contracted_UDAs)) %>% #filters out contracts with no data on contracted UDAs
+      select(month, contract_number, commissioner_name, region_name, 
+             annual_contracted_UDA = annual_contracted_UDAs, 
+             UDA_delivered = total_UDAs)
+    
+    data <- bind_rows(data, historic_data)
+    
+  }
   
   #filter for STP or region
   if(level == "Regional"){
@@ -835,8 +872,8 @@ plot_UDA_UOA_delivery_profile <- function(data = UDA_scheduled_data,
              `Region Name` = "region_name", 
              `Commissioner Name` = "commissioner_name", 
              `Performance band` = "performance_band", 
-             `Total number of contracts` = "n", 
-             `Number of contracts in performance band` = "no_of_contracts", 
+             `Number of contracts in performance band`= "n", 
+             `Total number of contracts` = "no_of_contracts", 
              `Percentage of contracts in performance band` = "perc_of_contracts")
   }
   
@@ -862,7 +899,7 @@ plot_banded_CoT <- function(data = UDA_scheduled_data,
   data <- left_join(data, region_STP_lookup, by = c("contract_number", "name_or_company_name", "commissioner_name"))
   
   #add a region column to the historic data
-  historic_data <- left_join(historic_data, region_STP_lookup, by = c("contract_number"))
+  #historic_data <- left_join(historic_data, region_STP_lookup, by = c("contract_number"))
   
   #toggle subtitle
   if(level == "Regional"){
@@ -960,7 +997,7 @@ plot_urgent_form_submissions <- function(data = UDA_scheduled_data,
   data <- left_join(data, region_STP_lookup, by = c("contract_number", "name_or_company_name", "commissioner_name"))
   
   #add a region column to the historic data
-  historic_data <- left_join(historic_data, region_STP_lookup, by = c("contract_number"))
+  #historic_data <- left_join(historic_data, region_STP_lookup, by = c("contract_number"))
   
   #toggle subtitle
   if(level == "Regional"){
@@ -1641,7 +1678,7 @@ get_num_urgent_forms_2019 <- function(data = UDA_scheduled_data,
     distinct()
   
   data <- left_join(data, region_STP_lookup, by = c("contract_number", "name_or_company_name", "commissioner_name"))
-  historic_data <- left_join(historic_data, region_STP_lookup, by = c("contract_number"))
+  #historic_data <- left_join(historic_data, region_STP_lookup, by = c("contract_number"))
   
   #filter for STP or region
   if(level == "Regional"){
@@ -2056,15 +2093,15 @@ plot_CDS_patients_waiting_for_assessment <- function(data = CDS_data,
         group_by(quarter)
     }
      
-    data <- data %>% 
-      summarise(routine_adult = mean(routine_num_patients_waiting_for_first_assessment_adult, na.rm = TRUE), 
+    data <- data %>%
+      summarise(routine_adult = mean(routine_num_patients_waiting_for_first_assessment_adult, na.rm = TRUE),
                 routine_child = mean(routine_num_patients_waiting_for_first_assessment_child, na.rm = TRUE),
                 GA_adult = mean(GA_num_patients_waiting_for_first_assessment_adult, na.rm = TRUE),
                 GA_child = mean(GA_num_patients_waiting_for_first_assessment_child, na.rm = TRUE),
                 SS_adult = mean(SS_num_patients_waiting_for_first_assessment_adult, na.rm = TRUE),
                 SS_child = mean(SS_num_patients_waiting_for_first_assessment_child, na.rm = TRUE)) %>%
       ungroup() %>%
-      pivot_longer(cols = c(routine_adult, 
+      pivot_longer(cols = c(routine_adult,
                             routine_child,
                             GA_adult,
                             GA_child,
@@ -2074,9 +2111,9 @@ plot_CDS_patients_waiting_for_assessment <- function(data = CDS_data,
                    values_to = "patients_waiting") %>%
       mutate(patient_group = sub(".*\\_", "", variable),
              appointment_type = sub("\\_.*", "", variable))
-    
-    
-    
+
+
+
     ggplot(data) +
       geom_line(aes(x = quarter,
                     y = patients_waiting,
@@ -2097,12 +2134,12 @@ plot_CDS_patients_waiting_for_assessment <- function(data = CDS_data,
            x = "Quarter start date",
            y = "Mean number of paitings waiting",
            colour = "") +
-      facet_wrap(vars(patient_group), 
-                 #scales = "free_y", 
+      facet_wrap(vars(patient_group),
+                 #scales = "free_y",
                  nrow = 1) +
       theme(axis.text.x = element_text(angle = 90))
-      
-  
+
+
   
 }
 
@@ -2398,6 +2435,211 @@ plot_CDS_wait_times_for_treatment <- function(data = CDS_data,
   
 }
 
+################################################################################
+plot_practice_closures <- function(data = contract_handbacks,
+                                   level = "National",
+                                   region_STP_name = NULL,
+                                   all_regions_and_STPs = FALSE,
+                                   plotChart = TRUE){
+  
+  data <- data %>%
+    mutate(region_name = case_when(region_name == "East" ~ "East of England",
+                                   region_name == "NE & Yorkshire" ~ "North East and Yorkshire",
+                                   TRUE ~ region_name)) %>%
+    select(time_period, region_name, commissioner_termination_notices, contractor_termination_notices,
+           retirement_of_contractor, death_of_contractor, other) %>%
+    pivot_longer(cols = c("commissioner_termination_notices", "contractor_termination_notices",
+                          "retirement_of_contractor", "death_of_contractor", "other"),
+                 names_to = "reason",
+                 values_to = "closures"
+                 )
+  
+  #set defualt subtitle
+  subtitle <- "England"
+  
+  if(level == "Regional"){
+    data <- data %>%
+      filter(region_name == region_STP_name)
+    
+    subtitle <- region_STP_name
+  }
+  
+  totals <- data %>%
+    group_by(time_period) %>%
+    summarise(closures = sum(closures, na.rm = TRUE))
 
+  #group data
+  if(all_regions_and_STPs == TRUE){
+    data <- data %>%
+      group_by(time_period, region_name, reason)
+  }else{
+    data <- data %>% 
+      group_by(time_period, reason)
+  }
+  
+  data <- data %>%
+    summarise(closures = sum(closures, na.rm = TRUE))
+  
+  data$time_period <- factor(data$time_period,
+                             levels = c("Apr - Jun 2021",
+                                        "Jul - Sep 2021",
+                                        "October 2021",
+                                        "November 2021",
+                                        "December 2021",
+                                        "January 2022",
+                                        "February 2022",
+                                        "March 2022",
+                                        "April 2022",
+                                        "May 2022"))
+  
+  cbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442","#CC79A7")
+  
+  if(plotChart == TRUE){
+    ggplot() +
+      geom_bar(data = data,
+               aes(x = time_period,
+                   y = closures,
+                   fill = reason),
+               position = "stack",
+               stat = "identity") +
+      geom_text(data = totals,
+                aes(x = time_period,
+                    y = closures + (closures/20) + 0.3,
+                    label = closures),
+                size = 3) +
+      scale_fill_manual(values = cbPalette, labels = c("Commissioner termination notices", "Contractor termination notices",
+                                                       "Death of contractor", "Other reason", "Retirement of contractor")) +
+      theme_bw() +
+      labs(title = "Practice Closures",
+           subtitle = subtitle,
+           x = "Time period",
+           y = "Number of closures",
+           fill = "Closure reason") +
+      theme(axis.text.x = element_text(angle = 30, hjust = 1))
+  }else{
+    data <- data %>%
+      rename(`Time period` = time_period,
+             `Region Name` = region_name,
+             `Closure reason` = reason,
+             `Number of closures` = closures)
+  }
+  
+}
 
+################################################################################
+plot_re_and_de_commissioned_UDAs_UOAs <- function(data = contract_handbacks,
+                                                  level = "National",
+                                                  region_STP_name = NULL,
+                                                  all_regions_and_STPs = FALSE,
+                                                  plotChart = TRUE){
+  
+  data <- data %>%
+    mutate(region_name = case_when(region_name == "East" ~ "East of England",
+                                   region_name == "NE & Yorkshire" ~ "North East and Yorkshire",
+                                   TRUE ~ region_name)) %>%
+    mutate(decommissioned_UDAs = -decommissioned_UDAs,
+           decommissioned_UOAs = -decommissioned_UOAs) %>%
+    select(time_period, region_name, decommissioned_UDAs, recommissioned_UDAs, decommissioned_UOAs, recommissioned_UOAs) %>%
+    pivot_longer(cols = c("decommissioned_UDAs", "recommissioned_UDAs", "decommissioned_UOAs", "recommissioned_UOAs"),
+                 names_to = "commission_type",
+                 values_to = "value")
+  
+  #set defualt subtitle
+  subtitle <- "England"
+  
+  if(level == "Regional"){
+    data <- data %>%
+      filter(region_name == region_STP_name)
+    
+    subtitle <- region_STP_name
+  }
+  
+  totals <- data %>%
+    group_by(time_period) %>%
+    summarise(value = sum(value, na.rm = TRUE))
+  
+  #group data
+  if(all_regions_and_STPs == TRUE){
+    data <- data %>%
+      group_by(time_period, region_name, commission_type)
+  }else{
+    data <- data %>% 
+      group_by(time_period, commission_type)
+  }
+  
+  data <- data %>%
+    summarise(value = sum(value, na.rm = TRUE))
+  
+  data$time_period <- factor(data$time_period,
+                             levels = c("Apr - Jun 2021",
+                                        "Jul - Sep 2021",
+                                        "October 2021",
+                                        "November 2021",
+                                        "December 2021",
+                                        "January 2022",
+                                        "February 2022",
+                                        "March 2022",
+                                        "April 2022",
+                                        "May 2022"))
 
+  
+  if(plotChart == TRUE){
+    ggplot() +
+      geom_bar(data = data,
+               aes(x = time_period,
+                   y = value,
+                   fill = commission_type),
+               position = "dodge",
+               stat = "identity") +
+      geom_hline(yintercept = 0,
+                 colour = "black") +
+      # geom_text(data = data,
+      #           aes(x = time_period,
+      #               y = value + (value/10),
+      #               label = value ,
+      #               group = commission_type),
+      #           position = position_dodge(width = 1),
+      #           size = 3) +
+      scale_fill_manual(values = c("firebrick3", "coral", "springgreen4", "palegreen1"), 
+                        labels = c("De-commissioned UDAs", "De-commissioned UOAs",
+                                   "Re-commissioned UDAs", "Re-commissioned UOAs")) +
+      scale_y_continuous(breaks = scales::breaks_pretty()) +
+      theme_bw() +
+      labs(title = "De-commissioned and re-commissoned UDAs and UOAs \nas a result of practice closures",
+           subtitle = subtitle,
+           x = "Time period",
+           y = "Number of de-commissioned or \nre-commissioned UDAs and UOAs",
+           fill = "") +
+      theme(axis.text.x = element_text(angle = 30, hjust = 1))
+  }else{
+    data <- data %>%
+      rename(`Time period` = time_period,
+             `Region name` = region_name,
+             `Re- or de- commission` = commission_type,
+             `UDAs or UOAs re- or de- commissioned` = value)
+  }
+  
+}
+
+################################################################################
+plot_closures_facet <- function(data = contract_handbacks,
+                                level = "National",
+                                region_STP_name = NULL,
+                                all_regions_and_STPs = FALSE,
+                                plotChart = TRUE){
+  
+  p1 <- plot_practice_closures(data = data,
+                               level = level,
+                               region_STP_name = region_STP_name,
+                               all_regions_and_STPs = all_regions_and_STPs,
+                               plotChart = plotChart)
+  
+  p2 <- plot_re_and_de_commissioned_UDAs_UOAs(data = data,
+                                              level = level,
+                                              region_STP_name = region_STP_name,
+                                              all_regions_and_STPs = all_regions_and_STPs,
+                                              plotChart = plotChart)
+  
+  
+  ggpubr::ggarrange(p1, p2, nrow = 2)
+}

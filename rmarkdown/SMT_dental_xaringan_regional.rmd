@@ -74,6 +74,9 @@ dental_recalls_STP_2018_22 <- readRDS("../data/recalls/dental_recalls_STP_2018_2
 #read in CDS data
 CDS_data <- read_excel("../data/CDS/CDS_Data_for_r.xlsx")
 
+#read in hand backs data
+contract_handbacks <- read_excel("../data/contract_handbacks.xlsx")
+
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 
 #avoid standard form
@@ -107,6 +110,8 @@ name: contents
  * [CDS Patients waiting for treatment](#cds-treatment)
  * [CDS Patients waiting for assessment](#cds-wait-weeks-assessment)
  * [CDS Patients waiting for treatment](#cds-wait-weeks-treatment)
+ * [Practice closures](#closures)
+ * [De-commissioned and re-commissioned UDAs and UOAs as a result of closure](#de-and-re-commissioned)
  
 #### Orthodontic 
  * [Calendar UOA activity](#calendar-uoa-activity)
@@ -4197,6 +4202,295 @@ plot_CDS_wait_times_for_treatment(data = CDS_data,
 ```
 
 
+ ]
+ ]
+
+[Return to contents](#contents)
+
+---
+
+
+name: closures
+
+### Practice closures
+
+```{r xaringan-panelset-closures, echo=FALSE}
+xaringanExtra::use_panelset()
+```
+
+ <font size="2">
+.panelset[
+
+ .panel[.panel-name[National]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_practice_closures(data = contract_handbacks,
+                                level = "National",
+                                region_STP_name = NULL,
+                                all_regions_and_STPs = FALSE,
+                                plotChart = TRUE)
+```
+
+ ]
+ .panel[.panel-name[South East]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_practice_closures(data = contract_handbacks,
+                                level = "Regional",
+                                region_STP_name = "South East",
+                                all_regions_and_STPs = FALSE,
+                                plotChart = TRUE)
+```
+
+ ]
+ .panel[.panel-name[South West]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_practice_closures(data = contract_handbacks,
+                                level = "Regional",
+                                region_STP_name = "South West",
+                                all_regions_and_STPs = FALSE,
+                                plotChart = TRUE)
+```
+
+
+ ]
+ .panel[.panel-name[North West]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_practice_closures(data = contract_handbacks,
+                                level = "Regional",
+                                region_STP_name = "North West",
+                                all_regions_and_STPs = FALSE,
+                                plotChart = TRUE)
+```
+
+
+ ]
+ .panel[.panel-name[North East and Yorkshire]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_practice_closures(data = contract_handbacks,
+                                level = "Regional",
+                                region_STP_name = "North East and Yorkshire",
+                                all_regions_and_STPs = FALSE,
+                                plotChart = TRUE)
+```
+
+ ]
+.panel[.panel-name[London]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_practice_closures(data = contract_handbacks,
+                                level = "Regional",
+                                region_STP_name = "South East",
+                                all_regions_and_STPs = FALSE,
+                                plotChart = TRUE)
+```
+
+
+ ]
+ .panel[.panel-name[Midlands]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_practice_closures(data = contract_handbacks,
+                                level = "Regional",
+                                region_STP_name = "London",
+                                all_regions_and_STPs = FALSE,
+                                plotChart = TRUE)
+```
+
+
+ ]
+ .panel[.panel-name[East of England]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_practice_closures(data = contract_handbacks,
+                                level = "Regional",
+                                region_STP_name = "East of England",
+                                all_regions_and_STPs = FALSE,
+                                plotChart = TRUE)
+```
+
+
+ ].panel[.panel-name[Data]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=6}
+
+data <- plot_practice_closures(data = contract_handbacks,
+                                level = "National",
+                                region_STP_name = NULL,
+                                all_regions_and_STPs = TRUE,
+                                plotChart = FALSE)
+
+data %>%
+  download_this(
+    output_name = "practice_closures_data",
+    output_extension = ".xlsx",
+    button_label = "Download data",
+    button_type = "warning",
+    has_icon = TRUE,
+    icon = "fa fa-save"
+  )
+```
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+reactable(
+  plot_practice_closures(data = contract_handbacks,
+                                level = "National",
+                                region_STP_name = NULL,
+                                all_regions_and_STPs = TRUE,
+                                plotChart = FALSE),
+  height = 400,
+  filterable = TRUE,
+  paginateSubRows = TRUE,
+  minRows = 5,
+  highlight = TRUE,
+  groupBy = c("Time period", "Region Name"),
+  columns = list(
+    `Number of closures` = colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE)
+  )
+)
+```
+ ]
+ ]
+
+[Return to contents](#contents)
+
+---
+
+name: de-and-re-commissioned
+
+### De-commissioned and re-commissioned UDAs and UOAs as a result of closure
+
+```{r xaringan-panelset-recommissons, echo=FALSE}
+xaringanExtra::use_panelset()
+```
+
+ <font size="2">
+.panelset[
+
+ .panel[.panel-name[National]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_re_and_de_commissioned_UDAs_UOAs(data = contract_handbacks,
+                                level = "National",
+                                region_STP_name = NULL,
+                                all_regions_and_STPs = FALSE,
+                                plotChart = TRUE)
+```
+
+ ]
+ .panel[.panel-name[South East]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_re_and_de_commissioned_UDAs_UOAs(data = contract_handbacks,
+                                level = "Regional",
+                                region_STP_name = "South East",
+                                all_regions_and_STPs = FALSE,
+                                plotChart = TRUE)
+```
+
+ ]
+ .panel[.panel-name[South West]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_re_and_de_commissioned_UDAs_UOAs(data = contract_handbacks,
+                                level = "Regional",
+                                region_STP_name = "South West",
+                                all_regions_and_STPs = FALSE,
+                                plotChart = TRUE)
+```
+
+
+ ]
+ .panel[.panel-name[North West]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_re_and_de_commissioned_UDAs_UOAs(data = contract_handbacks,
+                                level = "Regional",
+                                region_STP_name = "North West",
+                                all_regions_and_STPs = FALSE,
+                                plotChart = TRUE)
+```
+
+
+ ]
+ .panel[.panel-name[North East and Yorkshire]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_re_and_de_commissioned_UDAs_UOAs(data = contract_handbacks,
+                                level = "Regional",
+                                region_STP_name = "North East and Yorkshire",
+                                all_regions_and_STPs = FALSE,
+                                plotChart = TRUE)
+```
+
+ ]
+.panel[.panel-name[London]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_re_and_de_commissioned_UDAs_UOAs(data = contract_handbacks,
+                                level = "Regional",
+                                region_STP_name = "South East",
+                                all_regions_and_STPs = FALSE,
+                                plotChart = TRUE)
+```
+
+
+ ]
+ .panel[.panel-name[Midlands]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_re_and_de_commissioned_UDAs_UOAs(data = contract_handbacks,
+                                level = "Regional",
+                                region_STP_name = "London",
+                                all_regions_and_STPs = FALSE,
+                                plotChart = TRUE)
+```
+
+
+ ]
+ .panel[.panel-name[East of England]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_re_and_de_commissioned_UDAs_UOAs(data = contract_handbacks,
+                                level = "Regional",
+                                region_STP_name = "East of England",
+                                all_regions_and_STPs = FALSE,
+                                plotChart = TRUE)
+```
+
+
+ ].panel[.panel-name[Data]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=6}
+
+data <- plot_re_and_de_commissioned_UDAs_UOAs(data = contract_handbacks,
+                                level = "National",
+                                region_STP_name = NULL,
+                                all_regions_and_STPs = TRUE,
+                                plotChart = FALSE)
+
+data %>%
+  download_this(
+    output_name = "practice_closures_data",
+    output_extension = ".xlsx",
+    button_label = "Download data",
+    button_type = "warning",
+    has_icon = TRUE,
+    icon = "fa fa-save"
+  )
+```
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+reactable(
+  plot_re_and_de_commissioned_UDAs_UOAs(data = contract_handbacks,
+                                level = "National",
+                                region_STP_name = NULL,
+                                all_regions_and_STPs = TRUE,
+                                plotChart = FALSE),
+  height = 400,
+  filterable = TRUE,
+  paginateSubRows = TRUE,
+  minRows = 5,
+  highlight = TRUE,
+  groupBy = c("Time period", "Region name", "Re- or de- commission"),
+  columns = list(
+    `UDAs or UOAs re- or de- commissioned` = colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE)
+  )
+)
+```
  ]
  ]
 
