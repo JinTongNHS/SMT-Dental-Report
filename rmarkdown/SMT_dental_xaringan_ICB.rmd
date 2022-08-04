@@ -13,7 +13,7 @@ output:
       highlightLines: true
       countIncrementalSlides: false
 params:
-  region: "East of England"
+  region: "South East"
 ---
 
 
@@ -296,8 +296,10 @@ name: contents
  * [Contract size vs delivery scatter plot](#contract-size-scatter)
  * [UDA delivery profile across months](#uda-delivery-profile)
  * [Banded courses of treatment time series](#banded-cots)
+ * [Banded courses of treatment time series as % of April 2019 delivery](#banded-cots-index)
  * [Urgent treatment form submissions](#urgent-forms)
  * [Unique patients seen rolling 12 months](#unique-patients)
+ * [Unique patients seen rolling 12 months as % of April 2018 delivery](#unique-patients-index)
  * [Patient re-attendance intervals](#reattendance)
 
 #### Orthodontic 
@@ -321,8 +323,6 @@ This is an interactive markdown report.  You can navigate from slide to slide by
 
 <font size="2">
 #### Calendar data explanation
-
-* Slides 5-9 and 13-17 are based on calendar month data
 * Calendar data is based on courses of treatment completed within an entire month, for example 1st February to 28th Feb
 * For calendar data, if a COT was completed in February but not declared till March, that activity would still be registered as
 occurring in February.
@@ -331,7 +331,6 @@ occurring in February.
 
 
 #### Scheduled data explanation
-* Slides 10-12 and 18-21 are based on scheduled data
 * The scheduling time period is usually between the 20th of one month and the 20th of the next month i.e., 21st April to the
 19th May. That means that any Mandatory contract COT completed after this period will not be included in the May
 scheduled data. However, if for example a COT was completed on May 1st, but reported to the BSA after the end of the
@@ -3665,6 +3664,155 @@ plot_banded_CoT(data = UDA_scheduled_data,
 
 ---
 
+name: banded-cots-index
+
+### Banded Courses of Treatment as % of April 2019 delivery
+
+```{r xaringan-panelset-CoTs2, echo=FALSE}
+xaringanExtra::use_panelset()
+```
+ <font size="1">
+.panelset[
+
+ .panel[.panel-name[`r region`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
+plot_banded_CoT(data = UDA_scheduled_data,
+                calendar_data = UDA_calendar_data,
+                historic_data = historical_UDA_scheduled_data,
+                level = "Regional",
+                region_STP_name = region,
+                asIndex = TRUE)
+```
+
+
+ ]
+ .panel[.panel-name[`r STP1`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
+plot_banded_CoT(data = UDA_scheduled_data,
+                calendar_data = UDA_calendar_data,
+                historic_data = historical_UDA_scheduled_data,
+                level = "STP",
+                region_STP_name = STP1,
+                asIndex = TRUE)
+```
+
+ ]
+ .panel[.panel-name[`r STP2`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
+plot_banded_CoT(data = UDA_scheduled_data,
+                calendar_data = UDA_calendar_data,
+                historic_data = historical_UDA_scheduled_data,
+                level = "STP",
+                region_STP_name = STP2,
+                asIndex = TRUE)
+```
+
+ ]
+ .panel[.panel-name[`r STP3`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
+plot_banded_CoT(data = UDA_scheduled_data,
+                calendar_data = UDA_calendar_data,
+                historic_data = historical_UDA_scheduled_data,
+                level = "STP",
+                region_STP_name = STP3,
+                asIndex = TRUE)
+```
+
+ ]
+ .panel[.panel-name[`r STP4`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5, eval = eval4}
+plot_banded_CoT(data = UDA_scheduled_data,
+                calendar_data = UDA_calendar_data,
+                historic_data = historical_UDA_scheduled_data,
+                level = "STP",
+                region_STP_name = STP4,
+                asIndex = TRUE)
+```
+
+ ]
+ .panel[.panel-name[`r STP5`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5, eval = eval5}
+plot_banded_CoT(data = UDA_scheduled_data,
+                calendar_data = UDA_calendar_data,
+                historic_data = historical_UDA_scheduled_data,
+                level = "STP",
+                region_STP_name = STP5,
+                asIndex = TRUE)
+```
+
+ ]
+ .panel[.panel-name[`r STP6`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5, eval = eval6}
+plot_banded_CoT(data = UDA_scheduled_data,
+                calendar_data = UDA_calendar_data,
+                historic_data = historical_UDA_scheduled_data,
+                level = "STP",
+                region_STP_name = STP6,
+                asIndex = TRUE)
+```
+
+ ]
+ .panel[.panel-name[`r STP7`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5, eval = eval7}
+plot_banded_CoT(data = UDA_scheduled_data,
+                calendar_data = UDA_calendar_data,
+                historic_data = historical_UDA_scheduled_data,
+                level = "STP",
+                region_STP_name = STP7,
+                asIndex = TRUE)
+```
+
+ ]
+ .panel[.panel-name[`r STP8`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5, eval = eval8}
+plot_banded_CoT(data = UDA_scheduled_data,
+                calendar_data = UDA_calendar_data,
+                historic_data = historical_UDA_scheduled_data,
+                level = "STP",
+                region_STP_name = STP8,
+                asIndex = TRUE)
+```
+
+ ]
+ .panel[.panel-name[`r STP9`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5, eval = eval9}
+plot_banded_CoT(data = UDA_scheduled_data,
+                calendar_data = UDA_calendar_data,
+                historic_data = historical_UDA_scheduled_data,
+                level = "STP",
+                region_STP_name = STP9,
+                asIndex = TRUE)
+```
+
+ ]
+ .panel[.panel-name[`r STP10`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5, eval = eval10}
+plot_banded_CoT(data = UDA_scheduled_data,
+                calendar_data = UDA_calendar_data,
+                historic_data = historical_UDA_scheduled_data,
+                level = "STP",
+                region_STP_name = STP10,
+                asIndex = TRUE)
+```
+
+ ]
+ .panel[.panel-name[`r STP11`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5, eval = eval11}
+plot_banded_CoT(data = UDA_scheduled_data,
+                calendar_data = UDA_calendar_data,
+                historic_data = historical_UDA_scheduled_data,
+                level = "STP",
+                region_STP_name = STP11,
+                asIndex = TRUE)
+```
+
+ ]
+ ]
+
+[Return to contents](#contents)
+
+---
+
 name: urgent-forms
 
 ### Urgent treatment form submissions
@@ -4164,6 +4312,227 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
                                      region_STP_name = STP11,
                                      plotChart = TRUE,
                                      remove_prototypes = TRUE)
+```
+
+* The number of unique patients seen in the last 12 months is currently around
+**`r if(eval11){plot_unique_patients_rolling(level = "STP",region_STP_name = STP11, plotChart = F,remove_prototypes = T, get_perc = T)}` %**
+of pre-pandemic levels.
+
+ ]
+ ]
+
+[Return to contents](#contents)
+
+
+---
+
+name: unique-patients-index
+
+### Unique dental patients seen as a precentage of April 2018 figures
+
+```{r xaringan-panelset-Unique-patients2, echo=FALSE}
+xaringanExtra::use_panelset()
+```
+ <font size="1">
+.panelset[
+
+ .panel[.panel-name[`r region`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_unique_patients_rolling(data = unique_patients_rolling,
+                                     calendar_data = UDA_calendar_data,
+                                     scheduled_data = UDA_scheduled_data,
+                                     level = "Regional",
+                                     region_STP_name = region,
+                                     plotChart = TRUE,
+                                     remove_prototypes = TRUE,
+                             asIndex = TRUE)
+```
+
+* The number of unique patients seen in the last 12 months is currently around
+**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = region, plotChart = F,remove_prototypes = T, get_perc = T)` %**
+of pre-pandemic levels.
+
+ ]
+ .panel[.panel-name[`r STP1`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_unique_patients_rolling(data = unique_patients_rolling,
+                                     calendar_data = UDA_calendar_data,
+                                     scheduled_data = UDA_scheduled_data,
+                                     level = "STP",
+                                     region_STP_name = STP1,
+                                     plotChart = TRUE,
+                                     remove_prototypes = TRUE,
+                             asIndex = TRUE)
+```
+
+* The number of unique patients seen in the last 12 months is currently around
+**`r plot_unique_patients_rolling(level = "STP",region_STP_name = STP1, plotChart = F,remove_prototypes = T, get_perc = T)` %**
+of pre-pandemic levels.
+
+ ]
+ .panel[.panel-name[`r STP2`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_unique_patients_rolling(data = unique_patients_rolling,
+                                     calendar_data = UDA_calendar_data,
+                                     scheduled_data = UDA_scheduled_data,
+                                     level = "STP",
+                                     region_STP_name = STP2,
+                                     plotChart = TRUE,
+                                     remove_prototypes = TRUE,
+                             asIndex = TRUE)
+```
+
+* The number of unique patients seen in the last 12 months is currently around
+**`r plot_unique_patients_rolling(level = "STP",region_STP_name = STP2, plotChart = F,remove_prototypes = T, get_perc = T)` %**
+of pre-pandemic levels.
+
+ ]
+ .panel[.panel-name[`r STP3`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_unique_patients_rolling(data = unique_patients_rolling,
+                                     calendar_data = UDA_calendar_data,
+                                     scheduled_data = UDA_scheduled_data,
+                                     level = "STP",
+                                     region_STP_name = STP3,
+                                     plotChart = TRUE,
+                                     remove_prototypes = TRUE,
+                             asIndex = TRUE)
+```
+
+* The number of unique patients seen in the last 12 months is currently around
+**`r plot_unique_patients_rolling(level = "STP",region_STP_name = STP3, plotChart = F,remove_prototypes = T, get_perc = T)` %**
+of pre-pandemic levels.
+
+ ]
+ .panel[.panel-name[`r STP4`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval4}
+plot_unique_patients_rolling(data = unique_patients_rolling,
+                                     calendar_data = UDA_calendar_data,
+                                     scheduled_data = UDA_scheduled_data,
+                                     level = "STP",
+                                     region_STP_name = STP4,
+                                     plotChart = TRUE,
+                                     remove_prototypes = TRUE,
+                             asIndex = TRUE)
+```
+
+* The number of unique patients seen in the last 12 months is currently around
+**`r if(eval4){plot_unique_patients_rolling(level = "STP",region_STP_name = STP4, plotChart = F,remove_prototypes = T, get_perc = T)}` %**
+of pre-pandemic levels.
+
+ ]
+ .panel[.panel-name[`r STP5`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval5}
+plot_unique_patients_rolling(data = unique_patients_rolling,
+                                     calendar_data = UDA_calendar_data,
+                                     scheduled_data = UDA_scheduled_data,
+                                     level = "STP",
+                                     region_STP_name = STP5,
+                                     plotChart = TRUE,
+                                     remove_prototypes = TRUE,
+                             asIndex = TRUE)
+```
+
+* The number of unique patients seen in the last 12 months is currently around
+**`r if(eval5){plot_unique_patients_rolling(level = "STP",region_STP_name = STP5, plotChart = F,remove_prototypes = T, get_perc = T)}` %**
+of pre-pandemic levels.
+
+ ]
+ .panel[.panel-name[`r STP6`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval6}
+plot_unique_patients_rolling(data = unique_patients_rolling,
+                                     calendar_data = UDA_calendar_data,
+                                     scheduled_data = UDA_scheduled_data,
+                                     level = "STP",
+                                     region_STP_name = STP6,
+                                     plotChart = TRUE,
+                                     remove_prototypes = TRUE,
+                             asIndex = TRUE)
+```
+
+* The number of unique patients seen in the last 12 months is currently around
+**`r if(eval6){plot_unique_patients_rolling(level = "STP",region_STP_name = STP6, plotChart = F,remove_prototypes = T, get_perc = T)}` %**
+of pre-pandemic levels.
+
+ ]
+ .panel[.panel-name[`r STP7`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval7}
+plot_unique_patients_rolling(data = unique_patients_rolling,
+                                     calendar_data = UDA_calendar_data,
+                                     scheduled_data = UDA_scheduled_data,
+                                     level = "STP",
+                                     region_STP_name = STP7,
+                                     plotChart = TRUE,
+                                     remove_prototypes = TRUE,
+                             asIndex = TRUE)
+```
+
+* The number of unique patients seen in the last 12 months is currently around
+**`r if(eval7){plot_unique_patients_rolling(level = "STP",region_STP_name = STP7, plotChart = F,remove_prototypes = T, get_perc = T)}` %**
+of pre-pandemic levels.
+
+ ]
+ .panel[.panel-name[`r STP8`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval8}
+plot_unique_patients_rolling(data = unique_patients_rolling,
+                                     calendar_data = UDA_calendar_data,
+                                     scheduled_data = UDA_scheduled_data,
+                                     level = "STP",
+                                     region_STP_name = STP8,
+                                     plotChart = TRUE,
+                                     remove_prototypes = TRUE,
+                             asIndex = TRUE)
+```
+
+* The number of unique patients seen in the last 12 months is currently around
+**`r if(eval8){plot_unique_patients_rolling(level = "STP",region_STP_name = STP8, plotChart = F,remove_prototypes = T, get_perc = T)}` %**
+of pre-pandemic levels.
+
+ ]
+ .panel[.panel-name[`r STP9`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval9}
+plot_unique_patients_rolling(data = unique_patients_rolling,
+                                     calendar_data = UDA_calendar_data,
+                                     scheduled_data = UDA_scheduled_data,
+                                     level = "STP",
+                                     region_STP_name = STP9,
+                                     plotChart = TRUE,
+                                     remove_prototypes = TRUE,
+                             asIndex = TRUE)
+```
+
+* The number of unique patients seen in the last 12 months is currently around
+**`r if(eval9){plot_unique_patients_rolling(level = "STP",region_STP_name = STP9, plotChart = F,remove_prototypes = T, get_perc = T)}` %**
+of pre-pandemic levels.
+
+ ]
+ .panel[.panel-name[`r STP10`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval10}
+plot_unique_patients_rolling(data = unique_patients_rolling,
+                                     calendar_data = UDA_calendar_data,
+                                     scheduled_data = UDA_scheduled_data,
+                                     level = "STP",
+                                     region_STP_name = STP10,
+                                     plotChart = TRUE,
+                                     remove_prototypes = TRUE,
+                             asIndex = TRUE)
+```
+
+* The number of unique patients seen in the last 12 months is currently around
+**`r if(eval10){plot_unique_patients_rolling(level = "STP",region_STP_name = STP10, plotChart = F,remove_prototypes = T, get_perc = T)}` %**
+of pre-pandemic levels.
+
+ ]
+ .panel[.panel-name[`r STP11`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval11}
+plot_unique_patients_rolling(data = unique_patients_rolling,
+                                     calendar_data = UDA_calendar_data,
+                                     scheduled_data = UDA_scheduled_data,
+                                     level = "STP",
+                                     region_STP_name = STP11,
+                                     plotChart = TRUE,
+                                     remove_prototypes = TRUE,
+                             asIndex = TRUE)
 ```
 
 * The number of unique patients seen in the last 12 months is currently around
