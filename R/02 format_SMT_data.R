@@ -182,16 +182,19 @@ pull_UDA_scheduled_historical_data <- function(){
 
 ################################################################################
 correct_STP_ICBs <- function(data = UDA_scheduled_data, 
+                             scheduled_data = UDA_scheduled_data,
                              lookup = STP_ICB_lookup,
                              output = "UDA scheduled"){
-
-  lookup <- lookup %>%
-    rename(commissioner_name = commissioner_name_STP)
   
+  lookup <- scheduled_data %>%
+    filter(month >= as.Date("2022-07-01")) %>%
+    select(contract_number, 
+           commissioner_name_ICB = commissioner_name)
+
   data <- data %>%
-    left_join(lookup, by = "commissioner_name") %>%
-    mutate(commissioner_name = if_else(is.na(commissioner_name_ICB), 
-                                        commissioner_name, 
+    left_join(lookup, by = "contract_number") %>%
+    mutate(commissioner_name = if_else(is.na(commissioner_name_ICB),
+                                        commissioner_name,
                                         commissioner_name_ICB)) %>%
     select(-commissioner_name_ICB)
   
@@ -618,4 +621,38 @@ clean_dental_recalls <- function(data = dental_recalls_STP_2021_22){
                  names_to = "Band",
                  values_to = "forms")
   
+}
+
+################################################################################
+clean_complaints_data <- function(data = Dental_Access_Complaints_Data_June_22){
+  
+  data <- data %>%
+    select(date_received = "Date Received (Case) (Case)",
+           reference_number = "Reference Number",
+           provider_name = "Provider Name",
+           region_name = "Region",
+           service = "KO41 Service",
+           subject = "KO41 Subject",
+           isUrgent = "Urgent",
+           isChildren = "Children",
+           isOrthodontics = "Orthodontics")
+  
+  #filter_out_dummy referrals
+  data <- data %>%
+    filter(grepl("Dummy", provider_name, ignore.case = TRUE) == FALSE) %>%
+    mutate(isUrgent = case_when(isUrgent == "Y" ~ TRUE,
+                                isUrgent == "y" ~ TRUE,
+                                isUrgent == "N" ~ FALSE,
+                                isUrgent == "n" ~ FALSE)) %>%
+    mutate(isChildren = case_when(isChildren == "Y" ~ TRUE,
+                                   isChildren == "y" ~ TRUE,
+                                   isChildren == "N" ~ FALSE,
+                                   isChildren == "n" ~ FALSE)) %>%
+    mutate(isOrthodontics = case_when(isOrthodontics == "Y" ~ TRUE,
+                                      isOrthodontics == "y" ~ TRUE,
+                                      isOrthodontics == "N" ~ FALSE,
+                                      isOrthodontics == "n" ~ FALSE)) %>%
+    mutate(service = sub(".*- ", "", service)) %>%
+    mutate(subject = sub(".*- ", "", subject))
+
 }
