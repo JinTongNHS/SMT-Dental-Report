@@ -281,6 +281,8 @@ plot_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data,
     decemberTarget <- 65
     marchTarget <- 85
     juneTarget <- 95
+    september22Target <- 100
+    
     title <- "Cumulative monthly % of quarterly contracted UDAs delivered"
     ylab <- "Cumulative % of quarterly \ncontracted UDAs delivered"
     captionTitle <- "*Excluding prototype contracts and those with annual contracted UDA < 100
@@ -295,6 +297,8 @@ plot_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data,
     decemberTarget <- 85
     marchTarget <- 90
     juneTarget <- 100
+    september22Target <- 100
+    
     title <- "Cumulative monthly % of quarterly contracted UOAs delivered"
     ylab <- "Cumulative % of quarterly \ncontracted UOAs delivered"
     captionTitle <- "*Excluding prototype contracts and those with zero annual contracted UOAs
@@ -306,13 +310,17 @@ plot_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data,
     
   }
   
-  # #add blanks for future dates if on single level
-  # if(all_regions_and_STPs == FALSE & nrow(data) < 16){
-  #   
-  #   if(!(as.Date("2022-06-01") %in% data$month)){
-  #     data <- data %>% add_row(month = as.Date("2022-06-01"))
-  #   }
-  # }
+  #add blanks for future dates if on single level
+  if(all_regions_and_STPs == FALSE & nrow(data) < 19){
+
+    if(!(as.Date("2022-08-01") %in% data$month)){
+      data <- data %>% add_row(month = as.Date("2022-08-01"))
+    }
+    
+    if(!(as.Date("2022-09-01") %in% data$month)){
+      data <- data %>% add_row(month = as.Date("2022-09-01"))
+    }
+  }
   
   #get data in the right format
   data <- data %>%
@@ -323,14 +331,16 @@ plot_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data,
                                          month < as.Date("2021-10-01") ~ "Jul-Sep (Q2)",
                                          month < as.Date("2022-01-01") ~ "Oct-Dec (Q3)",
                                          month < as.Date("2022-04-01") ~ "Jan-Mar (Q4)",
-                                         month < as.Date("2022-07-01") ~ "Apr-Jun (Q1 22/23)"))
+                                         month < as.Date("2022-07-01") ~ "Apr-Jun (Q1 22/23)",
+                                         month < as.Date("2022-10-01") ~ "Jul-Sep (Q2 22/23)"))
   
   data$financial_quarter <- factor(data$financial_quarter,
                                    levels = c("Apr-Jun (Q1)",
                                               "Jul-Sep (Q2)",
                                               "Oct-Dec (Q3)",
                                               "Jan-Mar (Q4)",
-                                              "Apr-Jun (Q1 22/23)"))
+                                              "Apr-Jun (Q1 22/23)",
+                                              "Jul-Sep (Q2 22/23)"))
 
   
   if(all_regions_and_STPs == FALSE){
@@ -351,7 +361,11 @@ plot_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data,
         rep(seq(from = septemberTarget/3, to = septemberTarget, length.out = 3),2),
         seq(from = decemberTarget/3, to = decemberTarget, length.out = 3),
         seq(from = marchTarget/3, to = marchTarget, length.out = 3),
-        seq(from = juneTarget/3, to = juneTarget, length.out = 3)))
+        seq(from = juneTarget/3, to = juneTarget, length.out = 3),
+        seq(from = september22Target/3, to = september22Target, length.out = 3)
+        )
+        )
+    
   }else{
     #cumulative sum column
     data <- data  %>%
@@ -386,6 +400,8 @@ plot_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data,
                linetype = "dotted") +
     geom_vline(xintercept = as.Date("2022-03-01") + lubridate::days(15),
                linetype = "dotted") +
+    geom_vline(xintercept = as.Date("2022-06-01") + lubridate::days(15),
+               linetype = "dotted") +
     annotate(geom = "text",
              x = data_to_plot$month,
              y = data_to_plot$cumulative_perc_of_contracted_UDA_UOAs_delivered + 4,
@@ -400,8 +416,9 @@ plot_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data,
                                    paste0("Expected cumulative delivery to reach \nQ2 threshold of ",septemberTarget,"% by end of Sep-21"),
                                    paste0("Expected cumulative delivery to reach \nQ3 threshold of ",decemberTarget,"% by end of Dec-21"),
                                    paste0("Expected cumulative delivery to reach \nQ4 threshold of ",marchTarget,"% by end of Mar-22"),
-                                   paste0("Expected cumulative delivery to reach \nQ1 threshold of ",juneTarget,"% by end of Jun-22")),
-                        values = c("darkred", "blue", "darkgreen", "darkgoldenrod3", "darkorange3")) +
+                                   paste0("Expected cumulative delivery to reach \nQ1 threshold of ",juneTarget,"% by end of Jun-22"),
+                                   paste0("Expected cumulative delivery to reach \nQ2 threshold of ",september22Target,"% by end of Sep-22")),
+                        values = c("darkred", "blue", "darkgreen", "darkgoldenrod3", "darkorange3", "deeppink2")) +
     labs(title = title,
          x = "Month",
          y = ylab,
@@ -603,10 +620,10 @@ plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
          y = ylab, 
          subtitle = subtitle,
          caption = captionTitle) +
-    annotate(geom = "text", 
-             x = data$month, 
-             y = data$perc_UDA_UOA_delivered + 3, 
-             label = paste0(data$perc_UDA_UOA_delivered, "%"), 
+    annotate(geom = "text",
+             x = data$month,
+             y = data$perc_UDA_UOA_delivered + 3,
+             label = paste0(data$perc_UDA_UOA_delivered, "%"),
              size = 3) +
     theme(axis.text.x = element_text(angle = 90))
   
@@ -764,7 +781,7 @@ plot_delivery_vs_contract_size_scatter_corporate <- function(data = UDA_schedule
     list(num_contracts_above_threshold = num_contracts_above_threshold,
          mean_contract_size_above_threshold = mean_contract_size_above_threshold)
   }
-  
+
   
 }
 
@@ -886,7 +903,8 @@ plot_banded_CoT <- function(data = UDA_scheduled_data,
                             level = "National",
                             region_STP_name = NULL,
                             plotChart = TRUE, 
-                            all_regions_and_STPs = FALSE){
+                            all_regions_and_STPs = FALSE,
+                            asIndex = FALSE){
   
   #avoid standard form on axes
   options(scipen = 100)
@@ -927,19 +945,39 @@ plot_banded_CoT <- function(data = UDA_scheduled_data,
     mutate(month = as.Date(month)) %>%
     rename(band = variable, CoTs = value)
   
-  if(plotChart == TRUE){
+  #set everything as indext of April 2019
+  if(asIndex == TRUE){
     
+    april2019 <- data %>%
+      filter(month == as.Date("2019-04-01")) %>%
+      select(-month,
+             april_CoTs = CoTs)
+    
+    data <- data %>%
+      left_join(april2019, by = "band") %>%
+      mutate(CoTs = CoTs * 100 / april_CoTs)
+    
+    title <- "Banded Courses of Treatment as a Percentage of April 2019 Delivery"
+    ylab <- "Percentage of April 2019 FP17* forms submitted"
+    
+  }else{
+    title <- "Banded Courses of Treatment"
+    ylab <- "Number of FP17* forms submitted"
+  }
+  
+  if(plotChart == TRUE){
+
     #plot code
-    ggplot(data) +    
+    ggplot(data) +
       theme_bw() +
       theme(axis.text.x = element_text(angle = 90)) +
-      geom_line(aes(x = month, 
-                    y = CoTs, 
-                    colour = band), 
+      geom_line(aes(x = month,
+                    y = CoTs,
+                    colour = band),
                 size = 1) +
-      scale_x_date(date_breaks = "1 month", 
+      scale_x_date(date_breaks = "1 month",
                    date_labels = "%b-%y") +
-      scale_colour_manual(labels = c("Band 1", "Band 2", "Band 3", "Other", "Urgent"), 
+      scale_colour_manual(labels = c("Band 1", "Band 2", "Band 3", "Other", "Urgent"),
                           values = c("coral3",
                                      "orange",
                                      "yellow3",
@@ -947,16 +985,16 @@ plot_banded_CoT <- function(data = UDA_scheduled_data,
                                      "blue")
       ) +
       scale_y_continuous(breaks = scales::breaks_pretty()) +
-      labs(title = "Banded Courses of Treatment", 
+      labs(title = title,
            x = "Month",
-           y = "Number of FP17* forms submitted",
+           y = ylab,
            colour = "Band",
            subtitle = subtitle,
-           caption = "*UDA to FP17 conversion has been done assuming a band 1 FP17 
-         is equivalent to 1 UDA, a band 2 FP17 = 3 UDAs, 
-         a band 3 FP17 = 12 UDAs, an urgent FP17 = 1.2 
+           caption = "*UDA to FP17 conversion has been done assuming a band 1 FP17
+         is equivalent to 1 UDA, a band 2 FP17 = 3 UDAs,
+         a band 3 FP17 = 12 UDAs, an urgent FP17 = 1.2
          UDAs and an 'other' FP17 = 0.6 UDAs. Scheduled data used.")
-    
+
   }else{
     data_to_print %>%
       mutate(month = as.Date(month)) %>%
@@ -969,8 +1007,6 @@ plot_banded_CoT <- function(data = UDA_scheduled_data,
              `Other` = other,
              `Urgent` = urgent)
   }
-  
-  
 
 }
 
@@ -1189,7 +1225,8 @@ plot_unique_patients_rolling <- function(data = unique_patients_rolling,
                                          plotChart = TRUE,
                                          remove_prototypes = TRUE,
                                          get_perc = FALSE,
-                                         all_regiona_and_STPs = FALSE){
+                                         all_regiona_and_STPs = FALSE,
+                                         asIndex = FALSE){
   
   #avoid standard form notation
   options(scipen = 5)
@@ -1271,6 +1308,26 @@ plot_unique_patients_rolling <- function(data = unique_patients_rolling,
                         "Other band"
                       ))
   
+  #set everything as indext of April 2019
+  if(asIndex == TRUE){
+    
+    april2018 <- data %>%
+      filter(month == as.Date("2018-04-01")) %>%
+      select(-month,
+             april_total_unique_patients = total_unique_patients)
+    
+    data <- data %>%
+      left_join(april2018, by = "band") %>%
+      mutate(total_unique_patients = total_unique_patients * 100 / april_total_unique_patients)
+    
+    title <- "Total number of unique patients seen over a rolling 12 month period by band \nas a percentage of April 2018 figures"
+    ylab <- "Percentage of April 2018 unique patients"
+    
+  }else{
+    title <- "Total number of unique patients seen over a rolling 12 month period by band"
+    ylab <- "Unique patients"
+  }
+  
   
   if(plotChart == TRUE & get_perc == FALSE){
     #plot code
@@ -1283,9 +1340,9 @@ plot_unique_patients_rolling <- function(data = unique_patients_rolling,
                      y = total_unique_patients,
                      colour = band)) +
       scale_y_continuous(labels=function(x) format(x, big.mark = ",", scientific = FALSE)) +
-      labs(title = "Total number of unique patients seen over a rolling 12 month period by band",
+      labs(title = title,
            x = "12 month rolling period end date",
-           y = "Unique patients",
+           y = ylab,
            subtitle = subtitle,
            caption = "*N.B. this analysis uses unique patients per contract** and does not take \ninto account patients who have been seen at more than one dental practice. \n**Excluding prototype contracts and those with annual contracted UDAs < 100."
       ) +
@@ -1522,9 +1579,9 @@ get_Q4_num_contracts_on_target <- function(data = UDA_calendar_data,
       group_by(contract_number) %>%
       summarise(mean_annual_contracted_UOA = mean(annual_contracted_UOA),
                 #mean_Q3_UOA_target = mean(UOA_financial_half_target),
-                YTD_UOA_delivered = sum(UOA_total)) %>%
+                quarter_to_date_UOA_delivered = sum(UOA_total)) %>%
       mutate(mean_Q4_UOA_target = mean_annual_contracted_UOA * 0.90 / 4) %>%
-      count(YTD_UOA_delivered >= (mean_Q4_UOA_target) * month_factor / 3)
+      count(quarter_to_date_UOA_delivered >= (mean_Q4_UOA_target) * month_factor / 3)
   }
   
   
@@ -1559,7 +1616,8 @@ get_Q1_22_num_contracts_on_target <- function(data = UDA_calendar_data,
       mutate(UDA_financial_half_target = case_when(month < as.Date("2021-10-01") ~ 0.6 * annual_contracted_UDA/4,
                                                    month < as.Date("2022-01-01") ~ 0.65 * annual_contracted_UDA/4,
                                                    month < as.Date("2022-04-01") ~ 0.85 * annual_contracted_UDA/4,
-                                                   month < as.Date("2022-07-01") ~ 0.95 * annual_contracted_UDA/4))
+                                                   month < as.Date("2022-07-01") ~ 0.95 * annual_contracted_UDA/4,
+                                                   month < as.Date("2022-09-01") ~ 1 * annual_contracted_UDA/4))
   }else{
     #get contracted UOAs
     contracted_UDA_UOAs <- scheduled_data %>%
@@ -1567,7 +1625,7 @@ get_Q1_22_num_contracts_on_target <- function(data = UDA_calendar_data,
       mutate(UDA_financial_half_target = case_when(month < as.Date("2021-10-01") ~ 0.8 * annual_contracted_UOA/4,
                                                    month < as.Date("2022-01-01") ~ 0.85 * annual_contracted_UOA/4,
                                                    month < as.Date("2022-04-01") ~ 0.90 * annual_contracted_UOA/4,
-                                                   month < as.Date("2022-07-01") ~ 1 * annual_contracted_UOA/4))
+                                                   month < as.Date("2022-09-01") ~ 1 * annual_contracted_UOA/4))
   }
   
   
@@ -1575,7 +1633,7 @@ get_Q1_22_num_contracts_on_target <- function(data = UDA_calendar_data,
   #join in contracted UDA/UOAs from scheduled data
   data <- data %>%
     left_join(contracted_UDA_UOAs, by = c("month", "contract_number")) %>%
-    filter(month >= as.Date("2022-04-01"))
+    filter(month >= as.Date("2022-07-01")) ##must update this at start of each quarter
   
   #create not in function
   `%notin%` = Negate(`%in%`)
@@ -1592,13 +1650,13 @@ get_Q1_22_num_contracts_on_target <- function(data = UDA_calendar_data,
   }
   
   #way to progress through the months
-  if(max(data$month) == as.Date("2022-04-01")){
+  if(max(data$month) == as.Date("2022-07-01")){
     month_factor <- 1
   }
-  if(max(data$month) == as.Date("2022-05-01")){
+  if(max(data$month) == as.Date("2022-08-01")){
     month_factor <- 2
   }
-  if(max(data$month) == as.Date("2022-06-01")){
+  if(max(data$month) == as.Date("2022-09-01")){
     month_factor <- 3
   }
   
@@ -1607,22 +1665,22 @@ get_Q1_22_num_contracts_on_target <- function(data = UDA_calendar_data,
     data <- data %>%
       group_by(contract_number) %>%
       summarise(mean_annual_contracted_UDA = mean(annual_contracted_UDA),
-                YTD_UDA_delivered = sum(UDA_total)) %>%
-      mutate(mean_Q4_UDA_target = mean_annual_contracted_UDA * 0.95 / 4) %>%
-      count(YTD_UDA_delivered >= (mean_Q4_UDA_target) * month_factor / 3)
+                quarter_to_date_UDA_delivered = sum(UDA_total)) %>%
+      mutate(mean_Q4_UDA_target = mean_annual_contracted_UDA * 1 / 4) %>%
+      count(quarter_to_date_UDA_delivered >= (mean_Q4_UDA_target) * month_factor / 3)
   }else{
     #count number of contracts meeting target
     data <- data %>%
       group_by(contract_number) %>%
       summarise(mean_annual_contracted_UOA = mean(annual_contracted_UOA),
-                YTD_UOA_delivered = sum(UOA_total)) %>%
+                quarter_to_date_UOA_delivered = sum(UOA_total)) %>%
       mutate(mean_Q4_UOA_target = mean_annual_contracted_UOA * 1 / 4) %>%
-      count(YTD_UOA_delivered >= (mean_Q4_UOA_target) * month_factor / 3)
+      count(quarter_to_date_UOA_delivered >= (mean_Q4_UOA_target) * month_factor / 3)
   }
   
   
-  no_on_target <- data[2, "n"]
-  as.integer(no_on_target)
+ no_on_target <- data[2, "n"]
+ as.integer(no_on_target)
   
 }
 
