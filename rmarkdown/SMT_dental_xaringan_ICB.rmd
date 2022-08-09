@@ -67,8 +67,8 @@ contractor_categories <- readRDS("../data/contractor_categories.RDS")
 contract_demographics <- readRDS("../data/contract_demographics.rds")
 
 #read in unique patients
-unique_patients_static <- readRDS("../data/unique_patients/unique_patients_static.rds")
-unique_patients_rolling <- readRDS("../data/unique_patients/unique_patients_rolling.rds")
+#unique_patients_rolling <- readRDS("../data/unique_patients/unique_patients_rolling.rds")
+unique_patients_rolling <- pull_unique_patients_data()
 
 #read in recalls 
 dental_recalls_STP_2018_22 <- readRDS("../data/recalls/dental_recalls_STP_2018_22.rds")

@@ -50,14 +50,14 @@ UDA_scheduled_data <- rename(UDA_scheduled_data, month = data_month)
 UOA_scheduled_data <- rename(UOA_scheduled_data, month = data_month)
 
 #sort out STP ICB changes
-STP_ICB_lookup <- read_excel("../data/STP_ICB_lookup.xlsx")
+#STP_ICB_lookup <- read_excel("../data/STP_ICB_lookup.xlsx")
 UDA_scheduled_data <- correct_STP_ICBs(UDA_scheduled_data)
 UDA_calendar_data <- correct_STP_ICBs(UDA_calendar_data)
 UOA_scheduled_data <- correct_STP_ICBs(UOA_scheduled_data)
 UOA_calendar_data <- correct_STP_ICBs(UOA_calendar_data)
 
 #Read local 111 file
-dental_data_111 <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental/raw_eDEN_dental_data/111_pathways_data/dental_data_111.xls")
+dental_data_111 <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental/111_pathways_data/dental_data_111.xls")
 
 #############still to fix
 prototype_contracts <- read_excel("../data/prototype_contracts.xlsx")
@@ -65,8 +65,8 @@ contractor_categories <- readRDS("../data/contractor_categories.RDS")
 contract_demographics <- readRDS("../data/contract_demographics.rds")
 
 #read in unique patients
-unique_patients_static <- readRDS("../data/unique_patients/unique_patients_static.rds")
-unique_patients_rolling <- readRDS("../data/unique_patients/unique_patients_rolling.rds")
+#unique_patients_rolling <- readRDS("../data/unique_patients/unique_patients_rolling.rds")
+unique_patients_rolling <- pull_unique_patients_data()
 
 #read in recalls 
 dental_recalls_STP_2018_22 <- readRDS("../data/recalls/dental_recalls_STP_2018_22.rds")
@@ -78,7 +78,7 @@ CDS_data <- read_excel("../data/CDS/CDS_Data_for_r.xlsx")
 contract_handbacks <- read_excel("../data/contract_handbacks.xlsx")
 
 #read in and clean complaints data
-Dental_Access_Complaints_Data_June_22 <- read_excel("data/complaints/Dental Access Complaints Data June 22.xlsx")
+Dental_Access_Complaints_Data_June_22 <- read_excel("../data/complaints/Dental Access Complaints Data June 22.xlsx")
 dental_complaints <- clean_complaints_data(Dental_Access_Complaints_Data_June_22)
 
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)

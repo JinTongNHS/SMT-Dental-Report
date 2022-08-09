@@ -104,6 +104,12 @@ import_clean_combine_upload_all_data <- function(raw_UDA_scheduled_data_folder_p
 upload_delivery_data <- function(calendar_data = UDA_calendar_data,  
                                  scheduled_data = UDA_scheduled_data){
   
+  STP_ICB_lookup_codes <- read_excel("data/STP_ICB_lookup_codes.xlsx")
+  STP_ICB_lookup_codes <- STP_ICB_lookup_codes %>%
+    select(commissioner_name = commissioner_name_ICB,
+           commissioner_ODS_code_ICB,
+           commissioner_ONS_boundary_code_ICB)
+  
   UDA_delivery_calendar <- get_delivery_data_calendar(calendar_data = calendar_data,  
                                                       scheduled_data = scheduled_data,
                                                       remove_prototypes = T,
@@ -112,23 +118,50 @@ upload_delivery_data <- function(calendar_data = UDA_calendar_data,
                                                       STP_lines = T,
                                                       cat_lines = F, 
                                                       renameColumns = T)
-  
+
   UDA_delivery_scheduled <- get_delivery_data(data = scheduled_data,
                                                calendar_data = calendar_data,
                                                remove_prototypes = T,
                                                UDAorUOA = "UDA",
                                                all_regions_and_STPs = T,
                                                renameColumns = T)
-  
-  #Overwrite data in NCDR
-  con <- dbConnect(odbc::odbc(), "NCDR")
-  
-  dbWriteTable(con, Id(catalog="NHSE_Sandbox_PrimaryCareNHSContracts",schema="Dental",table="UDA_delivery_calendar"),
-               value = UDA_delivery_calendar, row.names = FALSE, append = FALSE, overwrite = TRUE)
-  
-  dbWriteTable(con, Id(catalog="NHSE_Sandbox_PrimaryCareNHSContracts",schema="Dental",table="UDA_delivery_scheduled"),
-               value = UDA_delivery_scheduled, row.names = FALSE, append = FALSE, overwrite = TRUE)
 
+  UDA_delivery_calendar <- UDA_delivery_calendar %>%
+    left_join(STP_ICB_lookup_codes) %>%
+    select("calendar_month", "commissioner_name", commissioner_ODS_code_ICB, commissioner_ONS_boundary_code_ICB,
+           "region_name", "monthly_UDAs_delivered", 
+           "scaled_monthly_UDAs_delivered", "annual_contracted_UDAs", "scaled_perc_UDAs_delivered", 
+           "threshold_perc")
+  
+  UDA_delivery_scheduled <- UDA_delivery_scheduled %>%
+    left_join(STP_ICB_lookup_codes) %>%
+    select("scheduled_month", "commissioner_name", commissioner_ODS_code_ICB, commissioner_ONS_boundary_code_ICB,
+           "region_name", "monthly_UDAs_delivered", 
+           "scaled_monthly_UDAs_delivered", "annual_contracted_UDAs", "scaled_perc_UDAs_delivered", 
+           "threshold_perc")
+  
+  
+  #   
+  # #Overwrite data in NCDR
+  # con <- dbConnect(odbc::odbc(), "NCDR")
+  # 
+  # dbWriteTable(con, Id(catalog="NHSE_Sandbox_PrimaryCareNHSContracts",schema="Dental",table="UDA_delivery_calendar"),
+  #              value = UDA_delivery_calendar, row.names = FALSE, append = FALSE, overwrite = TRUE)
+  # 
+  # dbWriteTable(con, Id(catalog="NHSE_Sandbox_PrimaryCareNHSContracts",schema="Dental",table="UDA_delivery_scheduled"),
+  #              value = UDA_delivery_scheduled, row.names = FALSE, append = FALSE, overwrite = TRUE)
+
+}
+
+################################################################################
+upload_unique_patients_data <- function(latest_data){
+  
+  #Append latest data to table on NCDR
+  con <- dbConnect(odbc::odbc(), "NCDR")
+
+  dbWriteTable(con, Id(catalog="NHSE_Sandbox_PrimaryCareNHSContracts",schema="Dental",table="unique_patients_rolling_12_month"),
+               value = latest_data, row.names = FALSE, append = TRUE)
+  
 }
 
 ################################################################################
@@ -323,8 +356,36 @@ import_and_clean_calendar_UDA_data <- function(data_path = "data/raw_data/dashbo
            total_other_FP17s = X__44
     ) 
   
+  #add column for date and rename columns, split data for just july
+  data_jul <- data %>%
+    mutate(data_month = as.Date("2022-07-01")) %>%
+    select(data_month, X__1, X__2, X__3, X__4, X__5, X__6, X__7, X__8, 
+           X__45, X__46, X__47, X__48, X__49, X__50, X__51, X__52, X__53, X__54, X__55, X__56) %>%
+    rename(contract_number = X__1,
+           latest_contract_type = X__2,
+           name_or_company_name = X__3,
+           commissioner_name = X__4,
+           region_name = X__5,
+           paid_by_BSA = X__6,
+           contract_start_date = X__7, 
+           contract_end_date = X__8, 
+           
+           UDA_total = X__45, 
+           UDA_band_1_total = X__46,
+           UDA_band_2_total = X__47,
+           UDA_band_3_total = X__48, 
+           UDA_urgent_total = X__49, 
+           UDA_other_total = X__50, 
+           total_FP17s = X__51, 
+           total_band_1_FP17s  = X__52,
+           total_band_2_FP17s = X__53,
+           total_band_3_FP17s = X__54,
+           total_urgent_FP17s = X__55,
+           total_other_FP17s = X__56
+    ) 
   
-  UDA_calendar_data <- bind_rows(data_apr, data_may, data_jun)
+  
+  UDA_calendar_data <- bind_rows(data_apr, data_may, data_jun, data_jul)
   
 }
 
@@ -414,7 +475,23 @@ import_and_clean_calendar_UOA_data <- function(data_path = "data/raw_data/dashbo
            UOA_total = X__10
     )
   
-  UOA_calendar_data <- bind_rows(data_apr, data_may, data_jun)
+  #add column for date and rename columns, split data for just jul
+  data_jul <- data %>%
+    mutate(data_month = as.Date("2022-07-01")) %>%
+    select(data_month, X__1, X__2, X__3, X__4, X__5, X__6, X__7, 
+           X__11) %>%
+    rename(contract_number = X__1,
+           contract_type = X__2,
+           name_or_company_name = X__3,
+           commissioner_name = X__4,
+           paid_by_BSA = X__5,
+           contract_start_date = X__6, 
+           contract_end_date = X__7, 
+           
+           UOA_total = X__11
+    )
+  
+  UOA_calendar_data <- bind_rows(data_apr, data_may, data_jun, data_jul)
   
 }
 
