@@ -154,13 +154,21 @@ upload_delivery_data <- function(calendar_data = UDA_calendar_data,
 }
 
 ################################################################################
-upload_unique_patients_data <- function(latest_data){
+upload_unique_patients_data <- function(data_path = "N:/_Everyone/Primary Care Group/SMT_Dental/unique_patients/"){
+  
+  # Gets last month 
+  data_month <- lubridate::floor_date(Sys.Date()  - lubridate::weeks(4), unit = "month")
+  data_month_name <- format(Sys.Date()  - lubridate::weeks(4), format = "%b%y")
+  
+  unique_patients <- readxl::read_excel(paste0(data_path, "UDA_scheduled_", data_month_name,".xlsx"))
+  
+  #will need to sort out column names too
   
   #Append latest data to table on NCDR
   con <- dbConnect(odbc::odbc(), "NCDR")
 
   dbWriteTable(con, Id(catalog="NHSE_Sandbox_PrimaryCareNHSContracts",schema="Dental",table="unique_patients_rolling_12_month"),
-               value = latest_data, row.names = FALSE, append = TRUE)
+               value = unique_patients, row.names = FALSE, append = TRUE)
   
 }
 

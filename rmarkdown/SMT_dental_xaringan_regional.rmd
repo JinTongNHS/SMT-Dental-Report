@@ -50,7 +50,7 @@ UDA_scheduled_data <- rename(UDA_scheduled_data, month = data_month)
 UOA_scheduled_data <- rename(UOA_scheduled_data, month = data_month)
 
 #sort out STP ICB changes
-#STP_ICB_lookup <- read_excel("../data/STP_ICB_lookup.xlsx")
+STP_ICB_lookup_codes <- read_excel("../data/STP_ICB_lookup_codes.xlsx")
 UDA_scheduled_data <- correct_STP_ICBs(UDA_scheduled_data)
 UDA_calendar_data <- correct_STP_ICBs(UDA_calendar_data)
 UOA_scheduled_data <- correct_STP_ICBs(UOA_scheduled_data)

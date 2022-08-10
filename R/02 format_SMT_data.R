@@ -203,20 +203,28 @@ pull_unique_patients_data <- function(){
 ################################################################################
 correct_STP_ICBs <- function(data = UDA_scheduled_data, 
                              scheduled_data = UDA_scheduled_data,
-                             lookup = STP_ICB_lookup,
+                             lookup_STP_ICB = STP_ICB_lookup_codes,
                              output = "UDA scheduled"){
   
   lookup <- scheduled_data %>%
     filter(month >= as.Date("2022-07-01")) %>%
     select(contract_number, 
            commissioner_name_ICB = commissioner_name)
+  
+  lookup_STP_ICB <- STP_ICB_lookup_codes %>%
+    select(commissioner_name = commissioner_name_STP,
+           commissioner_name_ICB_lookup = commissioner_name_ICB)
 
   data <- data %>%
     left_join(lookup, by = "contract_number") %>%
-    mutate(commissioner_name = if_else(is.na(commissioner_name_ICB),
-                                        commissioner_name,
-                                        commissioner_name_ICB)) %>%
-    select(-commissioner_name_ICB)
+    left_join(lookup_STP_ICB, by = "commissioner_name") %>%
+    mutate(commissioner_name = case_when(is.na(commissioner_name_ICB) & month < as.Date("2022-06-01") ~ commissioner_name_ICB_lookup,
+                                         !is.na(commissioner_name_ICB) & month < as.Date("2022-06-01") ~ commissioner_name_ICB,
+                                         TRUE ~ commissioner_name))
+    # mutate(commissioner_name = if_else(is.na(commissioner_name_ICB) & month < as.Date("2022-06-01"),
+    #                                     commissioner_name_ICB_lookup,
+    #                                     commissioner_name_ICB)) #%>%
+    #select(-commissioner_name_ICB, -commissioner_name_ICB_lookup)
   
 }
 
@@ -492,7 +500,7 @@ get_delivery_data_calendar <- function(calendar_data = UDA_calendar_data,
 ################################################################################
 get_banded_COTs_data <- function(data = UDA_scheduled_data, 
                                    historic_data = historical_UDA_scheduled_data,
-                                   remove_prototypes = FALSE,
+                                   remove_prototypes = TRUE,
                                  all_regions_and_STPs = FALSE){
   
   #bind old data to new data 
@@ -500,9 +508,13 @@ get_banded_COTs_data <- function(data = UDA_scheduled_data,
     rename(total_FP17s = general_FP17s, band1_UDA = UDA_band_1, band2_UDA = UDA_band_2, 
            band3_UDA = UDA_band_3, urgent_UDA = UDA_urgent, other_UDA = UDA_other, band1_FP17 = FP17s_band_1, 
            band2_FP17 = FP17s_band_2, band3_FP17 = FP17s_band_3, urgent_FP17 = FP17s_band_urgent, 
-           other_FP17 = FP17s_band_other) %>%
+           other_FP17 = FP17s_band_other,
+           annual_contracted_UDAs = annual_contracted_UDA) %>%
     select(month, contract_number, total_FP17s, band1_UDA, band2_UDA, band3_UDA, 
-           urgent_UDA, other_UDA, band1_FP17, band2_FP17, band3_FP17, urgent_FP17, other_FP17) %>%
+           urgent_UDA, other_UDA, band1_FP17, band2_FP17, band3_FP17, urgent_FP17, other_FP17,
+           annual_contracted_UDAs, 
+           commissioner_name, region_name
+           ) %>%
     mutate(total_UDAs = band1_UDA + band2_UDA + band3_UDA + other_UDA + urgent_UDA)
   
   data <- bind_rows(data, historic_data)
@@ -512,21 +524,21 @@ get_banded_COTs_data <- function(data = UDA_scheduled_data,
     #create not in function
     `%notin%` = Negate(`%in%`)
     data <- data %>%
-      filter(contract_number %notin% prototype_contracts_orth$prototype_contract_number)%>%
-      filter(annual_contracted_UDA > 100)
+      filter(contract_number %notin% prototype_contracts$prototype_contract_number) %>%
+      filter(annual_contracted_UDAs > 100)
   }
-  
+
   if(all_regions_and_STPs == FALSE){
     #group by month and sum UDAs delivered
     new_data <- data %>%
-      group_by(month) 
+      group_by(month)
 
   }else{
     #group by month and sum UDAs delivered
     new_data <- data %>%
-      group_by(month, region_name, commissioner_name) 
+      group_by(month, region_name, commissioner_name)
   }
-  
+
   new_data <- new_data %>%
     summarise(band1 = sum(band1_FP17, na.rm = T),
               band2 = sum(band2_FP17, na.rm = T),

@@ -911,10 +911,10 @@ plot_banded_CoT <- function(data = UDA_scheduled_data,
   
   #add a region column to the data
   region_STP_lookup <- calendar_data %>%
-    select(contract_number, name_or_company_name, commissioner_name, region_name) %>%
+    select(commissioner_name, region_name) %>%
     distinct()
   
-  data <- left_join(data, region_STP_lookup, by = c("contract_number", "name_or_company_name", "commissioner_name"))
+  data <- left_join(data, region_STP_lookup, by = c("commissioner_name"))
   
   #add a region column to the historic data
   #historic_data <- left_join(historic_data, region_STP_lookup, by = c("contract_number"))
@@ -937,34 +937,34 @@ plot_banded_CoT <- function(data = UDA_scheduled_data,
   }else{
     subtitle <- "England"
   }
-  
+
   #get data into the right format
-  data_to_print <- get_banded_COTs_data(data, historic_data = historic_data, remove_prototypes = F, all_regions_and_STPs = all_regions_and_STPs)
+  data_to_print <- get_banded_COTs_data(data, historic_data = historic_data, remove_prototypes = TRUE, all_regions_and_STPs = all_regions_and_STPs)
   data <- reshape2::melt(data_to_print, id.vars = "month")
   data <- data %>%
     mutate(month = as.Date(month)) %>%
     rename(band = variable, CoTs = value)
-  
+
   #set everything as indext of April 2019
   if(asIndex == TRUE){
-    
+
     april2019 <- data %>%
       filter(month == as.Date("2019-04-01")) %>%
       select(-month,
              april_CoTs = CoTs)
-    
+
     data <- data %>%
       left_join(april2019, by = "band") %>%
       mutate(CoTs = CoTs * 100 / april_CoTs)
-    
+
     title <- "Banded Courses of Treatment as a Percentage of April 2019 Delivery"
     ylab <- "Percentage of April 2019 FP17* forms submitted"
-    
+
   }else{
     title <- "Banded Courses of Treatment"
     ylab <- "Number of FP17* forms submitted"
   }
-  
+
   if(plotChart == TRUE){
 
     #plot code
@@ -1055,7 +1055,7 @@ plot_urgent_form_submissions <- function(data = UDA_scheduled_data,
   }
   
   #get data in the right format
-  data <- get_banded_COTs_data(data, historic_data = historic_data, remove_prototypes = F, all_regions_and_STPs = all_regions_and_STPs)
+  data <- get_banded_COTs_data(data, historic_data = historic_data, remove_prototypes = TRUE, all_regions_and_STPs = all_regions_and_STPs)
   data <- data %>%
     mutate(date = as.Date(month)) %>%
     mutate(financial_year = case_when(month >= as.Date("2019-04-01") & month < as.Date("2020-04-01") ~ "2019/20",
@@ -1849,7 +1849,7 @@ plot_patient_recalls <- function(data = dental_recalls_STP_2018_22,
 
 ################################################################################
 plot_patient_recalls_facet <- function(data = dental_recalls_STP_2018_22,
-                                       ICB_lookup = STP_ICB_lookup,
+                                       ICB_lookup = STP_ICB_lookup_codes,
                                  treatment_band = "Band_1",
                                  level = "National",
                                  region_STP_name = NULL,
