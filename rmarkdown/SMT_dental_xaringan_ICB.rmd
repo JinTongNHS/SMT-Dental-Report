@@ -13,11 +13,12 @@ output:
       highlightLines: true
       countIncrementalSlides: false
 params:
-  region: "South East"
+  region: "East of England"
 ---
 
 
 ```{r setup, include=FALSE}
+
 
 library(tidyverse)
 library(readxl)
@@ -33,8 +34,11 @@ UDA_calendar_data <- pull_UDA_calendar_data()
 UOA_calendar_data <- pull_UOA_calendar_data()
 UDA_scheduled_data <- pull_UDA_scheduled_data()
 UOA_scheduled_data <- pull_UOA_scheduled_data()
+payments_to_dentists <- pull_payments_to_dentist()
 
 historical_UDA_scheduled_data <- pull_UDA_scheduled_historical_data()
+historical_UDA_scheduled_data <- rename(historical_UDA_scheduled_data, month = data_month)
+#historical_UDA_scheduled_data <- readRDS("../data/all_UDA_scheduled_historical_data.rds")
 
 #change column names and add regions
 UDA_calendar_data <- rename(UDA_calendar_data, month = data_month)
@@ -52,14 +56,14 @@ UDA_scheduled_data <- rename(UDA_scheduled_data, month = data_month)
 UOA_scheduled_data <- rename(UOA_scheduled_data, month = data_month)
 
 #sort out STP ICB changes
-STP_ICB_lookup <- read_excel("../data/STP_ICB_lookup.xlsx")
-UDA_scheduled_data <- correct_STP_ICBs(UDA_scheduled_data)
-UDA_calendar_data <- correct_STP_ICBs(UDA_calendar_data)
-UOA_scheduled_data <- correct_STP_ICBs(UOA_scheduled_data)
-UOA_calendar_data <- correct_STP_ICBs(UOA_calendar_data)
+STP_ICB_lookup_codes <- read_excel("../data/STP_ICB_lookup_codes.xlsx")
+UDA_scheduled_data <- correct_STP_ICBs(UDA_scheduled_data, output = "UDA scheduled")
+UDA_calendar_data <- correct_STP_ICBs(UDA_calendar_data, output = "UDA calendar")
+UOA_scheduled_data <- correct_STP_ICBs(UOA_scheduled_data, output = "UOA scheduled")
+UOA_calendar_data <- correct_STP_ICBs(UOA_calendar_data, output = "UOA calendar")
 
 #Read local 111 file
-dental_data_111 <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental/raw_eDEN_dental_data/111_pathways_data/dental_data_111.xls")
+dental_data_111 <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental/111_pathways_data/dental_data_111.xlsx")
 
 #############still to fix
 prototype_contracts <- read_excel("../data/prototype_contracts.xlsx")
@@ -74,7 +78,18 @@ unique_patients_rolling <- pull_unique_patients_data()
 dental_recalls_STP_2018_22 <- readRDS("../data/recalls/dental_recalls_STP_2018_22.rds")
 
 #read in CDS data
-CDS_data <- read_excel("../data/CDS/CDS_Data_for_r.xlsx")
+#CDS_data <- read_excel("../data/CDS/CDS_Data_for_r.xlsx")
+CDS_data <- read_excel("../data/CDS/CDS_Data_July22.xlsx")
+
+#read in hand backs data
+contract_handbacks <- read_excel("../data/contract_handbacks.xlsx")
+
+#read in and clean complaints data
+Dental_Access_Complaints_Data_June_22 <- read_excel("../data/complaints/Dental Access Complaints Data June 22.xlsx")
+dental_complaints <- clean_complaints_data(Dental_Access_Complaints_Data_June_22)
+
+#UDA value data
+UDA_values <- read_excel("../data/UDA_values.xlsx")
 
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 
@@ -83,7 +98,6 @@ options(scipen=999)
 
 # Suppress summarise info
 options(dplyr.summarise.inform = FALSE)
-
 
 
 
@@ -296,11 +310,15 @@ name: contents
  * [Contract size vs delivery scatter plot](#contract-size-scatter)
  * [UDA delivery profile across months](#uda-delivery-profile)
  * [Banded courses of treatment time series](#banded-cots)
- * [Banded courses of treatment time series as % of April 2019 delivery](#banded-cots-index)
+ * [Banded courses of treatment time series as % of 2019 delivery](#banded-cots-index)
  * [Urgent treatment form submissions](#urgent-forms)
  * [Unique patients seen rolling 12 months](#unique-patients)
  * [Unique patients seen rolling 12 months as % of April 2018 delivery](#unique-patients-index)
  * [Patient re-attendance intervals](#reattendance)
+ * [Total number of contracts trend](#num-contracts-trend)
+ * [Total payments to dentists by financial year](#payemts)
+ * [Financial value of UDAs delivered](#uda-value)
+ * [Financial value of UDAs delivered as % of 2018 delivery](#uda-value-index)
 
 #### Orthodontic 
  * [Calendar UOA activity](#calendar-uoa-activity)
@@ -1258,7 +1276,7 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
 **`r get_num_contracts(level = "Regional", region_STP_name = region)`**
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (95% for Apr-Jun 22).
-* From the start of April to the end of `r format(Sys.Date() - lubridate::month(1), "%B")`
+* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r get_Q1_22_num_contracts_on_target(level = "Regional", region_STP_name = region)`**
 contracts (
 **`r round(get_Q1_22_num_contracts_on_target(level = "Regional", region_STP_name = region)*100/get_num_contracts(level = "Regional", region_STP_name = region))` %**
@@ -1277,7 +1295,7 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
 **`r get_num_contracts(level = "STP", region_STP_name = STP1)`**
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (95% for Apr-Jun 22).
-* From the start of April to the end of `r format(Sys.Date() - lubridate::month(1), "%B")`
+* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP1)`**
 contracts (
 **`r round(get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP1)*100/get_num_contracts(level = "STP", region_STP_name = STP1))` %**
@@ -1297,7 +1315,7 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
 **`r get_num_contracts(level = "STP", region_STP_name = STP2)`**
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (95% for Apr-Jun 22).
-* From the start of April to the end of `r format(Sys.Date() - lubridate::month(1), "%B")`
+* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP2)`**
 contracts (
 **`r round(get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP2)*100/get_num_contracts(level = "STP", region_STP_name = STP2))` %**
@@ -1317,7 +1335,7 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
 **`r get_num_contracts(level = "STP", region_STP_name = STP3)`**
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (95% for Apr-Jun 22).
-* From the start of April to the end of `r format(Sys.Date() - lubridate::month(1), "%B")`
+* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP3)`**
 contracts (
 **`r round(get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP3)*100/get_num_contracts(level = "STP", region_STP_name = STP3))` %**
@@ -1337,7 +1355,7 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
 **`r if(eval4){get_num_contracts(level = "STP", region_STP_name = STP4)}`**
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (95% for Apr-Jun 22).
-* From the start of April to the end of `r format(Sys.Date() - lubridate::month(1), "%B")`
+* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r if(eval4){get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP4)}`**
 contracts (
 **`r if(eval4){round(get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP4)*100/get_num_contracts(level = "STP", region_STP_name = STP4))}` %**
@@ -1357,7 +1375,7 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
 **`r if(eval5){get_num_contracts(level = "STP", region_STP_name = STP5)}`**
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (95% for Apr-Jun 22).
-* From the start of April to the end of `r format(Sys.Date() - lubridate::month(1), "%B")`
+* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r if(eval5){get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP5)}`**
 contracts (
 **`r if(eval5){round(get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP5)*100/get_num_contracts(level = "STP", region_STP_name = STP5))}` %**
@@ -1377,7 +1395,7 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
 **`r if(eval6){get_num_contracts(level = "STP", region_STP_name = STP6)}`**
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (95% for Apr-Jun 22).
-* From the start of April to the end of `r format(Sys.Date() - lubridate::month(1), "%B")`
+* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r if(eval6){get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP6)}`**
 contracts (
 **`r if(eval6){round(get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP6)*100/get_num_contracts(level = "STP", region_STP_name = STP6))}` %**
@@ -1397,7 +1415,7 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
 **`r if(eval7){get_num_contracts(level = "STP", region_STP_name = STP7)}`**
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (95% for Apr-Jun 22).
-* From the start of April to the end of `r format(Sys.Date() - lubridate::month(1), "%B")`
+* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r if(eval7){get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP7)}`**
 contracts (
 **`r if(eval7){round(get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP7)*100/get_num_contracts(level = "STP", region_STP_name = STP7))}` %**
@@ -1417,7 +1435,7 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
 **`r if(eval8){get_num_contracts(level = "STP", region_STP_name = STP8)}`**
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (95% for Apr-Jun 22).
-* From the start of April to the end of `r format(Sys.Date() - lubridate::month(1), "%B")`
+* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r if(eval8){get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP8)}`**
 contracts (
 **`r if(eval8){round(get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP8)*100/get_num_contracts(level = "STP", region_STP_name = STP8))}` %**
@@ -1437,7 +1455,7 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
 **`r if(eval9){get_num_contracts(level = "STP", region_STP_name = STP9)}`**
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (95% for Apr-Jun 22).
-* From the start of April to the end of `r format(Sys.Date() - lubridate::month(1), "%B")`
+* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r if(eval9){get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP9)}`**
 contracts (
 **`r if(eval9){round(get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP9)*100/get_num_contracts(level = "STP", region_STP_name = STP9))}` %**
@@ -1457,7 +1475,7 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
 **`r if(eval10){get_num_contracts(level = "STP", region_STP_name = STP10)}`**
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (95% for Apr-Jun 22).
-* From the start of April to the end of `r format(Sys.Date() - lubridate::month(1), "%B")`
+* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r if(eval10){get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP10)}`**
 contracts (
 **`r if(eval10){round(get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP10)*100/get_num_contracts(level = "STP", region_STP_name = STP10))}` %**
@@ -1477,7 +1495,7 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
 **`r if(eval11){get_num_contracts(level = "STP", region_STP_name = STP11)}`**
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (95% for Apr-Jun 22).
-* From the start of April to the end of `r format(Sys.Date() - lubridate::month(1), "%B")`
+* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r if(eval11){get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP11)}`**
 contracts (
 **`r if(eval11){round(get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP11)*100/get_num_contracts(level = "STP", region_STP_name = STP11))}` %**
@@ -2927,7 +2945,7 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
 * This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "Regional", region_STP_name = region)`**
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
-* From the start of April to the end of `r format(Sys.Date() - lubridate::month(1), "%B")`
+* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r get_Q1_22_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = region)`**
 contracts (
 **`r round(get_Q1_22_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = region)*100/get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "Regional", region_STP_name = region))` %**
@@ -2945,7 +2963,7 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
 * This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "STP", region_STP_name = STP1)`**
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
-* From the start of April to the end of `r format(Sys.Date() - lubridate::month(1), "%B")`
+* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r get_Q1_22_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP1)`**
 contracts (
 **`r round(get_Q1_22_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP1)*100/get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "STP", region_STP_name = STP1))` %**
@@ -2964,7 +2982,7 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
 * This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "STP", region_STP_name = STP2)`**
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
-* From the start of April to the end of `r format(Sys.Date() - lubridate::month(1), "%B")`
+* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r get_Q1_22_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP2)`**
 contracts (
 **`r round(get_Q1_22_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP2)*100/get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "STP", region_STP_name = STP2))` %**
@@ -2983,7 +3001,7 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
 * This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "STP", region_STP_name = STP3)`**
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
-* From the start of April to the end of `r format(Sys.Date() - lubridate::month(1), "%B")`
+* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r get_Q1_22_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP3)`**
 contracts (
 **`r round(get_Q1_22_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP3)*100/get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "STP", region_STP_name = STP3))` %**
@@ -3002,7 +3020,7 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
 * This graph shows the cumulative activity by quarter of the **`r if(eval4){get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "STP", region_STP_name = STP4)}`**
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
-* From the start of April to the end of `r format(Sys.Date() - lubridate::month(1), "%B")`
+* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r if(eval4){get_Q1_22_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP4)}`**
 contracts (
 **`r if(eval4){round(get_Q1_22_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP4)*100/get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "STP", region_STP_name = STP4))}` %**
@@ -3021,7 +3039,7 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
 * This graph shows the cumulative activity by quarter of the **`r if(eval5){get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "STP", region_STP_name = STP5)}`**
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
-* From the start of April to the end of `r format(Sys.Date() - lubridate::month(1), "%B")`
+* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r if(eval5){get_Q1_22_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP5)}`**
 contracts (
 **`r if(eval5){round(get_Q1_22_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP5)*100/get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "STP", region_STP_name = STP5))}` %**
@@ -3040,7 +3058,7 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
 * This graph shows the cumulative activity by quarter of the **`r if(eval6){get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "STP", region_STP_name = STP6)}`**
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
-* From the start of April to the end of `r format(Sys.Date() - lubridate::month(1), "%B")`
+* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r if(eval6){get_Q1_22_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP6)}`**
 contracts (
 **`r if(eval6){round(get_Q1_22_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP6)*100/get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "STP", region_STP_name = STP6))}` %**
@@ -3059,7 +3077,7 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
 * This graph shows the cumulative activity by quarter of the **`r if(eval7){get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "STP", region_STP_name = STP7)}`**
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
-* From the start of April to the end of `r format(Sys.Date() - lubridate::month(1), "%B")`
+* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r if(eval7){get_Q1_22_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP7)}`**
 contracts (
 **`r if(eval7){round(get_Q1_22_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP7)*100/get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "STP", region_STP_name = STP7))}` %**
@@ -3078,7 +3096,7 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
 * This graph shows the cumulative activity by quarter of the **`r if(eval8){get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "STP", region_STP_name = STP8)}`**
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
-* From the start of April to the end of `r format(Sys.Date() - lubridate::month(1), "%B")`
+* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r if(eval8){get_Q1_22_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP8)}`**
 contracts (
 **`r if(eval8){round(get_Q1_22_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP8)*100/get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "STP", region_STP_name = STP8))}` %**
@@ -3097,7 +3115,7 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
 * This graph shows the cumulative activity by quarter of the **`r if(eval9){get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "STP", region_STP_name = STP9)}`**
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
-* From the start of April to the end of `r format(Sys.Date() - lubridate::month(1), "%B")`
+* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r if(eval9){get_Q1_22_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP9)}`**
 contracts (
 **`r if(eval9){round(get_Q1_22_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP9)*100/get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "STP", region_STP_name = STP9))}` %**
@@ -3116,7 +3134,7 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
 * This graph shows the cumulative activity by quarter of the **`r if(eval10){get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "STP", region_STP_name = STP10)}`**
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
-* From the start of April to the end of `r format(Sys.Date() - lubridate::month(1), "%B")`
+* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r if(eval10){get_Q1_22_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP10)}`**
 contracts (
 **`r if(eval10){round(get_Q1_22_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP10)*100/get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "STP", region_STP_name = STP10))}` %**
@@ -3135,7 +3153,7 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
 * This graph shows the cumulative activity by quarter of the **`r if(eval11){get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "STP", region_STP_name = STP11)}`**
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
-* From the start of April to the end of `r format(Sys.Date() - lubridate::month(1), "%B")`
+* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r if(eval11){get_Q1_22_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP11)}`**
 contracts (
 **`r if(eval11){round(get_Q1_22_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP11)*100/get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "STP", region_STP_name = STP11))}` %**
@@ -4618,7 +4636,6 @@ plot_patient_recalls_facet(data = dental_recalls_STP_2018_22,
 
 ---
 
-
 ```{r include=FALSE}
 
 out = NULL
@@ -4633,7 +4650,687 @@ for (i in 1:length(STPs)) {
 
 `r paste(knitr::knit(text = out), collapse = '\n')`
 
+---
+name: num-contracts-trend
 
+### Number of contracts trend
+
+```{r xaringan-panelset-num-contracts-trend, echo=FALSE}
+xaringanExtra::use_panelset()
+```
+
+ <font size="2">
+.panelset[
+.panel[.panel-name[`r region`]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_number_of_contracts_over_time(data = UDA_scheduled_data,
+                                     historical_data = historical_UDA_scheduled_data,
+                                level = "Regional",
+                                region_STP_name = region,
+                                plotChart = TRUE)
+```
+
+The percentage change in total number of contracts from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2022 is
+**`r plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,level = "Regional",region_STP_name = region,plotChart = FALSE, getChange = TRUE)`%**.
+ ]
+ .panel[.panel-name[`r STP1`]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,
+                                level = "STP",
+                                region_STP_name = STP1,
+                                plotChart = TRUE)
+```
+
+The percentage change in total number of contracts from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2022 is
+**`r plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,level = "STP",region_STP_name = STP1,plotChart = FALSE, getChange = TRUE)`%**.
+ ]
+ .panel[.panel-name[`r STP2`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,
+                                level = "STP",
+                                region_STP_name = STP2,
+                                plotChart = TRUE)
+```
+
+The percentage change in total number of contracts from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2022 is
+**`r plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,level = "STP",region_STP_name = STP2,plotChart = FALSE, getChange = TRUE)`%**.
+
+ ]
+ .panel[.panel-name[`r STP3`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,
+                                level = "STP",
+                                region_STP_name = STP3,
+                                plotChart = TRUE)
+```
+
+The percentage change in total number of contracts from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2022 is
+**`r plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,level = "STP",region_STP_name = STP3,plotChart = FALSE, getChange = TRUE)`%**.
+
+ ]
+ .panel[.panel-name[`r STP4`]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval4}
+plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,
+                                level = "STP",
+                                region_STP_name = STP4,
+                                plotChart = TRUE)
+```
+
+
+ ]
+.panel[.panel-name[`r STP5`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval5}
+plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,
+                                level = "STP",
+                                region_STP_name = STP5,
+                                plotChart = TRUE)
+```
+
+
+ ]
+ .panel[.panel-name[`r STP6`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval6}
+plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,
+                                level = "STP",
+                                region_STP_name = STP6,
+                                plotChart = TRUE)
+```
+
+
+
+ ]
+ .panel[.panel-name[`r STP7`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval7}
+plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,
+                                level = "STP",
+                                region_STP_name = STP7,
+                                plotChart = TRUE)
+```
+
+
+ ]
+.panel[.panel-name[`r STP8`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval8}
+plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,
+                                level = "STP",
+                                region_STP_name = STP8,
+                                plotChart = TRUE)
+```
+
+
+
+ ]
+ .panel[.panel-name[`r STP9`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval9}
+plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,
+                                level = "STP",
+                                region_STP_name = STP9,
+                                plotChart = TRUE)
+```
+
+
+ ]
+ .panel[.panel-name[`r STP10`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval10}
+plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,
+                                level = "STP",
+                                region_STP_name = STP10,
+                                plotChart = TRUE)
+```
+
+
+
+ ]
+ .panel[.panel-name[`r STP11`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval11}
+plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,
+                                level = "STP",
+                                region_STP_name = STP11,
+                                plotChart = TRUE)
+```
+
+
+
+ ]
+ ]
+
+[Return to contents](#contents)
+
+---
+name: annual-contracted-UDAs-trend
+
+### Annual contracted UDAs trend
+
+```{r xaringan-panelset-contracted-UDAs-trend, echo=FALSE}
+xaringanExtra::use_panelset()
+```
+
+ <font size="2">
+.panelset[
+.panel[.panel-name[`r region`]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_UDAs_commissioned(data = UDA_scheduled_data,
+                                     historical_data = historical_UDA_scheduled_data,
+                                level = "Regional",
+                                region_STP_name = region,
+                                plotChart = TRUE)
+```
+
+The percentage change in total number of contracts from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2022 is
+**`r plot_UDAs_commissioned(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,level = "Regional",region_STP_name = region,plotChart = FALSE, getChange = TRUE)`%**.
+ ]
+ .panel[.panel-name[`r STP1`]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_UDAs_commissioned(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,
+                                level = "STP",
+                                region_STP_name = STP1,
+                                plotChart = TRUE)
+```
+
+The percentage change in total number of contracts from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2022 is
+**`r plot_UDAs_commissioned(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,level = "STP",region_STP_name = STP1,plotChart = FALSE, getChange = TRUE)`%**.
+ ]
+ .panel[.panel-name[`r STP2`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_UDAs_commissioned(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,
+                                level = "STP",
+                                region_STP_name = STP2,
+                                plotChart = TRUE)
+```
+
+The percentage change in total number of contracts from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2022 is
+**`r plot_UDAs_commissioned(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,level = "STP",region_STP_name = STP2,plotChart = FALSE, getChange = TRUE)`%**.
+
+ ]
+ .panel[.panel-name[`r STP3`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_UDAs_commissioned(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,
+                                level = "STP",
+                                region_STP_name = STP3,
+                                plotChart = TRUE)
+```
+
+The percentage change in total number of contracts from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2022 is
+**`r plot_UDAs_commissioned(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,level = "STP",region_STP_name = STP3,plotChart = FALSE, getChange = TRUE)`%**.
+
+ ]
+ .panel[.panel-name[`r STP4`]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval4}
+plot_UDAs_commissioned(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,
+                                level = "STP",
+                                region_STP_name = STP4,
+                                plotChart = TRUE)
+```
+
+
+
+ ]
+.panel[.panel-name[`r STP5`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval5}
+plot_UDAs_commissioned(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,
+                                level = "STP",
+                                region_STP_name = STP5,
+                                plotChart = TRUE)
+```
+
+
+
+ ]
+ .panel[.panel-name[`r STP6`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval6}
+plot_UDAs_commissioned(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,
+                                level = "STP",
+                                region_STP_name = STP6,
+                                plotChart = TRUE)
+```
+
+
+ ]
+ .panel[.panel-name[`r STP7`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval7}
+plot_UDAs_commissioned(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,
+                                level = "STP",
+                                region_STP_name = STP7,
+                                plotChart = TRUE)
+```
+
+
+
+ ]
+.panel[.panel-name[`r STP8`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval8}
+plot_UDAs_commissioned(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,
+                                level = "STP",
+                                region_STP_name = STP8,
+                                plotChart = TRUE)
+```
+
+
+ ]
+ .panel[.panel-name[`r STP9`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval9}
+plot_UDAs_commissioned(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,
+                                level = "STP",
+                                region_STP_name = STP9,
+                                plotChart = TRUE)
+```
+
+
+
+ ]
+ .panel[.panel-name[`r STP10`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval10}
+plot_UDAs_commissioned(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,
+                                level = "STP",
+                                region_STP_name = STP10,
+                                plotChart = TRUE)
+```
+
+
+
+ ]
+ .panel[.panel-name[`r STP11`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval11}
+plot_UDAs_commissioned(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,
+                                level = "STP",
+                                region_STP_name = STP11,
+                                plotChart = TRUE)
+```
+
+
+ ]
+ ]
+
+[Return to contents](#contents)
+
+---
+name: uda-value
+
+### Financial value of UDAs delivered
+
+```{r xaringan-panelset-uda-value, echo=FALSE}
+xaringanExtra::use_panelset()
+```
+
+ <font size="2">
+.panelset[
+.panel[.panel-name[`r region`]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_UDA_value(data = UDA_scheduled_data,
+                           historical_data = historical_UDA_scheduled_data,
+                           payments_data = payments_to_dentists,
+                           UDA_value_data = UDA_values,
+                           protos = prototype_contracts$prototype_contract_number,
+                           level = "Regional",
+                           region_STP_name = region,
+                           all_regions_and_STPs = FALSE,
+                           plotChart = TRUE)
+```
+
+]
+ .panel[.panel-name[`r STP1`]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_UDA_value(data = UDA_scheduled_data,
+                           historical_data = historical_UDA_scheduled_data,
+                           payments_data = payments_to_dentists,
+                           UDA_value_data = UDA_values,
+                           protos = prototype_contracts$prototype_contract_number,
+                                level = "STP",
+                                region_STP_name = STP1,
+                                plotChart = TRUE)
+```
+
+ ]
+  .panel[.panel-name[`r STP2`]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_UDA_value(data = UDA_scheduled_data,
+                           historical_data = historical_UDA_scheduled_data,
+                           payments_data = payments_to_dentists,
+                           UDA_value_data = UDA_values,
+                           protos = prototype_contracts$prototype_contract_number,
+                                level = "STP",
+                                region_STP_name = STP2,
+                                plotChart = TRUE)
+```
+
+ ]
+ .panel[.panel-name[`r STP3`]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_UDA_value(data = UDA_scheduled_data,
+                           historical_data = historical_UDA_scheduled_data,
+                           payments_data = payments_to_dentists,
+                           UDA_value_data = UDA_values,
+                           protos = prototype_contracts$prototype_contract_number,
+                                level = "STP",
+                                region_STP_name = STP3,
+                                plotChart = TRUE)
+```
+
+ ]
+ .panel[.panel-name[`r STP4`]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval4}
+plot_UDA_value(data = UDA_scheduled_data,
+                           historical_data = historical_UDA_scheduled_data,
+                           payments_data = payments_to_dentists,
+                           UDA_value_data = UDA_values,
+                           protos = prototype_contracts$prototype_contract_number,
+                                level = "STP",
+                                region_STP_name = STP4,
+                                plotChart = TRUE)
+```
+
+ ]
+ .panel[.panel-name[`r STP5`]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval5}
+plot_UDA_value(data = UDA_scheduled_data,
+                           historical_data = historical_UDA_scheduled_data,
+                           payments_data = payments_to_dentists,
+                           UDA_value_data = UDA_values,
+                           protos = prototype_contracts$prototype_contract_number,
+                                level = "STP",
+                                region_STP_name = STP5,
+                                plotChart = TRUE)
+```
+
+ ]
+ .panel[.panel-name[`r STP6`]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval6}
+plot_UDA_value(data = UDA_scheduled_data,
+                           historical_data = historical_UDA_scheduled_data,
+                           payments_data = payments_to_dentists,
+                           UDA_value_data = UDA_values,
+                           protos = prototype_contracts$prototype_contract_number,
+                                level = "STP",
+                                region_STP_name = STP6,
+                                plotChart = TRUE)
+```
+
+ ]
+ .panel[.panel-name[`r STP7`]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval7}
+plot_UDA_value(data = UDA_scheduled_data,
+                           historical_data = historical_UDA_scheduled_data,
+                           payments_data = payments_to_dentists,
+                           UDA_value_data = UDA_values,
+                           protos = prototype_contracts$prototype_contract_number,
+                                level = "STP",
+                                region_STP_name = STP7,
+                                plotChart = TRUE)
+```
+
+ ]
+ .panel[.panel-name[`r STP8`]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval8}
+plot_UDA_value(data = UDA_scheduled_data,
+                           historical_data = historical_UDA_scheduled_data,
+                           payments_data = payments_to_dentists,
+                           UDA_value_data = UDA_values,
+                           protos = prototype_contracts$prototype_contract_number,
+                                level = "STP",
+                                region_STP_name = STP8,
+                                plotChart = TRUE)
+```
+
+ ]
+ .panel[.panel-name[`r STP9`]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval9}
+plot_UDA_value(data = UDA_scheduled_data,
+                           historical_data = historical_UDA_scheduled_data,
+                           payments_data = payments_to_dentists,
+                           UDA_value_data = UDA_values,
+                           protos = prototype_contracts$prototype_contract_number,
+                                level = "STP",
+                                region_STP_name = STP9,
+                                plotChart = TRUE)
+```
+
+ ]
+ .panel[.panel-name[`r STP10`]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval10}
+plot_UDA_value(data = UDA_scheduled_data,
+                           historical_data = historical_UDA_scheduled_data,
+                           payments_data = payments_to_dentists,
+                           UDA_value_data = UDA_values,
+                           protos = prototype_contracts$prototype_contract_number,
+                                level = "STP",
+                                region_STP_name = STP10,
+                                plotChart = TRUE)
+```
+
+ ]
+ .panel[.panel-name[`r STP11`]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval11}
+plot_UDA_value(data = UDA_scheduled_data,
+                           historical_data = historical_UDA_scheduled_data,
+                           payments_data = payments_to_dentists,
+                           UDA_value_data = UDA_values,
+                           protos = prototype_contracts$prototype_contract_number,
+                                level = "STP",
+                                region_STP_name = STP11,
+                                plotChart = TRUE)
+```
+
+ ]
+ ]
+
+[Return to contents](#contents)
+
+---
+
+name: uda-value-index
+
+### Financial value of UDAs delivered as % of 2018 delivery
+
+```{r xaringan-panelset-uda-value-index, echo=FALSE}
+xaringanExtra::use_panelset()
+```
+
+ <font size="2">
+.panelset[
+.panel[.panel-name[`r region`]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_UDA_value(data = UDA_scheduled_data,
+                           historical_data = historical_UDA_scheduled_data,
+                           payments_data = payments_to_dentists,
+                           UDA_value_data = UDA_values,
+                           protos = prototype_contracts$prototype_contract_number,
+                           level = "Regional",
+                           region_STP_name = region,
+                           all_regions_and_STPs = FALSE,
+                           plotChart = TRUE,
+               asIndex = TRUE)
+```
+
+]
+ .panel[.panel-name[`r STP1`]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_UDA_value(data = UDA_scheduled_data,
+                           historical_data = historical_UDA_scheduled_data,
+                           payments_data = payments_to_dentists,
+                           UDA_value_data = UDA_values,
+                           protos = prototype_contracts$prototype_contract_number,
+                                level = "STP",
+                                region_STP_name = STP1,
+                                plotChart = TRUE,
+               asIndex = TRUE)
+```
+
+ ]
+  .panel[.panel-name[`r STP2`]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_UDA_value(data = UDA_scheduled_data,
+                           historical_data = historical_UDA_scheduled_data,
+                           payments_data = payments_to_dentists,
+                           UDA_value_data = UDA_values,
+                           protos = prototype_contracts$prototype_contract_number,
+                                level = "STP",
+                                region_STP_name = STP2,
+                                plotChart = TRUE,
+               asIndex = TRUE)
+```
+
+ ]
+ .panel[.panel-name[`r STP3`]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_UDA_value(data = UDA_scheduled_data,
+                           historical_data = historical_UDA_scheduled_data,
+                           payments_data = payments_to_dentists,
+                           UDA_value_data = UDA_values,
+                           protos = prototype_contracts$prototype_contract_number,
+                                level = "STP",
+                                region_STP_name = STP3,
+                                plotChart = TRUE,
+               asIndex = TRUE)
+```
+
+ ]
+ .panel[.panel-name[`r STP4`]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval4}
+plot_UDA_value(data = UDA_scheduled_data,
+                           historical_data = historical_UDA_scheduled_data,
+                           payments_data = payments_to_dentists,
+                           UDA_value_data = UDA_values,
+                           protos = prototype_contracts$prototype_contract_number,
+                                level = "STP",
+                                region_STP_name = STP4,
+                                plotChart = TRUE,
+               asIndex = TRUE)
+```
+
+ ]
+ .panel[.panel-name[`r STP5`]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval5}
+plot_UDA_value(data = UDA_scheduled_data,
+                           historical_data = historical_UDA_scheduled_data,
+                           payments_data = payments_to_dentists,
+                           UDA_value_data = UDA_values,
+                           protos = prototype_contracts$prototype_contract_number,
+                                level = "STP",
+                                region_STP_name = STP5,
+                                plotChart = TRUE,
+               asIndex = TRUE)
+```
+
+ ]
+ .panel[.panel-name[`r STP6`]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval6}
+plot_UDA_value(data = UDA_scheduled_data,
+                           historical_data = historical_UDA_scheduled_data,
+                           payments_data = payments_to_dentists,
+                           UDA_value_data = UDA_values,
+                           protos = prototype_contracts$prototype_contract_number,
+                                level = "STP",
+                                region_STP_name = STP6,
+                                plotChart = TRUE,
+               asIndex = TRUE)
+```
+
+ ]
+ .panel[.panel-name[`r STP7`]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval7}
+plot_UDA_value(data = UDA_scheduled_data,
+                           historical_data = historical_UDA_scheduled_data,
+                           payments_data = payments_to_dentists,
+                           UDA_value_data = UDA_values,
+                           protos = prototype_contracts$prototype_contract_number,
+                                level = "STP",
+                                region_STP_name = STP7,
+                                plotChart = TRUE,
+               asIndex = TRUE)
+```
+
+ ]
+ .panel[.panel-name[`r STP8`]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval8}
+plot_UDA_value(data = UDA_scheduled_data,
+                           historical_data = historical_UDA_scheduled_data,
+                           payments_data = payments_to_dentists,
+                           UDA_value_data = UDA_values,
+                           protos = prototype_contracts$prototype_contract_number,
+                                level = "STP",
+                                region_STP_name = STP8,
+                                plotChart = TRUE,
+               asIndex = TRUE)
+```
+
+ ]
+ .panel[.panel-name[`r STP9`]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval9}
+plot_UDA_value(data = UDA_scheduled_data,
+                           historical_data = historical_UDA_scheduled_data,
+                           payments_data = payments_to_dentists,
+                           UDA_value_data = UDA_values,
+                           protos = prototype_contracts$prototype_contract_number,
+                                level = "STP",
+                                region_STP_name = STP9,
+                                plotChart = TRUE,
+               asIndex = TRUE)
+```
+
+ ]
+ .panel[.panel-name[`r STP10`]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval10}
+plot_UDA_value(data = UDA_scheduled_data,
+                           historical_data = historical_UDA_scheduled_data,
+                           payments_data = payments_to_dentists,
+                           UDA_value_data = UDA_values,
+                           protos = prototype_contracts$prototype_contract_number,
+                                level = "STP",
+                                region_STP_name = STP10,
+                                plotChart = TRUE,
+               asIndex = TRUE)
+```
+
+ ]
+ .panel[.panel-name[`r STP11`]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval11}
+plot_UDA_value(data = UDA_scheduled_data,
+                           historical_data = historical_UDA_scheduled_data,
+                           payments_data = payments_to_dentists,
+                           UDA_value_data = UDA_values,
+                           protos = prototype_contracts$prototype_contract_number,
+                                level = "STP",
+                                region_STP_name = STP11,
+                                plotChart = TRUE,
+               asIndex = TRUE)
+```
+
+ ]
+ ]
+
+[Return to contents](#contents)
+
+---
 name: my-cat-breakdown
 
 ### Appendix

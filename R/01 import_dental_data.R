@@ -102,14 +102,9 @@ import_clean_combine_upload_all_data <- function(raw_UDA_scheduled_data_folder_p
 
 ################################################################################
 upload_delivery_data <- function(calendar_data = UDA_calendar_data,  
-                                 scheduled_data = UDA_scheduled_data){
-  
-  STP_ICB_lookup_codes <- read_excel("data/STP_ICB_lookup_codes.xlsx")
-  STP_ICB_lookup_codes <- STP_ICB_lookup_codes %>%
-    select(commissioner_name = commissioner_name_ICB,
-           commissioner_ODS_code_ICB,
-           commissioner_ONS_boundary_code_ICB)
-  
+                                 scheduled_data = UDA_scheduled_data,
+                                 lookup = STP_ICB_lookup_codes){
+
   UDA_delivery_calendar <- get_delivery_data_calendar(calendar_data = calendar_data,  
                                                       scheduled_data = scheduled_data,
                                                       remove_prototypes = T,
@@ -125,31 +120,35 @@ upload_delivery_data <- function(calendar_data = UDA_calendar_data,
                                                UDAorUOA = "UDA",
                                                all_regions_and_STPs = T,
                                                renameColumns = T)
-
+  
+  lookup <- lookup %>%
+    select(commissioner_name = commissioner_name_ICB,
+           commissioner_ODS_code_ICB)
+  
   UDA_delivery_calendar <- UDA_delivery_calendar %>%
-    left_join(STP_ICB_lookup_codes) %>%
-    select("calendar_month", "commissioner_name", commissioner_ODS_code_ICB, commissioner_ONS_boundary_code_ICB,
-           "region_name", "monthly_UDAs_delivered", 
-           "scaled_monthly_UDAs_delivered", "annual_contracted_UDAs", "scaled_perc_UDAs_delivered", 
+    left_join(lookup) %>%
+    select("calendar_month", "commissioner_name", commissioner_ODS_code_ICB, 
+           "region_name", "monthly_UDAs_delivered",
+           "scaled_monthly_UDAs_delivered", "annual_contracted_UDAs", "scaled_perc_UDAs_delivered",
            "threshold_perc")
-  
+
   UDA_delivery_scheduled <- UDA_delivery_scheduled %>%
-    left_join(STP_ICB_lookup_codes) %>%
-    select("scheduled_month", "commissioner_name", commissioner_ODS_code_ICB, commissioner_ONS_boundary_code_ICB,
-           "region_name", "monthly_UDAs_delivered", 
-           "scaled_monthly_UDAs_delivered", "annual_contracted_UDAs", "scaled_perc_UDAs_delivered", 
+    left_join(lookup) %>%
+    select("scheduled_month", "commissioner_name", commissioner_ODS_code_ICB,
+           "region_name", "monthly_UDAs_delivered",
+           "scaled_monthly_UDAs_delivered", "annual_contracted_UDAs", "scaled_perc_UDAs_delivered",
            "threshold_perc")
   
   
-  #   
-  # #Overwrite data in NCDR
-  # con <- dbConnect(odbc::odbc(), "NCDR")
-  # 
-  # dbWriteTable(con, Id(catalog="NHSE_Sandbox_PrimaryCareNHSContracts",schema="Dental",table="UDA_delivery_calendar"),
-  #              value = UDA_delivery_calendar, row.names = FALSE, append = FALSE, overwrite = TRUE)
-  # 
-  # dbWriteTable(con, Id(catalog="NHSE_Sandbox_PrimaryCareNHSContracts",schema="Dental",table="UDA_delivery_scheduled"),
-  #              value = UDA_delivery_scheduled, row.names = FALSE, append = FALSE, overwrite = TRUE)
+
+  #Overwrite data in NCDR
+  con <- dbConnect(odbc::odbc(), "NCDR")
+
+  dbWriteTable(con, Id(catalog="NHSE_Sandbox_PrimaryCareNHSContracts",schema="Dental",table="UDA_delivery_calendar"),
+               value = UDA_delivery_calendar, row.names = FALSE, append = FALSE, overwrite = TRUE)
+
+  dbWriteTable(con, Id(catalog="NHSE_Sandbox_PrimaryCareNHSContracts",schema="Dental",table="UDA_delivery_scheduled"),
+               value = UDA_delivery_scheduled, row.names = FALSE, append = FALSE, overwrite = TRUE)
 
 }
 
@@ -168,7 +167,7 @@ upload_unique_patients_data <- function(data_path = "N:/_Everyone/Primary Care G
   con <- dbConnect(odbc::odbc(), "NCDR")
 
   dbWriteTable(con, Id(catalog="NHSE_Sandbox_PrimaryCareNHSContracts",schema="Dental",table="unique_patients_rolling_12_month"),
-               value = unique_patients, row.names = FALSE, append = TRUE)
+               value = unique_patients_rolling_202208, row.names = FALSE, append = TRUE)
   
 }
 
@@ -392,8 +391,36 @@ import_and_clean_calendar_UDA_data <- function(data_path = "data/raw_data/dashbo
            total_other_FP17s = X__56
     ) 
   
+  #add column for date and rename columns, split data for just august
+  data_aug <- data %>%
+    mutate(data_month = as.Date("2022-08-01")) %>%
+    select(data_month, X__1, X__2, X__3, X__4, X__5, X__6, X__7, X__8, 
+           X__57, X__58, X__59, X__60, X__61, X__62, X__63, X__64, X__65, X__66, X__67, X__68) %>%
+    rename(contract_number = X__1,
+           latest_contract_type = X__2,
+           name_or_company_name = X__3,
+           commissioner_name = X__4,
+           region_name = X__5,
+           paid_by_BSA = X__6,
+           contract_start_date = X__7, 
+           contract_end_date = X__8, 
+           
+           UDA_total = X__57, 
+           UDA_band_1_total = X__58,
+           UDA_band_2_total = X__59,
+           UDA_band_3_total = X__60, 
+           UDA_urgent_total = X__61, 
+           UDA_other_total = X__62, 
+           total_FP17s = X__63, 
+           total_band_1_FP17s  = X__64,
+           total_band_2_FP17s = X__65,
+           total_band_3_FP17s = X__66,
+           total_urgent_FP17s = X__67,
+           total_other_FP17s = X__68
+    ) 
   
-  UDA_calendar_data <- bind_rows(data_apr, data_may, data_jun, data_jul)
+  
+  UDA_calendar_data <- bind_rows(data_apr, data_may, data_jun, data_jul, data_aug)
   
 }
 
@@ -499,7 +526,23 @@ import_and_clean_calendar_UOA_data <- function(data_path = "data/raw_data/dashbo
            UOA_total = X__11
     )
   
-  UOA_calendar_data <- bind_rows(data_apr, data_may, data_jun, data_jul)
+  #add column for date and rename columns, split data for just aug
+  data_aug <- data %>%
+    mutate(data_month = as.Date("2022-08-01")) %>%
+    select(data_month, X__1, X__2, X__3, X__4, X__5, X__6, X__7, 
+           X__12) %>%
+    rename(contract_number = X__1,
+           contract_type = X__2,
+           name_or_company_name = X__3,
+           commissioner_name = X__4,
+           paid_by_BSA = X__5,
+           contract_start_date = X__6, 
+           contract_end_date = X__7, 
+           
+           UOA_total = X__12
+    )
+  
+  UOA_calendar_data <- bind_rows(data_apr, data_may, data_jun, data_jul, data_aug)
   
 }
 

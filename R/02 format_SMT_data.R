@@ -153,25 +153,7 @@ pull_UDA_scheduled_historical_data <- function(){
   
   con <- dbConnect(odbc::odbc(), "NCDR")
   
-  sql <- "SELECT [month]
-      ,[contract_number]
-      ,[name_or_company_name]
-      ,[commissioner_name]
-      ,[region_name]
-      ,[annual_contracted_UDAs]
-      ,[band1_FP17]
-      ,[band2_FP17]
-      ,[band3_FP17]
-      ,[other_FP17]
-      ,[urgent_FP17]
-      ,[band1_UDA]
-      ,[band2_UDA]
-      ,[band3_UDA]
-      ,[other_UDA]
-      ,[urgent_UDA]
-      ,[total_FP17s]
-      ,[total_UDAs]
-  FROM [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UDA_scheduled_historical]"
+  sql <- "SELECT *  FROM [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UDA_scheduled_historical]"
   result <- dbSendQuery(con, sql)
   UOA_scheduled_historical_data <- dbFetch(result)
   dbClearResult(result)
@@ -199,6 +181,19 @@ pull_unique_patients_data <- function(){
   unique_patients_data
 }
 
+################################################################################
+pull_payments_to_dentist <- function(){
+  
+  con <- dbConnect(odbc::odbc(), "NCDR")
+  
+  sql <- "SELECT *  FROM [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[BSA_payments_to_dentists]"
+  result <- dbSendQuery(con, sql)
+  payments_to_dentists <- dbFetch(result)
+  dbClearResult(result)
+  
+  payments_to_dentists
+  
+}
 
 ################################################################################
 correct_STP_ICBs <- function(data = UDA_scheduled_data, 
@@ -206,26 +201,40 @@ correct_STP_ICBs <- function(data = UDA_scheduled_data,
                              lookup_STP_ICB = STP_ICB_lookup_codes,
                              output = "UDA scheduled"){
   
+  #lookup based on contract number
   lookup <- scheduled_data %>%
-    filter(month >= as.Date("2022-07-01")) %>%
+    filter(month == as.Date("2022-07-01")) %>%
     select(contract_number, 
            commissioner_name_ICB = commissioner_name)
   
+  #lookup for new ICB to region
+  lookup_ICB_region <- lookup_STP_ICB %>%
+    select(commissioner_name = commissioner_name_ICB,
+           region_name)
+  
+  #lookup based on old STP to new ICB for contracts that ended before June 2022
   lookup_STP_ICB <- STP_ICB_lookup_codes %>%
     select(commissioner_name = commissioner_name_STP,
            commissioner_name_ICB_lookup = commissioner_name_ICB)
-
+  
+  
   data <- data %>%
     left_join(lookup, by = "contract_number") %>%
     left_join(lookup_STP_ICB, by = "commissioner_name") %>%
     mutate(commissioner_name = case_when(is.na(commissioner_name_ICB) & month < as.Date("2022-06-01") ~ commissioner_name_ICB_lookup,
                                          !is.na(commissioner_name_ICB) & month < as.Date("2022-06-01") ~ commissioner_name_ICB,
-                                         TRUE ~ commissioner_name))
-    # mutate(commissioner_name = if_else(is.na(commissioner_name_ICB) & month < as.Date("2022-06-01"),
-    #                                     commissioner_name_ICB_lookup,
-    #                                     commissioner_name_ICB)) #%>%
-    #select(-commissioner_name_ICB, -commissioner_name_ICB_lookup)
+                                         TRUE ~ commissioner_name)) %>%
+    select(-commissioner_name_ICB, -commissioner_name_ICB_lookup)
   
+  if(output == "UDA calendar" | output == "UOA calendar"){
+    data <- data %>%
+      left_join(lookup_ICB_region, by = "commissioner_name") %>%
+      mutate(region_name.x = region_name.y) %>%
+      rename(region_name = region_name.x) %>%
+      select(-region_name.y)
+  }
+    
+  data
 }
 
 ################################################################################
@@ -327,7 +336,6 @@ get_data_for_cumulative_plot_UOA <- function(data = UOA_calendar_data,
 #function to get dental data into the right format for slide 4
 get_delivery_data <- function(data = UDA_scheduled_data,
                                      calendar_data = UDA_calendar_data,
-                                   #existing_data = slide5_UDA_delivery_historic, 
                                    remove_prototypes = T,
                                    UDAorUOA = "UDA",
                                    all_regions_and_STPs = F,
@@ -505,17 +513,21 @@ get_banded_COTs_data <- function(data = UDA_scheduled_data,
   
   #bind old data to new data 
   data <- data %>%
-    rename(total_FP17s = general_FP17s, band1_UDA = UDA_band_1, band2_UDA = UDA_band_2, 
-           band3_UDA = UDA_band_3, urgent_UDA = UDA_urgent, other_UDA = UDA_other, band1_FP17 = FP17s_band_1, 
-           band2_FP17 = FP17s_band_2, band3_FP17 = FP17s_band_3, urgent_FP17 = FP17s_band_urgent, 
-           other_FP17 = FP17s_band_other,
-           annual_contracted_UDAs = annual_contracted_UDA) %>%
-    select(month, contract_number, total_FP17s, band1_UDA, band2_UDA, band3_UDA, 
-           urgent_UDA, other_UDA, band1_FP17, band2_FP17, band3_FP17, urgent_FP17, other_FP17,
-           annual_contracted_UDAs, 
-           commissioner_name, region_name
-           ) %>%
-    mutate(total_UDAs = band1_UDA + band2_UDA + band3_UDA + other_UDA + urgent_UDA)
+    # rename(total_FP17s = general_FP17s, band1_UDA = UDA_band_1, band2_UDA = UDA_band_2, 
+    #        band3_UDA = UDA_band_3, urgent_UDA = UDA_urgent, other_UDA = UDA_other, band1_FP17 = FP17s_band_1, 
+    #        band2_FP17 = FP17s_band_2, band3_FP17 = FP17s_band_3, urgent_FP17 = FP17s_band_urgent, 
+    #        other_FP17 = FP17s_band_other,
+    #        annual_contracted_UDAs = annual_contracted_UDA) %>%
+    # select(month, contract_number, total_FP17s, band1_UDA, band2_UDA, band3_UDA, 
+    #        urgent_UDA, other_UDA, band1_FP17, band2_FP17, band3_FP17, urgent_FP17, other_FP17,
+    #        annual_contracted_UDAs, 
+    #        commissioner_name, region_name
+    #        ) %>%
+    # mutate(total_UDAs = band1_UDA + band2_UDA + band3_UDA + other_UDA + urgent_UDA)
+  mutate(total_UDAs = sum(UDA_band_1, UDA_band_2, UDA_band_3, UDA_other, UDA_urgent, na.rm = TRUE))
+  
+  historic_data <- historic_data %>%
+    rename(total_UDAs = UDA_delivered)
   
   data <- bind_rows(data, historic_data)
   
@@ -525,7 +537,7 @@ get_banded_COTs_data <- function(data = UDA_scheduled_data,
     `%notin%` = Negate(`%in%`)
     data <- data %>%
       filter(contract_number %notin% prototype_contracts$prototype_contract_number) %>%
-      filter(annual_contracted_UDAs > 100)
+      filter(annual_contracted_UDA > 100)
   }
 
   if(all_regions_and_STPs == FALSE){
@@ -540,11 +552,11 @@ get_banded_COTs_data <- function(data = UDA_scheduled_data,
   }
 
   new_data <- new_data %>%
-    summarise(band1 = sum(band1_FP17, na.rm = T),
-              band2 = sum(band2_FP17, na.rm = T),
-              band3 = sum(band3_FP17, na.rm = T),
-              other = sum(other_FP17, na.rm = T),
-              urgent = sum(urgent_FP17, na.rm = T)
+    summarise(band1 = sum(FP17s_band_1, na.rm = T),
+              band2 = sum(FP17s_band_2, na.rm = T),
+              band3 = sum(FP17s_band_3, na.rm = T),
+              other = sum(FP17s_band_other, na.rm = T),
+              urgent = sum(FP17s_band_urgent, na.rm = T)
     )
 
 }

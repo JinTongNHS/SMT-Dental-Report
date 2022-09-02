@@ -313,10 +313,6 @@ plot_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data,
   #add blanks for future dates if on single level
   if(all_regions_and_STPs == FALSE & nrow(data) < 19){
 
-    if(!(as.Date("2022-08-01") %in% data$month)){
-      data <- data %>% add_row(month = as.Date("2022-08-01"))
-    }
-    
     if(!(as.Date("2022-09-01") %in% data$month)){
       data <- data %>% add_row(month = as.Date("2022-09-01"))
     }
@@ -510,10 +506,11 @@ plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
     
     historic_data <- historic_data %>%
       mutate(month = as.Date(month)) %>%
-      filter(!is.na(annual_contracted_UDAs)) %>% #filters out contracts with no data on contracted UDAs
+      filter(!is.na(annual_contracted_UDA)) %>% #filters out contracts with no data on contracted UDAs
       select(month, contract_number, commissioner_name, region_name, 
-             annual_contracted_UDA = annual_contracted_UDAs, 
-             UDA_delivered = total_UDAs)
+             annual_contracted_UDA, 
+             UDA_delivered) #%>%
+      #filter(month >= as.Date("2019-04-01"))
     
     data <- bind_rows(data, historic_data)
 
@@ -574,58 +571,60 @@ plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
                    y = perc_UDA_UOA_delivered), 
                colour = lineCol
     ) +
-    geom_segment(aes(x = as.Date("2021-04-01"), y = septemberTarget, xend = as.Date("2021-09-01"), yend = septemberTarget),
-                 colour = "#0072B2",
-                 linetype = "dashed") +
-    geom_segment(aes(x = as.Date("2021-10-01"), y = decemberTarget, xend = as.Date("2021-12-01"), yend = decemberTarget),
-                 colour = "#0072B2",
-                 linetype = "dashed") +
-    geom_segment(aes(x = as.Date("2022-01-01"), y = marchTarget, xend = as.Date("2022-03-01"), yend = marchTarget),
-                 colour = "#0072B2",
-                 linetype = "dashed") +
-    geom_segment(aes(x = as.Date("2022-04-01"), y = juneTarget, xend = as.Date("2022-06-01"), yend = juneTarget),
-                 colour = "#0072B2",
-                 linetype = "dashed") +
-    
-    annotate(geom = "text", 
-             x = as.Date("2021-04-01") + lubridate::weeks(2), 
-             y = septemberTarget - 5, 
-             label = "H1 threshold", 
-             size = 3,
-             colour = "#0072B2") + 
-    annotate(geom = "text", 
-             x = as.Date("2021-10-01") + lubridate::weeks(2), 
-             y = decemberTarget - 5, 
-             label = "Q3 threshold", 
-             size = 3,
-             colour = "#0072B2") +
-    annotate(geom = "text", 
-             x = as.Date("2022-01-01") + lubridate::weeks(2), 
-             y = marchTarget - 5, 
-             label = "Q4 threshold", 
-             size = 3,
-             colour = "#0072B2") +
-    annotate(geom = "text", 
-             x = as.Date("2022-04-01") + lubridate::weeks(2), 
-             y = juneTarget - 5, 
-             label = "Q1 threshold", 
-             size = 3,
-             colour = "#0072B2") +
+    # geom_segment(aes(x = as.Date("2021-04-01"), y = septemberTarget, xend = as.Date("2021-09-01"), yend = septemberTarget),
+    #              colour = "#0072B2",
+    #              linetype = "dashed") +
+    # geom_segment(aes(x = as.Date("2021-10-01"), y = decemberTarget, xend = as.Date("2021-12-01"), yend = decemberTarget),
+    #              colour = "#0072B2",
+    #              linetype = "dashed") +
+    # geom_segment(aes(x = as.Date("2022-01-01"), y = marchTarget, xend = as.Date("2022-03-01"), yend = marchTarget),
+    #              colour = "#0072B2",
+    #              linetype = "dashed") +
+    # geom_segment(aes(x = as.Date("2022-04-01"), y = juneTarget, xend = as.Date("2022-06-01"), yend = juneTarget),
+    #              colour = "#0072B2",
+    #              linetype = "dashed") +
+    # 
+    # annotate(geom = "text", 
+    #          x = as.Date("2021-04-01") + lubridate::weeks(2), 
+    #          y = septemberTarget - 5, 
+    #          label = "H1 threshold", 
+    #          size = 3,
+    #          colour = "#0072B2") + 
+    # annotate(geom = "text", 
+    #          x = as.Date("2021-10-01") + lubridate::weeks(2), 
+    #          y = decemberTarget - 5, 
+    #          label = "Q3 threshold", 
+    #          size = 3,
+    #          colour = "#0072B2") +
+    # annotate(geom = "text", 
+    #          x = as.Date("2022-01-01") + lubridate::weeks(2), 
+    #          y = marchTarget - 5, 
+    #          label = "Q4 threshold", 
+    #          size = 3,
+    #          colour = "#0072B2") +
+    # annotate(geom = "text", 
+    #          x = as.Date("2022-04-01") + lubridate::weeks(2), 
+    #          y = juneTarget - 5, 
+    #          label = "Q1 threshold", 
+    #          size = 3,
+    #          colour = "#0072B2") +
     
     scale_x_date(date_breaks = "1 month", 
                  date_labels = "%b-%y") +
-    scale_y_continuous(limits = c(0, max(c(data$perc_UDA_UOA_delivered, 95), na.rm = T) + 5)) +
+    scale_y_continuous(limits = c(0, max(c(data$perc_UDA_UOA_delivered, 95), na.rm = T) + 5),
+                       breaks = seq(0, max(c(data$perc_UDA_UOA_delivered, 95), na.rm = T) + 5, 10)) +
     labs(title = title, 
          x = "Month",
          y = ylab, 
          subtitle = subtitle,
          caption = captionTitle) +
     annotate(geom = "text",
-             x = data$month,
-             y = data$perc_UDA_UOA_delivered + 3,
-             label = paste0(data$perc_UDA_UOA_delivered, "%"),
+             x = data$month[nrow(data)],
+             y = data$perc_UDA_UOA_delivered[nrow(data)] - 3,
+             label = paste0(data$perc_UDA_UOA_delivered[nrow(data)], "%"),
              size = 3) +
-    theme(axis.text.x = element_text(angle = 90))
+    theme(axis.text.x = element_text(angle = 90, vjust=-0.0001
+                                     ))
   
     p
     
@@ -653,6 +652,104 @@ plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
     data <- data %>%
       rename(any_of(new_col_names))
   }
+}
+
+################################################################################
+plot_UDA_UOA_delivery_all_regions <- function(data = UDA_scheduled_data, 
+                                  calendar_data = UDA_calendar_data,
+                                  historic_data = historical_UDA_scheduled_data,
+                                  UDAorUOA = "UDA",
+                                  level = "National",
+                                  region_STP_name = NULL,
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  include_historic = TRUE){
+  
+  data <- data %>%
+    mutate(month = as.Date(month))
+  
+  calendar_data <- calendar_data %>%
+    mutate(month = as.Date(month))
+  
+  #add a region column to the data
+  region_STP_lookup <- calendar_data %>%
+    select(contract_number, name_or_company_name, region_name) %>%
+    distinct()
+  
+  data <- left_join(data, region_STP_lookup, by = c("contract_number"))
+  
+  #bind in historic data if required
+  if(include_historic == TRUE & UDAorUOA == "UDA"){
+    data <- data %>%
+      select(month, contract_number, commissioner_name, region_name, 
+             annual_contracted_UDA, UDA_delivered)
+    
+    historic_data <- historic_data %>%
+      mutate(month = as.Date(month)) %>%
+      filter(!is.na(annual_contracted_UDA)) %>% #filters out contracts with no data on contracted UDAs
+      select(month, contract_number, commissioner_name, region_name, 
+             annual_contracted_UDA, 
+             UDA_delivered) #%>%
+    #filter(month >= as.Date("2019-04-01"))
+    
+    data <- bind_rows(data, historic_data)
+    
+  }
+    #get data into the right format
+    data <- get_delivery_data(data, remove_prototypes, UDAorUOA = "UDA", all_regions_and_STPs = TRUE)
+    data <- data %>%
+      group_by(month, region_name) %>%
+      summarise(annual_contracted_UDA_UOA = sum(annual_contracted_UDA_UOA, na.rm = TRUE),
+                scaled_monthly_UDA_UOAs_delivered = sum(scaled_monthly_UDA_UOAs_delivered, na.rm = TRUE)) %>%
+      mutate(perc_UDA_UOA_delivered = scaled_monthly_UDA_UOAs_delivered * 100 / annual_contracted_UDA_UOA) %>%
+      filter(!is.na(region_name))
+    
+    title <- "Scheduled monthly percentage of usual annual contracted UDAs \nsubmitted across all contracts* scaled up to 12 months**"
+    ylab <- "% of contracted UDAs submitted"
+    captionTitle <- "*Excluding prototype contracts and those with annual contracted UDA < 100 
+                    **These are scheduled months and April data is for the reporting period 1st April - 
+                    21st April therefore the April data has been scaled up by 18 instead of 12."
+    lineCol <- "coral"
+    lineCol <- "#CC79A7"
+    septemberTarget <- 60
+    decemberTarget <- 65
+    marchTarget <- 85
+    juneTarget <- 95
+
+  if(plotChart == TRUE){
+    #plot code
+    p <- ggplot(data) +
+      theme_bw() +
+      #theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+      geom_line(aes(x = month, 
+                    y = perc_UDA_UOA_delivered, 
+                    colour = region_name), 
+                size = 1) +
+      geom_point(aes(x = month, 
+                     y = perc_UDA_UOA_delivered, 
+                     colour = region_name)
+      ) +
+    
+    scale_x_date(date_breaks = "1 month", 
+                 date_labels = "%b-%y") +
+      scale_y_continuous(limits = c(0, max(c(data$perc_UDA_UOA_delivered, 95), na.rm = T) + 5),
+                         breaks = seq(0, max(c(data$perc_UDA_UOA_delivered, 95), na.rm = T) + 5, 10)) +
+      labs(title = title, 
+           x = "Month",
+           y = ylab, 
+           caption = captionTitle,
+           colour = "Region") +
+      theme(axis.text.x = element_text(angle = 90, vjust=-0.0001
+      ))
+    
+    p
+    
+  }else{
+    
+   data
+    }
+
 }
 
 ################################################################################
@@ -812,10 +909,10 @@ plot_UDA_UOA_delivery_profile <- function(data = UDA_scheduled_data,
     
     historic_data <- historic_data %>%
       mutate(month = as.Date(month)) %>%
-      filter(!is.na(annual_contracted_UDAs)) %>% #filters out contracts with no data on contracted UDAs
+      filter(!is.na(annual_contracted_UDA)) %>% #filters out contracts with no data on contracted UDAs
       select(month, contract_number, commissioner_name, region_name, 
-             annual_contracted_UDA = annual_contracted_UDAs, 
-             UDA_delivered = total_UDAs)
+             annual_contracted_UDA, 
+             UDA_delivered)
     
     data <- bind_rows(data, historic_data)
     
@@ -945,20 +1042,25 @@ plot_banded_CoT <- function(data = UDA_scheduled_data,
     mutate(month = as.Date(month)) %>%
     rename(band = variable, CoTs = value)
 
-  #set everything as indext of April 2019
+  #set everything as index of 2019
   if(asIndex == TRUE){
+    
+    data <- data %>%
+      mutate(month_number = substr(month, 6, 7),
+             year_number = substr(month, 1, 4))
 
-    april2019 <- data %>%
-      filter(month == as.Date("2019-04-01")) %>%
-      select(-month,
-             april_CoTs = CoTs)
+    data2019 <- data %>%
+      filter(year_number == "2019") %>%
+      select(month_number,
+             band,
+             CoTs_2019 = CoTs)
 
     data <- data %>%
-      left_join(april2019, by = "band") %>%
-      mutate(CoTs = CoTs * 100 / april_CoTs)
+      left_join(data2019, by = c("band", "month_number")) %>%
+      mutate(CoTs = CoTs * 100 / CoTs_2019)
 
-    title <- "Banded Courses of Treatment as a Percentage of April 2019 Delivery"
-    ylab <- "Percentage of April 2019 FP17* forms submitted"
+    title <- "Banded Courses of Treatment as a Percentage of corresponding month of 2019 Delivery"
+    ylab <- "Percentage of 2019 FP17* forms submitted"
 
   }else{
     title <- "Banded Courses of Treatment"
@@ -972,6 +1074,10 @@ plot_banded_CoT <- function(data = UDA_scheduled_data,
       theme_bw() +
       theme(axis.text.x = element_text(angle = 90)) +
       geom_line(aes(x = month,
+                    y = CoTs,
+                    colour = band),
+                size = 1) +
+      geom_point(aes(x = month,
                     y = CoTs,
                     colour = band),
                 size = 1) +
@@ -1032,9 +1138,6 @@ plot_urgent_form_submissions <- function(data = UDA_scheduled_data,
   
   data <- left_join(data, region_STP_lookup, by = c("contract_number", "name_or_company_name", "commissioner_name"))
   
-  #add a region column to the historic data
-  #historic_data <- left_join(historic_data, region_STP_lookup, by = c("contract_number"))
-  
   #toggle subtitle
   if(level == "Regional"){
     #filter for region or STP
@@ -1058,10 +1161,13 @@ plot_urgent_form_submissions <- function(data = UDA_scheduled_data,
   data <- get_banded_COTs_data(data, historic_data = historic_data, remove_prototypes = TRUE, all_regions_and_STPs = all_regions_and_STPs)
   data <- data %>%
     mutate(date = as.Date(month)) %>%
-    mutate(financial_year = case_when(month >= as.Date("2019-04-01") & month < as.Date("2020-04-01") ~ "2019/20",
-                                      month >= as.Date("2020-04-01") & month < as.Date("2021-04-01") ~ "2020/21",
-                                      month >= as.Date("2021-04-01") & month < as.Date("2022-04-01") ~ "2021/22",
-                                      month >= as.Date("2022-04-01") & month < as.Date("2023-04-01") ~ "2022/23"
+    mutate(year = case_when(month >= as.Date("2016-04-01") & month < as.Date("2017-04-01") ~ "2016/17",
+                            month >= as.Date("2017-04-01") & month < as.Date("2018-04-01") ~ "2017/18",
+                            month >= as.Date("2018-04-01") & month < as.Date("2019-04-01") ~ "2018/19",
+                            month >= as.Date("2019-04-01") & month < as.Date("2020-04-01") ~ "2019/20",
+                            month >= as.Date("2020-04-01") & month < as.Date("2021-04-01") ~ "2020/21",
+                            month >= as.Date("2021-04-01") & month < as.Date("2022-04-01") ~ "2021/22",
+                            month >= as.Date("2022-04-01") & month < as.Date("2023-04-01") ~ "2022/23"
     ))
   
   #plot code
@@ -1071,14 +1177,14 @@ plot_urgent_form_submissions <- function(data = UDA_scheduled_data,
     geom_line(aes(x = factor(lubridate::month(date, label=TRUE, abbr=TRUE),
                              levels = c("Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar")),
                   y = urgent,
-                  group = factor(financial_year),
-                  colour = factor(financial_year)),
+                  group = factor(year),
+                  colour = factor(year)),
               size = 1) +
     geom_point(aes(x = factor(lubridate::month(date, label=TRUE, abbr=TRUE),
                               levels = c("Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar")),
                    y = urgent,
-                   group = factor(financial_year),
-                   colour = factor(financial_year))) +
+                   group = factor(year),
+                   colour = factor(year))) +
     scale_y_continuous(breaks = scales::breaks_pretty(),
                        limits = c(0, max(data$urgent))) +
     labs(title = "Urgent treatment form submissions",
@@ -1099,7 +1205,7 @@ plot_urgent_form_submissions <- function(data = UDA_scheduled_data,
                   `Region Name` = "region_name",
                   `Commissioner Name` = "commissioner_name",
                   `Urgent forms` = "urgent",
-                  `Financial year` = "financial_year")
+                  `Financial year` = "year")
 
     data %>% 
       mutate(month = as.Date(month)) %>%
@@ -1166,15 +1272,15 @@ plot_breakdown_111_referrals <- function(data = dental_data_111,
   
   #get lines in the right order
   data$disposition_text <- factor(data$disposition_text,
-                                  levels = c("Attend Emergency Dental Treatment Centre within 4hrs",
-                                             "To Contact a Dental Service within 1 hour",
-                                             "To Contact a Dental Service within 2 hours",
+                                  levels = c("Refer to Dental Treatment Centre within 4 hours",
+                                             "To Speak to a Dental Service within 1 hour",
+                                             "To Speak to a Dental Service within 2 hours",
                                              "Speak to a Dental Service within 2 hours",
-                                             "To Contact a Dental Service within 6 hours",
-                                             "To Contact a Dental Service within 12 hours",
-                                             "To Contact a Dental Service within 24 hours",
-                                             "To Contact a Dental Practice within 5 working days",
-                                             "Dental - Contact Orthodontist next working day"
+                                             "To Speak to a Dental Service within 6 hours",
+                                             "To Speak to a Dental Service within 12 hours",
+                                             "To Speak to a Dental Service within 24 hours",
+                                             "To Speak to a Dental Practice within 7 working days",
+                                             "Contact Orthodontist next working day"
                                   ))
   
   #plot code
@@ -1856,10 +1962,10 @@ plot_patient_recalls_facet <- function(data = dental_recalls_STP_2018_22,
                                  calendar_data = UDA_calendar_data,
                                  plotChart = TRUE){
 
-  #add a region column to the data
-  region_STP_lookup <- calendar_data %>%
-    select(commissioner_name, region_name) %>%
-    distinct()
+  # #add a region column to the data
+  # region_STP_lookup <- calendar_data %>%
+  #   select(commissioner_name, region_name) %>%
+  #   distinct()
   
   #sort out STP ICB issue
   ICB_lookup <- ICB_lookup %>%
@@ -1869,8 +1975,8 @@ plot_patient_recalls_facet <- function(data = dental_recalls_STP_2018_22,
   data_output <- data %>%
     left_join(ICB_lookup, by = "commissioner_name") %>%
     mutate(commissioner_name = commissioner_name_ICB) %>%
-    select(-commissioner_name_ICB) %>%
-    left_join(region_STP_lookup, by = "commissioner_name")
+    select(-commissioner_name_ICB) #%>%
+    #left_join(region_STP_lookup, by = "commissioner_name")
   
   data <- clean_dental_recalls(data_output)
   
@@ -2700,4 +2806,468 @@ plot_closures_facet <- function(data = contract_handbacks,
   
   
   ggpubr::ggarrange(p1, p2, nrow = 2)
+}
+
+
+################################################################################
+plot_closures_from_contract_end_date <- function(data = UDA_scheduled_data,
+                                                 historical_data = historical_UDA_scheduled_data,
+                                                 level = "National",
+                                                 region_STP_name = NULL,
+                                                 all_regions_and_STPs = FALSE,
+                                                 plotChart = TRUE){
+  
+  data <- data %>%
+    bind_rows(historical_data) %>%
+    filter(!is.na(contract_end_date)) 
+  
+  #filter for STP or region
+  if(level == "Regional"){
+    data <- data %>% 
+      filter(region_name == region_STP_name)
+    subtitle <- region_STP_name
+    y_breaks <- seq(0, 5000, 200)
+  }else if(level == "STP"){
+    data <- data %>% 
+      filter(commissioner_name == region_STP_name)
+    subtitle <- region_STP_name
+    y_breaks <- seq(0, 1000, 100)
+  }else{
+    subtitle <- "England"
+    y_breaks <- seq(0, 28000, 2000)
+  }
+  
+  data <- data %>%
+    mutate(contract_end_date_month = lubridate::floor_date(contract_end_date, unit = "months")) %>%
+    group_by(contract_end_date_month) %>%
+    count() %>%
+    mutate(time_period = case_when(contract_end_date_month <= max(data$month) ~ "Historical",
+                                   TRUE ~ "Future"))
+  
+  if(plotChart == TRUE){
+    
+    ggplot(data) +
+      geom_line(aes(x = as.Date(contract_end_date_month),
+                    y = n,
+                    linetype = time_period)) +
+      theme_bw() +
+      scale_linetype_manual(values = c("dashed", "solid")) +
+      scale_x_date(date_breaks = "6 month", 
+                   date_labels = "%b-%y") +
+      scale_y_continuous(breaks = y_breaks) +
+      labs(title = "Number of contract closures based on contract end dates",
+           subtitle = subtitle,
+           x = "Month",
+           y = "Number of contracts with closure date \nin given month",
+           linetype = "") +
+      theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+    
+  }else{
+    data
+  }
+  
+}
+
+################################################################################
+plot_number_of_contracts_over_time <- function(data = UDA_scheduled_data,
+                                               historical_data = historical_UDA_scheduled_data,
+                                               level = "National",
+                                               region_STP_name = NULL,
+                                               all_regions_and_STPs = FALSE,
+                                               plotChart = TRUE,
+                                               getChange = FALSE){
+  
+  STp_region_lookup <- historical_data %>%
+    select(commissioner_name, region_name) %>%
+    unique()
+  
+  data <- data %>%
+    left_join(STp_region_lookup, by = "commissioner_name") 
+  
+  data <- data %>%
+    bind_rows(historical_data) 
+  
+  #filter for STP or region
+  if(level == "Regional"){
+    data <- data %>% 
+      filter(region_name == region_STP_name)
+    subtitle <- region_STP_name
+  }else if(level == "STP"){
+    data <- data %>% 
+      filter(commissioner_name == region_STP_name)
+    subtitle <- region_STP_name
+  }else{
+    subtitle <- "England"
+  }
+  
+  data <- data %>%
+    group_by(month) %>%
+    count() %>%
+    mutate(month_number = substr(month, 6, 7)) %>%
+    mutate(point_col = case_when(month_number == substr(Sys.Date() - lubridate::weeks(4), 6, 7) ~ "this month",
+                                 TRUE ~ "other months"))
+  
+  data_labels <- data %>%
+    # mutate(month_number = substr(month, 6, 7)) %>%
+    # filter(month_number == substr(Sys.Date() - lubridate::weeks(4), 6, 7))
+    filter(point_col == "this month")
+  
+  point_label <- format(Sys.Date() - lubridate::weeks(4), "%B")
+  
+  if(plotChart == TRUE){
+    
+    ggplot() +
+      geom_line(data = data,
+                mapping = aes(x = as.Date(month),
+                    y = n),
+                colour = "steelblue",
+                size = 1) +
+      geom_point(data = data,
+                 mapping = aes(x = as.Date(month),
+                     y = n,
+                     colour = point_col)) +
+      geom_text(data = data_labels,
+                mapping = aes(x = as.Date(month),
+                              y = n - max(data$n)/30,
+                              label = n),
+                colour = "red",
+                size = 3) +
+      theme_bw() +
+      scale_x_date(date_breaks = "1 month", 
+                   date_labels = "%b-%y") +
+      scale_y_continuous(breaks = scales::breaks_pretty()) +
+      scale_colour_manual(values = c("steelblue", "red"), labels = c("Other months", point_label)) +
+      labs(title = "Total number of dental contracts that have submitted FP17 data",
+           subtitle = subtitle,
+           x = "Month",
+           y = "Number of contracts",
+           caption = "This includes all contracts in BSA data including prototypes and very small contracts.",
+           colour = "") +
+      theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+    
+  }else if(plotChart == FALSE & getChange == TRUE){
+    data_2022 <- data %>%
+      mutate(year_number = substr(month, 1, 4)) %>%
+      filter(point_col == "this month" & year_number == "2022")
+    
+    data_2018 <- data %>%
+      mutate(year_number = substr(month, 1, 4)) %>%
+      filter(point_col == "this month" & year_number == "2018")
+    
+    change_in_num_contracts <- data_2022$n[1] - data_2018$n[1]
+    perc_change_in_num_contracts <- change_in_num_contracts * 100 / data_2018$n[1]
+    round(perc_change_in_num_contracts, 2)
+    
+  }else{
+    data
+  }
+  
+}
+
+
+################################################################################
+plot_UDAs_commissioned <- function(data = UDA_scheduled_data,
+                                               historical_data = historical_UDA_scheduled_data,
+                                               level = "National",
+                                               region_STP_name = NULL,
+                                               all_regions_and_STPs = FALSE,
+                                               plotChart = TRUE,
+                                   getChange = FALSE){
+  
+  STp_region_lookup <- historical_data %>%
+    select(commissioner_name, region_name) %>%
+    unique()
+  
+  data <- data %>%
+    left_join(STp_region_lookup, by = "commissioner_name") %>%
+    bind_rows(historical_data) #%>%
+    #filter(month < as.Date("2020-01-01") | month > as.Date("2020-12-01"))
+  
+  #filter for STP or region
+  if(level == "Regional"){
+    data <- data %>% 
+      filter(region_name == region_STP_name)
+    subtitle <- region_STP_name
+  }else if(level == "STP"){
+    data <- data %>% 
+      filter(commissioner_name == region_STP_name)
+    subtitle <- region_STP_name
+  }else{
+    subtitle <- "England"
+  }
+  
+  data <- data %>%
+    group_by(month) %>%
+    summarise(n = sum(annual_contracted_UDA, na.rm = TRUE)) %>%
+    mutate(month_number = substr(month, 6, 7)) %>%
+    mutate(point_col = case_when(month_number == substr(Sys.Date() - lubridate::weeks(4), 6, 7) ~ "this month",
+                                 TRUE ~ "other months"))
+  
+  data_labels <- data %>%
+    filter(point_col == "this month")
+  
+  point_label <- format(Sys.Date() - lubridate::weeks(4), "%B")
+  
+  if(plotChart == TRUE){
+    
+    ggplot() +
+      geom_line(data = data,
+                mapping = aes(x = as.Date(month),
+                    y = n),
+                colour = "steelblue",
+                size = 1) +
+      geom_point(data = data,
+                 mapping = aes(x = as.Date(month),
+                     y = n,
+                     colour = point_col)) +
+      geom_text(data = data_labels,
+            mapping = aes(x = as.Date(month),
+                          y = n - max(data$n)/30,
+                          label = format(n, big.mark = ",", scientific = FALSE)),
+            colour = "red",
+            size = 3) +
+      theme_bw() +
+      scale_x_date(date_breaks = "1 month", 
+                   date_labels = "%b-%y",
+                   limits = c(as.Date("2016-01-01"), max(data$month) + lubridate::weeks(12))) +
+      scale_y_continuous(breaks = scales::breaks_pretty(),
+                         labels=function(x) format(x, big.mark = ",", scientific = FALSE)) +
+      scale_colour_manual(values = c("steelblue", "red"), labels = c("Other months", point_label)) +
+      labs(title = "Total annual contracted UDAs across all contracts",
+           subtitle = subtitle,
+           x = "Month",
+           y = "Contracted UDAs",
+           caption = "This includes all contracts in BSA data including prototypes and very small contracts.",
+           colour = "") +
+      theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+    
+  }else if(plotChart == FALSE & getChange == TRUE){
+    data_2022 <- data %>%
+      mutate(year_number = substr(month, 1, 4)) %>%
+      filter(point_col == "this month" & year_number == "2022")
+    
+    data_2018 <- data %>%
+      mutate(year_number = substr(month, 1, 4)) %>%
+      filter(point_col == "this month" & year_number == "2018")
+    
+    change_in_num_contracted_UDA <- data_2022$n[1] - data_2018$n[1]
+    perc_change_in_num_contracted_UDA <- change_in_num_contracted_UDA * 100 / data_2018$n[1]
+    round(perc_change_in_num_contracted_UDA, 2)
+    
+  }else{
+    data
+  }
+  
+}
+
+
+################################################################################
+get_change_in_commissioned_UDAs <- function(data = UDA_scheduled_data,
+                                            historical_data = historical_UDA_scheduled_data,
+                                            protos = prototype_contracts$prototype_contract_number,
+                                            level = "National",
+                                            region_STP_name = NULL,
+                                            all_regions_and_STPs = FALSE,
+                                            plotChart = TRUE){
+  
+  data <- data %>%
+    select(month, contract_number, annual_contracted_UDA) %>%
+    filter(!(contract_number %in% protos)) %>%
+    arrange(month) %>%
+    pivot_wider(names_from = month, values_from = annual_contracted_UDA) %>%
+    rowwise() %>%
+    # mutate(min_contracted = min(`2021-04-01`, `2021-05-01`, `2021-06-01`, `2021-07-01`, `2021-08-01`, `2021-09-01`,
+    #            `2021-10-01`, `2021-11-01`, `2021-12-01`, `2022-01-01`, `2022-02-01`, `2022-03-01`,
+    #            `2022-04-01`, `2022-05-01`, `2022-06-01`, `2022-07-01`, `2022-08-01`, na.rm = TRUE)) %>%
+    # mutate(max_contracted = max(`2021-04-01`, `2021-05-01`, `2021-06-01`, `2021-07-01`, `2021-08-01`, `2021-09-01`,
+    #                             `2021-10-01`, `2021-11-01`, `2021-12-01`, `2022-01-01`, `2022-02-01`, `2022-03-01`,
+    #                             `2022-04-01`, `2022-05-01`, `2022-06-01`, `2022-07-01`, `2022-08-01`, na.rm = TRUE)) %>%
+    # mutate(min_equals_max = min_contracted == max_contracted) %>%
+    mutate(mean_contracted_2021_22 = mean(c(`2021-04-01`, `2021-05-01`, `2021-06-01`, `2021-07-01`, `2021-08-01`, `2021-09-01`,
+                                  `2021-10-01`, `2021-11-01`, `2021-12-01`, `2022-01-01`, `2022-02-01`, `2022-03-01`), na.rm = TRUE)) %>%
+    mutate(mean_contracted_2022_23 = mean(c(`2022-04-01`, `2022-05-01`, `2022-06-01`, `2022-07-01`, `2022-08-01`), na.rm = TRUE)) %>%
+    #filter(mean_contracted_2021_22 != mean_contracted_2022_23) %>%
+    #filter(mean_contracted_2021_22 > 100) %>%
+    mutate(change_in_contracted_UDA = mean_contracted_2022_23 - mean_contracted_2021_22) %>%
+    mutate(change_in_contracted_UDA_category = case_when(mean_contracted_2021_22 < mean_contracted_2022_23 ~ "Increased",
+                                                mean_contracted_2021_22 == mean_contracted_2022_23 ~ "No change",
+                                                mean_contracted_2021_22 > mean_contracted_2022_23 ~ "Decreased",
+                                                TRUE ~ "Contract ended"))
+  
+  
+}
+
+
+################################################################################
+plot_payments_to_dentists <- function(data = payments_to_dentists,
+                                      level = "National",
+                                      region_STP_name = NULL,
+                                      all_regions_and_STPs = FALSE,
+                                      plotChart = TRUE){
+  
+  data <- data %>%
+    rename(region_name = Region_Name1)
+  
+  #filter for STP or region
+  if(level == "Regional"){
+    data <- data %>% 
+      filter(region_name == region_STP_name)
+    subtitle <- region_STP_name
+  }else if(level == "STP"){
+    data <- data %>% 
+      filter(commissioner_name == region_STP_name)
+    subtitle <- region_STP_name
+  }else{
+    subtitle <- "England"
+  }
+  
+  data <- data %>%
+    filter(!is.na(Contract)) %>%
+    mutate(Net_Payment_to_Dental_Contract = as.numeric(Net_Payment_to_Dental_Contract)) %>%
+    #mutate(contract_number = str_replace(Contract, "/", "")) %>%
+    group_by(year) %>%
+    summarise(total_net_payments = sum(Net_Payment_to_Dental_Contract, na.rm = TRUE)) %>%
+    ungroup()
+  
+  if(plotChart == TRUE){
+    
+    ggplot(data, group = 1) +
+      geom_col(aes(x = year,
+                    y = total_net_payments),
+                fill = "steelblue") +
+      # geom_point(aes(x = year,
+      #                y = total_net_payments),
+      #            colour = "steelblue") +
+      theme_bw() +
+      scale_y_continuous(breaks = scales::breaks_pretty(),
+                         labels=function(x) format(x, big.mark = ",", scientific = FALSE)) +
+      labs(title = "Total net payments to dentists",
+           subtitle = subtitle,
+           x = "Financial year",
+           y = "Net payment (£)")
+  }else{
+    data
+  }
+  
+}
+
+################################################################################
+plot_UDA_value <- function(data = UDA_scheduled_data,
+                           historical_data = historical_UDA_scheduled_data,
+                           payments_data = payments_to_dentists,
+                           UDA_value_data = UDA_values,
+                           protos = prototype_contracts$prototype_contract_number,
+                           level = "National",
+                           region_STP_name = NULL,
+                           all_regions_and_STPs = FALSE,
+                           asIndex = FALSE,
+                           plotChart = TRUE){
+  
+  payments_data <- payments_data %>%
+    select(year, Contract, Total_Contracted_UDA, Baseline_Contract) %>%
+    mutate(Baseline_Contract = as.numeric(Baseline_Contract),
+           Total_Contracted_UDA = as.numeric(Total_Contracted_UDA)) %>%
+    mutate(UDA_value = Baseline_Contract/Total_Contracted_UDA) %>%
+    filter(is.finite(UDA_value)) %>%
+    mutate(contract_number = as.numeric(str_replace(Contract, "/", ""))) %>%
+    select(year, contract_number, UDA_value)
+  
+  UDA_value_data_2021_22 <- UDA_value_data %>%
+    mutate(year = "2021/22") %>%
+    select(contract_number, 
+           UDA_value = pounds_per_UDA,
+           year)
+  
+  payments_data <- bind_rows(payments_data, UDA_value_data_2021_22)
+  
+  STp_region_lookup <- historical_data %>%
+    select(commissioner_name, region_name) %>%
+    unique()
+  
+  data <- data %>%
+    left_join(STp_region_lookup, by = "commissioner_name") %>%
+    bind_rows(historical_data) %>%
+    mutate(year = case_when(month >= as.Date("2021-04-01") ~ "2021/22",
+                            TRUE ~ year)) %>%
+    left_join(payments_data, by = c("contract_number", "year")) %>%
+    mutate(UDA_value = case_when(is.na(UDA_value) ~ 28,
+                                 TRUE ~ UDA_value)) %>%
+    mutate(financial_delivery = UDA_delivered * UDA_value) %>%
+    filter(!(contract_number %in% protos) & annual_contracted_UDA > 100)
+  
+  #filter for STP or region
+  if(level == "Regional"){
+    data <- data %>% 
+      filter(region_name == region_STP_name)
+    subtitle <- region_STP_name
+  }else if(level == "STP"){
+    data <- data %>% 
+      filter(commissioner_name == region_STP_name)
+    subtitle <- region_STP_name
+  }else{
+    subtitle <- "England"
+  }
+  
+  data <- data %>%
+    group_by(month) %>%
+    summarise(financial_delivery = sum(financial_delivery, na.rm = TRUE)) %>%
+    mutate(financial_delivery_million_pounds = financial_delivery / 1000000)
+  
+  #set everything as index of 2018
+  if(asIndex == TRUE){
+    
+    data <- data %>%
+      mutate(month_number = substr(month, 6, 7),
+             year_number = substr(month, 1, 4))
+    
+    data2018 <- data %>%
+      filter(year_number == "2018") %>%
+      select(month_number,
+             financial_delivery_million_pounds_2018 = financial_delivery_million_pounds)
+    
+    data <- data %>%
+      left_join(data2018, by = c("month_number")) %>%
+      mutate(financial_delivery_million_pounds = financial_delivery_million_pounds * 100 / financial_delivery_million_pounds_2018)
+    
+    title <- "Financial value of UDAs delivered \nas a percentage of corresponding month of 2018 delivery"
+    ylab <- "Percentage of 2018 financial value \nof UDAs delivered (%)"
+    labelEnd <- "%"
+    labelStart <- ""
+    
+  }else{
+    title <- "Financial value of UDAs delivered  (£ Million)"
+    ylab <- "Financial value of UDAs delivered \n (£ Million)"
+    labelEnd <- " Million"
+    labelStart <- "£"
+  }
+  
+  if(plotChart == TRUE){
+    ggplot() +
+      geom_line(data = data,
+                mapping = aes(x = as.Date(month),
+                              y = financial_delivery_million_pounds),
+                colour = "steelblue") +
+      geom_point(data = data,
+                mapping = aes(x = as.Date(month),
+                              y = financial_delivery_million_pounds),
+                colour = "steelblue") +
+      geom_text(data = filter(data, month == max(data$month)),
+                mapping = aes(x = as.Date(month),
+                              y = financial_delivery_million_pounds + 10,
+                              label = paste0(labelStart, round(financial_delivery_million_pounds), labelEnd)),
+                size = 3) +
+      theme_bw() +
+      scale_x_date(date_breaks = "3 month", 
+                   date_labels = "%b-%y") +
+      theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+      labs(title = title,
+           subtitle = subtitle,
+           x = "Month",
+           y = ylab,
+           caption = "UDA values have be calculated by dividing the baseline contract by the annual contracted UDAs for each contract. \nWhere this data was not availabale, £28 per UDA was used in the calculation. \nIt has been assumed that in 2022/23 the UDA value for each contract will be the same as in 2021/22. \nThis graph excludes prototype contracts and contracts with annual contracted UDAs < 100.")
+    
+  }else{
+    data
+  }
+  
 }
