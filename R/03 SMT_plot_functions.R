@@ -493,49 +493,49 @@ plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
 
   #add a region column to the data
   region_STP_lookup <- calendar_data %>%
-    select(contract_number, name_or_company_name, region_name) %>%
+    select(commissioner_name, region_name) %>%
     distinct()
   
-  data <- left_join(data, region_STP_lookup, by = c("contract_number"))
+  data <- left_join(data, region_STP_lookup, by = "commissioner_name")
   
   #bind in historic data if required
   if(include_historic == TRUE & UDAorUOA == "UDA"){
     data <- data %>%
-      select(month, contract_number, commissioner_name, region_name, 
+      select(month, contract_number, commissioner_name, region_name,
              annual_contracted_UDA, UDA_delivered)
-    
+
     historic_data <- historic_data %>%
       mutate(month = as.Date(month)) %>%
       filter(!is.na(annual_contracted_UDA)) %>% #filters out contracts with no data on contracted UDAs
-      select(month, contract_number, commissioner_name, region_name, 
-             annual_contracted_UDA, 
+      select(month, contract_number, commissioner_name, region_name,
+             annual_contracted_UDA,
              UDA_delivered) #%>%
       #filter(month >= as.Date("2019-04-01"))
-    
+
     data <- bind_rows(data, historic_data)
 
   }
-  
+
   #filter for STP or region
   if(level == "Regional"){
-    data <- data %>% 
+    data <- data %>%
       filter(region_name == region_STP_name )
     subtitle <- region_STP_name
   }else if(level == "STP"){
-    data <- data %>% 
+    data <- data %>%
       filter(commissioner_name == region_STP_name)
     subtitle <- region_STP_name
   }else{
     subtitle <- "England"
   }
-  
+
   if(UDAorUOA == "UDA"){
     #get data into the right format
     data <- get_delivery_data(data, remove_prototypes, UDAorUOA = "UDA", all_regions_and_STPs = all_regions_and_STPs)
     title <- "Scheduled monthly percentage of usual annual contracted UDAs \nsubmitted across all contracts* scaled up to 12 months**"
     ylab <- "% of contracted UDAs submitted"
-    captionTitle <- "*Excluding prototype contracts and those with annual contracted UDA < 100 
-                    **These are scheduled months and April data is for the reporting period 1st April - 
+    captionTitle <- "*Excluding prototype contracts and those with annual contracted UDA < 100
+                    **These are scheduled months and April data is for the reporting period 1st April -
                     21st April therefore the April data has been scaled up by 18 instead of 12."
     lineCol <- "coral"
     lineCol <- "#CC79A7"
@@ -548,8 +548,8 @@ plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
     data <- get_delivery_data(data, remove_prototypes, UDAorUOA = "UOA", all_regions_and_STPs = all_regions_and_STPs)
     title <- "Scheduled monthly percentage of usual annual contracted UOAs \nsubmitted across all contracts* scaled up to 12 months**"
     ylab <- "% of contracted UOAs submitted"
-    captionTitle <- "*Excluding prototype contracts and with zero annual contracted UOAs 
-                    **These are scheduled months and April data is for the reporting period 1st April - 
+    captionTitle <- "*Excluding prototype contracts and with zero annual contracted UOAs
+                    **These are scheduled months and April data is for the reporting period 1st April -
                     21st April therefore the April data has been scaled up by 18 instead of 12."
     lineCol <- "steelblue"
     septemberTarget <- 80
@@ -557,18 +557,18 @@ plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
     marchTarget <- 90
     juneTarget <- 100
   }
-  
+
   if(plotChart == TRUE){
   #plot code
   p <- ggplot(data) +
     theme_bw() +
     #theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
-    geom_line(aes(x = month, 
-                  y = perc_UDA_UOA_delivered), 
-              colour = lineCol, 
+    geom_line(aes(x = month,
+                  y = perc_UDA_UOA_delivered),
+              colour = lineCol,
               size = 1) +
-    geom_point(aes(x = month, 
-                   y = perc_UDA_UOA_delivered), 
+    geom_point(aes(x = month,
+                   y = perc_UDA_UOA_delivered),
                colour = lineCol
     ) +
     # geom_segment(aes(x = as.Date("2021-04-01"), y = septemberTarget, xend = as.Date("2021-09-01"), yend = septemberTarget),
@@ -583,39 +583,39 @@ plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
     # geom_segment(aes(x = as.Date("2022-04-01"), y = juneTarget, xend = as.Date("2022-06-01"), yend = juneTarget),
     #              colour = "#0072B2",
     #              linetype = "dashed") +
-    # 
-    # annotate(geom = "text", 
-    #          x = as.Date("2021-04-01") + lubridate::weeks(2), 
-    #          y = septemberTarget - 5, 
-    #          label = "H1 threshold", 
-    #          size = 3,
-    #          colour = "#0072B2") + 
-    # annotate(geom = "text", 
-    #          x = as.Date("2021-10-01") + lubridate::weeks(2), 
-    #          y = decemberTarget - 5, 
-    #          label = "Q3 threshold", 
+    #
+    # annotate(geom = "text",
+    #          x = as.Date("2021-04-01") + lubridate::weeks(2),
+    #          y = septemberTarget - 5,
+    #          label = "H1 threshold",
     #          size = 3,
     #          colour = "#0072B2") +
-    # annotate(geom = "text", 
-    #          x = as.Date("2022-01-01") + lubridate::weeks(2), 
-    #          y = marchTarget - 5, 
-    #          label = "Q4 threshold", 
+    # annotate(geom = "text",
+    #          x = as.Date("2021-10-01") + lubridate::weeks(2),
+    #          y = decemberTarget - 5,
+    #          label = "Q3 threshold",
     #          size = 3,
     #          colour = "#0072B2") +
-    # annotate(geom = "text", 
-    #          x = as.Date("2022-04-01") + lubridate::weeks(2), 
-    #          y = juneTarget - 5, 
-    #          label = "Q1 threshold", 
+    # annotate(geom = "text",
+    #          x = as.Date("2022-01-01") + lubridate::weeks(2),
+    #          y = marchTarget - 5,
+    #          label = "Q4 threshold",
     #          size = 3,
     #          colour = "#0072B2") +
-    
-    scale_x_date(date_breaks = "1 month", 
+    # annotate(geom = "text",
+    #          x = as.Date("2022-04-01") + lubridate::weeks(2),
+    #          y = juneTarget - 5,
+    #          label = "Q1 threshold",
+    #          size = 3,
+    #          colour = "#0072B2") +
+
+    scale_x_date(date_breaks = "1 month",
                  date_labels = "%b-%y") +
     scale_y_continuous(limits = c(0, max(c(data$perc_UDA_UOA_delivered, 95), na.rm = T) + 5),
                        breaks = seq(0, max(c(data$perc_UDA_UOA_delivered, 95), na.rm = T) + 5, 10)) +
-    labs(title = title, 
+    labs(title = title,
          x = "Month",
-         y = ylab, 
+         y = ylab,
          subtitle = subtitle,
          caption = captionTitle) +
     annotate(geom = "text",
@@ -625,30 +625,30 @@ plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
              size = 3) +
     theme(axis.text.x = element_text(angle = 90, vjust=-0.0001
                                      ))
-  
+
     p
-    
+
   }else{
-    
+
     if(UDAorUOA == "UDA"){
-      new_col_names <- c(`Schedule month` = "month", 
-                         `Region Name` = "region_name", 
-                         `Commissioner Name` = "commissioner_name", 
-                         `Monthly UDAs delivered` = "monthly_UDA_UOAs_delivered", 
-                         `Annual contracted UDAs` = "annual_contracted_UDA_UOA", 
-                         `Scaled monthly UDAs delivered` = "scaled_monthly_UDA_UOAs_delivered", 
+      new_col_names <- c(`Schedule month` = "month",
+                         `Region Name` = "region_name",
+                         `Commissioner Name` = "commissioner_name",
+                         `Monthly UDAs delivered` = "monthly_UDA_UOAs_delivered",
+                         `Annual contracted UDAs` = "annual_contracted_UDA_UOA",
+                         `Scaled monthly UDAs delivered` = "scaled_monthly_UDA_UOAs_delivered",
                          `Scaled monthly percentage of contracted UDAs delivered` = "perc_UDA_UOA_delivered")
     }else{
-      new_col_names <- c(`Schedule month` = "month", 
-                         `Region Name` = "region_name", 
-                         `Commissioner Name` = "commissioner_name", 
-                         `Monthly UOAs delivered` = "monthly_UDA_UOAs_delivered", 
-                         `Annual contracted UOAs` = "annual_contracted_UDA_UOA", 
-                         `Scaled monthly UOAs delivered` = "scaled_monthly_UDA_UOAs_delivered", 
+      new_col_names <- c(`Schedule month` = "month",
+                         `Region Name` = "region_name",
+                         `Commissioner Name` = "commissioner_name",
+                         `Monthly UOAs delivered` = "monthly_UDA_UOAs_delivered",
+                         `Annual contracted UOAs` = "annual_contracted_UDA_UOA",
+                         `Scaled monthly UOAs delivered` = "scaled_monthly_UDA_UOAs_delivered",
                          `Scaled monthly percentage of contracted UOAs delivered` = "perc_UDA_UOA_delivered")
     }
-    
-    
+
+
     data <- data %>%
       rename(any_of(new_col_names))
   }
@@ -674,10 +674,10 @@ plot_UDA_UOA_delivery_all_regions <- function(data = UDA_scheduled_data,
   
   #add a region column to the data
   region_STP_lookup <- calendar_data %>%
-    select(contract_number, name_or_company_name, region_name) %>%
+    select(commissioner_name, region_name) %>%
     distinct()
   
-  data <- left_join(data, region_STP_lookup, by = c("contract_number"))
+  data <- left_join(data, region_STP_lookup, by = c("commissioner_name"))
   
   #bind in historic data if required
   if(include_historic == TRUE & UDAorUOA == "UDA"){
@@ -769,11 +769,10 @@ plot_delivery_vs_contract_size_scatter_corporate <- function(data = UDA_schedule
   
   #add a region column to the data
   region_STP_lookup <- calendar_data %>%
-    select(contract_number, name_or_company_name, region_name) %>%
+    select(commissioner_name, region_name) %>%
     distinct()
-  
-  # data <- left_join(data, region_STP_lookup, by = c("contract_number", "name_or_company_name", "commissioner_name"))
-  data <- left_join(data, region_STP_lookup, by = c("contract_number"))
+
+  data <- left_join(data, region_STP_lookup, by = c("commissioner_name"))
   
   #filter for STP or region
   if(level == "Regional"){
@@ -896,10 +895,10 @@ plot_UDA_UOA_delivery_profile <- function(data = UDA_scheduled_data,
   
   #add a region column to the data
   region_STP_lookup <- calendar_data %>%
-    select(contract_number, name_or_company_name, commissioner_name, region_name) %>%
+    select(commissioner_name, region_name) %>%
     distinct()
   
-  data <- left_join(data, region_STP_lookup, by = c("contract_number", "name_or_company_name", "commissioner_name"))
+  data <- left_join(data, region_STP_lookup, by = "commissioner_name")
   
   #bind in historic data if required
   if(include_historic == TRUE & UDAorUOA == "UDA"){
@@ -1133,10 +1132,10 @@ plot_urgent_form_submissions <- function(data = UDA_scheduled_data,
   
   #add a region column to the data
   region_STP_lookup <- calendar_data %>%
-    select(contract_number, name_or_company_name, commissioner_name, region_name) %>%
+    select(commissioner_name, region_name) %>%
     distinct()
   
-  data <- left_join(data, region_STP_lookup, by = c("contract_number", "name_or_company_name", "commissioner_name"))
+  data <- left_join(data, region_STP_lookup, by = "commissioner_name")
   
   #toggle subtitle
   if(level == "Regional"){
@@ -1801,10 +1800,10 @@ get_num_urgent_forms <- function(data = UDA_scheduled_data,
   
   #add a region column to the data
   region_STP_lookup <- calendar_data %>%
-    select(contract_number, name_or_company_name, commissioner_name, region_name) %>%
+    select(commissioner_name, region_name) %>%
     distinct()
   
-  data <- left_join(data, region_STP_lookup, by = c("contract_number", "name_or_company_name", "commissioner_name"))
+  data <- left_join(data, region_STP_lookup, by = "commissioner_name")
   
   #filter for STP or region
   if(level == "Regional"){
@@ -1838,10 +1837,10 @@ get_num_urgent_forms_2019 <- function(data = UDA_scheduled_data,
   
   #add a region column to the data
   region_STP_lookup <- calendar_data %>%
-    select(contract_number, name_or_company_name, commissioner_name, region_name) %>%
+    select(commissioner_name, region_name) %>%
     distinct()
   
-  data <- left_join(data, region_STP_lookup, by = c("contract_number", "name_or_company_name", "commissioner_name"))
+  data <- left_join(data, region_STP_lookup, by = "commissioner_name")
   #historic_data <- left_join(historic_data, region_STP_lookup, by = c("contract_number"))
   
   #filter for STP or region
@@ -2073,7 +2072,7 @@ plot_workforce_returns <- function(data = dental_workforce_returns,
     distinct()
   
   data <- data %>%
-    left_join(region_STP_lookup, by = "contract_number")
+    left_join(region_STP_lookup, by = "commissioner_name")
   
   subtitle <- "England"
   
@@ -2134,11 +2133,11 @@ plot_delivery_vs_workforce_returns <- function(data = UDA_scheduled_data,
   
   #add a region column to the data
   region_STP_lookup <- calendar_data %>%
-    select(contract_number, name_or_company_name, region_name) %>%
+    select(commissioner_name, region_name) %>%
     distinct()
   
   # data <- left_join(data, region_STP_lookup, by = c("contract_number", "name_or_company_name", "commissioner_name"))
-  data <- left_join(data, region_STP_lookup, by = c("contract_number"))
+  data <- left_join(data, region_STP_lookup, by = "commissioner_name")
   
   #filter for STP or region
   if(level == "Regional"){
