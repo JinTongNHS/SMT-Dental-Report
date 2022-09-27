@@ -13,7 +13,7 @@ output:
       highlightLines: true
       countIncrementalSlides: false
 params:
-  region: "East of England"
+  region: "South West"
 ---
 
 
@@ -1606,7 +1606,7 @@ activity which is fixed. This may be thought of as "UDAs submitted" in each mont
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval7}
 plot_UDA_UOA_delivery(data = UDA_scheduled_data,  UDAorUOA = "UDA",
                                   level = "STP",
-                                  region_STP_name = STP4)
+                                  region_STP_name = STP7)
 ```
 
 * This graph shows the monthly percentage of usual annual contracted UDAs scaled up to 12 months (18 months for April) submitted. The graph uses scheduled data to measure the
@@ -4650,7 +4650,7 @@ for (i in 1:length(STPs)) {
 
 `r paste(knitr::knit(text = out), collapse = '\n')`
 
----
+
 name: num-contracts-trend
 
 ### Number of contracts trend
