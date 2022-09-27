@@ -218,15 +218,25 @@ upload_unique_patients_data <- function(data_path = "N:/_Everyone/Primary Care G
   data_month <- lubridate::floor_date(Sys.Date()  - lubridate::weeks(4), unit = "month")
   data_month_name <- format(Sys.Date()  - lubridate::weeks(4), format = "%b%y")
   
-  unique_patients <- readxl::read_excel(paste0(data_path, "UDA_scheduled_", data_month_name,".xlsx"))
+  unique_patients <- readxl::read_excel(paste0(data_path, "unique_patients_rolling_", data_month_name,".xlsx"),
+                                        skip = 19)
   
-  #will need to sort out column names too
-  
+  #fixes column names
+  unique_patients <- unique_patients %>%
+    mutate(month_ending = data_month) %>%
+    rename(contract_number = "Contract Number",
+           unique_patients_rolling_12M = "Unique Patient Count Rolling 12M",
+           band1_unique_patients_rolling_12M = "Band 1 Unique Patient Count Rolling 12M",
+           band2_or_3_unique_patients_rolling_12M = "Band 2 or Band 3 Unique Patient Count Rolling 12M",
+           band1_urgent_unique_patients_rolling_12M = "Band 1 Urgent Unique Patient Count Rolling 12M",
+           band_other_unique_patients_rolling_12M = "Other Unique Patient Count Rolling 12M") %>%
+    filter(!is.na(contract_number))
+
   #Append latest data to table on NCDR
   con <- dbConnect(odbc::odbc(), "NCDR")
 
   dbWriteTable(con, Id(catalog="NHSE_Sandbox_PrimaryCareNHSContracts",schema="Dental",table="unique_patients_rolling_12_month"),
-               value = unique_patients_rolling_202208, row.names = FALSE, append = TRUE)
+               value = unique_patients, row.names = FALSE, append = TRUE)
   
 }
 
