@@ -4642,7 +4642,7 @@ out = NULL
 
 for (i in 1:length(STPs)) {
   value.to.match <- STPs[i]
-  out = c(out, knitr::knit_expand('STP_loop.Rmd'))
+  out = c(out, knitr::knit_expand('ICB_loop.Rmd'))
   print(i)
   }
 
