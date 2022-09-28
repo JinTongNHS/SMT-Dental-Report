@@ -35,7 +35,6 @@ payments_to_dentists <- pull_payments_to_dentist()
 
 historical_UDA_scheduled_data <- pull_UDA_scheduled_historical_data()
 historical_UDA_scheduled_data <- rename(historical_UDA_scheduled_data, month = data_month)
-#historical_UDA_scheduled_data <- readRDS("../data/all_UDA_scheduled_historical_data.rds")
 
 #change column names and add regions
 UDA_calendar_data <- rename(UDA_calendar_data, month = data_month)
@@ -48,45 +47,44 @@ UOA_calendar_data <- UOA_calendar_data %>%
       select(contract_number, name_or_company_name, commissioner_name, region_name) %>%
       distinct()
     
-    UOA_calendar_data <- left_join(UOA_calendar_data, region_STP_lookup, by = c("contract_number", "name_or_company_name", "commissioner_name"))
+UOA_calendar_data <- left_join(UOA_calendar_data, region_STP_lookup, by = c("contract_number", "name_or_company_name", "commissioner_name"))
 UDA_scheduled_data <- rename(UDA_scheduled_data, month = data_month)
 UOA_scheduled_data <- rename(UOA_scheduled_data, month = data_month)
 
 #sort out STP ICB changes
-STP_ICB_lookup_codes <- read_excel("../data/STP_ICB_lookup_codes.xlsx")
+STP_ICB_lookup_codes <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/STP_ICB_lookup_codes.xlsx")
 UDA_scheduled_data <- correct_STP_ICBs(UDA_scheduled_data, output = "UDA scheduled")
 UDA_calendar_data <- correct_STP_ICBs(UDA_calendar_data, output = "UDA calendar")
 UOA_scheduled_data <- correct_STP_ICBs(UOA_scheduled_data, output = "UOA scheduled")
 UOA_calendar_data <- correct_STP_ICBs(UOA_calendar_data, output = "UOA calendar")
 
 #Read local 111 file
-dental_data_111 <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental/111_pathways_data/dental_data_111.xlsx")
+dental_data_111 <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/111_pathways_data/dental_data_111.xlsx")
 
 #############still to fix
-prototype_contracts <- read_excel("../data/prototype_contracts.xlsx")
-contractor_categories <- readRDS("../data/contractor_categories.RDS")
-contract_demographics <- readRDS("../data/contract_demographics.rds")
+prototype_contracts <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/prototype_contracts.xlsx")
+contractor_categories <- readRDS("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/contractor_categories.RDS")
+contract_demographics <- readRDS("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/contract_demographics.rds")
 
 #read in unique patients
 #unique_patients_rolling <- readRDS("../data/unique_patients/unique_patients_rolling.rds")
 unique_patients_rolling <- pull_unique_patients_data()
 
 #read in recalls 
-dental_recalls_STP_2018_22 <- readRDS("../data/recalls/dental_recalls_STP_2018_22.rds")
+dental_recalls_STP_2018_22 <- readRDS("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/dental_recalls_STP_2018_22.rds")
 
 #read in CDS data
-#CDS_data <- read_excel("../data/CDS/CDS_Data_for_r.xlsx")
-CDS_data <- read_excel("../data/CDS/CDS_Data_July22.xlsx")
+CDS_data <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/CDS/CDS_Data_July22.xlsx")
 
 #read in hand backs data
-contract_handbacks <- read_excel("../data/contract_handbacks.xlsx")
+contract_handbacks <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/contract_handbacks.xlsx")
 
 #read in and clean complaints data
-Dental_Access_Complaints_Data_June_22 <- read_excel("../data/complaints/Dental Access Complaints Data June 22.xlsx")
+Dental_Access_Complaints_Data_June_22 <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/complaints/Dental Access Complaints Data June 22.xlsx")
 dental_complaints <- clean_complaints_data(Dental_Access_Complaints_Data_June_22)
 
 #UDA value data
-UDA_values <- read_excel("../data/UDA_values.xlsx")
+UDA_values <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/UDA_values.xlsx")
 
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 
