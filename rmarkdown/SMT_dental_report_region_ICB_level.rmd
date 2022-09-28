@@ -26,8 +26,16 @@ library(DBI)
 library(odbc)
 library(reactable) #make sure you have the latest version by doing install.packages("reactable")
 library(downloadthis)
-source("../R/03 SMT_plot_functions.R")
-source("../R/02 format_SMT_data.R")
+
+#source in all file from plot folder
+for (f in list.files(path = "../R/03 plot_functions/", pattern="*.R$")) {
+    source(paste0("../R/03 plot_functions/", f))
+}
+
+#source in all files from format data folder
+for (f in list.files(path = "../R/02 format_data_functions/", pattern="*.R$")) {
+    source(paste0("../R/02 format_data_functions/", f))
+}
 
 #pull data from NCDR
 UDA_calendar_data <- pull_UDA_calendar_data()
