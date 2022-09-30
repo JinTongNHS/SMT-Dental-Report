@@ -4803,6 +4803,8 @@ plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = 
  ]
  ]
 
+ The dips seen every April are most likely due to the fact that new contracts starting at the beginning of the financial year will not have submitted any FP17s until May, which means that they will not show up in the data until May.
+
 [Return to contents](#contents)
 
 ---
@@ -4952,6 +4954,8 @@ plot_UDAs_commissioned(data = UDA_scheduled_data, historical_data = historical_U
 
  ]
  ]
+
+The dips seen every April are most likely due to changes to the contracted UDAs by commissioners, following performance reviews at the end of the financial year. It may also be that new contracts starting at the beginning of the financial year will not have submitted any FP17s until May, which means that their contracted UDA data will not show up until May.
 
 [Return to contents](#contents)
 
