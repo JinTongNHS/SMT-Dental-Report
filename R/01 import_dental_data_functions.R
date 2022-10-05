@@ -4,10 +4,10 @@ library(DBI)
 library(odbc)
 
 ################################################################################
-import_clean_combine_upload_all_data <- function(raw_UDA_scheduled_data_folder_path = "N:/_Everyone/Primary Care Group/SMT_Dental/raw_eDEN_dental_data/UDA_scheduled_raw_data/",
-                                             raw_UOA_scheduled_data_folder_path = "N:/_Everyone/Primary Care Group/SMT_Dental/raw_eDEN_dental_data/UOA_scheduled_raw_data/",
-                                             raw_UDA_calendar_data_folder_path = "N:/_Everyone/Primary Care Group/SMT_Dental/raw_eDEN_dental_data/UDA_calendar_raw_data/",
-                                             raw_UOA_calendar_data_folder_path = "N:/_Everyone/Primary Care Group/SMT_Dental/raw_eDEN_dental_data/UOA_calendar_raw_data/"){
+import_clean_combine_upload_all_data <- function(raw_UDA_scheduled_data_folder_path = "N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/raw_eDEN_dental_data/UDA_scheduled_raw_data/",
+                                             raw_UOA_scheduled_data_folder_path = "N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/raw_eDEN_dental_data/UOA_scheduled_raw_data/",
+                                             raw_UDA_calendar_data_folder_path = "N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/raw_eDEN_dental_data/UDA_calendar_raw_data/",
+                                             raw_UOA_calendar_data_folder_path = "N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/raw_eDEN_dental_data/UOA_calendar_raw_data/"){
 
   # Gets last month 
   data_month <- lubridate::floor_date(Sys.Date()  - lubridate::weeks(4), unit = "month")
@@ -24,7 +24,7 @@ import_clean_combine_upload_all_data <- function(raw_UDA_scheduled_data_folder_p
   #UDA calendar data
   UDA_calendar_data_latest <- import_and_clean_calendar_UDA_data(data_path = paste0(raw_UDA_calendar_data_folder_path, "UDA_calendar_Apr_", data_month_name,".xlsx"))
 
-  #UOA calendar data
+  # #UOA calendar data
   UOA_calendar_data_latest <- import_and_clean_calendar_UOA_data(data_path = paste0(raw_UOA_calendar_data_folder_path, "UOA_calendar_Apr_", data_month_name,".xlsx"))
 
   #Append schedule data and overwrite calendar data in NCDR
@@ -39,27 +39,7 @@ import_clean_combine_upload_all_data <- function(raw_UDA_scheduled_data_folder_p
                value = UOA_scheduled_data_latest, row.names = FALSE, append=TRUE)
 
   #Get UDA calendar table and overwrite this financial year
-  sql <- "SELECT [data_month]
-      ,[contract_number]
-      ,[latest_contract_type]
-      ,[name_or_company_name]
-      ,[commissioner_name]
-      ,[region_name]
-      ,[paid_by_BSA]
-      ,[contract_start_date]
-      ,[contract_end_date]
-      ,[UDA_total]
-      ,[UDA_band_1_total]
-      ,[UDA_band_2_total]
-      ,[UDA_band_3_total]
-      ,[UDA_urgent_total]
-      ,[UDA_other_total]
-      ,[total_FP17s]
-      ,[total_band_1_FP17s]
-      ,[total_band_2_FP17s]
-      ,[total_band_3_FP17s]
-      ,[total_urgent_FP17s]
-      ,[total_other_FP17s]
+  sql <- "SELECT *
   FROM [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UDA_calendar]"
   result <- dbSendQuery(con, sql)
   UDA_calendar_data <- dbFetch(result)
@@ -74,15 +54,7 @@ import_clean_combine_upload_all_data <- function(raw_UDA_scheduled_data_folder_p
 
 
   #Get UOA table and overwrite this financial year
-  sql <- "SELECT [data_month]
-      ,[contract_number]
-      ,[contract_type]
-      ,[name_or_company_name]
-      ,[commissioner_name]
-      ,[paid_by_BSA]
-      ,[contract_start_date]
-      ,[contract_end_date]
-      ,[UOA_total]
+  sql <- "SELECT *
   FROM [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UOA_calendar]"
 
   result <- dbSendQuery(con, sql)
@@ -212,7 +184,7 @@ update_SOF_table_S109 <- function(calendar_data = UDA_calendar_data,
 }
 
 ################################################################################
-upload_unique_patients_data <- function(data_path = "N:/_Everyone/Primary Care Group/SMT_Dental/unique_patients/"){
+upload_unique_patients_data <- function(data_path = "N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/unique_patients/"){
   
   # Gets last month 
   data_month <- lubridate::floor_date(Sys.Date()  - lubridate::weeks(4), unit = "month")
@@ -258,10 +230,6 @@ import_and_clean_scheduled_UDA_data <- function(data_path = "data/raw_data/dashb
                                    "numeric", "numeric", "numeric",
                                    "numeric", "numeric", "numeric",
                                    "numeric", "numeric", "numeric",
-                                   "numeric", "numeric", "numeric",
-                                   "numeric", "numeric", "numeric",
-                                   "numeric", "numeric", "numeric",
-                                   "numeric", "numeric", "numeric",
                                    "numeric", "numeric"), 
                      skip = 3,
                      col_names = TRUE,
@@ -271,7 +239,7 @@ import_and_clean_scheduled_UDA_data <- function(data_path = "data/raw_data/dashb
   data <- data[1:(nrow(data) - 4),]
   
   #check format of data - manual check should be done to see if columns are in the same order as expected
-  if(ncol(data) != 46){
+  if(ncol(data) != 34){
     print("WARNING: The data you have loaded is not in the usual format. Please check.")
   }
   
@@ -280,53 +248,28 @@ import_and_clean_scheduled_UDA_data <- function(data_path = "data/raw_data/dashb
     mutate(data_month = data_date) %>%
     select(data_month, everything()) %>%
     rename(contract_number = X__1,
-           name_or_company_name = X__2,
-           commissioner_name = X__3,
-           contract_type = X__4,
+           name_or_company_name = X__3,
+           commissioner_name = X__4,
+           contract_type = X__2,
            paid_by_BSA = X__5,
            contract_start_date = X__6,
            contract_end_date = X__7,
            annual_contracted_UDA = X__8,
            annual_contracted_UOA = X__9,
-           UDA_financial_half_target = X__10, #may need to remove this
            UDA_delivered = X__11,
            general_FP17s = X__12,
-           UDA_delivered_prev_year = X__13, #remove
-           general_FP17s_prev_year = X__14, #remove
-           UDA_delivered_prev_2_year = X__15, #remove        
-           general_FP17s_prev_2_year = X__16, #remove
-           UDA_band_1 = X__17,
-           UDA_band_2 = X__18,         
-           UDA_band_3 = X__19,
-           UDA_urgent = X__20,
-           UDA_other = X__21,
-           FP17s_band_1 = X__22,
-           FP17s_band_2 = X__23,
-           FP17s_band_3 = X__24,
-           FP17s_band_urgent = X__25,
-           FP17s_band_other = X__26,
-           UDA_band_1_prev_year = X__27, #remove
-           UDA_band_2_prev_year = X__28, #remove
-           UDA_band_3_prev_year = X__29, # remove
-           UDA_urgent_prev_year = X__30, # remove
-           UDA_other_prev_year = X__31, #remove
-           FP17s_band_1_prev_year = X__32, #remove
-           FP17s_band_2_prev_year = X__33, #remove
-           FP17s_band3_prev_year = X__34, #remove
-           FP17s_urgent_prev_year = X__35, #remove
-           FP17s_other_prev_year = X__36, #remove
-           UDA_band_1_prev_2_year = X__37, #remove
-           UDA_band_2_prev_2_year = X__38, #remove
-           UDA_band_3_prev_2_year = X__39, #remove
-           UDA_urgent_prev_2_year = X__40, #remove
-           UDA_other_prev_2_year = X__41, #remove
-           FP17s_band_1_prev_2_year = X__42, #remove
-           FP17s_band_2_prev_2_year = X__43, #remove
-           FP17s_band_3_prev_2_year = X__44, #remove
-           FP17s_urgent_prev_2_year = X__45, #remove
-           FP17s_other_prev_2_year = X__46  #remove
+           UDA_band_1 = X__15,
+           UDA_band_2 = X__16,         
+           UDA_band_3 = X__17,
+           UDA_urgent = X__18,
+           UDA_other = X__19,
+           FP17s_band_1 = X__20,
+           FP17s_band_2 = X__21,
+           FP17s_band_3 = X__22,
+           FP17s_band_urgent = X__23,
+           FP17s_band_other = X__24
     ) %>%
-    select(-UDA_financial_half_target) 
+    select(-starts_with("X__"))
   
 }
 
@@ -488,8 +431,36 @@ import_and_clean_calendar_UDA_data <- function(data_path = "data/raw_data/dashbo
            total_other_FP17s = X__68
     ) 
   
+  #add column for date and rename columns, split data for just september
+  data_sep <- data %>%
+    mutate(data_month = as.Date("2022-09-01")) %>%
+    select(data_month, X__1, X__2, X__3, X__4, X__5, X__6, X__7, X__8, 
+           X__69, X__70, X__71, X__72, X__73, X__74, X__75, X__76, X__77, X__78, X__79, X__80) %>%
+    rename(contract_number = X__1,
+           latest_contract_type = X__2,
+           name_or_company_name = X__3,
+           commissioner_name = X__4,
+           region_name = X__5,
+           paid_by_BSA = X__6,
+           contract_start_date = X__7, 
+           contract_end_date = X__8, 
+           
+           UDA_total = X__69, 
+           UDA_band_1_total = X__70,
+           UDA_band_2_total = X__71,
+           UDA_band_3_total = X__72, 
+           UDA_urgent_total = X__73, 
+           UDA_other_total = X__74, 
+           total_FP17s = X__75, 
+           total_band_1_FP17s  = X__76,
+           total_band_2_FP17s = X__77,
+           total_band_3_FP17s = X__78,
+           total_urgent_FP17s = X__79,
+           total_other_FP17s = X__80
+    ) 
   
-  UDA_calendar_data <- bind_rows(data_apr, data_may, data_jun, data_jul, data_aug)
+  
+  UDA_calendar_data <- bind_rows(data_apr, data_may, data_jun, data_jul, data_aug, data_sep)
   
 }
 
@@ -611,7 +582,23 @@ import_and_clean_calendar_UOA_data <- function(data_path = "data/raw_data/dashbo
            UOA_total = X__12
     )
   
-  UOA_calendar_data <- bind_rows(data_apr, data_may, data_jun, data_jul, data_aug)
+  #add column for date and rename columns, split data for just sep
+  data_sep <- data %>%
+    mutate(data_month = as.Date("2022-09-01")) %>%
+    select(data_month, X__1, X__2, X__3, X__4, X__5, X__6, X__7, 
+           X__13) %>%
+    rename(contract_number = X__1,
+           contract_type = X__2,
+           name_or_company_name = X__3,
+           commissioner_name = X__4,
+           paid_by_BSA = X__5,
+           contract_start_date = X__6, 
+           contract_end_date = X__7, 
+           
+           UOA_total = X__13
+    )
+  
+  UOA_calendar_data <- bind_rows(data_apr, data_may, data_jun, data_jul, data_aug, data_sep)
   
 }
 
@@ -630,7 +617,7 @@ import_and_clean_scheduled_UOA_data <- function(data_path = "data/raw_data/dashb
                                    "numeric", "numeric", "numeric", 
                                    "numeric", "numeric", "numeric", 
                                    "numeric", "numeric", "numeric", 
-                                   "numeric"), 
+                                   "numeric", "numeric", "numeric"), 
                      skip = 3,
                      col_names = TRUE,
                      .name_repair = ~ paste0("X__", seq_along(.x)))
@@ -639,7 +626,7 @@ import_and_clean_scheduled_UOA_data <- function(data_path = "data/raw_data/dashb
   data <- data[1:(nrow(data) - 4),]
   
   #check format of data - manual check should be done to see if columns are in the same order as expected
-  if(ncol(data) != 18){
+  if(ncol(data) != 20){
     print("WARNING: The data you have loaded is not in the usual format. Please check.")
   }
   
@@ -656,16 +643,17 @@ import_and_clean_scheduled_UOA_data <- function(data_path = "data/raw_data/dashb
            contract_end_date = X__7,
            annual_contracted_UOA = X__8,
            annual_contracted_UDA = X__9,
-           UOA_financial_half_target = X__10, #may need to remove this
-           UOA_delivered = X__11,
-           UOA_delivered_prev_year = X__12, #may need to remove
-           UOA_delivered_prev_2_year = X__13, #may need to remove
-           orthodontic_FP17s = X__14, 
-           orthodontic_FP17s_prev_year = X__15, #remove        
-           orthodontic_FP17s_prev_2_year = X__16, #remove
+           #UOA_financial_half_target = X__10, #may need to remove this
+           UOA_delivered = X__19,
+           #UOA_delivered_prev_year = X__12, #may need to remove
+           #UOA_delivered_prev_2_year = X__13, #may need to remove
+           orthodontic_FP17s = X__20, 
+           #orthodontic_FP17s_prev_year = X__15, #remove        
+           #orthodontic_FP17s_prev_2_year = X__16, #remove
            orthodontic_starts = X__17,
            orthodontic_completions = X__18 
-    )
+    ) %>%
+    select(-starts_with("X__"))
   
 }
 

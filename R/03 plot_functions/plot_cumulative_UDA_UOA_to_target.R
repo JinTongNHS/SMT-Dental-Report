@@ -54,13 +54,13 @@ plot_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data,
     
   }
   
-  #add blanks for future dates if on single level
-  if(all_regions_and_STPs == FALSE & nrow(data) < 19){
-    
-    if(!(as.Date("2022-09-01") %in% data$month)){
-      data <- data %>% add_row(month = as.Date("2022-09-01"))
-    }
-  }
+  # #add blanks for future dates if on single level
+  # if(all_regions_and_STPs == FALSE & nrow(data) < 19){
+  #   
+  #   if(!(as.Date("2022-09-01") %in% data$month)){
+  #     data <- data %>% add_row(month = as.Date("2022-09-01"))
+  #   }
+  # }
   
   #get data in the right format
   data <- data %>%
