@@ -47,11 +47,11 @@ plot_delivery_vs_contract_size_scatter_corporate <- function(data = UDA_schedule
   #remove prototype contracts if specified
   if(remove_prototypes & UDAorUOA == "UDA"){
     data <- data %>%
-      filter(contract_number %notin% prototype_contracts$prototype_contract_number)%>%
+      #filter(contract_number %notin% prototype_contracts$prototype_contract_number)%>%
       filter(annual_contracted_UDA > 100)
   }else if(remove_prototypes & UDAorUOA == "UOA"){
     data <- data %>%
-      filter(contract_number %notin% prototype_contracts$prototype_contract_number) %>%
+      #filter(contract_number %notin% prototype_contracts$prototype_contract_number) %>%
       filter(annual_contracted_UOA > 100)
   }
   
@@ -75,15 +75,15 @@ plot_delivery_vs_contract_size_scatter_corporate <- function(data = UDA_schedule
     p <- ggplot(data_to_plot, aes(x = annual_contracted_UDA, y = UDA_delivery)) +
       geom_point(aes(colour = Corporate.Status)) +
       theme_bw() +
-      geom_hline(yintercept = 0.95,
-                 colour = "orangered4",
-                 linetype = "dashed") +
-      annotate(geom = "text",
-               x = max(data_to_plot$annual_contracted_UDA) - 8000,
-               y = 0.87,
-               label = "95% Q1 threshold",
-               size = 3,
-               colour = "orangered4") +
+      # geom_hline(yintercept = 0.95,
+      #            colour = "orangered4",
+      #            linetype = "dashed") +
+      # annotate(geom = "text",
+      #          x = max(data_to_plot$annual_contracted_UDA) - 8000,
+      #          y = 0.87,
+      #          label = "95% Q1 threshold",
+      #          size = 3,
+      #          colour = "orangered4") +
       geom_hline(yintercept = 1,
                  colour = "grey40",
                  linetype = "dashed") +
@@ -106,7 +106,7 @@ plot_delivery_vs_contract_size_scatter_corporate <- function(data = UDA_schedule
            subtitle = paste(format(plot_month, "%B %Y"), "scheduled delivery -", subtitle),
            x = "Annual contracted UDAs",
            y = "Percentage of annual contracted UDAs delivered \n scaled up 12 months",
-           caption = "*Excluding prototype contracts and contracts with annual contracted UDA < 100.
+           caption = "*Excluding contracts with annual contracted UDA < 100. Excluding prototype contracts up until April 2022.
          Also excluding contracts with delivery > 300% for plot purposes.
            **April is scaled up by 18 due to short schedule period for April",
            colour = "Corporate status"

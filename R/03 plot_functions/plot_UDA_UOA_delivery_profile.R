@@ -54,13 +54,13 @@ plot_UDA_UOA_delivery_profile <- function(data = UDA_scheduled_data,
   if(UDAorUOA == "UDA"){
     title <- "Proportion of contracts delivering in each performance band \nof total contracted UDA per month"
     legTitle <- "Performance band of \nUDA delivery"
-    captionTitle <- "*Excluding prototype contracts and those with annual contracted UDA < 100 
+    captionTitle <- "*Excluding contracts with annual contracted UDA < 100. Excluding prototype contracts up until April 2022.
                     **These are scheduled months and April data is for the reporting period 1st April - 
                     21st April therefore the April data has been scaled up by 18 instead of 12."
   }else{
     title <- "Proportion of contracts delivering in each performance band \nof total contracted UOA per month"
     legTitle <- "Performance band of \nUOA delivery"
-    captionTitle <- "*Excluding prototype contracts and those with zero annual contracted UOAs 
+    captionTitle <- "*Excluding contracts with no annual contracted UOAs. Excluding prototype contracts up until April 2022.
                     **These are scheduled months and April data is for the reporting period 1st April - 
                     21st April therefore the April data has been scaled up by 18 instead of 12."
   }

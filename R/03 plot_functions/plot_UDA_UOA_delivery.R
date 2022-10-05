@@ -59,10 +59,10 @@ plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
     data <- get_delivery_data(data, remove_prototypes, UDAorUOA = "UDA", all_regions_and_STPs = all_regions_and_STPs)
     title <- "Scheduled monthly percentage of usual annual contracted UDAs \nsubmitted across all contracts* scaled up to 12 months**"
     ylab <- "% of contracted UDAs submitted"
-    captionTitle <- "*Excluding prototype contracts and those with annual contracted UDA < 100
+    captionTitle <- "*Excluding contracts with annual contracted UDA < 100. Excluding prototype contracts up until April 2022.
                     **These are scheduled months and April data is for the reporting period 1st April -
                     21st April therefore the April data has been scaled up by 18 instead of 12."
-    lineCol <- "coral"
+
     lineCol <- "#CC79A7"
     septemberTarget <- 60
     decemberTarget <- 65
@@ -73,7 +73,7 @@ plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
     data <- get_delivery_data(data, remove_prototypes, UDAorUOA = "UOA", all_regions_and_STPs = all_regions_and_STPs)
     title <- "Scheduled monthly percentage of usual annual contracted UOAs \nsubmitted across all contracts* scaled up to 12 months**"
     ylab <- "% of contracted UOAs submitted"
-    captionTitle <- "*Excluding prototype contracts and with zero annual contracted UOAs
+    captionTitle <- "*Excluding contracts with no annual contracted UOAs. Excluding prototype contracts up until April 2022.
                     **These are scheduled months and April data is for the reporting period 1st April -
                     21st April therefore the April data has been scaled up by 18 instead of 12."
     lineCol <- "steelblue"
@@ -95,45 +95,64 @@ plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
       geom_point(aes(x = month,
                      y = perc_UDA_UOA_delivered),
                  colour = lineCol
-      ) +
-      # geom_segment(aes(x = as.Date("2021-04-01"), y = septemberTarget, xend = as.Date("2021-09-01"), yend = septemberTarget),
-      #              colour = "#0072B2",
-      #              linetype = "dashed") +
-      # geom_segment(aes(x = as.Date("2021-10-01"), y = decemberTarget, xend = as.Date("2021-12-01"), yend = decemberTarget),
-      #              colour = "#0072B2",
-      #              linetype = "dashed") +
-      # geom_segment(aes(x = as.Date("2022-01-01"), y = marchTarget, xend = as.Date("2022-03-01"), yend = marchTarget),
-      #              colour = "#0072B2",
-      #              linetype = "dashed") +
-      # geom_segment(aes(x = as.Date("2022-04-01"), y = juneTarget, xend = as.Date("2022-06-01"), yend = juneTarget),
-      #              colour = "#0072B2",
-    #              linetype = "dashed") +
-    #
-    # annotate(geom = "text",
-    #          x = as.Date("2021-04-01") + lubridate::weeks(2),
-    #          y = septemberTarget - 5,
-    #          label = "H1 threshold",
-    #          size = 3,
-    #          colour = "#0072B2") +
-    # annotate(geom = "text",
-    #          x = as.Date("2021-10-01") + lubridate::weeks(2),
-    #          y = decemberTarget - 5,
-    #          label = "Q3 threshold",
-    #          size = 3,
-    #          colour = "#0072B2") +
-    # annotate(geom = "text",
-    #          x = as.Date("2022-01-01") + lubridate::weeks(2),
-    #          y = marchTarget - 5,
-    #          label = "Q4 threshold",
-    #          size = 3,
-    #          colour = "#0072B2") +
-    # annotate(geom = "text",
-    #          x = as.Date("2022-04-01") + lubridate::weeks(2),
-    #          y = juneTarget - 5,
-    #          label = "Q1 threshold",
-    #          size = 3,
-    #          colour = "#0072B2") +
+      ) 
     
+    if(include_historic == FALSE){
+      
+      p <- p +
+      geom_segment(aes(x = as.Date("2021-04-01"), y = septemberTarget, xend = as.Date("2021-09-01"), yend = septemberTarget),
+                   colour = "#0072B2",
+                   linetype = "dashed") +
+      geom_segment(aes(x = as.Date("2021-10-01"), y = decemberTarget, xend = as.Date("2021-12-01"), yend = decemberTarget),
+                   colour = "#0072B2",
+                   linetype = "dashed") +
+      geom_segment(aes(x = as.Date("2022-01-01"), y = marchTarget, xend = as.Date("2022-03-01"), yend = marchTarget),
+                   colour = "#0072B2",
+                   linetype = "dashed") +
+      geom_segment(aes(x = as.Date("2022-04-01"), y = juneTarget, xend = as.Date("2022-06-01"), yend = juneTarget),
+                   colour = "#0072B2",
+                   linetype = "dashed") +
+
+      annotate(geom = "text",
+               x = as.Date("2021-04-01") + lubridate::weeks(2),
+               y = septemberTarget - 5,
+               label = "H1 threshold",
+               size = 3,
+               colour = "#0072B2") +
+      annotate(geom = "text",
+               x = as.Date("2021-10-01") + lubridate::weeks(2),
+               y = decemberTarget - 5,
+               label = "Q3 threshold",
+               size = 3,
+               colour = "#0072B2") +
+      annotate(geom = "text",
+               x = as.Date("2022-01-01") + lubridate::weeks(2),
+               y = marchTarget - 5,
+               label = "Q4 threshold",
+               size = 3,
+               colour = "#0072B2") +
+      annotate(geom = "text",
+               x = as.Date("2022-04-01") + lubridate::weeks(2),
+               y = juneTarget - 5,
+               label = "Q1 threshold",
+               size = 3,
+               colour = "#0072B2") +
+        annotate(geom = "text",
+                 x = data$month,
+                 y = data$perc_UDA_UOA_delivered - 10,
+                 label = paste0(data$perc_UDA_UOA_delivered, "%"),
+                 size = 3) 
+    }else{
+      
+      p <- p +
+        annotate(geom = "text",
+                 x = data$month[nrow(data)],
+                 y = data$perc_UDA_UOA_delivered[nrow(data)] - 3,
+                 label = paste0(data$perc_UDA_UOA_delivered[nrow(data)], "%"),
+                 size = 3) 
+    }
+      
+    p <- p +
     scale_x_date(date_breaks = "1 month",
                  date_labels = "%b-%y") +
       scale_y_continuous(limits = c(0, max(c(data$perc_UDA_UOA_delivered, 95), na.rm = T) + 5),
@@ -143,11 +162,6 @@ plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
            y = ylab,
            subtitle = subtitle,
            caption = captionTitle) +
-      annotate(geom = "text",
-               x = data$month[nrow(data)],
-               y = data$perc_UDA_UOA_delivered[nrow(data)] - 3,
-               label = paste0(data$perc_UDA_UOA_delivered[nrow(data)], "%"),
-               size = 3) +
       theme(axis.text.x = element_text(angle = 90, vjust=-0.0001
       ))
     

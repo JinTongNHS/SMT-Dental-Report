@@ -1,10 +1,18 @@
 ################################################################################
-get_num_contracts <- function(data = UDA_calendar_data, 
+get_num_contracts <- function(data = UDA_scheduled_data, 
                               remove_prototypes = T,
-                              scheduled_data = UDA_scheduled_data,
+                              calendar_data = UDA_calendar_data,
                               UDAorUOA = "UDA",
                               level = "National",
                               region_STP_name = NULL){
+  
+  #join in region column from calendar data
+  region_icb_lookup <- calendar_data %>%
+    select(commissioner_name, region_name) %>%
+    unique()
+  
+  data <- data %>%
+    left_join(region_icb_lookup, by = "commissioner_name")
   
   #filter for STP or region
   if(level == "Regional"){
@@ -16,19 +24,19 @@ get_num_contracts <- function(data = UDA_calendar_data,
     subtitle <- region_STP_name
   }
   
-  if(UDAorUOA == "UDA"){
-    #get contracted UDAs
-    contracted_UDA_UOAs <- scheduled_data %>%
-      select(month, contract_number, annual_contracted_UDA)
-  }else{
-    #get contracted UOAs
-    contracted_UDA_UOAs <- scheduled_data %>%
-      select(month, contract_number, annual_contracted_UOA)
-  }
-  
-  #join in contracted UDA/UOAs from scheduled data
-  data <- data %>%
-    left_join(contracted_UDA_UOAs, by = c("month", "contract_number"))
+  # if(UDAorUOA == "UDA"){
+  #   #get contracted UDAs
+  #   contracted_UDA_UOAs <- scheduled_data %>%
+  #     select(month, contract_number, annual_contracted_UDA)
+  # }else{
+  #   #get contracted UOAs
+  #   contracted_UDA_UOAs <- scheduled_data %>%
+  #     select(month, contract_number, annual_contracted_UOA)
+  # }
+  # 
+  # #join in contracted UDA/UOAs from scheduled data
+  # data <- data %>%
+  #   left_join(contracted_UDA_UOAs, by = c("month", "contract_number"))
   
   #create not in function
   `%notin%` = Negate(`%in%`)
@@ -36,12 +44,12 @@ get_num_contracts <- function(data = UDA_calendar_data,
   #remove prototype contracts if specified
   if(remove_prototypes & UDAorUOA == "UDA"){
     data <- data %>%
-      filter(contract_number %notin% prototype_contracts$prototype_contract_number)%>%
+     # filter(contract_number %notin% prototype_contracts$prototype_contract_number)%>%
       filter(annual_contracted_UDA > 100)
   }else if(remove_prototypes & UDAorUOA == "UOA"){
     data <- data %>%
-      filter(contract_number %notin% prototype_contracts$prototype_contract_number)%>%
-      filter(annual_contracted_UOA > 0)###############
+      #filter(contract_number %notin% prototype_contracts$prototype_contract_number)%>%
+      filter(annual_contracted_UOA > 0)
   }
   
   data <- data %>%

@@ -1,10 +1,19 @@
 ################################################################################
-table_number_cat_contracts <- function(data = UDA_calendar_data, 
-                                       scheduled_data = UDA_scheduled_data,
+table_number_cat_contracts <- function(data = UDA_scheduled_data, 
+                                       calendar_data = UDA_calendar_data,
                                        contractor_cats = contractor_categories,
                                        remove_prototypes = F,
                                        level = NULL,
                                        region_STP_name = NULL){
+  
+  
+  #join in region column from calendar data
+  region_icb_lookup <- calendar_data %>%
+    select(commissioner_name, region_name) %>%
+    unique()
+  
+  data <- data %>%
+    left_join(region_icb_lookup, by = "commissioner_name")
   
   #filter for STP or region
   if(level == "Regional"){
@@ -18,20 +27,14 @@ table_number_cat_contracts <- function(data = UDA_calendar_data,
   }else{
     subtitle <- "England"
   }
-  
-  #join in contracted UDAs from scheduled data
-  contracted_UDAs <- scheduled_data %>%
-    select(month, contract_number, annual_contracted_UDA)
-  
-  data <- data %>%
-    left_join(contracted_UDAs, by = c("month", "contract_number"))
+
   
   #remove prototype contracts if specified
   if(remove_prototypes){
     #create not in function•
     `%notin%` = Negate(`%in%`)
     data <- data %>%
-      filter(contract_number %notin% prototype_contracts$prototype_contract_number)%>%
+      #filter(contract_number %notin% prototype_contracts$prototype_contract_number)%>%
       filter(annual_contracted_UDA > 100)
   }
   

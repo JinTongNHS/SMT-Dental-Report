@@ -7,18 +7,15 @@ get_delivery_data <- function(data = UDA_scheduled_data,
                               all_regions_and_STPs = F,
                               renameColumns = F){
   
-  
-  #create not in function
-  `%notin%` = Negate(`%in%`)
-  
   #remove prototype contracts if specified
+  #only remove prototypes before April 2022
   if(remove_prototypes & UDAorUOA == "UDA"){
     data <- data %>%
-      filter(contract_number %notin% prototype_contracts$prototype_contract_number)%>%
+      filter(!(contract_number %in% prototype_contracts$prototype_contract_number & month < as.Date("2022-04-01"))) %>%
       filter(annual_contracted_UDA > 100)
   }else if(remove_prototypes & UDAorUOA == "UOA"){
     data <- data %>%
-      filter(contract_number %notin% prototype_contracts$prototype_contract_number) %>%
+      filter(!(contract_number %in% prototype_contracts$prototype_contract_number & month < as.Date("2022-04-01"))) %>%
       filter(annual_contracted_UOA > 0)
   }
   

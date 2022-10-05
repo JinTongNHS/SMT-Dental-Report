@@ -7,18 +7,17 @@ get_delivery_profile_data <- function(data = UDA_scheduled_data,
   # #filter out ended contracts
   # data <- data %>%
   #   filter(is.na(contract_end_date) | contract_end_date > month)
-  
-  #create not in function
-  `%notin%` = Negate(`%in%`)
+
   
   #remove prototype contracts if specified
+  #only remove prototypes before April 2022
   if(remove_prototypes & UDAorUOA == "UDA"){
     data <- data %>%
-      filter(contract_number %notin% prototype_contracts$prototype_contract_number)%>%
+      filter(!(contract_number %in% prototype_contracts$prototype_contract_number & month < as.Date("2022-04-01"))) %>%
       filter(annual_contracted_UDA > 100)
   }else if(remove_prototypes & UDAorUOA == "UOA"){
     data <- data %>%
-      filter(contract_number %notin% prototype_contracts$prototype_contract_number) %>%
+      filter(!(contract_number %in% prototype_contracts$prototype_contract_number & month < as.Date("2022-04-01"))) %>%
       filter(annual_contracted_UOA > 0)
   }
   

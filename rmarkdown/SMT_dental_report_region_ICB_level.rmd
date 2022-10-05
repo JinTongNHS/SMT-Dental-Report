@@ -309,10 +309,10 @@ name: contents
  
 #### Dental
  * [Table of number of contracts by MY category](#contracts-table)
- * [Calendar UDA activity](#calendar-uda-activity)
- * [Calendar UDA activity by MY category](#calendar-uda-activity-my-cat)
+ * [UDA activity](#short-uda-activity)
+ * [UDA activity by MY category](#short-uda-activity-my-cat)
  * [Cumulative UDA delivery per quarter](#cumulative-udas)
- * [Scheduled UDAs](#scheduled-udas)
+ * [Historical UDA delivery](#historic-udas)
  * [Contract size vs delivery scatter plot](#contract-size-scatter)
  * [UDA delivery profile across months](#uda-delivery-profile)
  * [Banded courses of treatment time series](#banded-cots)
@@ -327,10 +327,9 @@ name: contents
  * [Financial value of UDAs delivered as % of 2018 delivery](#uda-value-index)
 
 #### Orthodontic 
- * [Calendar UOA activity](#calendar-uoa-activity)
- * [Calendar UOA activity by MY category](#calendar-uoa-activity-my-cat)
+ * [UOA activity](#uoa-activity)
+ * [UOA activity by MY category](#uoa-activity-my-cat)
  * [Cumulative UOA delivery per quarter](#cumulative-uoas)
- * [Scheduled UOAs](#scheduled-uoas)
  * [UOA delivery profile across months](#uoa-delivery-profile)
  
 #### Appendix
@@ -344,6 +343,8 @@ This is an interactive markdown report.  You can navigate from slide to slide by
 ---
 
 ### Calendar and scheduled data
+
+All analyses in this report now only use **scheduled data**.
 
 <font size="2">
 #### Calendar data explanation
@@ -390,13 +391,13 @@ xaringanExtra::use_panelset()
 
 .panel[.panel-name[`r params$region`]
 
-#### Including prototypes and contracts with annual contracted UDA < 100
+#### Including contracts with annual contracted UDA < 100
 ```{r table11, echo = FALSE, warning = FALSE, message = FALSE}
 knitr::kable(table_number_cat_contracts(remove_prototypes = F, level = "Regional", region_STP_name = region), format = 'html') %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
 ```
 
-#### Excluding prototypes and contracts with annual contracted UDA < 100
+#### Excluding contracts with annual contracted UDA < 100
 ```{r table21, echo = FALSE, warning = FALSE, message = FALSE}
 knitr::kable(table_number_cat_contracts(remove_prototypes = T, level = "Regional", region_STP_name = region), format = 'html') %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
@@ -406,13 +407,13 @@ knitr::kable(table_number_cat_contracts(remove_prototypes = T, level = "Regional
 ]
 .panel[.panel-name[`r STP1`]
 
-#### Including prototypes and contracts with annual contracted UDA < 100
+#### Including contracts with annual contracted UDA < 100
 ```{r table12, echo = FALSE, warning = FALSE, message = FALSE}
 knitr::kable(table_number_cat_contracts(remove_prototypes = F, level = "STP", region_STP_name = STP1), format = 'html') %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
 ```
 
-#### Excluding prototypes and contracts with annual contracted UDA < 100
+#### Excluding contracts with annual contracted UDA < 100
 ```{r table22, echo = FALSE, warning = FALSE, message = FALSE}
 knitr::kable(table_number_cat_contracts(remove_prototypes = T, level = "STP", region_STP_name = STP1), format = 'html') %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
@@ -423,13 +424,13 @@ knitr::kable(table_number_cat_contracts(remove_prototypes = T, level = "STP", re
 ]
 .panel[.panel-name[`r STP2`]
 
-#### Including prototypes and contracts with annual contracted UDA < 100
+#### Including contracts with annual contracted UDA < 100
 ```{r table13, echo = FALSE, warning = FALSE, message = FALSE}
 knitr::kable(table_number_cat_contracts(remove_prototypes = F, level = "STP", region_STP_name = STP2), format = 'html') %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
 ```
 
-#### Excluding prototypes and contracts with annual contracted UDA < 100
+#### Excluding contracts with annual contracted UDA < 100
 ```{r table23, echo = FALSE, warning = FALSE, message = FALSE}
 knitr::kable(table_number_cat_contracts(remove_prototypes = T, level = "STP", region_STP_name = STP2), format = 'html') %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
@@ -440,13 +441,13 @@ knitr::kable(table_number_cat_contracts(remove_prototypes = T, level = "STP", re
 ]
 .panel[.panel-name[`r STP3`]
 
-#### Including prototypes and contracts with annual contracted UDA < 100
+#### Including contracts with annual contracted UDA < 100
 ```{r echo = FALSE, warning = FALSE, message = FALSE}
 knitr::kable(table_number_cat_contracts(remove_prototypes = F, level = "STP", region_STP_name = STP3), format = 'html') %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
 ```
 
-#### Excluding prototypes and contracts with annual contracted UDA < 100
+#### Excluding contracts with annual contracted UDA < 100
 ```{r echo = FALSE, warning = FALSE, message = FALSE}
 knitr::kable(table_number_cat_contracts(remove_prototypes = T, level = "STP", region_STP_name = STP3), format = 'html') %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
@@ -457,13 +458,13 @@ knitr::kable(table_number_cat_contracts(remove_prototypes = T, level = "STP", re
 ]
 .panel[.panel-name[`r STP4`]
 
-#### Including prototypes and contracts with annual contracted UDA < 100
+#### Including contracts with annual contracted UDA < 100
 ```{r echo = FALSE, warning = FALSE, message = FALSE, eval = eval4}
 knitr::kable(table_number_cat_contracts(remove_prototypes = F, level = "STP", region_STP_name = STP4), format = 'html') %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
 ```
 
-#### Excluding prototypes and contracts with annual contracted UDA < 100
+#### Excluding contracts with annual contracted UDA < 100
 ```{r echo = FALSE, warning = FALSE, message = FALSE, eval = eval4}
 knitr::kable(table_number_cat_contracts(remove_prototypes = T, level = "STP", region_STP_name = STP4), format = 'html') %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
@@ -474,13 +475,13 @@ knitr::kable(table_number_cat_contracts(remove_prototypes = T, level = "STP", re
 ]
 .panel[.panel-name[`r STP5`]
 
-#### Including prototypes and contracts with annual contracted UDA < 100
+#### Including contracts with annual contracted UDA < 100
 ```{r echo = FALSE, warning = FALSE, message = FALSE, eval = eval5}
 knitr::kable(table_number_cat_contracts(remove_prototypes = F, level = "STP", region_STP_name = STP5), format = 'html') %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
 ```
 
-#### Excluding prototypes and contracts with annual contracted UDA < 100
+#### Excluding contracts with annual contracted UDA < 100
 ```{r echo = FALSE, warning = FALSE, message = FALSE, eval = eval5}
 knitr::kable(table_number_cat_contracts(remove_prototypes = T, level = "STP", region_STP_name = STP5), format = 'html') %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
@@ -491,13 +492,13 @@ knitr::kable(table_number_cat_contracts(remove_prototypes = T, level = "STP", re
 ]
 .panel[.panel-name[`r STP6`]
 
-#### Including prototypes and contracts with annual contracted UDA < 100
+#### Including contracts with annual contracted UDA < 100
 ```{r  echo = FALSE, warning = FALSE, message = FALSE, eval = eval6}
 knitr::kable(table_number_cat_contracts(remove_prototypes = F, level = "STP", region_STP_name = STP6), format = 'html') %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
 ```
 
-#### Excluding prototypes and contracts with annual contracted UDA < 100
+#### Excluding contracts with annual contracted UDA < 100
 ```{r echo = FALSE, warning = FALSE, message = FALSE, eval = eval6}
 knitr::kable(table_number_cat_contracts(remove_prototypes = T, level = "STP", region_STP_name = STP6), format = 'html') %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
@@ -508,13 +509,13 @@ knitr::kable(table_number_cat_contracts(remove_prototypes = T, level = "STP", re
 ]
 .panel[.panel-name[`r STP7`]
 
-#### Including prototypes and contracts with annual contracted UDA < 100
+#### Including contracts with annual contracted UDA < 100
 ```{r  echo = FALSE, warning = FALSE, message = FALSE, eval = eval7}
 knitr::kable(table_number_cat_contracts(remove_prototypes = F, level = "STP", region_STP_name = STP7), format = 'html') %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
 ```
 
-#### Excluding prototypes and contracts with annual contracted UDA < 100
+#### Excluding contracts with annual contracted UDA < 100
 ```{r echo = FALSE, warning = FALSE, message = FALSE, eval = eval7}
 knitr::kable(table_number_cat_contracts(remove_prototypes = T, level = "STP", region_STP_name = STP7), format = 'html') %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
@@ -523,13 +524,13 @@ knitr::kable(table_number_cat_contracts(remove_prototypes = T, level = "STP", re
 ]
 .panel[.panel-name[`r STP8`]
 
-#### Including prototypes and contracts with annual contracted UDA < 100
+#### Including contracts with annual contracted UDA < 100
 ```{r  echo = FALSE, warning = FALSE, message = FALSE, eval = FALSE, eval = eval8}
 knitr::kable(table_number_cat_contracts(remove_prototypes = F, level = "STP", region_STP_name = STP8), format = 'html') %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
 ```
 
-#### Excluding prototypes and contracts with annual contracted UDA < 100
+#### Excluding contracts with annual contracted UDA < 100
 ```{r echo = FALSE, warning = FALSE, message = FALSE, eval = FALSE, eval = eval8}
 knitr::kable(table_number_cat_contracts(remove_prototypes = T, level = "STP", region_STP_name = STP8), format = 'html') %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
@@ -538,13 +539,13 @@ knitr::kable(table_number_cat_contracts(remove_prototypes = T, level = "STP", re
 ]
 .panel[.panel-name[`r STP9`]
 
-#### Including prototypes and contracts with annual contracted UDA < 100
+#### Including contracts with annual contracted UDA < 100
 ```{r  echo = FALSE, warning = FALSE, message = FALSE, eval = FALSE, eval = eval9}
 knitr::kable(table_number_cat_contracts(remove_prototypes = F, level = "STP", region_STP_name = STP9), format = 'html') %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
 ```
 
-#### Excluding prototypes and contracts with annual contracted UDA < 100
+#### Excluding contracts with annual contracted UDA < 100
 ```{r echo = FALSE, warning = FALSE, message = FALSE, eval = FALSE, eval = eval9}
 knitr::kable(table_number_cat_contracts(remove_prototypes = T, level = "STP", region_STP_name = STP9), format = 'html') %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
@@ -553,13 +554,13 @@ knitr::kable(table_number_cat_contracts(remove_prototypes = T, level = "STP", re
 ]
 .panel[.panel-name[`r STP10`]
 
-#### Including prototypes and contracts with annual contracted UDA < 100
+#### Including contracts with annual contracted UDA < 100
 ```{r  echo = FALSE, warning = FALSE, message = FALSE, eval = FALSE, eval = eval10}
 knitr::kable(table_number_cat_contracts(remove_prototypes = F, level = "STP", region_STP_name = STP10), format = 'html') %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
 ```
 
-#### Excluding prototypes and contracts with annual contracted UDA < 100
+#### Excluding contracts with annual contracted UDA < 100
 ```{r echo = FALSE, warning = FALSE, message = FALSE, eval = FALSE, eval = eval10}
 knitr::kable(table_number_cat_contracts(remove_prototypes = T, level = "STP", region_STP_name = STP10), format = 'html') %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
@@ -568,13 +569,13 @@ knitr::kable(table_number_cat_contracts(remove_prototypes = T, level = "STP", re
 ]
 .panel[.panel-name[`r STP11`]
 
-#### Including prototypes and contracts with annual contracted UDA < 100
+#### Including contracts with annual contracted UDA < 100
 ```{r  echo = FALSE, warning = FALSE, message = FALSE, eval = FALSE, eval = eval11}
 knitr::kable(table_number_cat_contracts(remove_prototypes = F, level = "STP", region_STP_name = STP11), format = 'html') %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
 ```
 
-#### Excluding prototypes and contracts with annual contracted UDA < 100
+#### Excluding contracts with annual contracted UDA < 100
 ```{r echo = FALSE, warning = FALSE, message = FALSE, eval = FALSE, eval = eval11}
 knitr::kable(table_number_cat_contracts(remove_prototypes = T, level = "STP", region_STP_name = STP11), format = 'html') %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
@@ -587,7 +588,7 @@ knitr::kable(table_number_cat_contracts(remove_prototypes = T, level = "STP", re
 
 ---
 
-name: calendar-uda-activity
+name: short-uda-activity
 
 ### UDA Activity Data
 
@@ -599,242 +600,206 @@ xaringanExtra::use_panelset()
 
 .panel[.panel-name[`r region`]
 ```{r UDA_activity_Calendar1, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
-plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
-                                  scheduled_data = UDA_scheduled_data,
-                                  contractor_cats = contractor_categories,
+plot_UDA_UOA_delivery(data = UDA_scheduled_data, 
+                                  calendar_data = UDA_calendar_data,
+                                  historic_data = historical_UDA_scheduled_data,
                                   UDAorUOA = "UDA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  include_historic = FALSE,
                                   level = "Regional",
-                                  region_STP_name = region,
-                                  remove_prototypes = T,
-                                  regional_lines = F,
-                                  STP_lines = F,
-                                  cat_lines = F,
-                                  plotChart = T)
+                                  region_STP_name = region)
 ```
 
 * This graph shows the average monthly performance of the **`r get_num_contracts(level = "Regional", region_STP_name = region)`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (60% for Apr-Sep 21, 65% for Oct-Dec, 85% for Jan-Mar and 95% for Apr-Jun 22).
-* N.B. Previous month's delivery may be marginally higher to what was reported last month
-due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported.
 
 ]
 .panel[.panel-name[`r STP1`]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
-plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
-                                  scheduled_data = UDA_scheduled_data,
-                                  contractor_cats = contractor_categories,
+plot_UDA_UOA_delivery(data = UDA_scheduled_data, 
+                                  calendar_data = UDA_calendar_data,
+                                  historic_data = historical_UDA_scheduled_data,
                                   UDAorUOA = "UDA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  include_historic = FALSE,
                                   level = "STP",
-                                  region_STP_name = STP1,
-                                  remove_prototypes = T,
-                                  regional_lines = F,
-                                  STP_lines = F,
-                                  cat_lines = F,
-                                  plotChart = T)
+                                  region_STP_name = STP1)
 ```
 
 * This graph shows the average monthly performance of the **`r get_num_contracts(level = "STP", region_STP_name = STP1)`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (60% for Apr-Sep 21, 65% for Oct-Dec, 85% for Jan-Mar and 95% for Apr-Jun 22).
-* N.B. Previous month's delivery may be marginally higher to what was reported last month
-due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported.
 
 ]
 .panel[.panel-name[`r STP2`]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
-plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
-                                  scheduled_data = UDA_scheduled_data,
-                                  contractor_cats = contractor_categories,
+plot_UDA_UOA_delivery(data = UDA_scheduled_data, 
+                                  calendar_data = UDA_calendar_data,
+                                  historic_data = historical_UDA_scheduled_data,
                                   UDAorUOA = "UDA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  include_historic = FALSE,
                                   level = "STP",
-                                  region_STP_name = STP2,
-                                  remove_prototypes = T,
-                                  regional_lines = F,
-                                  STP_lines = F,
-                                  cat_lines = F,
-                                  plotChart = T)
+                                  region_STP_name = STP2)
 ```
 
 * This graph shows the average monthly performance of the **`r get_num_contracts(level = "STP", region_STP_name = STP2)`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (60% for Apr-Sep 21, 65% for Oct-Dec, 85% for Jan-Mar and 95% for Apr-Jun 22).
-* N.B. Previous month's delivery may be marginally higher to what was reported last month
-due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported.
 
 ]
 .panel[.panel-name[`r STP3`]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
-plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
-                                  scheduled_data = UDA_scheduled_data,
-                                  contractor_cats = contractor_categories,
+plot_UDA_UOA_delivery(data = UDA_scheduled_data, 
+                                  calendar_data = UDA_calendar_data,
+                                  historic_data = historical_UDA_scheduled_data,
                                   UDAorUOA = "UDA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  include_historic = FALSE,
                                   level = "STP",
-                                  region_STP_name = STP3,
-                                  remove_prototypes = T,
-                                  regional_lines = F,
-                                  STP_lines = F,
-                                  cat_lines = F,
-                                  plotChart = T)
+                                  region_STP_name = STP3)
 ```
 
 * This graph shows the average monthly performance of the **`r get_num_contracts(level = "STP", region_STP_name = STP3)`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (60% for Apr-Sep 21, 65% for Oct-Dec, 85% for Jan-Mar and 95% for Apr-Jun 22).
-* N.B. Previous month's delivery may be marginally higher to what was reported last month
-due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported.
 
 ]
 .panel[.panel-name[`r STP4`]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center', eval = eval4}
-plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
-                                  scheduled_data = UDA_scheduled_data,
-                                  contractor_cats = contractor_categories,
+plot_UDA_UOA_delivery(data = UDA_scheduled_data, 
+                                  calendar_data = UDA_calendar_data,
+                                  historic_data = historical_UDA_scheduled_data,
                                   UDAorUOA = "UDA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  include_historic = FALSE,
                                   level = "STP",
-                                  region_STP_name = STP4,
-                                  remove_prototypes = T,
-                                  regional_lines = F,
-                                  STP_lines = F,
-                                  cat_lines = F,
-                                  plotChart = T)
+                                  region_STP_name = STP4)
 ```
 
 * This graph shows the average monthly performance of the **`r if(eval4){get_num_contracts(level = "STP", region_STP_name = STP4)}`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (60% for Apr-Sep 21, 65% for Oct-Dec, 85% for Jan-Mar and 95% for Apr-Jun 22).
-* N.B. Previous month's delivery may be marginally higher to what was reported last month
-due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported.
 
 ]
 .panel[.panel-name[`r STP5`]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center', eval = eval5}
-plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
-                                  scheduled_data = UDA_scheduled_data,
-                                  contractor_cats = contractor_categories,
+plot_UDA_UOA_delivery(data = UDA_scheduled_data, 
+                                  calendar_data = UDA_calendar_data,
+                                  historic_data = historical_UDA_scheduled_data,
                                   UDAorUOA = "UDA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  include_historic = FALSE,
                                   level = "STP",
-                                  region_STP_name = STP5,
-                                  remove_prototypes = T,
-                                  regional_lines = F,
-                                  STP_lines = F,
-                                  cat_lines = F,
-                                  plotChart = T)
+                                  region_STP_name = STP5)
 ```
 
 * This graph shows the average monthly performance of the **`r if(eval5){get_num_contracts(level = "STP", region_STP_name = STP5)}`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (60% for Apr-Sep 21, 65% for Oct-Dec, 85% for Jan-Mar and 95% for Apr-Jun 22).
-* N.B. Previous month's delivery may be marginally higher to what was reported last month
-due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported.
 
 ]
 .panel[.panel-name[`r STP6`]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center', eval = eval6}
-plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
-                                  scheduled_data = UDA_scheduled_data,
-                                  contractor_cats = contractor_categories,
+plot_UDA_UOA_delivery(data = UDA_scheduled_data, 
+                                  calendar_data = UDA_calendar_data,
+                                  historic_data = historical_UDA_scheduled_data,
                                   UDAorUOA = "UDA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  include_historic = FALSE,
                                   level = "STP",
-                                  region_STP_name = STP6,
-                                  remove_prototypes = T,
-                                  regional_lines = F,
-                                  STP_lines = F,
-                                  cat_lines = F,
-                                  plotChart = T)
+                                  region_STP_name = STP6)
 ```
 
 * This graph shows the average monthly performance of the **`r if(eval6){get_num_contracts(level = "STP", region_STP_name = STP6)}`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (60% for Apr-Sep 21, 65% for Oct-Dec, 85% for Jan-Mar and 95% for Apr-Jun 22).
-* N.B. Previous month's delivery may be marginally higher to what was reported last month
-due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported.
 
 ]
 .panel[.panel-name[`r STP7`]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center', eval = eval7}
-plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
-                                  scheduled_data = UDA_scheduled_data,
-                                  contractor_cats = contractor_categories,
+plot_UDA_UOA_delivery(data = UDA_scheduled_data, 
+                                  calendar_data = UDA_calendar_data,
+                                  historic_data = historical_UDA_scheduled_data,
                                   UDAorUOA = "UDA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  include_historic = FALSE,
                                   level = "STP",
-                                  region_STP_name = STP7,
-                                  remove_prototypes = T,
-                                  regional_lines = F,
-                                  STP_lines = F,
-                                  cat_lines = F,
-                                  plotChart = T)
+                                  region_STP_name = STP7)
 ```
 
 * This graph shows the average monthly performance of the **`r if(eval7){get_num_contracts(level = "STP", region_STP_name = STP7)}`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (60% for Apr-Sep 21, 65% for Oct-Dec, 85% for Jan-Mar and 95% for Apr-Jun 22).
-* N.B. Previous month's delivery may be marginally higher to what was reported last month
-due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported.
 
 ]
 .panel[.panel-name[`r STP8`]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center', eval = eval8}
-plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
-                                  scheduled_data = UDA_scheduled_data,
-                                  contractor_cats = contractor_categories,
+plot_UDA_UOA_delivery(data = UDA_scheduled_data, 
+                                  calendar_data = UDA_calendar_data,
+                                  historic_data = historical_UDA_scheduled_data,
                                   UDAorUOA = "UDA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  include_historic = FALSE,
                                   level = "STP",
-                                  region_STP_name = STP8,
-                                  remove_prototypes = T,
-                                  regional_lines = F,
-                                  STP_lines = F,
-                                  cat_lines = F,
-                                  plotChart = T)
+                                  region_STP_name = STP8)
 ```
 
 * This graph shows the average monthly performance of the **`r if(eval8){get_num_contracts(level = "STP", region_STP_name = STP8)}`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (60% for Apr-Sep 21, 65% for Oct-Dec, 85% for Jan-Mar and 95% for Apr-Jun 22).
-* N.B. Previous month's delivery may be marginally higher to what was reported last month
-due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported.
 
 ]
 .panel[.panel-name[`r STP9`]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center', eval = eval9}
-plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
-                                  scheduled_data = UDA_scheduled_data,
-                                  contractor_cats = contractor_categories,
+plot_UDA_UOA_delivery(data = UDA_scheduled_data, 
+                                  calendar_data = UDA_calendar_data,
+                                  historic_data = historical_UDA_scheduled_data,
                                   UDAorUOA = "UDA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  include_historic = FALSE,
                                   level = "STP",
-                                  region_STP_name = STP9,
-                                  remove_prototypes = T,
-                                  regional_lines = F,
-                                  STP_lines = F,
-                                  cat_lines = F,
-                                  plotChart = T)
+                                  region_STP_name = STP9)
 ```
 
 * This graph shows the average monthly performance of the **`r if(eval9){get_num_contracts(level = "STP", region_STP_name = STP9)}`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (60% for Apr-Sep 21, 65% for Oct-Dec, 85% for Jan-Mar and 95% for Apr-Jun 22).
-* N.B. Previous month's delivery may be marginally higher to what was reported last month
-due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported.
 
 ]
 .panel[.panel-name[`r STP10`]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center', eval = eval10}
-plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
-                                  scheduled_data = UDA_scheduled_data,
-                                  contractor_cats = contractor_categories,
+plot_UDA_UOA_delivery(data = UDA_scheduled_data, 
+                                  calendar_data = UDA_calendar_data,
+                                  historic_data = historical_UDA_scheduled_data,
                                   UDAorUOA = "UDA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  include_historic = FALSE,
                                   level = "STP",
-                                  region_STP_name = STP10,
-                                  remove_prototypes = T,
-                                  regional_lines = F,
-                                  STP_lines = F,
-                                  cat_lines = F,
-                                  plotChart = T)
+                                  region_STP_name = STP10)
 ```
 
 * This graph shows the average monthly performance of the **`r if(eval10){get_num_contracts(level = "STP", region_STP_name = STP10)}`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (60% for Apr-Sep 21, 65% for Oct-Dec, 85% for Jan-Mar and 95% for Apr-Jun 22).
-* N.B. Previous month's delivery may be marginally higher to what was reported last month
-due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported.
 
 ]
 .panel[.panel-name[`r STP11`]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center', eval = eval11}
-plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
-                                  scheduled_data = UDA_scheduled_data,
-                                  contractor_cats = contractor_categories,
+plot_UDA_UOA_delivery(data = UDA_scheduled_data, 
+                                  calendar_data = UDA_calendar_data,
+                                  historic_data = historical_UDA_scheduled_data,
                                   UDAorUOA = "UDA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  include_historic = FALSE,
                                   level = "STP",
-                                  region_STP_name = STP11,
-                                  remove_prototypes = T,
-                                  regional_lines = F,
-                                  STP_lines = F,
-                                  cat_lines = F,
-                                  plotChart = T)
+                                  region_STP_name = STP11)
 ```
 
 * This graph shows the average monthly performance of the **`r if(eval11){get_num_contracts(level = "STP", region_STP_name = STP11)}`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (60% for Apr-Sep 21, 65% for Oct-Dec, 85% for Jan-Mar and 95% for Apr-Jun 22).
-* N.B. Previous month's delivery may be marginally higher to what was reported last month
-due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported.
 
 ]
 ]
@@ -843,7 +808,7 @@ due to the nature of calendar data (see slide 3). This month's figure is likely 
 
 ---
 
-name: calendar-uda-activity-my-cat
+name: short-uda-activity-my-cat
 
 ### UDA activity data by MY Category
 #### Prototypes and contracts with annual contracted UDAs < 100 included
@@ -856,8 +821,8 @@ xaringanExtra::use_panelset()
 
 .panel[.panel-name[`r region`]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
-                                  scheduled_data = UDA_scheduled_data,
+plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
+                             data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
                                   level = "Regional",
@@ -872,8 +837,8 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
 ]
 .panel[.panel-name[`r STP1`]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
-                                  scheduled_data = UDA_scheduled_data,
+plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
+                             data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
                                   level = "STP",
@@ -888,8 +853,8 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
 ]
 .panel[.panel-name[`r STP2`]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
-                                  scheduled_data = UDA_scheduled_data,
+plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
+                             data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
                                   level = "STP",
@@ -904,8 +869,8 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
 ]
 .panel[.panel-name[`r STP3`]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
-                                  scheduled_data = UDA_scheduled_data,
+plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
+                             data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
                                   level = "STP",
@@ -920,8 +885,8 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
 ]
 .panel[.panel-name[`r STP4`]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval4}
-plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
-                                  scheduled_data = UDA_scheduled_data,
+plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
+                             data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
                                   level = "STP",
@@ -936,8 +901,8 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
 ]
 .panel[.panel-name[`r STP5`]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval5}
-plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
-                                  scheduled_data = UDA_scheduled_data,
+plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
+                             data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
                                   level = "STP",
@@ -952,8 +917,8 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
 ]
 .panel[.panel-name[`r STP6`]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval6}
-plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
-                                  scheduled_data = UDA_scheduled_data,
+plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
+                             data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
                                   level = "STP",
@@ -968,8 +933,8 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
 ]
 .panel[.panel-name[`r STP7`]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval7}
-plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
-                                  scheduled_data = UDA_scheduled_data,
+plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
+                             data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
                                   level = "STP",
@@ -984,8 +949,8 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
 ]
 .panel[.panel-name[`r STP8`]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval8}
-plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
-                                  scheduled_data = UDA_scheduled_data,
+plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
+                             data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
                                   level = "STP",
@@ -1000,8 +965,8 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
 ]
 .panel[.panel-name[`r STP9`]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval9}
-plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
-                                  scheduled_data = UDA_scheduled_data,
+plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
+                             data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
                                   level = "STP",
@@ -1016,8 +981,8 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
 ]
 .panel[.panel-name[`r STP10`]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval10}
-plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
-                                  scheduled_data = UDA_scheduled_data,
+plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
+                             data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
                                   level = "STP",
@@ -1032,8 +997,8 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
 ]
 .panel[.panel-name[`r STP11`]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval11}
-plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
-                                  scheduled_data = UDA_scheduled_data,
+plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
+                             data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
                                   level = "STP",
@@ -1064,8 +1029,8 @@ xaringanExtra::use_panelset()
 
 .panel[.panel-name[`r region`]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
-                                  scheduled_data = UDA_scheduled_data,
+plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
+                             data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
                                   level = "Regional",
@@ -1080,8 +1045,8 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
 ]
 .panel[.panel-name[`r STP1`]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
-                                  scheduled_data = UDA_scheduled_data,
+plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
+                             data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
                                   level = "STP",
@@ -1096,8 +1061,8 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
 ]
 .panel[.panel-name[`r STP2`]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
-                                  scheduled_data = UDA_scheduled_data,
+plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
+                             data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
                                   level = "STP",
@@ -1112,8 +1077,8 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
 ]
 .panel[.panel-name[`r STP3`]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
-                                  scheduled_data = UDA_scheduled_data,
+plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
+                             data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
                                   level = "STP",
@@ -1128,8 +1093,8 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
 ]
 .panel[.panel-name[`r STP4`]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval4}
-plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
-                                  scheduled_data = UDA_scheduled_data,
+plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
+                             data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
                                   level = "STP",
@@ -1144,8 +1109,8 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
 ]
 .panel[.panel-name[`r STP5`]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval5}
-plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
-                                  scheduled_data = UDA_scheduled_data,
+plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
+                             data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
                                   level = "STP",
@@ -1160,8 +1125,8 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
 ]
 .panel[.panel-name[`r STP6`]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval6}
-plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
-                                  scheduled_data = UDA_scheduled_data,
+plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
+                             data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
                                   level = "STP",
@@ -1176,8 +1141,8 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
 ]
 .panel[.panel-name[`r STP7`]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval7}
-plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
-                                  scheduled_data = UDA_scheduled_data,
+plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
+                             data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
                                   level = "STP",
@@ -1192,8 +1157,8 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
 ]
 .panel[.panel-name[`r STP8`]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval8}
-plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
-                                  scheduled_data = UDA_scheduled_data,
+plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
+                             data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
                                   level = "STP",
@@ -1208,8 +1173,8 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
 ]
 .panel[.panel-name[`r STP9`]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval9}
-plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
-                                  scheduled_data = UDA_scheduled_data,
+plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
+                             data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
                                   level = "STP",
@@ -1224,8 +1189,8 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
 ]
 .panel[.panel-name[`r STP10`]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval10}
-plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
-                                  scheduled_data = UDA_scheduled_data,
+plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
+                             data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
                                   level = "STP",
@@ -1240,8 +1205,8 @@ plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
 ]
 .panel[.panel-name[`r STP11`]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval11}
-plot_UDA_UOA_delivery_calendar(data = UDA_calendar_data,
-                                  scheduled_data = UDA_scheduled_data,
+plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
+                             data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
                                   level = "STP",
@@ -1272,7 +1237,8 @@ xaringanExtra::use_panelset()
 
 .panel[.panel-name[`r region`]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
+plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
+                                  calendar_data = UDA_calendar_data,
                                   UDAorUOA = "UDA",
                                   level = "Regional",
                                   region_STP_name = region)
@@ -1291,7 +1257,8 @@ contracts (
 ]
 .panel[.panel-name[`r STP1`]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
+plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
+                                  calendar_data = UDA_calendar_data,
                                   UDAorUOA = "UDA",
                                   level = "STP",
                                   region_STP_name = STP1)
@@ -1311,7 +1278,8 @@ contracts (
 ]
 .panel[.panel-name[`r STP2`]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
+plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
+                                  calendar_data = UDA_calendar_data,
                                   UDAorUOA = "UDA",
                                   level = "STP",
                                   region_STP_name = STP2)
@@ -1331,7 +1299,8 @@ contracts (
 ]
 .panel[.panel-name[`r STP3`]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
+plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
+                                  calendar_data = UDA_calendar_data,
                                   UDAorUOA = "UDA",
                                   level = "STP",
                                   region_STP_name = STP3)
@@ -1351,7 +1320,8 @@ contracts (
 ]
 .panel[.panel-name[`r STP4`]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval4}
-plot_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
+plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
+                                  calendar_data = UDA_calendar_data,
                                   UDAorUOA = "UDA",
                                   level = "STP",
                                   region_STP_name = STP4)
@@ -1371,7 +1341,8 @@ contracts (
 ]
 .panel[.panel-name[`r STP5`]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval5}
-plot_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
+plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
+                                  calendar_data = UDA_calendar_data,
                                   UDAorUOA = "UDA",
                                   level = "STP",
                                   region_STP_name = STP5)
@@ -1391,7 +1362,8 @@ contracts (
 ]
 .panel[.panel-name[`r STP6`]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval6}
-plot_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
+plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
+                                  calendar_data = UDA_calendar_data,
                                   UDAorUOA = "UDA",
                                   level = "STP",
                                   region_STP_name = STP6)
@@ -1411,7 +1383,8 @@ contracts (
 ]
 .panel[.panel-name[`r STP7`]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval7}
-plot_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
+plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
+                                  calendar_data = UDA_calendar_data,
                                   UDAorUOA = "UDA",
                                   level = "STP",
                                   region_STP_name = STP7)
@@ -1431,7 +1404,8 @@ contracts (
 ]
 .panel[.panel-name[`r STP8`]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval8}
-plot_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
+plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
+                                  calendar_data = UDA_calendar_data,
                                   UDAorUOA = "UDA",
                                   level = "STP",
                                   region_STP_name = STP8)
@@ -1451,7 +1425,8 @@ contracts (
 ]
 .panel[.panel-name[`r STP9`]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval9}
-plot_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
+plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
+                                  calendar_data = UDA_calendar_data,
                                   UDAorUOA = "UDA",
                                   level = "STP",
                                   region_STP_name = STP9)
@@ -1471,7 +1446,8 @@ contracts (
 ]
 .panel[.panel-name[`r STP10`]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval10}
-plot_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
+plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
+                                  calendar_data = UDA_calendar_data,
                                   UDAorUOA = "UDA",
                                   level = "STP",
                                   region_STP_name = STP10)
@@ -1491,7 +1467,8 @@ contracts (
 ]
 .panel[.panel-name[`r STP11`]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval11}
-plot_cumulative_UDA_UOA_to_target(data = UDA_calendar_data,
+plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
+                                  calendar_data = UDA_calendar_data,
                                   UDAorUOA = "UDA",
                                   level = "STP",
                                   region_STP_name = STP11)
@@ -1515,7 +1492,7 @@ contracts (
 
 ---
 
-name: scheduled-udas
+name: historic-udas
 
 ### Scheduled UDAs
 
@@ -2220,7 +2197,7 @@ month is annualised. This uses scheduled data.
 
 ---
 
-name: calendar-uoa-activity
+name: uoa-activity
 
 ### UOA activity data
 
@@ -2513,7 +2490,7 @@ due to the nature of calendar data (see slide 3). This month's figure is likely 
 
 ---
 
-name: calendar-uoa-activity-my-cat
+name: uoa-activity-my-cat
 
 ### UOA activity data by MY Category
 #### Prototypes and contracts with annual contracted UDAs < 100 included

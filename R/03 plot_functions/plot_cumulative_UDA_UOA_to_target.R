@@ -1,10 +1,18 @@
 ################################################################################
-plot_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data, 
+plot_cumulative_UDA_UOA_to_target <- function(data = UDA_scheduled_data, 
+                                              calendar_data = UDA_calendar_data,
                                               UDAorUOA = "UDA", 
                                               level = "National",
                                               region_STP_name = NULL,
                                               plotChart = TRUE,
                                               all_regions_and_STPs = FALSE){
+  
+  #add a region column to the data
+  region_STP_lookup <- calendar_data %>%
+    select(commissioner_name, region_name) %>%
+    distinct()
+  
+  data <- left_join(data, region_STP_lookup, by = "commissioner_name")
   
   #filter for region or STP
   if(level == "Regional"){
@@ -29,9 +37,8 @@ plot_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data,
     
     title <- "Cumulative monthly % of quarterly contracted UDAs delivered"
     ylab <- "Cumulative % of quarterly \ncontracted UDAs delivered"
-    captionTitle <- "*Excluding prototype contracts and those with annual contracted UDA < 100
-                   **This is calendar data which means that data may change as more CoTs are registered"
-    barCol <- "coral"
+    captionTitle <- "*Excluding contracts with annual contracted UDA < 100. Excluding prototype contracts up until April 2022."
+    barCol <- "#CC79A7"
     
     #get raw data into the right format
     data <- get_data_for_cumulative_plot(data, remove_prototypes = TRUE, all_regions_and_STPs = all_regions_and_STPs)
@@ -45,8 +52,7 @@ plot_cumulative_UDA_UOA_to_target <- function(data = UDA_calendar_data,
     
     title <- "Cumulative monthly % of quarterly contracted UOAs delivered"
     ylab <- "Cumulative % of quarterly \ncontracted UOAs delivered"
-    captionTitle <- "*Excluding prototype contracts and those with zero annual contracted UOAs
-                   **This is calendar data which means that data may change as more CoTs are registered"
+    captionTitle <- "*Excluding contracts with no annual contracted UOAs. Excluding prototype contracts up until April 2022."
     barCol <- "seagreen3"
     
     #get raw data into fight format
