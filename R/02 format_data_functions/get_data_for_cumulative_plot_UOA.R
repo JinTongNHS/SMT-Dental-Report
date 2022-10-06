@@ -1,24 +1,16 @@
 ################################################################################
-get_data_for_cumulative_plot_UOA <- function(data = UOA_calendar_data, 
-                                             scheduled_data = UOA_scheduled_data,
+get_data_for_cumulative_plot_UOA <- function(data = UOA_scheduled_data, 
+                                             calendar_data = UOA_calendar_data,
                                              remove_prototypes = TRUE,
                                              all_regions_and_STPs = FALSE){
   
-  #join in contracted UDAs from scheduled data
-  contracted_UOAs <- scheduled_data %>%
-    select(month, contract_number, annual_contracted_UOA)
-  
-  data <- data %>%
-    left_join(contracted_UOAs, by = c("month", "contract_number"))
   
   #remove prototype contracts if specified
+  #only remove prototypes before April 2022
   if(remove_prototypes){
-    #create not in function
-    `%notin%` = Negate(`%in%`)
-    
     
     data <- data %>%
-      filter(contract_number %notin% prototype_contracts$prototype_contract_number) %>%
+      filter(!(contract_number %in% prototype_contracts$prototype_contract_number & month < as.Date("2022-04-01"))) %>%
       filter(annual_contracted_UOA > 0)
   }
   
@@ -31,7 +23,7 @@ get_data_for_cumulative_plot_UOA <- function(data = UOA_calendar_data,
   }
   #group by month and sum UDAs delivered
   UOAs_delivered <- UOAs_delivered %>%
-    summarise(monthly_UDA_UOAs_delivered = sum(UOA_total, na.rm = T),
+    summarise(monthly_UDA_UOAs_delivered = sum(UOA_delivered, na.rm = T),
               total_annual_UDA_UOAs_contracted = sum(annual_contracted_UOA, na.rm = T)) %>%
     mutate(threshold_perc = case_when(month >= as.Date("2021-04-01") & month < as.Date("2021-10-01") ~ 0.8,
                                       month >= as.Date("2021-10-01") & month < as.Date("2022-01-01") ~ 0.85,

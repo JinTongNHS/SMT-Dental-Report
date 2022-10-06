@@ -5,7 +5,8 @@ plot_cumulative_UDA_UOA_to_target <- function(data = UDA_scheduled_data,
                                               level = "National",
                                               region_STP_name = NULL,
                                               plotChart = TRUE,
-                                              all_regions_and_STPs = FALSE){
+                                              all_regions_and_STPs = FALSE,
+                                              remove_prototypes = TRUE){
   
   #add a region column to the data
   region_STP_lookup <- calendar_data %>%
@@ -53,10 +54,13 @@ plot_cumulative_UDA_UOA_to_target <- function(data = UDA_scheduled_data,
     title <- "Cumulative monthly % of quarterly contracted UOAs delivered"
     ylab <- "Cumulative % of quarterly \ncontracted UOAs delivered"
     captionTitle <- "*Excluding contracts with no annual contracted UOAs. Excluding prototype contracts up until April 2022."
-    barCol <- "seagreen3"
+    barCol <- "steelblue"
     
     #get raw data into fight format
-    data <- get_data_for_cumulative_plot_UOA(data, remove_prototypes = TRUE, all_regions_and_STPs = all_regions_and_STPs)
+    data <- get_data_for_cumulative_plot_UOA(data = data, 
+                                             calendar_data = calendar_data, 
+                                             remove_prototypes = remove_prototypes, 
+                                             all_regions_and_STPs = all_regions_and_STPs)
     
   }
   

@@ -1,6 +1,6 @@
 ################################################################################
 get_num_contracts <- function(data = UDA_scheduled_data, 
-                              remove_prototypes = T,
+                              remove_prototypes = TRUE,
                               calendar_data = UDA_calendar_data,
                               UDAorUOA = "UDA",
                               level = "National",

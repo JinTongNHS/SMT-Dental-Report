@@ -41,7 +41,7 @@ plot_UDA_UOA_delivery_all_regions <- function(data = UDA_scheduled_data,
     
   }
   #get data into the right format
-  data <- get_delivery_data(data, remove_prototypes, UDAorUOA = "UDA", all_regions_and_STPs = TRUE)
+  data <- get_delivery_data(data, remove_prototypes, UDAorUOA = UDAorUOA, all_regions_and_STPs = TRUE)
   data <- data %>%
     group_by(month, region_name) %>%
     summarise(annual_contracted_UDA_UOA = sum(annual_contracted_UDA_UOA, na.rm = TRUE),

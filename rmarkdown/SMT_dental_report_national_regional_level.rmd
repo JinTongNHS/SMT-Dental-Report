@@ -134,8 +134,7 @@ name: contents
  * [Total annual contracted UDAs trend](#annual-contracted-UDAs-trend)
  * [Total number of contracts trend](#num-contracts-trend)
  * [Total payments to dentists by financial year](#payemts)
- * [Financial value of UDAs delivered](#uda-value)
- * [Financial value of UDAs delivered as % of 2018 delivery](#uda-value-index)
+ * [Cumulative financial value of UDAs delivered YTD](#uda-value)
  
 #### Orthodontic 
  * [UOA activity](#uoa-activity)
@@ -672,7 +671,7 @@ plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 
-plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
+data <- plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
                              data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
@@ -873,7 +872,7 @@ plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 
-plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
+data <- plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
                              data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
@@ -957,7 +956,7 @@ contracts measured against the expected monthly total activity to achieve the qu
 **`r get_Q1_22_num_contracts_on_target(level = "National", region_STP_name = NULL)`**
 contracts (
 **`r round(get_Q1_22_num_contracts_on_target(level = "National", region_STP_name = NULL)*100/get_num_contracts(level = "National", region_STP_name = NULL))` %**
-) have delivered the required UDAs or more to be on track towards the Q1 threshold (95%) by the end of June 2022.
+) have delivered the required UDAs or more to be on track towards the Q2 threshold (100%) by the end of September 2022.
 
 ]
 .panel[.panel-name[South East]
@@ -977,7 +976,7 @@ contracts measured against the expected monthly total activity to achieve the qu
 **`r get_Q1_22_num_contracts_on_target(level = "Regional", region_STP_name = "South East")`**
 contracts (
 **`r round(get_Q1_22_num_contracts_on_target(level = "Regional", region_STP_name = "South East")*100/get_num_contracts(level = "Regional", region_STP_name = "South East"))` %**
-) have delivered the required UDAs or more to be on track towards the Q1 threshold (95%) by the end of June 2022.
+) have delivered the required UDAs or more to be on track towards the Q2 threshold (100%) by the end of September 2022.
 
 
 ]
@@ -998,7 +997,7 @@ contracts measured against the expected monthly total activity to achieve the qu
 **`r get_Q1_22_num_contracts_on_target(level = "Regional", region_STP_name = "South West")`**
 contracts (
 **`r round(get_Q1_22_num_contracts_on_target(level = "Regional", region_STP_name = "South West")*100/get_num_contracts(level = "Regional", region_STP_name = "South West"))` %**
-) have delivered the required UDAs or more to be on track towards the Q1 threshold (95%) by the end of June 2022.
+) have delivered the required UDAs or more to be on track towards the Q2 threshold (100%) by the end of September 2022.
 
 
 ]
@@ -1019,7 +1018,7 @@ contracts measured against the expected monthly total activity to achieve the qu
 **`r get_Q1_22_num_contracts_on_target(level = "Regional", region_STP_name = "North West")`**
 contracts (
 **`r round(get_Q1_22_num_contracts_on_target(level = "Regional", region_STP_name = "North West")*100/get_num_contracts(level = "Regional", region_STP_name = "North West"))` %**
-) have delivered the required UDAs or more to be on track towards the Q1 threshold (95%) by the end of June 2022.
+) have delivered the required UDAs or more to be on track towards the Q2 threshold (100%) by the end of September 2022.
 
 
 ]
@@ -1040,7 +1039,7 @@ contracts measured against the expected monthly total activity to achieve the qu
 **`r get_Q1_22_num_contracts_on_target(level = "Regional", region_STP_name = "North East and Yorkshire")`**
 contracts (
 **`r round(get_Q1_22_num_contracts_on_target(level = "Regional", region_STP_name = "North East and Yorkshire")*100/get_num_contracts(level = "Regional", region_STP_name = "North East and Yorkshire"))` %**
-) have delivered the required UDAs or more to be on track towards the Q1 threshold (95%) by the end of June 2022.
+) have delivered the required UDAs or more to be on track towards the Q2 threshold (100%) by the end of September 2022.
 
 
 ]
@@ -1061,7 +1060,7 @@ contracts measured against the expected monthly total activity to achieve the qu
 **`r get_Q1_22_num_contracts_on_target(level = "Regional", region_STP_name = "London")`**
 contracts (
 **`r round(get_Q1_22_num_contracts_on_target(level = "Regional", region_STP_name = "London")*100/get_num_contracts(level = "Regional", region_STP_name = "London"))` %**
-) have delivered the required UDAs or more to be on track towards the Q1 threshold (95%) by the end of June 2022.
+) have delivered the required UDAs or more to be on track towards the Q2 threshold (100%) by the end of September 2022.
 
 ]
 .panel[.panel-name[Midlands]
@@ -1081,7 +1080,7 @@ contracts measured against the expected monthly total activity to achieve the qu
 **`r get_Q1_22_num_contracts_on_target(level = "Regional", region_STP_name = "Midlands")`**
 contracts (
 **`r round(get_Q1_22_num_contracts_on_target(level = "Regional", region_STP_name = "Midlands")*100/get_num_contracts(level = "Regional", region_STP_name = "Midlands"))` %**
-) have delivered the required UDAs or more to be on track towards the Q1 threshold (95%) by the end of June 2022.
+) have delivered the required UDAs or more to be on track towards the Q2 threshold (100%) by the end of September 2022.
 
 
 ]
@@ -1102,7 +1101,7 @@ contracts measured against the expected monthly total activity to achieve the qu
 **`r get_Q1_22_num_contracts_on_target(level = "Regional", region_STP_name = "East of England")`**
 contracts (
 **`r round(get_Q1_22_num_contracts_on_target(level = "Regional", region_STP_name = "East of England")*100/get_num_contracts(level = "Regional", region_STP_name = "East of England"))` %**
-) have delivered the required UDAs or more to be on track towards the Q1 threshold (95%) by the end of June 2022.
+) have delivered the required UDAs or more to be on track towards the Q2 threshold (100%) by the end of September 2022.
 
 
 ]
@@ -1112,7 +1111,7 @@ contracts (
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 
-plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
+data <- plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
                                   calendar_data = UDA_calendar_data,
                                   UDAorUOA = "UDA",
                                   level = "National",
@@ -1578,10 +1577,6 @@ plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
                           include_historic = FALSE)
 ```
 
-* The graph shows the proportion of practices delivering
-between a certain % group of contracted UDA activity if performance for that
-month is annualised. This uses scheduled data.
-
  ]
  .panel[.panel-name[South East]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
@@ -1592,10 +1587,6 @@ plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
                           region_STP_name = "South East",
                           include_historic = FALSE)
 ```
-
-* The graph shows the proportion of practices delivering
-between a certain % group of contracted UDA activity if performance for that
-month is annualised. This uses scheduled data.
 
 
  ]
@@ -1609,9 +1600,6 @@ plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
                           include_historic = FALSE)
 ```
 
-* The graph shows the proportion of practices delivering
-between a certain % group of contracted UDA activity if performance for that
-month is annualised. This uses scheduled data.
 
 
  ]
@@ -1625,10 +1613,6 @@ plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
                           include_historic = FALSE)
 ```
 
-* The graph shows the proportion of practices delivering
-between a certain % group of contracted UDA activity if performance for that
-month is annualised. This uses scheduled data.
-
 
  ]
  .panel[.panel-name[North East and Yorkshire]
@@ -1641,11 +1625,6 @@ plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
                           include_historic = FALSE)
 ```
 
-* The graph shows the proportion of practices delivering
-between a certain % group of contracted UDA activity if performance for that
-month is annualised. This uses scheduled data.
-
-
  ]
 .panel[.panel-name[London]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
@@ -1656,10 +1635,6 @@ plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
                           region_STP_name = "London",
                           include_historic = FALSE)
 ```
-
-* The graph shows the proportion of practices delivering
-between a certain % group of contracted UDA activity if performance for that
-month is annualised. This uses scheduled data.
 
  ]
  .panel[.panel-name[Midlands]
@@ -1672,11 +1647,6 @@ plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
                           include_historic = FALSE)
 ```
 
-* The graph shows the proportion of practices delivering
-between a certain % group of contracted UDA activity if performance for that
-month is annualised. This uses scheduled data.
-
-
  ]
  .panel[.panel-name[East of England]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
@@ -1687,11 +1657,6 @@ plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
                           region_STP_name = "East of England",
                           include_historic = FALSE)
 ```
-
-* The graph shows the proportion of practices delivering
-between a certain % group of contracted UDA activity if performance for that
-month is annualised. This uses scheduled data.
-
 
  ]
  .panel[.panel-name[Data]
@@ -1742,6 +1707,10 @@ reactable(
 ```
  ]
  ]
+ 
+ This graph shows the proportion of practices delivering
+between a certain % group of contracted UDA activity if performance for that
+month is annualised. Improvement would be seen as the distribution moving towards the right, as more contracts deliver closer to 100% of their contracted UDAs.
 
 [Return to contents](#contents)
 
@@ -1763,7 +1732,7 @@ xaringanExtra::use_panelset()
 plot_UDA_UOA_delivery(data = UOA_scheduled_data, 
                                   calendar_data = UOA_calendar_data,
                                   historic_data = historical_UDA_scheduled_data,
-                                  UDAorUOA = "UDA",
+                                  UDAorUOA = "UOA",
                                   level = "National",
                                   region_STP_name = NULL,
                                   remove_prototypes = TRUE, 
@@ -1773,185 +1742,160 @@ plot_UDA_UOA_delivery(data = UOA_scheduled_data,
 ```
 
 * This graph shows the average monthly performance of the
-**`r get_num_contracts(data = UOA_calendar_data, remove_prototypes = T, scheduled_data = UOA_scheduled_data, UDAorUOA = "UOA", level = "National", region_STP_name = NULL)`**
+**`r get_num_contracts(data = UOA_scheduled_data, remove_prototypes = T, calendar_data = UOA_calendar_data, UDAorUOA = "UOA", level = "National", region_STP_name = NULL)`**
 GDS/PDS contracts scaled up by 12 months measured against the delivery thresholds (80% for Apr-Sep 21, 85% for Oct-Dec, 90% for Jan-Mar, 100% for Apr-Jun 22).
-* N.B. Previous month's delivery may be marginally different to what was reported last month
-due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported.
 
  ]
  .panel[.panel-name[South East]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
-                                  scheduled_data = UOA_scheduled_data,
-                                  contractor_cats = contractor_categories,
+plot_UDA_UOA_delivery(data = UOA_scheduled_data, 
+                                  calendar_data = UOA_calendar_data,
+                                  historic_data = historical_UDA_scheduled_data,
                                   UDAorUOA = "UOA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  include_historic = FALSE,
                                   level = "Regional",
-                                  region_STP_name = "South East",
-                                  remove_prototypes = T,
-                                  regional_lines = F,
-                                  STP_lines = F,
-                                  cat_lines = F,
-                                  plotChart = T)
+                                  region_STP_name = "South East")
 ```
 
 * This graph shows the average monthly performance of the
-**`r get_num_contracts(data = UOA_calendar_data, remove_prototypes = T, scheduled_data = UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "South East")`**
+**`r get_num_contracts(data = UOA_scheduled_data, remove_prototypes = T, calendar_data = UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "South East")`**
 GDS/PDS contracts scaled up by 12 months measured against the delivery thresholds (80% for Apr-Sep 21, 85% for Oct-Dec, 90% for Jan-Mar, 100% for Apr-Jun 22).
-* N.B. Previous month's delivery may be marginally different to what was reported last month
-due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported.
 
 
  ]
  .panel[.panel-name[South West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
-                                  scheduled_data = UOA_scheduled_data,
-                                  contractor_cats = contractor_categories,
+plot_UDA_UOA_delivery(data = UOA_scheduled_data, 
+                                  calendar_data = UOA_calendar_data,
+                                  historic_data = historical_UDA_scheduled_data,
                                   UDAorUOA = "UOA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  include_historic = FALSE,
                                   level = "Regional",
-                                  region_STP_name = "South West",
-                                  remove_prototypes = T,
-                                  regional_lines = F,
-                                  STP_lines = F,
-                                  cat_lines = F,
-                                  plotChart = T)
+                                  region_STP_name = "South West")
 ```
 
 * This graph shows the average monthly performance of the
-**`r get_num_contracts(data = UOA_calendar_data, remove_prototypes = T, scheduled_data = UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "South West")`**
+**`r get_num_contracts(data = UOA_scheduled_data, remove_prototypes = T, calendar_data = UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "South West")`**
 GDS/PDS contracts scaled up by 12 months measured against the delivery thresholds (80% for Apr-Sep 21, 85% for Oct-Dec, 90% for Jan-Mar, 100% for Apr-Jun 22).
-* N.B. Previous month's delivery may be marginally different to what was reported last month
-due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported.
 
 
  ]
  .panel[.panel-name[North West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
-                                  scheduled_data = UOA_scheduled_data,
-                                  contractor_cats = contractor_categories,
+plot_UDA_UOA_delivery(data = UOA_scheduled_data, 
+                                  calendar_data = UOA_calendar_data,
+                                  historic_data = historical_UDA_scheduled_data,
                                   UDAorUOA = "UOA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  include_historic = FALSE,
                                   level = "Regional",
-                                  region_STP_name = "North West",
-                                  remove_prototypes = T,
-                                  regional_lines = F,
-                                  STP_lines = F,
-                                  cat_lines = F,
-                                  plotChart = T)
+                                  region_STP_name = "North West")
 ```
 
 * This graph shows the average monthly performance of the
-**`r get_num_contracts(data = UOA_calendar_data, remove_prototypes = T, scheduled_data = UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "North West")`**
+**`r get_num_contracts(data = UOA_scheduled_data, remove_prototypes = T, calendar_data = UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "North West")`**
 GDS/PDS contracts scaled up by 12 months measured against the delivery thresholds (80% for Apr-Sep 21, 85% for Oct-Dec, 90% for Jan-Mar, 100% for Apr-Jun 22).
-* N.B. Previous month's delivery may be marginally different to what was reported last month
-due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported.
 
 
  ]
  .panel[.panel-name[North East and Yorkshire]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
-                                  scheduled_data = UOA_scheduled_data,
-                                  contractor_cats = contractor_categories,
+plot_UDA_UOA_delivery(data = UOA_scheduled_data, 
+                                  calendar_data = UOA_calendar_data,
+                                  historic_data = historical_UDA_scheduled_data,
                                   UDAorUOA = "UOA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  include_historic = FALSE,
                                   level = "Regional",
-                                  region_STP_name = "North East and Yorkshire",
-                                  remove_prototypes = T,
-                                  regional_lines = F,
-                                  STP_lines = F,
-                                  cat_lines = F,
-                                  plotChart = T)
+                                  region_STP_name = "North East and Yorkshire")
 ```
 
 * This graph shows the average monthly performance of the
-**`r get_num_contracts(data = UOA_calendar_data, remove_prototypes = T, scheduled_data = UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "North East and Yorkshire")`**
+**`r get_num_contracts(data = UOA_scheduled_data, remove_prototypes = T, calendar_data = UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "North East and Yorkshire")`**
 GDS/PDS contracts scaled up by 12 months measured against the delivery thresholds (80% for Apr-Sep 21, 85% for Oct-Dec, 90% for Jan-Mar, 100% for Apr-Jun 22).
-* N.B. Previous month's delivery may be marginally different to what was reported last month
-due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported.
-
 
  ]
 .panel[.panel-name[London]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
-                                  scheduled_data = UOA_scheduled_data,
-                                  contractor_cats = contractor_categories,
+plot_UDA_UOA_delivery(data = UOA_scheduled_data, 
+                                  calendar_data = UOA_calendar_data,
+                                  historic_data = historical_UDA_scheduled_data,
                                   UDAorUOA = "UOA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  include_historic = FALSE,
                                   level = "Regional",
-                                  region_STP_name = "London",
-                                  remove_prototypes = T,
-                                  regional_lines = F,
-                                  STP_lines = F,
-                                  cat_lines = F,
-                                  plotChart = T)
+                                  region_STP_name = "London")
 ```
 
 * This graph shows the average monthly performance of the
-**`r get_num_contracts(data = UOA_calendar_data, remove_prototypes = T, scheduled_data = UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "London")`**
+**`r get_num_contracts(data = UOA_scheduled_data, remove_prototypes = T, calendar_data = UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "London")`**
 GDS/PDS contracts scaled up by 12 months measured against the delivery thresholds (80% for Apr-Sep 21, 85% for Oct-Dec, 90% for Jan-Mar, 100% for Apr-Jun 22).
-* N.B. Previous month's delivery may be marginally different to what was reported last month
-due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported.
 
  ]
  .panel[.panel-name[Midlands]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
-                                  scheduled_data = UOA_scheduled_data,
-                                  contractor_cats = contractor_categories,
+plot_UDA_UOA_delivery(data = UOA_scheduled_data, 
+                                  calendar_data = UOA_calendar_data,
+                                  historic_data = historical_UDA_scheduled_data,
                                   UDAorUOA = "UOA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  include_historic = FALSE,
                                   level = "Regional",
-                                  region_STP_name = "Midlands",
-                                  remove_prototypes = T,
-                                  regional_lines = F,
-                                  STP_lines = F,
-                                  cat_lines = F,
-                                  plotChart = T)
+                                  region_STP_name = "Midlands")
 ```
 
 * This graph shows the average monthly performance of the
-**`r get_num_contracts(data = UOA_calendar_data, remove_prototypes = T, scheduled_data = UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "Midlands")`**
+**`r get_num_contracts(data = UOA_scheduled_data, remove_prototypes = T, calendar_data = UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "Midlands")`**
 GDS/PDS contracts scaled up by 12 months measured against the delivery thresholds (80% for Apr-Sep 21, 85% for Oct-Dec, 90% for Jan-Mar, 100% for Apr-Jun 22).
-* N.B. Previous month's delivery may be marginally different to what was reported last month
-due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported.
 
 
  ]
  .panel[.panel-name[East of England]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
-                                  scheduled_data = UOA_scheduled_data,
-                                  contractor_cats = contractor_categories,
+plot_UDA_UOA_delivery(data = UOA_scheduled_data, 
+                                  calendar_data = UOA_calendar_data,
+                                  historic_data = historical_UDA_scheduled_data,
                                   UDAorUOA = "UOA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  include_historic = FALSE,
                                   level = "Regional",
-                                  region_STP_name = "East of England",
-                                  remove_prototypes = T,
-                                  regional_lines = F,
-                                  STP_lines = F,
-                                  cat_lines = F,
-                                  plotChart = T)
+                                  region_STP_name = "East of England")
 ```
 
 * This graph shows the average monthly performance of the
-**`r get_num_contracts(data = UOA_calendar_data, remove_prototypes = T, scheduled_data = UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "East of England")`**
+**`r get_num_contracts(data = UOA_scheduled_data, remove_prototypes = T, calendar_data = UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "East of England")`**
 GDS/PDS contracts scaled up by 12 months measured against the delivery thresholds (80% for Apr-Sep 21, 85% for Oct-Dec, 90% for Jan-Mar, 100% for Apr-Jun 22).
-* N.B. Previous month's delivery may be marginally different to what was reported last month
-due to the nature of calendar data (see slide 3). This month's figure is likely to be under-reported.
 
 
  ]
   .panel[.panel-name[All]
 ```{r UOA_activity_regional, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
-                                  scheduled_data = UOA_scheduled_data,
-                                  contractor_cats = contractor_categories,
-                                  UDAorUOA = "UOA",
-                                  level = "National",
-                                  region_STP_name = NULL,
-                                  remove_prototypes = T,
-                                  regional_lines = T,
-                                  STP_lines = F,
-                                  cat_lines = F,
-                                  plotChart = T)
+plot_UDA_UOA_delivery_all_regions(data = UOA_scheduled_data, 
+                                              calendar_data = UOA_calendar_data,
+                                              historic_data = historical_UDA_scheduled_data,
+                                              UDAorUOA = "UOA",
+                                              level = "National",
+                                              region_STP_name = NULL,
+                                              remove_prototypes = TRUE, 
+                                              plotChart = TRUE, 
+                                              all_regions_and_STPs = FALSE,
+                                   include_historic = FALSE)
 ```
 
 
@@ -1962,17 +1906,12 @@ plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 
-data <- plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
-                                  scheduled_data = UOA_scheduled_data,
-                                  contractor_cats = contractor_categories,
-                                  UDAorUOA = "UOA",
+data <- plot_UDA_UOA_delivery(data = UOA_scheduled_data,  
+                        UDAorUOA = "UOA",
                                   level = "National",
                                   region_STP_name = NULL,
-                                  remove_prototypes = T,
-                                  regional_lines = F,
-                                  STP_lines = T,
-                                  cat_lines = F,
-                                  plotChart = F)
+                                  plotChart = FALSE,
+                              all_regions_and_STPs = TRUE)
 
 data %>%
   download_this(
@@ -1987,28 +1926,23 @@ data %>%
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 reactable(
-  plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
-                                  scheduled_data = UOA_scheduled_data,
-                                  contractor_cats = contractor_categories,
-                                  UDAorUOA = "UOA",
+  plot_UDA_UOA_delivery(data = UOA_scheduled_data,  
+                        UDAorUOA = "UOA",
                                   level = "National",
                                   region_STP_name = NULL,
-                                  remove_prototypes = T,
-                                  regional_lines = F,
-                                  STP_lines = T,
-                                  cat_lines = F,
-                                  plotChart = F),
+                                  plotChart = FALSE,
+                              all_regions_and_STPs = TRUE),
   height = 400,
   filterable = TRUE,
   paginateSubRows = TRUE,
   minRows = 5,
   highlight = TRUE,
-  groupBy = c("Month","Region Name"),
+  groupBy = c("Schedule month","Region Name"),
   columns = list(
     `Monthly UOAs delivered`= colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE),
     `Annual contracted UOAs` = colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE),
     `Scaled monthly UOAs delivered` = colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE),
-    `Scaled percentage of UOAs delivered` = colDef(aggregate = "mean", format = colFormat(suffix = "%", digits = 1), filterable = FALSE)
+    `Scaled monthly percentage of contracted UOAs delivered` = colDef(aggregate = "mean", format = colFormat(suffix = "%", digits = 1), filterable = FALSE)
   )
 )
 ```
@@ -2034,51 +1968,51 @@ xaringanExtra::use_panelset()
 
  .panel[.panel-name[National]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
-                                  scheduled_data = UOA_scheduled_data,
+plot_UDA_UOA_delivery_MY_cat(calendar_data = UOA_calendar_data,
+                             data = UOA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UOA",
                                   level = "National",
                                   region_STP_name = NULL,
-                                  remove_prototypes = F,
-                                  regional_lines = F,
-                                  STP_lines = F,
-                                  cat_lines = T,
-                                  plotChart = T)
+                                  remove_prototypes = FALSE,
+                                  regional_lines = FALSE,
+                                  STP_lines = FALSE,
+                                  cat_lines = TRUE,
+                                  plotChart = TRUE)
 ```
 
 
  ]
  .panel[.panel-name[South East]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
-                                  scheduled_data = UOA_scheduled_data,
+plot_UDA_UOA_delivery_MY_cat(calendar_data = UOA_calendar_data,
+                             data = UOA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UOA",
+                                  remove_prototypes = FALSE,
+                                  regional_lines = FALSE,
+                                  STP_lines = FALSE,
+                                  cat_lines = TRUE,
+                                  plotChart = TRUE,
                                   level = "Regional",
-                                  region_STP_name = "South East",
-                                  remove_prototypes = F,
-                                  regional_lines = F,
-                                  STP_lines = F,
-                                  cat_lines = T,
-                                  plotChart = T)
+                                  region_STP_name = "South East")
 ```
 
 
  ]
  .panel[.panel-name[South West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
-                                  scheduled_data = UOA_scheduled_data,
+plot_UDA_UOA_delivery_MY_cat(calendar_data = UOA_calendar_data,
+                             data = UOA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UOA",
+                                  remove_prototypes = FALSE,
+                                  regional_lines = FALSE,
+                                  STP_lines = FALSE,
+                                  cat_lines = TRUE,
+                                  plotChart = TRUE,
                                   level = "Regional",
-                                  region_STP_name = "South West",
-                                  remove_prototypes = F,
-                                  regional_lines = F,
-                                  STP_lines = F,
-                                  cat_lines = T,
-                                  plotChart = T)
+                                  region_STP_name = "South West")
 ```
 
 
@@ -2086,34 +2020,34 @@ plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
  ]
  .panel[.panel-name[North West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
-                                  scheduled_data = UOA_scheduled_data,
+plot_UDA_UOA_delivery_MY_cat(calendar_data = UOA_calendar_data,
+                             data = UOA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UOA",
+                                  remove_prototypes = FALSE,
+                                  regional_lines = FALSE,
+                                  STP_lines = FALSE,
+                                  cat_lines = TRUE,
+                                  plotChart = TRUE,
                                   level = "Regional",
-                                  region_STP_name = "North West",
-                                  remove_prototypes = F,
-                                  regional_lines = F,
-                                  STP_lines = F,
-                                  cat_lines = T,
-                                  plotChart = T)
+                                  region_STP_name = "North West")
 ```
 
 
  ]
  .panel[.panel-name[North East and Yorkshire]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
-                                  scheduled_data = UOA_scheduled_data,
+plot_UDA_UOA_delivery_MY_cat(calendar_data = UOA_calendar_data,
+                             data = UOA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UOA",
+                                  remove_prototypes = FALSE,
+                                  regional_lines = FALSE,
+                                  STP_lines = FALSE,
+                                  cat_lines = TRUE,
+                                  plotChart = TRUE,
                                   level = "Regional",
-                                  region_STP_name = "North East and Yorkshire",
-                                  remove_prototypes = F,
-                                  regional_lines = F,
-                                  STP_lines = F,
-                                  cat_lines = T,
-                                  plotChart = T)
+                                  region_STP_name = "North East and Yorkshire")
 ```
 
 
@@ -2121,51 +2055,51 @@ plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
  ]
 .panel[.panel-name[London]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
-                                  scheduled_data = UOA_scheduled_data,
+plot_UDA_UOA_delivery_MY_cat(calendar_data = UOA_calendar_data,
+                             data = UOA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UOA",
+                                  remove_prototypes = FALSE,
+                                  regional_lines = FALSE,
+                                  STP_lines = FALSE,
+                                  cat_lines = TRUE,
+                                  plotChart = TRUE,
                                   level = "Regional",
-                                  region_STP_name = "London",
-                                  remove_prototypes = F,
-                                  regional_lines = F,
-                                  STP_lines = F,
-                                  cat_lines = T,
-                                  plotChart = T)
+                                  region_STP_name = "London")
 ```
 
 
  ]
  .panel[.panel-name[Midlands]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
-                                  scheduled_data = UOA_scheduled_data,
+plot_UDA_UOA_delivery_MY_cat(calendar_data = UOA_calendar_data,
+                             data = UOA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UOA",
+                                  remove_prototypes = FALSE,
+                                  regional_lines = FALSE,
+                                  STP_lines = FALSE,
+                                  cat_lines = TRUE,
+                                  plotChart = TRUE,
                                   level = "Regional",
-                                  region_STP_name = "Midlands",
-                                  remove_prototypes = F,
-                                  regional_lines = F,
-                                  STP_lines = F,
-                                  cat_lines = T,
-                                  plotChart = T)
+                                  region_STP_name = "Midlands")
 ```
 
 
  ]
  .panel[.panel-name[East of England]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
-                                  scheduled_data = UOA_scheduled_data,
+plot_UDA_UOA_delivery_MY_cat(calendar_data = UOA_calendar_data,
+                             data = UOA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UOA",
+                                  remove_prototypes = FALSE,
+                                  regional_lines = FALSE,
+                                  STP_lines = FALSE,
+                                  cat_lines = TRUE,
+                                  plotChart = TRUE,
                                   level = "Regional",
-                                  region_STP_name = "East of England",
-                                  remove_prototypes = F,
-                                  regional_lines = F,
-                                  STP_lines = F,
-                                  cat_lines = T,
-                                  plotChart = T)
+                                  region_STP_name = "East of England")
 ```
 
  ]
@@ -2175,15 +2109,15 @@ plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 
-data <- plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
-                                  scheduled_data = UOA_scheduled_data,
+data <- plot_UDA_UOA_delivery_MY_cat(calendar_data = UOA_calendar_data,
+                             data = UOA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UOA",
                                   level = "National",
                                   region_STP_name = NULL,
                                   remove_prototypes = F,
                                   regional_lines = F,
-                                  STP_lines = T,
+                                  STP_lines = F,
                                   cat_lines = T,
                                   plotChart = F)
 
@@ -2200,15 +2134,15 @@ data %>%
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 reactable(
-  plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
-                                  scheduled_data = UOA_scheduled_data,
+  plot_UDA_UOA_delivery_MY_cat(calendar_data = UOA_calendar_data,
+                             data = UOA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UOA",
                                   level = "National",
                                   region_STP_name = NULL,
                                   remove_prototypes = F,
                                   regional_lines = F,
-                                  STP_lines = T,
+                                  STP_lines = F,
                                   cat_lines = T,
                                   plotChart = F),
   height = 400,
@@ -2243,133 +2177,133 @@ xaringanExtra::use_panelset()
 
  .panel[.panel-name[National]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
-                                  scheduled_data = UOA_scheduled_data,
+plot_UDA_UOA_delivery_MY_cat(calendar_data = UOA_calendar_data,
+                             data = UOA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UOA",
+                                  remove_prototypes = TRUE,
+                                  regional_lines = FALSE,
+                                  STP_lines = FALSE,
+                                  cat_lines = TRUE,
+                                  plotChart = TRUE,
                                   level = "National",
-                                  region_STP_name = NULL,
-                                  remove_prototypes = T,
-                                  regional_lines = F,
-                                  STP_lines = F,
-                                  cat_lines = T,
-                                  plotChart = T)
+                                  region_STP_name = NULL)
 ```
 
  ]
  .panel[.panel-name[South East]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
-                                  scheduled_data = UOA_scheduled_data,
+plot_UDA_UOA_delivery_MY_cat(calendar_data = UOA_calendar_data,
+                             data = UOA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UOA",
+                                  remove_prototypes = TRUE,
+                                  regional_lines = FALSE,
+                                  STP_lines = FALSE,
+                                  cat_lines = TRUE,
+                                  plotChart = TRUE,
                                   level = "Regional",
-                                  region_STP_name = "South East",
-                                  remove_prototypes = T,
-                                  regional_lines = F,
-                                  STP_lines = F,
-                                  cat_lines = T,
-                                  plotChart = T)
+                                  region_STP_name = "South East")
 ```
 
 
  ]
  .panel[.panel-name[South West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
-                                  scheduled_data = UOA_scheduled_data,
+plot_UDA_UOA_delivery_MY_cat(calendar_data = UOA_calendar_data,
+                             data = UOA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UOA",
+                                  remove_prototypes = TRUE,
+                                  regional_lines = FALSE,
+                                  STP_lines = FALSE,
+                                  cat_lines = TRUE,
+                                  plotChart = TRUE,
                                   level = "Regional",
-                                  region_STP_name = "South West",
-                                  remove_prototypes = T,
-                                  regional_lines = F,
-                                  STP_lines = F,
-                                  cat_lines = T,
-                                  plotChart = T)
+                                  region_STP_name = "South West")
 ```
 
 
  ]
  .panel[.panel-name[North West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
-                                  scheduled_data = UOA_scheduled_data,
+plot_UDA_UOA_delivery_MY_cat(calendar_data = UOA_calendar_data,
+                             data = UOA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UOA",
+                                  remove_prototypes = TRUE,
+                                  regional_lines = FALSE,
+                                  STP_lines = FALSE,
+                                  cat_lines = TRUE,
+                                  plotChart = TRUE,
                                   level = "Regional",
-                                  region_STP_name = "North West",
-                                  remove_prototypes = T,
-                                  regional_lines = F,
-                                  STP_lines = F,
-                                  cat_lines = T,
-                                  plotChart = T)
+                                  region_STP_name = "North West")
 ```
 
 
  ]
  .panel[.panel-name[North East and Yorkshire]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
-                                  scheduled_data = UOA_scheduled_data,
+plot_UDA_UOA_delivery_MY_cat(calendar_data = UOA_calendar_data,
+                             data = UOA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UOA",
+                                  remove_prototypes = TRUE,
+                                  regional_lines = FALSE,
+                                  STP_lines = FALSE,
+                                  cat_lines = TRUE,
+                                  plotChart = TRUE,
                                   level = "Regional",
-                                  region_STP_name = "North East and Yorkshire",
-                                  remove_prototypes = T,
-                                  regional_lines = F,
-                                  STP_lines = F,
-                                  cat_lines = T,
-                                  plotChart = T)
+                                  region_STP_name = "North East and Yorkshire")
 ```
 
 
  ]
 .panel[.panel-name[London]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
-                                  scheduled_data = UOA_scheduled_data,
+plot_UDA_UOA_delivery_MY_cat(calendar_data = UOA_calendar_data,
+                             data = UOA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UOA",
+                                  remove_prototypes = TRUE,
+                                  regional_lines = FALSE,
+                                  STP_lines = FALSE,
+                                  cat_lines = TRUE,
+                                  plotChart = TRUE,
                                   level = "Regional",
-                                  region_STP_name = "London",
-                                  remove_prototypes = T,
-                                  regional_lines = F,
-                                  STP_lines = F,
-                                  cat_lines = T,
-                                  plotChart = T)
+                                  region_STP_name = "London")
 ```
 
  ]
  .panel[.panel-name[Midlands]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
-                                  scheduled_data = UOA_scheduled_data,
+plot_UDA_UOA_delivery_MY_cat(calendar_data = UOA_calendar_data,
+                             data = UOA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UOA",
+                                  remove_prototypes = TRUE,
+                                  regional_lines = FALSE,
+                                  STP_lines = FALSE,
+                                  cat_lines = TRUE,
+                                  plotChart = TRUE,
                                   level = "Regional",
-                                  region_STP_name = "Midlands",
-                                  remove_prototypes = T,
-                                  regional_lines = F,
-                                  STP_lines = F,
-                                  cat_lines = T,
-                                  plotChart = T)
+                                  region_STP_name = "Midlands")
 ```
 
  ]
  .panel[.panel-name[East of England]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
-                                  scheduled_data = UOA_scheduled_data,
+plot_UDA_UOA_delivery_MY_cat(calendar_data = UOA_calendar_data,
+                             data = UOA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UOA",
+                                  remove_prototypes = TRUE,
+                                  regional_lines = FALSE,
+                                  STP_lines = FALSE,
+                                  cat_lines = TRUE,
+                                  plotChart = TRUE,
                                   level = "Regional",
-                                  region_STP_name = "East of England",
-                                  remove_prototypes = T,
-                                  regional_lines = F,
-                                  STP_lines = F,
-                                  cat_lines = T,
-                                  plotChart = T)
+                                  region_STP_name = "East of England")
 ```
 
  ]
@@ -2379,17 +2313,17 @@ plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 
-data <- plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
-                                  scheduled_data = UOA_scheduled_data,
+data <- plot_UDA_UOA_delivery_MY_cat(calendar_data = UOA_calendar_data,
+                             data = UOA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UOA",
                                   level = "National",
                                   region_STP_name = NULL,
-                                  remove_prototypes = T,
-                                  regional_lines = F,
-                                  STP_lines = T,
-                                  cat_lines = T,
-                                  plotChart = F)
+                                  remove_prototypes = TRUE,
+                                  regional_lines = FALSE,
+                                  STP_lines = FALSE,
+                                  cat_lines = TRUE,
+                                  plotChart = FALSE)
 
 data %>%
   download_this(
@@ -2404,17 +2338,17 @@ data %>%
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 reactable(
-  plot_UDA_UOA_delivery_calendar(data = UOA_calendar_data,
-                                  scheduled_data = UOA_scheduled_data,
+  plot_UDA_UOA_delivery_MY_cat(calendar_data = UOA_calendar_data,
+                             data = UOA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UOA",
                                   level = "National",
                                   region_STP_name = NULL,
-                                  remove_prototypes = T,
-                                  regional_lines = F,
-                                  STP_lines = T,
-                                  cat_lines = T,
-                                  plotChart = F),
+                                  remove_prototypes = TRUE,
+                                  regional_lines = FALSE,
+                                  STP_lines = FALSE,
+                                  cat_lines = TRUE,
+                                  plotChart = FALSE),
   height = 400,
   filterable = TRUE,
   paginateSubRows = TRUE,
@@ -2448,150 +2382,182 @@ xaringanExtra::use_panelset()
 
  .panel[.panel-name[National]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
-                                  UDAorUOA = "UOA",
-                                  level = "National",
-                                  region_STP_name = NULL)
+plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data, 
+                                              calendar_data = UOA_calendar_data,
+                                              UDAorUOA = "UOA", 
+                                              level = "National",
+                                              region_STP_name = NULL,
+                                              plotChart = TRUE,
+                                              all_regions_and_STPs = FALSE,
+                                              remove_prototypes = TRUE)
 ```
 
-* This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "National", region_STP_name = NULL)`**
+* This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, "UOA", level = "National", region_STP_name = NULL)`**
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
 * From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r get_Q1_22_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "National", region_STP_name = NULL)`**
+**`r get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, UDAorUOA = "UOA", level = "National", region_STP_name = NULL)`**
 contracts (
-**`r round(get_Q1_22_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "National", region_STP_name = NULL)*100/get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "National", region_STP_name = NULL))` %**
-) have delivered the required UOAs or more to be on track towards the Q1 threshold (100%) by the end of June 2022.
+**`r round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, UDAorUOA = "UOA", level = "National", region_STP_name = NULL)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, "UOA", level = "National", region_STP_name = NULL))` %**
+) have delivered the required UOAs or more to be on track towards the Q2 threshold (100%) by the end of September 2022.
 
  ]
  .panel[.panel-name[South East]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
-                                  UDAorUOA = "UOA",
+plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data, 
+                                              calendar_data = UOA_calendar_data,
+                                              UDAorUOA = "UOA", 
+                                              plotChart = TRUE,
+                                              all_regions_and_STPs = FALSE,
+                                              remove_prototypes = TRUE,
                                   level = "Regional",
                                   region_STP_name = "South East")
 ```
 
-* This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "Regional", region_STP_name = "South East")`**
+* This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, "UOA", level = "Regional", region_STP_name = "South East")`**
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
 * From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r get_Q1_22_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "South East")`**
+**`r get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "South East")`**
 contracts (
-**`r round(get_Q1_22_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "South East")*100/get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "Regional", region_STP_name = "South East"))` %**
-) have delivered the required UOAs or more to be on track towards the Q1 threshold (100%) by the end of June 2022.
+**`r round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "South East")*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, "UOA", level = "Regional", region_STP_name = "South East"))` %**
+) have delivered the required UOAs or more to be on track towards the Q2 threshold (100%) by the end of September 2022.
 
 
  ]
  .panel[.panel-name[South West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
-                                  UDAorUOA = "UOA",
+plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data, 
+                                              calendar_data = UOA_calendar_data,
+                                              UDAorUOA = "UOA", 
+                                              plotChart = TRUE,
+                                              all_regions_and_STPs = FALSE,
+                                              remove_prototypes = TRUE,
                                   level = "Regional",
                                   region_STP_name = "South West")
 ```
 
-* This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "Regional", region_STP_name = "South West")`**
+* This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, "UOA", level = "Regional", region_STP_name = "South West")`**
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
 * From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r get_Q1_22_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "South West")`**
+**`r get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "South West")`**
 contracts (
-**`r round(get_Q1_22_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "South West")*100/get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "Regional", region_STP_name = "South West"))` %**
-) have delivered the required UOAs or more to be on track towards the Q1 threshold (100%) by the end of June 2022.
+**`r round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "South West")*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, "UOA", level = "Regional", region_STP_name = "South West"))` %**
+) have delivered the required UOAs or more to be on track towards the Q2 threshold (100%) by the end of September 2022.
 
 
  ]
  .panel[.panel-name[North West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
-                                  UDAorUOA = "UOA",
+plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data, 
+                                              calendar_data = UOA_calendar_data,
+                                              UDAorUOA = "UOA", 
+                                              plotChart = TRUE,
+                                              all_regions_and_STPs = FALSE,
+                                              remove_prototypes = TRUE,
                                   level = "Regional",
                                   region_STP_name = "North West")
 ```
 
-* This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "Regional", region_STP_name = "North West")`**
+* This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, "UOA", level = "Regional", region_STP_name = "North West")`**
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
 * From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r get_Q1_22_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "North West")`**
+**`r get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "North West")`**
 contracts (
-**`r round(get_Q1_22_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "North West")*100/get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "Regional", region_STP_name = "North West"))` %**
-) have delivered the required UOAs or more to be on track towards the Q1 threshold (100%) by the end of June 2022.
+**`r round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "North West")*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, "UOA", level = "Regional", region_STP_name = "North West"))` %**
+) have delivered the required UOAs or more to be on track towards the Q2 threshold (100%) by the end of September 2022.
 
  ]
  .panel[.panel-name[North East and Yorkshire]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
-                                  UDAorUOA = "UOA",
+plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data, 
+                                              calendar_data = UOA_calendar_data,
+                                              UDAorUOA = "UOA", 
+                                              plotChart = TRUE,
+                                              all_regions_and_STPs = FALSE,
+                                              remove_prototypes = TRUE,
                                   level = "Regional",
                                   region_STP_name = "North East and Yorkshire")
 ```
 
-* This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "Regional", region_STP_name = "North East and Yorkshire")`**
+* This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, "UOA", level = "Regional", region_STP_name = "North East and Yorkshire")`**
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
 * From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r get_Q1_22_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "North East and Yorkshire")`**
+**`r get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "North East and Yorkshire")`**
 contracts (
-**`r round(get_Q1_22_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "North East and Yorkshire")*100/get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "Regional", region_STP_name = "North East and Yorkshire"))` %**
-) have delivered the required UOAs or more to be on track towards the Q1 threshold (100%) by the end of June 2022.
+**`r round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "North East and Yorkshire")*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, "UOA", level = "Regional", region_STP_name = "North East and Yorkshire"))` %**
+) have delivered the required UOAs or more to be on track towards the Q2 threshold (100%) by the end of September 2022.
 
 
  ]
 .panel[.panel-name[London]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
-                                  UDAorUOA = "UOA",
+plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data, 
+                                              calendar_data = UOA_calendar_data,
+                                              UDAorUOA = "UOA", 
+                                              plotChart = TRUE,
+                                              all_regions_and_STPs = FALSE,
+                                              remove_prototypes = TRUE,
                                   level = "Regional",
                                   region_STP_name = "London")
 ```
 
-* This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "Regional", region_STP_name = "London")`**
+* This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, "UOA", level = "Regional", region_STP_name = "London")`**
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
 * From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r get_Q1_22_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "London")`**
+**`r get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "London")`**
 contracts (
-**`r round(get_Q1_22_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "London")*100/get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "Regional", region_STP_name = "London"))` %**
-) have delivered the required UOAs or more to be on track towards the Q1 threshold (100%) by the end of June 2022.
+**`r round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "London")*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, "UOA", level = "Regional", region_STP_name = "London"))` %**
+) have delivered the required UOAs or more to be on track towards the Q2 threshold (100%) by the end of September 2022.
 
  ]
  .panel[.panel-name[Midlands]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
-                                  UDAorUOA = "UOA",
+plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data, 
+                                              calendar_data = UOA_calendar_data,
+                                              UDAorUOA = "UOA", 
+                                              plotChart = TRUE,
+                                              all_regions_and_STPs = FALSE,
+                                              remove_prototypes = TRUE,
                                   level = "Regional",
                                   region_STP_name = "Midlands")
 ```
 
-* This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "Regional", region_STP_name = "Midlands")`**
+* This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, "UOA", level = "Regional", region_STP_name = "Midlands")`**
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
 * From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r get_Q1_22_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "Midlands")`**
+**`r get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "Midlands")`**
 contracts (
-**`r round(get_Q1_22_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "Midlands")*100/get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "Regional", region_STP_name = "Midlands"))` %**
-) have delivered the required UOAs or more to be on track towards the Q1 threshold (100%) by the end of June 2022.
+**`r round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "Midlands")*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, "UOA", level = "Regional", region_STP_name = "Midlands"))` %**
+) have delivered the required UOAs or more to be on track towards the Q2 threshold (100%) by the end of September 2022.
 
 
  ]
  .panel[.panel-name[East of England]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
-                                  UDAorUOA = "UOA",
+plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data, 
+                                              calendar_data = UOA_calendar_data,
+                                              UDAorUOA = "UOA", 
+                                              plotChart = TRUE,
+                                              all_regions_and_STPs = FALSE,
+                                              remove_prototypes = TRUE,
                                   level = "Regional",
                                   region_STP_name = "East of England")
 ```
 
-* This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "Regional", region_STP_name = "East of England")`**
+* This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, "UOA", level = "Regional", region_STP_name = "East of England")`**
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
 * From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r get_Q1_22_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "East of England")`**
+**`r get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "East of England")`**
 contracts (
-**`r round(get_Q1_22_num_contracts_on_target(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "East of England")*100/get_num_contracts(UOA_calendar_data, remove_prototypes = T, UOA_scheduled_data, "UOA", level = "Regional", region_STP_name = "East of England"))` %**
-) have delivered the required UOAs or more to be on track towards the Q1 threshold (100%) by the end of June 2022.
+**`r round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "East of England")*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, "UOA", level = "Regional", region_STP_name = "East of England"))` %**
+) have delivered the required UOAs or more to be on track towards the Q2 threshold (100%) by the end of September 2022.
 
 
  ]
@@ -2601,8 +2567,10 @@ contracts (
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 
-data <- plot_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
-                                  UDAorUOA = "UOA",
+data <- plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data, 
+                                              calendar_data = UOA_calendar_data,
+                                              UDAorUOA = "UOA", 
+                                              remove_prototypes = TRUE,
                                   level = "National",
                                   region_STP_name = NULL,
                                   plotChart = F,
@@ -2621,8 +2589,10 @@ data %>%
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 reactable(
-  plot_cumulative_UDA_UOA_to_target(data = UOA_calendar_data,
-                                  UDAorUOA = "UOA",
+  plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data, 
+                                              calendar_data = UOA_calendar_data,
+                                              UDAorUOA = "UOA", 
+                                              remove_prototypes = TRUE,
                                   level = "National",
                                   region_STP_name = NULL,
                                   plotChart = F,
@@ -2646,170 +2616,6 @@ reactable(
 
  [Return to contents](#contents)
 
----
-
-name: scheduled-uoas
-
-### UOA scheduled delivery
-
-```{r xaringan-panelset-UOA_activity_scheduled, echo=FALSE}
-xaringanExtra::use_panelset()
-```
- <font size="2">
-.panelset[
-
- .panel[.panel-name[National]
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery(data = UOA_scheduled_data,
-                      UDAorUOA = "UOA",
-                                  level = "National",
-                                  region_STP_name = NULL)
-```
-
-* This graph shows the monthly percentage of usual annual contracted UOAs scaled up to 12 months (18 months for April) submitted. The graph uses scheduled data to measure the
-activity which is fixed. This may be thought of as "UOAs submitted" in each month rather than delivered.
-
- ]
- .panel[.panel-name[South East]
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery(data = UOA_scheduled_data,
-                      UDAorUOA = "UOA",
-                                  level = "Regional",
-                                  region_STP_name = "South East")
-```
-
-* This graph shows the monthly percentage of usual annual contracted UOAs scaled up to 12 months (18 months for April) submitted. The graph uses scheduled data to measure the
-activity which is fixed. This may be thought of as "UOAs submitted" in each month rather than delivered.
-
-
- ]
- .panel[.panel-name[South West]
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery(data = UOA_scheduled_data,
-                      UDAorUOA = "UOA",
-                                  level = "Regional",
-                                  region_STP_name = "South West")
-```
-
-* This graph shows the monthly percentage of usual annual contracted UOAs scaled up to 12 months (18 months for April) submitted. The graph uses scheduled data to measure the
-activity which is fixed. This may be thought of as "UOAs submitted" in each month rather than delivered.
-
-
- ]
- .panel[.panel-name[North West]
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery(data = UOA_scheduled_data,
-                      UDAorUOA = "UOA",
-                                  level = "Regional",
-                                  region_STP_name = "North West")
-```
-
-* This graph shows the monthly percentage of usual annual contracted UOAs scaled up to 12 months (18 months for April) submitted. The graph uses scheduled data to measure the
-activity which is fixed. This may be thought of as "UOAs submitted" in each month rather than delivered.
-
-
- ]
- .panel[.panel-name[North East and Yorkshire]
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery(data = UOA_scheduled_data,
-                      UDAorUOA = "UOA",
-                                  level = "Regional",
-                                  region_STP_name = "North East and Yorkshire")
-```
-
-* This graph shows the monthly percentage of usual annual contracted UOAs scaled up to 12 months (18 months for April) submitted. The graph uses scheduled data to measure the
-activity which is fixed. This may be thought of as "UOAs submitted" in each month rather than delivered.
-
-
- ]
-.panel[.panel-name[London]
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery(data = UOA_scheduled_data,
-                      UDAorUOA = "UOA",
-                                  level = "Regional",
-                                  region_STP_name = "London")
-```
-
-* This graph shows the monthly percentage of usual annual contracted UOAs scaled up to 12 months (18 months for April) submitted. The graph uses scheduled data to measure the
-activity which is fixed. This may be thought of as "UOAs submitted" in each month rather than delivered.
-
- ]
- .panel[.panel-name[Midlands]
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery(data = UOA_scheduled_data,
-                      UDAorUOA = "UOA",
-                                  level = "Regional",
-                                  region_STP_name = "Midlands")
-```
-
-* This graph shows the monthly percentage of usual annual contracted UOAs scaled up to 12 months (18 months for April) submitted. The graph uses scheduled data to measure the
-activity which is fixed. This may be thought of as "UOAs submitted" in each month rather than delivered.
-
-
- ]
- .panel[.panel-name[East of England]
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery(data = UOA_scheduled_data,
-                      UDAorUOA = "UOA",
-                                  level = "Regional",
-                                  region_STP_name = "East of England")
-```
-
-* This graph shows the monthly percentage of usual annual contracted UOAs scaled up to 12 months (18 months for April) submitted. The graph uses scheduled data to measure the
-activity which is fixed. This may be thought of as "UOAs submitted" in each month rather than delivered.
-
-
- ]
- .panel[.panel-name[Data]
-
-<font size="1">
-
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-
-data <- plot_UDA_UOA_delivery(data = UOA_scheduled_data,
-                      UDAorUOA = "UOA",
-                                  level = "National",
-                                  region_STP_name = NULL,
-                      plotChart = F,
-                      all_regions_and_STPs = T)
-
-data %>%
-  download_this(
-    output_name = "UOA_delivery_scheduled_data",
-    output_extension = ".xlsx",
-    button_label = "Download data",
-    button_type = "warning",
-    has_icon = TRUE,
-    icon = "fa fa-save"
-  )
-```
-
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-reactable(
-  plot_UDA_UOA_delivery(data = UOA_scheduled_data,
-                      UDAorUOA = "UOA",
-                                  level = "National",
-                                  region_STP_name = NULL,
-                      plotChart = F,
-                      all_regions_and_STPs = T),
-  height = 400,
-  filterable = TRUE,
-  paginateSubRows = TRUE,
-  minRows = 5,
-  highlight = TRUE,
-  groupBy = c("Schedule month", "Region Name"),
-  columns = list(
-    `Monthly UOAs delivered`= colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE),
-    `Annual contracted UOAs` = colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE),
-    `Scaled monthly UOAs delivered` = colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE),
-    `Scaled monthly percentage of contracted UOAs delivered` = colDef(aggregate = "mean", format = colFormat(suffix = "%", digits = 1), filterable = FALSE)
-  )
-)
-```
- ]
- ]
-
- [Return to contents](#contents)
 
 ---
 
@@ -3002,7 +2808,7 @@ reactable(
 
 ---
 
-name: Nbanded-cots
+name: banded-cots
 
 ### Time series of banded Courses of Treatment
 
@@ -3017,6 +2823,7 @@ xaringanExtra::use_panelset()
 plot_banded_CoT(data = UDA_scheduled_data,
                 calendar_data = UDA_calendar_data,
                 historic_data = historical_UDA_scheduled_data,
+                remove_prototypes = TRUE,
                 level = "National",
                 region_STP_name = NULL)
 ```
@@ -3028,6 +2835,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
 plot_banded_CoT(data = UDA_scheduled_data,
                 calendar_data = UDA_calendar_data,
                 historic_data = historical_UDA_scheduled_data,
+                remove_prototypes = TRUE,
                 level = "Regional",
                 region_STP_name = "South East")
 ```
@@ -3038,6 +2846,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
 plot_banded_CoT(data = UDA_scheduled_data,
                 calendar_data = UDA_calendar_data,
                 historic_data = historical_UDA_scheduled_data,
+                remove_prototypes = TRUE,
                 level = "Regional",
                 region_STP_name = "South West")
 ```
@@ -3048,6 +2857,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
 plot_banded_CoT(data = UDA_scheduled_data,
                 calendar_data = UDA_calendar_data,
                 historic_data = historical_UDA_scheduled_data,
+                remove_prototypes = TRUE,
                 level = "Regional",
                 region_STP_name = "North West")
 ```
@@ -3058,6 +2868,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
 plot_banded_CoT(data = UDA_scheduled_data,
                 calendar_data = UDA_calendar_data,
                 historic_data = historical_UDA_scheduled_data,
+                remove_prototypes = TRUE,
                 level = "Regional",
                 region_STP_name = "North East and Yorkshire")
 ```
@@ -3068,6 +2879,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
 plot_banded_CoT(data = UDA_scheduled_data,
                 calendar_data = UDA_calendar_data,
                 historic_data = historical_UDA_scheduled_data,
+                remove_prototypes = TRUE,
                 level = "Regional",
                 region_STP_name = "London")
 ```
@@ -3078,6 +2890,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
 plot_banded_CoT(data = UDA_scheduled_data,
                 calendar_data = UDA_calendar_data,
                 historic_data = historical_UDA_scheduled_data,
+                remove_prototypes = TRUE,
                 level = "Regional",
                 region_STP_name = "Midlands")
 ```
@@ -3089,6 +2902,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
 plot_banded_CoT(data = UDA_scheduled_data,
                 calendar_data = UDA_calendar_data,
                 historic_data = historical_UDA_scheduled_data,
+                remove_prototypes = TRUE,
                 level = "Regional",
                 region_STP_name = "East of England")
 ```
@@ -3103,6 +2917,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
 data <- plot_banded_CoT(data = UDA_scheduled_data,
                 calendar_data = UDA_calendar_data,
                 historic_data = historical_UDA_scheduled_data,
+                remove_prototypes = TRUE,
                 level = "National",
                 region_STP_name = NULL,
                 plotChart = F,
@@ -3124,6 +2939,7 @@ reactable(
   plot_banded_CoT(data = UDA_scheduled_data,
                 calendar_data = UDA_calendar_data,
                 historic_data = historical_UDA_scheduled_data,
+                remove_prototypes = TRUE,
                 level = "National",
                 region_STP_name = NULL,
                 plotChart = F,
@@ -3165,6 +2981,7 @@ xaringanExtra::use_panelset()
 plot_banded_CoT(data = UDA_scheduled_data,
                 calendar_data = UDA_calendar_data,
                 historic_data = historical_UDA_scheduled_data,
+                remove_prototypes = TRUE,
                 level = "National",
                 region_STP_name = NULL,
                 asIndex = TRUE)
@@ -3177,6 +2994,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
 plot_banded_CoT(data = UDA_scheduled_data,
                 calendar_data = UDA_calendar_data,
                 historic_data = historical_UDA_scheduled_data,
+                remove_prototypes = TRUE,
                 level = "Regional",
                 region_STP_name = "South East",
                 asIndex = TRUE)
@@ -3188,6 +3006,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
 plot_banded_CoT(data = UDA_scheduled_data,
                 calendar_data = UDA_calendar_data,
                 historic_data = historical_UDA_scheduled_data,
+                remove_prototypes = TRUE,
                 level = "Regional",
                 region_STP_name = "South West",
                 asIndex = TRUE)
@@ -3199,6 +3018,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
 plot_banded_CoT(data = UDA_scheduled_data,
                 calendar_data = UDA_calendar_data,
                 historic_data = historical_UDA_scheduled_data,
+                remove_prototypes = TRUE,
                 level = "Regional",
                 region_STP_name = "North West",
                 asIndex = TRUE)
@@ -3210,6 +3030,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
 plot_banded_CoT(data = UDA_scheduled_data,
                 calendar_data = UDA_calendar_data,
                 historic_data = historical_UDA_scheduled_data,
+                remove_prototypes = TRUE,
                 level = "Regional",
                 region_STP_name = "North East and Yorkshire",
                 asIndex = TRUE)
@@ -3221,6 +3042,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
 plot_banded_CoT(data = UDA_scheduled_data,
                 calendar_data = UDA_calendar_data,
                 historic_data = historical_UDA_scheduled_data,
+                remove_prototypes = TRUE,
                 level = "Regional",
                 region_STP_name = "London",
                 asIndex = TRUE)
@@ -3232,6 +3054,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
 plot_banded_CoT(data = UDA_scheduled_data,
                 calendar_data = UDA_calendar_data,
                 historic_data = historical_UDA_scheduled_data,
+                remove_prototypes = TRUE,
                 level = "Regional",
                 region_STP_name = "Midlands",
                 asIndex = TRUE)
@@ -3244,6 +3067,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
 plot_banded_CoT(data = UDA_scheduled_data,
                 calendar_data = UDA_calendar_data,
                 historic_data = historical_UDA_scheduled_data,
+                remove_prototypes = TRUE,
                 level = "Regional",
                 region_STP_name = "East of England",
                 asIndex = TRUE)
@@ -3271,6 +3095,7 @@ xaringanExtra::use_panelset()
 plot_urgent_form_submissions(data = UDA_scheduled_data,
                 calendar_data = UDA_calendar_data,
                 historic_data = historical_UDA_scheduled_data,
+                remove_prototypes = TRUE,
                 level = "National",
                 region_STP_name = NULL)
 ```
@@ -3295,6 +3120,7 @@ change from the pre-COVID world.
 plot_urgent_form_submissions(data = UDA_scheduled_data,
                 calendar_data = UDA_calendar_data,
                 historic_data = historical_UDA_scheduled_data,
+                remove_prototypes = TRUE,
                 level = "Regional",
                 region_STP_name = "South East")
 ```
@@ -3320,6 +3146,7 @@ change from the pre-COVID world.
 plot_urgent_form_submissions(data = UDA_scheduled_data,
                 calendar_data = UDA_calendar_data,
                 historic_data = historical_UDA_scheduled_data,
+                remove_prototypes = TRUE,
                 level = "Regional",
                 region_STP_name = "South West")
 ```
@@ -3345,6 +3172,7 @@ change from the pre-COVID world.
 plot_urgent_form_submissions(data = UDA_scheduled_data,
                 calendar_data = UDA_calendar_data,
                 historic_data = historical_UDA_scheduled_data,
+                remove_prototypes = TRUE,
                 level = "Regional",
                 region_STP_name = "North West")
 ```
@@ -3370,6 +3198,7 @@ change from the pre-COVID world.
 plot_urgent_form_submissions(data = UDA_scheduled_data,
                 calendar_data = UDA_calendar_data,
                 historic_data = historical_UDA_scheduled_data,
+                remove_prototypes = TRUE,
                 level = "Regional",
                 region_STP_name = "North East and Yorkshire")
 ```
@@ -3395,6 +3224,7 @@ change from the pre-COVID world.
 plot_urgent_form_submissions(data = UDA_scheduled_data,
                 calendar_data = UDA_calendar_data,
                 historic_data = historical_UDA_scheduled_data,
+                remove_prototypes = TRUE,
                 level = "Regional",
                 region_STP_name = "London")
 ```
@@ -3419,6 +3249,7 @@ change from the pre-COVID world.
 plot_urgent_form_submissions(data = UDA_scheduled_data,
                 calendar_data = UDA_calendar_data,
                 historic_data = historical_UDA_scheduled_data,
+                remove_prototypes = TRUE,
                 level = "Regional",
                 region_STP_name = "Midlands")
 ```
@@ -3443,6 +3274,7 @@ change from the pre-COVID world.
 plot_urgent_form_submissions(data = UDA_scheduled_data,
                 calendar_data = UDA_calendar_data,
                 historic_data = historical_UDA_scheduled_data,
+                remove_prototypes = TRUE,
                 level = "Regional",
                 region_STP_name = "East of England")
 ```
@@ -3471,6 +3303,7 @@ change from the pre-COVID world.
 data <- plot_urgent_form_submissions(data = UDA_scheduled_data,
                 calendar_data = UDA_calendar_data,
                 historic_data = historical_UDA_scheduled_data,
+                remove_prototypes = TRUE,
                 level = "National",
                 region_STP_name = NULL,
                 plotChart = F,
@@ -3492,6 +3325,7 @@ reactable(
   plot_urgent_form_submissions(data = UDA_scheduled_data,
                 calendar_data = UDA_calendar_data,
                 historic_data = historical_UDA_scheduled_data,
+                remove_prototypes = TRUE,
                 level = "National",
                 region_STP_name = NULL,
                 plotChart = F,
@@ -4487,6 +4321,9 @@ plot_practice_closures(data = contract_handbacks,
 ```
 
  ]
+ 
+For context, there are **`r get_num_contracts(remove_prototypes = FALSE)`** nationally, including prototypes and contracts with annual contracted UDAs < 100.
+
  .panel[.panel-name[South East]
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
@@ -4497,6 +4334,7 @@ plot_practice_closures(data = contract_handbacks,
                                 plotChart = TRUE)
 ```
 
+For context, there are **`r get_num_contracts(remove_prototypes = FALSE, level = "Regional", region_STP_name = "South East")`** in this region, including prototypes and contracts with annual contracted UDAs < 100.
  ]
  .panel[.panel-name[South West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
@@ -4507,6 +4345,7 @@ plot_practice_closures(data = contract_handbacks,
                                 plotChart = TRUE)
 ```
 
+For context, there are **`r get_num_contracts(remove_prototypes = FALSE, level = "Regional", region_STP_name = "South West")`** in this region, including prototypes and contracts with annual contracted UDAs < 100.
 
  ]
  .panel[.panel-name[North West]
@@ -4518,6 +4357,7 @@ plot_practice_closures(data = contract_handbacks,
                                 plotChart = TRUE)
 ```
 
+For context, there are **`r get_num_contracts(remove_prototypes = FALSE, level = "Regional", region_STP_name = "North West")`** in this region, including prototypes and contracts with annual contracted UDAs < 100.
 
  ]
  .panel[.panel-name[North East and Yorkshire]
@@ -4530,6 +4370,8 @@ plot_practice_closures(data = contract_handbacks,
                                 plotChart = TRUE)
 ```
 
+For context, there are **`r get_num_contracts(remove_prototypes = FALSE, level = "Regional", region_STP_name = "North East and Yorkshire")`** in this region, including prototypes and contracts with annual contracted UDAs < 100.
+
  ]
 .panel[.panel-name[London]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
@@ -4540,6 +4382,7 @@ plot_practice_closures(data = contract_handbacks,
                                 plotChart = TRUE)
 ```
 
+For context, there are **`r get_num_contracts(remove_prototypes = FALSE, level = "Regional", region_STP_name = "London")`** in this region, including prototypes and contracts with annual contracted UDAs < 100.
 
  ]
  .panel[.panel-name[Midlands]
@@ -4551,6 +4394,7 @@ plot_practice_closures(data = contract_handbacks,
                                 plotChart = TRUE)
 ```
 
+For context, there are **`r get_num_contracts(remove_prototypes = FALSE, level = "Regional", region_STP_name = "Midlands")`** in this region, including prototypes and contracts with annual contracted UDAs < 100.
 
  ]
  .panel[.panel-name[East of England]
@@ -4562,6 +4406,7 @@ plot_practice_closures(data = contract_handbacks,
                                 plotChart = TRUE)
 ```
 
+For context, there are **`r get_num_contracts(remove_prototypes = FALSE, level = "Regional", region_STP_name = "East of England")`** in this region, including prototypes and contracts with annual contracted UDAs < 100.
 
  ].panel[.panel-name[Data]
 
@@ -4605,6 +4450,8 @@ reactable(
  ]
  ]
 
+This data is taken from the BSA Primary Care Activity Report (PCAR). Prior to October 2021, the report was quarterly which is why the figures in these graph show aggregated figures for Q1 and Q2 2021 and then monthly figures after that. Prior to Q1 2021, the data for this report was collected differently and is not comparable.
+
 [Return to contents](#contents)
 
 ---
@@ -4641,6 +4488,7 @@ plot_re_and_de_commissioned_UDAs_UOAs(data = contract_handbacks,
                                 plotChart = TRUE)
 ```
 
+
  ]
  .panel[.panel-name[South West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
@@ -4650,6 +4498,7 @@ plot_re_and_de_commissioned_UDAs_UOAs(data = contract_handbacks,
                                 all_regions_and_STPs = FALSE,
                                 plotChart = TRUE)
 ```
+
 
 
  ]
@@ -4748,6 +4597,8 @@ reactable(
 ```
  ]
  ]
+ 
+This data is taken from the BSA Primary Care Activity Report (PCAR). Prior to October 2021, the report was quarterly which is why the figures in these graph show aggregated figures for Q1 and Q2 2021 and then monthly figures after that. Prior to Q1 2021, the data for this report was collected differently and is not comparable.
 
 [Return to contents](#contents)
 
@@ -5083,7 +4934,7 @@ plot_payments_to_dentists(data = payments_to_dentists,
 ---
 name: uda-value
 
-### Financial value of UDAs delivered
+### Cumulative financial value of UDAs delivered
 
 ```{r xaringan-panelset-uda-value, echo=FALSE}
 xaringanExtra::use_panelset()
@@ -5094,7 +4945,7 @@ xaringanExtra::use_panelset()
 .panel[.panel-name[National]
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_value(data = UDA_scheduled_data,
+plot_cumulative_UDA_value(data = UDA_scheduled_data,
                            historical_data = historical_UDA_scheduled_data,
                            payments_data = payments_to_dentists,
                            UDA_value_data = UDA_values,
@@ -5102,6 +4953,7 @@ plot_UDA_value(data = UDA_scheduled_data,
                            level = "National",
                            region_STP_name = NULL,
                            all_regions_and_STPs = FALSE,
+                           asIndex = FALSE,
                            plotChart = TRUE)
 ```
 
@@ -5109,175 +4961,47 @@ plot_UDA_value(data = UDA_scheduled_data,
  .panel[.panel-name[South East]
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_value(data = UDA_scheduled_data,
+plot_cumulative_UDA_value(data = UDA_scheduled_data,
                            historical_data = historical_UDA_scheduled_data,
                            payments_data = payments_to_dentists,
                            UDA_value_data = UDA_values,
                            protos = prototype_contracts$prototype_contract_number,
-                                level = "Regional",
-                                region_STP_name = "South East",
-                                plotChart = TRUE)
-```
-
- ]
- .panel[.panel-name[South West]
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_value(data = UDA_scheduled_data,
-                           historical_data = historical_UDA_scheduled_data,
-                           payments_data = payments_to_dentists,
-                           UDA_value_data = UDA_values,
-                           protos = prototype_contracts$prototype_contract_number,
-                                level = "Regional",
-                                region_STP_name = "South West",
-                                plotChart = TRUE)
-```
-
-
- ]
- .panel[.panel-name[North West]
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_value(data = UDA_scheduled_data,
-                           historical_data = historical_UDA_scheduled_data,
-                           payments_data = payments_to_dentists,
-                           UDA_value_data = UDA_values,
-                           protos = prototype_contracts$prototype_contract_number,
-                                level = "Regional",
-                                region_STP_name = "North West",
-                                plotChart = TRUE)
-```
-
-
- ]
- .panel[.panel-name[North East and Yorkshire]
-
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_value(data = UDA_scheduled_data,
-                           historical_data = historical_UDA_scheduled_data,
-                           payments_data = payments_to_dentists,
-                           UDA_value_data = UDA_values,
-                           protos = prototype_contracts$prototype_contract_number,
-                                level = "Regional",
-                                region_STP_name = "North East and Yorkshire",
-                                plotChart = TRUE)
-```
-
-
- ]
-.panel[.panel-name[London]
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_value(data = UDA_scheduled_data,
-                           historical_data = historical_UDA_scheduled_data,
-                           payments_data = payments_to_dentists,
-                           UDA_value_data = UDA_values,
-                           protos = prototype_contracts$prototype_contract_number,
-                                level = "Regional",
-                                region_STP_name = "London",
-                                plotChart = TRUE)
-```
-
-
- ]
- .panel[.panel-name[Midlands]
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_value(data = UDA_scheduled_data,
-                           historical_data = historical_UDA_scheduled_data,
-                           payments_data = payments_to_dentists,
-                           UDA_value_data = UDA_values,
-                           protos = prototype_contracts$prototype_contract_number,
-                                level = "Regional",
-                                region_STP_name = "Midlands",
-                                plotChart = TRUE)
-```
-
-
-
- ]
- .panel[.panel-name[East of England]
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_value(data = UDA_scheduled_data,
-                           historical_data = historical_UDA_scheduled_data,
-                           payments_data = payments_to_dentists,
-                           UDA_value_data = UDA_values,
-                           protos = prototype_contracts$prototype_contract_number,
-                                level = "Regional",
-                                region_STP_name = "East of England",
-                                plotChart = TRUE)
-```
-
-
- ]
- ]
-
-[Return to contents](#contents)
-
----
-name: uda-value-index
-
-### Financial value of UDAs delivered as % of 2018 delivery
-
-```{r xaringan-panelset-uda-value-index, echo=FALSE}
-xaringanExtra::use_panelset()
-```
-
- <font size="2">
-.panelset[
-.panel[.panel-name[National]
-
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_value(data = UDA_scheduled_data,
-                           historical_data = historical_UDA_scheduled_data,
-                           payments_data = payments_to_dentists,
-                           UDA_value_data = UDA_values,
-                           protos = prototype_contracts$prototype_contract_number,
-                           level = "National",
-                           region_STP_name = NULL,
                            all_regions_and_STPs = FALSE,
-                           plotChart = TRUE,
-               asIndex = TRUE)
-```
-
-]
- .panel[.panel-name[South East]
-
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_value(data = UDA_scheduled_data,
-                           historical_data = historical_UDA_scheduled_data,
-                           payments_data = payments_to_dentists,
-                           UDA_value_data = UDA_values,
-                           protos = prototype_contracts$prototype_contract_number,
+                           asIndex = FALSE,
                                 level = "Regional",
                                 region_STP_name = "South East",
-                                plotChart = TRUE,
-               asIndex = TRUE)
+                                plotChart = TRUE)
 ```
 
  ]
  .panel[.panel-name[South West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_value(data = UDA_scheduled_data,
+plot_cumulative_UDA_value(data = UDA_scheduled_data,
                            historical_data = historical_UDA_scheduled_data,
                            payments_data = payments_to_dentists,
                            UDA_value_data = UDA_values,
                            protos = prototype_contracts$prototype_contract_number,
+                           all_regions_and_STPs = FALSE,
+                           asIndex = FALSE,
                                 level = "Regional",
                                 region_STP_name = "South West",
-                                plotChart = TRUE,
-               asIndex = TRUE)
+                                plotChart = TRUE)
 ```
 
 
  ]
  .panel[.panel-name[North West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_value(data = UDA_scheduled_data,
+plot_cumulative_UDA_value(data = UDA_scheduled_data,
                            historical_data = historical_UDA_scheduled_data,
                            payments_data = payments_to_dentists,
                            UDA_value_data = UDA_values,
                            protos = prototype_contracts$prototype_contract_number,
+                           all_regions_and_STPs = FALSE,
+                           asIndex = FALSE,
                                 level = "Regional",
                                 region_STP_name = "North West",
-                                plotChart = TRUE,
-               asIndex = TRUE)
+                                plotChart = TRUE)
 ```
 
 
@@ -5285,45 +5009,48 @@ plot_UDA_value(data = UDA_scheduled_data,
  .panel[.panel-name[North East and Yorkshire]
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_value(data = UDA_scheduled_data,
+plot_cumulative_UDA_value(data = UDA_scheduled_data,
                            historical_data = historical_UDA_scheduled_data,
                            payments_data = payments_to_dentists,
                            UDA_value_data = UDA_values,
                            protos = prototype_contracts$prototype_contract_number,
+                           all_regions_and_STPs = FALSE,
+                           asIndex = FALSE,
                                 level = "Regional",
                                 region_STP_name = "North East and Yorkshire",
-                                plotChart = TRUE,
-               asIndex = TRUE)
+                                plotChart = TRUE)
 ```
 
 
  ]
 .panel[.panel-name[London]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_value(data = UDA_scheduled_data,
+plot_cumulative_UDA_value(data = UDA_scheduled_data,
                            historical_data = historical_UDA_scheduled_data,
                            payments_data = payments_to_dentists,
                            UDA_value_data = UDA_values,
                            protos = prototype_contracts$prototype_contract_number,
+                           all_regions_and_STPs = FALSE,
+                           asIndex = FALSE,
                                 level = "Regional",
                                 region_STP_name = "London",
-                                plotChart = TRUE,
-               asIndex = TRUE)
+                                plotChart = TRUE)
 ```
 
 
  ]
  .panel[.panel-name[Midlands]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_value(data = UDA_scheduled_data,
+plot_cumulative_UDA_value(data = UDA_scheduled_data,
                            historical_data = historical_UDA_scheduled_data,
                            payments_data = payments_to_dentists,
                            UDA_value_data = UDA_values,
                            protos = prototype_contracts$prototype_contract_number,
+                           all_regions_and_STPs = FALSE,
+                           asIndex = FALSE,
                                 level = "Regional",
                                 region_STP_name = "Midlands",
-                                plotChart = TRUE,
-               asIndex = TRUE)
+                                plotChart = TRUE)
 ```
 
 
@@ -5331,23 +5058,69 @@ plot_UDA_value(data = UDA_scheduled_data,
  ]
  .panel[.panel-name[East of England]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_value(data = UDA_scheduled_data,
+plot_cumulative_UDA_value(data = UDA_scheduled_data,
                            historical_data = historical_UDA_scheduled_data,
                            payments_data = payments_to_dentists,
                            UDA_value_data = UDA_values,
                            protos = prototype_contracts$prototype_contract_number,
+                           all_regions_and_STPs = FALSE,
+                           asIndex = FALSE,
                                 level = "Regional",
                                 region_STP_name = "East of England",
-                                plotChart = TRUE,
-               asIndex = TRUE)
+                                plotChart = TRUE)
 ```
 
+
+ ] .panel[.panel-name[Data]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=6}
+
+data <- plot_cumulative_UDA_value(data = UDA_scheduled_data,
+                           historical_data = historical_UDA_scheduled_data,
+                           payments_data = payments_to_dentists,
+                           UDA_value_data = UDA_values,
+                           protos = prototype_contracts$prototype_contract_number,
+                           all_regions_and_STPs = FALSE,
+                           asIndex = FALSE,
+                                level = "Regional",
+                                region_STP_name = "East of England",
+                                plotChart = FALSE)
+
+data %>%
+  download_this(
+    output_name = "practice_closures_data",
+    output_extension = ".xlsx",
+    button_label = "Download data",
+    button_type = "warning",
+    has_icon = TRUE,
+    icon = "fa fa-save"
+  )
+```
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+reactable(
+  plot_cumulative_UDA_value(data = UDA_scheduled_data,
+                           historical_data = historical_UDA_scheduled_data,
+                           payments_data = payments_to_dentists,
+                           UDA_value_data = UDA_values,
+                           protos = prototype_contracts$prototype_contract_number,
+                           all_regions_and_STPs = FALSE,
+                           asIndex = FALSE,
+                                level = "Regional",
+                                region_STP_name = "East of England",
+                                plotChart = FALSE),
+  height = 400,
+  filterable = TRUE,
+  paginateSubRows = TRUE,
+  minRows = 5,
+  highlight = TRUE
+)
+```
 
  ]
  ]
 
 [Return to contents](#contents)
-
 
 ---
 

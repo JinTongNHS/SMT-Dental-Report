@@ -2,7 +2,7 @@
 get_num_urgent_forms_2019 <- function(data = UDA_scheduled_data, 
                                       historic_data = historical_UDA_scheduled_data,
                                       calendar_data = UDA_calendar_data,
-                                      remove_prototypes = F,
+                                      remove_prototypes = TRUE,
                                       level = "National",
                                       region_STP_name = NULL){
   

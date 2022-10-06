@@ -53,7 +53,9 @@ plot_practice_closures <- function(data = contract_handbacks,
                                         "February 2022",
                                         "March 2022",
                                         "April 2022",
-                                        "May 2022"))
+                                        "May 2022",
+                                        "June 2022",
+                                        "July 2022"))
   
   cbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442","#CC79A7")
   

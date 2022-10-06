@@ -6,7 +6,8 @@ plot_banded_CoT <- function(data = UDA_scheduled_data,
                             region_STP_name = NULL,
                             plotChart = TRUE, 
                             all_regions_and_STPs = FALSE,
-                            asIndex = FALSE){
+                            asIndex = FALSE,
+                            remove_prototypes = TRUE){
   
   #avoid standard form on axes
   options(scipen = 100)
@@ -17,9 +18,6 @@ plot_banded_CoT <- function(data = UDA_scheduled_data,
     distinct()
   
   data <- left_join(data, region_STP_lookup, by = c("commissioner_name"))
-  
-  #add a region column to the historic data
-  #historic_data <- left_join(historic_data, region_STP_lookup, by = c("contract_number"))
   
   #toggle subtitle
   if(level == "Regional"){
@@ -41,7 +39,7 @@ plot_banded_CoT <- function(data = UDA_scheduled_data,
   }
   
   #get data into the right format
-  data_to_print <- get_banded_COTs_data(data, historic_data = historic_data, remove_prototypes = TRUE, all_regions_and_STPs = all_regions_and_STPs)
+  data_to_print <- get_banded_COTs_data(data, historic_data = historic_data, remove_prototypes = remove_prototypes, all_regions_and_STPs = all_regions_and_STPs)
   data <- reshape2::melt(data_to_print, id.vars = "month")
   data <- data %>%
     mutate(month = as.Date(month)) %>%
@@ -101,7 +99,8 @@ plot_banded_CoT <- function(data = UDA_scheduled_data,
            y = ylab,
            colour = "Band",
            subtitle = subtitle,
-           caption = "*UDA to FP17 conversion has been done assuming a band 1 FP17
+           caption = "*Excluding contracts with annual contracted UDA < 100. Excluding prototype contracts up until April 2022.
+           **UDA to FP17 conversion has been done assuming a band 1 FP17
          is equivalent to 1 UDA, a band 2 FP17 = 3 UDAs,
          a band 3 FP17 = 12 UDAs, an urgent FP17 = 1.2
          UDAs and an 'other' FP17 = 0.6 UDAs. Scheduled data used.")

@@ -14,11 +14,12 @@ get_banded_COTs_data <- function(data = UDA_scheduled_data,
   data <- bind_rows(data, historic_data)
   
   #remove prototype contracts if specified
+  #only removes prototypes before April 2022
   if(remove_prototypes){
     #create not in function
     `%notin%` = Negate(`%in%`)
     data <- data %>%
-      filter(contract_number %notin% prototype_contracts$prototype_contract_number) %>%
+      filter(!(contract_number %in% prototype_contracts$prototype_contract_number & month < as.Date("2022-04-01"))) %>%
       filter(annual_contracted_UDA > 100)
   }
   

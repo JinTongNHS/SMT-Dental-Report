@@ -139,7 +139,7 @@ plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
                colour = "#0072B2") +
         annotate(geom = "text",
                  x = data$month,
-                 y = data$perc_UDA_UOA_delivered - 10,
+                 y = data$perc_UDA_UOA_delivered + 5,
                  label = paste0(data$perc_UDA_UOA_delivered, "%"),
                  size = 3) 
     }else{

@@ -5,7 +5,8 @@ plot_urgent_form_submissions <- function(data = UDA_scheduled_data,
                                          level = "National",
                                          region_STP_name = "Cheshire and Merseyside STP",
                                          plotChart = TRUE,
-                                         all_regions_and_STPs = FALSE){
+                                         all_regions_and_STPs = FALSE,
+                                         remove_prototypes = TRUE){
   
   #avoid standard form on axes
   options(scipen = 100)
@@ -37,7 +38,7 @@ plot_urgent_form_submissions <- function(data = UDA_scheduled_data,
   }
   
   #get data in the right format
-  data <- get_banded_COTs_data(data, historic_data = historic_data, remove_prototypes = TRUE, all_regions_and_STPs = all_regions_and_STPs)
+  data <- get_banded_COTs_data(data, historic_data = historic_data, remove_prototypes = remove_prototypes, all_regions_and_STPs = all_regions_and_STPs)
   data <- data %>%
     mutate(date = as.Date(month)) %>%
     mutate(year = case_when(month >= as.Date("2016-04-01") & month < as.Date("2017-04-01") ~ "2016/17",
@@ -71,7 +72,8 @@ plot_urgent_form_submissions <- function(data = UDA_scheduled_data,
          y = "Number of urgent FP17* forms submitted",
          colour = "Financial year",
          subtitle = subtitle,
-         caption = "*UDA to FP17 conversion has been done assuming a band 1 FP17 
+         caption = "*Excluding contracts with annual contracted UDA < 100. Excluding prototype contracts up until April 2022.
+         **UDA to FP17 conversion has been done assuming a band 1 FP17 
          is equivalent to 1 UDA, a band 2 FP17 = 3 UDAs, 
          a band 3 FP17 = 12 UDAs, an urgent FP17 = 1.2 
          UDAs and an 'other' FP17 = 0.6 UDAs. Scheduled data used.")

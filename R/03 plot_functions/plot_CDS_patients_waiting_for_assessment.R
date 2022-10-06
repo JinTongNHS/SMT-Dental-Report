@@ -91,6 +91,8 @@ plot_CDS_patients_waiting_for_assessment <- function(data = CDS_data,
          x = "Quarter start date",
          y = "Mean number of paitings waiting",
          colour = "") +
+    # scale_x_date(date_breaks = "1 month",
+    #              date_labels = "%b-%y") +
     facet_wrap(vars(patient_group),
                #scales = "free_y",
                nrow = 1) +
