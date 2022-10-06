@@ -5071,20 +5071,12 @@ plot_cumulative_UDA_value(data = UDA_scheduled_data,
 ```
 
 
- ] .panel[.panel-name[Data]
+ ] 
+ .panel[.panel-name[Data]
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=6}
 
-data <- plot_cumulative_UDA_value(data = UDA_scheduled_data,
-                           historical_data = historical_UDA_scheduled_data,
-                           payments_data = payments_to_dentists,
-                           UDA_value_data = UDA_values,
-                           protos = prototype_contracts$prototype_contract_number,
-                           all_regions_and_STPs = FALSE,
-                           asIndex = FALSE,
-                                level = "Regional",
-                                region_STP_name = "East of England",
-                                plotChart = FALSE)
+data <- plot_cumulative_UDA_value_all_regions()
 
 data %>%
   download_this(
@@ -5099,21 +5091,18 @@ data %>%
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 reactable(
-  plot_cumulative_UDA_value(data = UDA_scheduled_data,
-                           historical_data = historical_UDA_scheduled_data,
-                           payments_data = payments_to_dentists,
-                           UDA_value_data = UDA_values,
-                           protos = prototype_contracts$prototype_contract_number,
-                           all_regions_and_STPs = FALSE,
-                           asIndex = FALSE,
-                                level = "Regional",
-                                region_STP_name = "East of England",
-                                plotChart = FALSE),
-  height = 400,
+  plot_cumulative_UDA_value_all_regions(),
   filterable = TRUE,
   paginateSubRows = TRUE,
   minRows = 5,
-  highlight = TRUE
+  highlight = TRUE,
+  groupBy = c("Month", "Region Name"),
+  columns = list(
+    `Financial delivery £`= colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE),
+    `Financial delivery £million` = colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE),
+    `Cumulative financial delivery £million` = colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE),
+    `2017/18 - 2019/20 mean financial delivery £million` = colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE)
+)
 )
 ```
 
