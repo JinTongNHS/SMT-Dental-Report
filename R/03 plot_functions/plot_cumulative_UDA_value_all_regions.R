@@ -69,10 +69,10 @@ plot_cumulative_UDA_value_all_regions <- function(data = UDA_scheduled_data,
     rename(Month = month,
            `Region Name` = region_name,
            `Commissioner Name` = commissioner_name,
-           `Financial delivery £` = financial_delivery,
-           `Financial delivery £million` = financial_delivery_million_pounds,
-           `Cumulative financial delivery £million` = cum_financial_delivery_million_pounds,
-           `2017/18 - 2019/20 mean financial delivery £million` = financial_delivery_million_pounds_2017_2020_mean)
+           `Financial delivery (pounds)` = financial_delivery,
+           `Financial delivery (million pounds)` = financial_delivery_million_pounds,
+           `Cumulative financial delivery (million pounds)` = cum_financial_delivery_million_pounds,
+           `2017/18 - 2019/20 mean financial delivery (million pounds)` = financial_delivery_million_pounds_2017_2020_mean)
   
  
   

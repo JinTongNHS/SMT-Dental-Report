@@ -13,7 +13,7 @@ output:
       highlightLines: true
       countIncrementalSlides: false
 params:
-  region: "North West"
+  region: "East of England"
 ---
 
 
@@ -2017,6 +2017,7 @@ xaringanExtra::use_panelset()
 plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
                           calendar_data = UDA_calendar_data,
                           UDAorUOA = "UDA",
+                          include_historic = FALSE,
                           level = "Regional",
                           region_STP_name = region)
 ```
@@ -2027,6 +2028,7 @@ plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
 plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
                           calendar_data = UDA_calendar_data,
                           UDAorUOA = "UDA",
+                          include_historic = FALSE,
                           level = "STP",
                           region_STP_name = STP1)
 ```
@@ -2038,6 +2040,7 @@ plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
 plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
                           calendar_data = UDA_calendar_data,
                           UDAorUOA = "UDA",
+                          include_historic = FALSE,
                           level = "STP",
                           region_STP_name = STP2)
 ```
@@ -2049,6 +2052,7 @@ plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
 plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
                           calendar_data = UDA_calendar_data,
                           UDAorUOA = "UDA",
+                          include_historic = FALSE,
                           level = "STP",
                           region_STP_name = STP3)
 ```
@@ -2060,6 +2064,7 @@ plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
 plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
                           calendar_data = UDA_calendar_data,
                           UDAorUOA = "UDA",
+                          include_historic = FALSE,
                           level = "STP",
                           region_STP_name = STP4)
 ```
@@ -2071,6 +2076,7 @@ plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
 plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
                           calendar_data = UDA_calendar_data,
                           UDAorUOA = "UDA",
+                          include_historic = FALSE,
                           level = "STP",
                           region_STP_name = STP5)
 ```
@@ -2082,6 +2088,7 @@ plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
 plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
                           calendar_data = UDA_calendar_data,
                           UDAorUOA = "UDA",
+                          include_historic = FALSE,
                           level = "STP",
                           region_STP_name = STP6)
 ```
@@ -2093,6 +2100,7 @@ plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
 plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
                           calendar_data = UDA_calendar_data,
                           UDAorUOA = "UDA",
+                          include_historic = FALSE,
                           level = "STP",
                           region_STP_name = STP7)
 ```
@@ -2105,6 +2113,7 @@ plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
 plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
                           calendar_data = UDA_calendar_data,
                           UDAorUOA = "UDA",
+                          include_historic = FALSE,
                           level = "STP",
                           region_STP_name = STP8)
 ```
@@ -2116,6 +2125,7 @@ plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
 plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
                           calendar_data = UDA_calendar_data,
                           UDAorUOA = "UDA",
+                          include_historic = FALSE,
                           level = "STP",
                           region_STP_name = STP9)
 ```
@@ -2127,6 +2137,7 @@ plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
 plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
                           calendar_data = UDA_calendar_data,
                           UDAorUOA = "UDA",
+                          include_historic = FALSE,
                           level = "STP",
                           region_STP_name = STP10)
 ```
@@ -2138,6 +2149,7 @@ plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
 plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
                           calendar_data = UDA_calendar_data,
                           UDAorUOA = "UDA",
+                          include_historic = FALSE,
                           level = "STP",
                           region_STP_name = STP11)
 ```
@@ -4770,7 +4782,7 @@ The dips seen every April are most likely due to changes to the contracted UDAs 
 ---
 name: uda-value
 
-### Financial value of UDAs delivered
+### Cumulative financial value of UDAs delivered
 
 ```{r xaringan-panelset-uda-value, echo=FALSE}
 xaringanExtra::use_panelset()
@@ -4781,366 +4793,192 @@ xaringanExtra::use_panelset()
 .panel[.panel-name[`r region`]
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_value(data = UDA_scheduled_data,
+plot_cumulative_UDA_value(data = UDA_scheduled_data,
                            historical_data = historical_UDA_scheduled_data,
                            payments_data = payments_to_dentists,
                            UDA_value_data = UDA_values,
                            protos = prototype_contracts$prototype_contract_number,
-                           level = "Regional",
-                           region_STP_name = region,
                            all_regions_and_STPs = FALSE,
-                           plotChart = TRUE)
-```
-
-]
- .panel[.panel-name[`r STP1`]
-
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_value(data = UDA_scheduled_data,
-                           historical_data = historical_UDA_scheduled_data,
-                           payments_data = payments_to_dentists,
-                           UDA_value_data = UDA_values,
-                           protos = prototype_contracts$prototype_contract_number,
-                                level = "STP",
-                                region_STP_name = STP1,
-                                plotChart = TRUE)
-```
-
- ]
-  .panel[.panel-name[`r STP2`]
-
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_value(data = UDA_scheduled_data,
-                           historical_data = historical_UDA_scheduled_data,
-                           payments_data = payments_to_dentists,
-                           UDA_value_data = UDA_values,
-                           protos = prototype_contracts$prototype_contract_number,
-                                level = "STP",
-                                region_STP_name = STP2,
-                                plotChart = TRUE)
-```
-
- ]
- .panel[.panel-name[`r STP3`]
-
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_value(data = UDA_scheduled_data,
-                           historical_data = historical_UDA_scheduled_data,
-                           payments_data = payments_to_dentists,
-                           UDA_value_data = UDA_values,
-                           protos = prototype_contracts$prototype_contract_number,
-                                level = "STP",
-                                region_STP_name = STP3,
-                                plotChart = TRUE)
-```
-
- ]
- .panel[.panel-name[`r STP4`]
-
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval4}
-plot_UDA_value(data = UDA_scheduled_data,
-                           historical_data = historical_UDA_scheduled_data,
-                           payments_data = payments_to_dentists,
-                           UDA_value_data = UDA_values,
-                           protos = prototype_contracts$prototype_contract_number,
-                                level = "STP",
-                                region_STP_name = STP4,
-                                plotChart = TRUE)
-```
-
- ]
- .panel[.panel-name[`r STP5`]
-
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval5}
-plot_UDA_value(data = UDA_scheduled_data,
-                           historical_data = historical_UDA_scheduled_data,
-                           payments_data = payments_to_dentists,
-                           UDA_value_data = UDA_values,
-                           protos = prototype_contracts$prototype_contract_number,
-                                level = "STP",
-                                region_STP_name = STP5,
-                                plotChart = TRUE)
-```
-
- ]
- .panel[.panel-name[`r STP6`]
-
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval6}
-plot_UDA_value(data = UDA_scheduled_data,
-                           historical_data = historical_UDA_scheduled_data,
-                           payments_data = payments_to_dentists,
-                           UDA_value_data = UDA_values,
-                           protos = prototype_contracts$prototype_contract_number,
-                                level = "STP",
-                                region_STP_name = STP6,
-                                plotChart = TRUE)
-```
-
- ]
- .panel[.panel-name[`r STP7`]
-
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval7}
-plot_UDA_value(data = UDA_scheduled_data,
-                           historical_data = historical_UDA_scheduled_data,
-                           payments_data = payments_to_dentists,
-                           UDA_value_data = UDA_values,
-                           protos = prototype_contracts$prototype_contract_number,
-                                level = "STP",
-                                region_STP_name = STP7,
-                                plotChart = TRUE)
-```
-
- ]
- .panel[.panel-name[`r STP8`]
-
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval8}
-plot_UDA_value(data = UDA_scheduled_data,
-                           historical_data = historical_UDA_scheduled_data,
-                           payments_data = payments_to_dentists,
-                           UDA_value_data = UDA_values,
-                           protos = prototype_contracts$prototype_contract_number,
-                                level = "STP",
-                                region_STP_name = STP8,
-                                plotChart = TRUE)
-```
-
- ]
- .panel[.panel-name[`r STP9`]
-
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval9}
-plot_UDA_value(data = UDA_scheduled_data,
-                           historical_data = historical_UDA_scheduled_data,
-                           payments_data = payments_to_dentists,
-                           UDA_value_data = UDA_values,
-                           protos = prototype_contracts$prototype_contract_number,
-                                level = "STP",
-                                region_STP_name = STP9,
-                                plotChart = TRUE)
-```
-
- ]
- .panel[.panel-name[`r STP10`]
-
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval10}
-plot_UDA_value(data = UDA_scheduled_data,
-                           historical_data = historical_UDA_scheduled_data,
-                           payments_data = payments_to_dentists,
-                           UDA_value_data = UDA_values,
-                           protos = prototype_contracts$prototype_contract_number,
-                                level = "STP",
-                                region_STP_name = STP10,
-                                plotChart = TRUE)
-```
-
- ]
- .panel[.panel-name[`r STP11`]
-
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval11}
-plot_UDA_value(data = UDA_scheduled_data,
-                           historical_data = historical_UDA_scheduled_data,
-                           payments_data = payments_to_dentists,
-                           UDA_value_data = UDA_values,
-                           protos = prototype_contracts$prototype_contract_number,
-                                level = "STP",
-                                region_STP_name = STP11,
-                                plotChart = TRUE)
-```
-
- ]
- ]
-
-[Return to contents](#contents)
-
----
-
-name: uda-value-index
-
-### Financial value of UDAs delivered as % of 2018 delivery
-
-```{r xaringan-panelset-uda-value-index, echo=FALSE}
-xaringanExtra::use_panelset()
-```
-
- <font size="2">
-.panelset[
-.panel[.panel-name[`r region`]
-
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_value(data = UDA_scheduled_data,
-                           historical_data = historical_UDA_scheduled_data,
-                           payments_data = payments_to_dentists,
-                           UDA_value_data = UDA_values,
-                           protos = prototype_contracts$prototype_contract_number,
-                           level = "Regional",
-                           region_STP_name = region,
-                           all_regions_and_STPs = FALSE,
+                           asIndex = FALSE,
                            plotChart = TRUE,
-               asIndex = TRUE)
+                           level = "Regional",
+                           region_STP_name = region)
 ```
 
 ]
  .panel[.panel-name[`r STP1`]
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_value(data = UDA_scheduled_data,
+plot_cumulative_UDA_value(data = UDA_scheduled_data,
                            historical_data = historical_UDA_scheduled_data,
                            payments_data = payments_to_dentists,
                            UDA_value_data = UDA_values,
                            protos = prototype_contracts$prototype_contract_number,
+                           all_regions_and_STPs = FALSE,
+                           asIndex = FALSE,
                                 level = "STP",
                                 region_STP_name = STP1,
-                                plotChart = TRUE,
-               asIndex = TRUE)
+                                plotChart = TRUE)
 ```
 
  ]
   .panel[.panel-name[`r STP2`]
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_value(data = UDA_scheduled_data,
+plot_cumulative_UDA_value(data = UDA_scheduled_data,
                            historical_data = historical_UDA_scheduled_data,
                            payments_data = payments_to_dentists,
                            UDA_value_data = UDA_values,
                            protos = prototype_contracts$prototype_contract_number,
+                           all_regions_and_STPs = FALSE,
+                           asIndex = FALSE,
                                 level = "STP",
                                 region_STP_name = STP2,
-                                plotChart = TRUE,
-               asIndex = TRUE)
+                                plotChart = TRUE)
 ```
 
  ]
  .panel[.panel-name[`r STP3`]
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_value(data = UDA_scheduled_data,
+plot_cumulative_UDA_value(data = UDA_scheduled_data,
                            historical_data = historical_UDA_scheduled_data,
                            payments_data = payments_to_dentists,
                            UDA_value_data = UDA_values,
                            protos = prototype_contracts$prototype_contract_number,
+                           all_regions_and_STPs = FALSE,
+                           asIndex = FALSE,
                                 level = "STP",
                                 region_STP_name = STP3,
-                                plotChart = TRUE,
-               asIndex = TRUE)
+                                plotChart = TRUE)
 ```
 
  ]
  .panel[.panel-name[`r STP4`]
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval4}
-plot_UDA_value(data = UDA_scheduled_data,
+plot_cumulative_UDA_value(data = UDA_scheduled_data,
                            historical_data = historical_UDA_scheduled_data,
                            payments_data = payments_to_dentists,
                            UDA_value_data = UDA_values,
                            protos = prototype_contracts$prototype_contract_number,
+                           all_regions_and_STPs = FALSE,
+                           asIndex = FALSE,
                                 level = "STP",
                                 region_STP_name = STP4,
-                                plotChart = TRUE,
-               asIndex = TRUE)
+                                plotChart = TRUE)
 ```
 
  ]
  .panel[.panel-name[`r STP5`]
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval5}
-plot_UDA_value(data = UDA_scheduled_data,
+plot_cumulative_UDA_value(data = UDA_scheduled_data,
                            historical_data = historical_UDA_scheduled_data,
                            payments_data = payments_to_dentists,
                            UDA_value_data = UDA_values,
                            protos = prototype_contracts$prototype_contract_number,
+                           all_regions_and_STPs = FALSE,
+                           asIndex = FALSE,
                                 level = "STP",
                                 region_STP_name = STP5,
-                                plotChart = TRUE,
-               asIndex = TRUE)
+                                plotChart = TRUE)
 ```
 
  ]
  .panel[.panel-name[`r STP6`]
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval6}
-plot_UDA_value(data = UDA_scheduled_data,
+plot_cumulative_UDA_value(data = UDA_scheduled_data,
                            historical_data = historical_UDA_scheduled_data,
                            payments_data = payments_to_dentists,
                            UDA_value_data = UDA_values,
                            protos = prototype_contracts$prototype_contract_number,
+                           all_regions_and_STPs = FALSE,
+                           asIndex = FALSE,
                                 level = "STP",
                                 region_STP_name = STP6,
-                                plotChart = TRUE,
-               asIndex = TRUE)
+                                plotChart = TRUE)
 ```
 
  ]
  .panel[.panel-name[`r STP7`]
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval7}
-plot_UDA_value(data = UDA_scheduled_data,
+plot_cumulative_UDA_value(data = UDA_scheduled_data,
                            historical_data = historical_UDA_scheduled_data,
                            payments_data = payments_to_dentists,
                            UDA_value_data = UDA_values,
                            protos = prototype_contracts$prototype_contract_number,
+                           all_regions_and_STPs = FALSE,
+                           asIndex = FALSE,
                                 level = "STP",
                                 region_STP_name = STP7,
-                                plotChart = TRUE,
-               asIndex = TRUE)
+                                plotChart = TRUE)
 ```
 
  ]
  .panel[.panel-name[`r STP8`]
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval8}
-plot_UDA_value(data = UDA_scheduled_data,
+plot_cumulative_UDA_value(data = UDA_scheduled_data,
                            historical_data = historical_UDA_scheduled_data,
                            payments_data = payments_to_dentists,
                            UDA_value_data = UDA_values,
                            protos = prototype_contracts$prototype_contract_number,
+                           all_regions_and_STPs = FALSE,
+                           asIndex = FALSE,
                                 level = "STP",
                                 region_STP_name = STP8,
-                                plotChart = TRUE,
-               asIndex = TRUE)
+                                plotChart = TRUE)
 ```
 
  ]
  .panel[.panel-name[`r STP9`]
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval9}
-plot_UDA_value(data = UDA_scheduled_data,
+plot_cumulative_UDA_value(data = UDA_scheduled_data,
                            historical_data = historical_UDA_scheduled_data,
                            payments_data = payments_to_dentists,
                            UDA_value_data = UDA_values,
                            protos = prototype_contracts$prototype_contract_number,
+                           all_regions_and_STPs = FALSE,
+                           asIndex = FALSE,
                                 level = "STP",
                                 region_STP_name = STP9,
-                                plotChart = TRUE,
-               asIndex = TRUE)
+                                plotChart = TRUE)
 ```
 
  ]
  .panel[.panel-name[`r STP10`]
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval10}
-plot_UDA_value(data = UDA_scheduled_data,
+plot_cumulative_UDA_value(data = UDA_scheduled_data,
                            historical_data = historical_UDA_scheduled_data,
                            payments_data = payments_to_dentists,
                            UDA_value_data = UDA_values,
                            protos = prototype_contracts$prototype_contract_number,
+                           all_regions_and_STPs = FALSE,
+                           asIndex = FALSE,
                                 level = "STP",
                                 region_STP_name = STP10,
-                                plotChart = TRUE,
-               asIndex = TRUE)
+                                plotChart = TRUE)
 ```
 
  ]
  .panel[.panel-name[`r STP11`]
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval11}
-plot_UDA_value(data = UDA_scheduled_data,
+plot_cumulative_UDA_value(data = UDA_scheduled_data,
                            historical_data = historical_UDA_scheduled_data,
                            payments_data = payments_to_dentists,
                            UDA_value_data = UDA_values,
                            protos = prototype_contracts$prototype_contract_number,
+                           all_regions_and_STPs = FALSE,
+                           asIndex = FALSE,
                                 level = "STP",
                                 region_STP_name = STP11,
-                                plotChart = TRUE,
-               asIndex = TRUE)
+                                plotChart = TRUE)
 ```
 
  ]

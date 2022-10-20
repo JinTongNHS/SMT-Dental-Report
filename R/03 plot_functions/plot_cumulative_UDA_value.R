@@ -1,4 +1,5 @@
 ################################################################################
+##pound symbol is a special character in HTML so must use \u00A3 instead
 plot_cumulative_UDA_value <- function(data = UDA_scheduled_data,
                            historical_data = historical_UDA_scheduled_data,
                            payments_data = payments_to_dentists,
@@ -84,9 +85,9 @@ plot_cumulative_UDA_value <- function(data = UDA_scheduled_data,
   
 
   title <- "Cumulative financial value of UDAs delivered  YTD 2022/23 (Million GBP)"
-  ylab <- "Financial value of UDAs delivered YTD\n (£ Million)"
+  ylab <- "Financial value of UDAs delivered YTD\n (\u00A3 Million)"
   labelEnd <- " Million"
-  labelStart <- "£"
+  labelStart <- "\u00A3"
   
   if(plotChart == TRUE){
     ggplot() +
@@ -111,7 +112,7 @@ plot_cumulative_UDA_value <- function(data = UDA_scheduled_data,
       # annotate(geom = "text",
       #          x = data$month[3],
       #          y = data$financial_delivery_million_pounds_2017_2020_mean - max(data$value)/25,
-      #          label = paste0("Mean annual financial delivery over 2017-18 to 2019-20. £", round(data$financial_delivery_million_pounds_2017_2020_mean[1]), " million"),
+      #          label = paste0("Mean annual financial delivery over 2017-18 to 2019-20. \u00A3", round(data$financial_delivery_million_pounds_2017_2020_mean[1]), " million"),
       #          size = 3,
       #          colour = "red") +
       scale_colour_manual(values = c("steelblue", "red"), labels = c("YTD cumulative financial delivery",
@@ -126,7 +127,7 @@ plot_cumulative_UDA_value <- function(data = UDA_scheduled_data,
            x = "Month",
            y = ylab,
            colour = "",
-           caption = "UDA values have be calculated by dividing the baseline contract by the annual contracted UDAs for each contract. \nWhere this data was not availabale, £28 per UDA was used in the calculation. \nIt has been assumed that in 2022/23 the UDA value for each contract will be the same as in 2021/22. \nThis graph excludes contracts with annual contracted UDAs < 100. Prototype contracts are excluded up until April 2022.")
+           caption = "UDA values have be calculated by dividing the baseline contract by the annual contracted UDAs for each contract. \nWhere this data was not availabale, \u00A328 per UDA was used in the calculation. \nIt has been assumed that in 2022/23 the UDA value for each contract will be the same as in 2021/22. \nThis graph excludes contracts with annual contracted UDAs < 100. Prototype contracts are excluded up until April 2022.")
     
   }else{
     data

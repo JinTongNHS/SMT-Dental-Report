@@ -34,7 +34,8 @@ plot_UDA_value <- function(data = UDA_scheduled_data,
   data <- data %>%
     left_join(STp_region_lookup, by = "commissioner_name") %>%
     bind_rows(historical_data) %>%
-    mutate(year = case_when(month >= as.Date("2021-04-01") ~ "2021/22",
+    mutate(year = case_when(month >= as.Date("2021-04-01") & month < as.Date("2022-04-01") ~ "2021/22",
+                            month >= as.Date("2022-04-01") ~ "2022/23",
                             TRUE ~ year)) %>%
     left_join(payments_data, by = c("contract_number", "year")) %>%
     mutate(UDA_value = case_when(is.na(UDA_value) ~ 28,

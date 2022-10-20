@@ -5098,10 +5098,10 @@ reactable(
   highlight = TRUE,
   groupBy = c("Month", "Region Name"),
   columns = list(
-    `Financial delivery £`= colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE),
-    `Financial delivery £million` = colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE),
-    `Cumulative financial delivery £million` = colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE),
-    `2017/18 - 2019/20 mean financial delivery £million` = colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE)
+    `Financial delivery (pounds)`= colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE),
+    `Financial delivery (million pounds)` = colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE),
+    `Cumulative financial delivery (million pounds)` = colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE),
+    `2017/18 - 2019/20 mean financial delivery (million pounds)` = colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE)
 )
 )
 ```

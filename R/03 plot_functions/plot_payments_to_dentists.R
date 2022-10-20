@@ -44,7 +44,7 @@ plot_payments_to_dentists <- function(data = payments_to_dentists,
       labs(title = "Total net payments to dentists",
            subtitle = subtitle,
            x = "Financial year",
-           y = "Net payment (£)")
+           y = "Net payment (\u00A3)")
   }else{
     data
   }
