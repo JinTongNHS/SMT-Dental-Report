@@ -33,7 +33,8 @@ UDA_Projection <- function(){
 	, JL.UDA_Delivered as 'Delivered UDA in July-22'
 	, AG.UDA_Delivered as 'Delivered UDA in August-2022'
 	, SP.UDA_Delivered as 'Delivered UDA in September-2022'
-
+	, OC.UDA_Delivered as 'Delivered UDA in October-2022'		
+   
    from [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[September_UDA_BSA] Y
   
 	left join  [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UDA_scheduled] AP
@@ -55,6 +56,9 @@ UDA_Projection <- function(){
 
 	left join  [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UDA_scheduled] SP
    on Y.[Contract Number]  = SP.contract_number and SP.data_month= '2022-09-01'
+	
+	left join  [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UDA_scheduled] OC
+   on Y.[Contract Number]  = OC.contract_number and oc.data_month= '2022-10-01'
 
    WHERE Y.[UDA Performance Target] >=100"
   
@@ -68,6 +72,7 @@ UDA_Projection <- function(){
 
 UDA_Data <- UDA_Projection ()
 
+##sum(is.na(new_2$Regions))
 
 ###Pulling proto_type
 ###calling  prototype
@@ -103,19 +108,20 @@ uda_delivery_prot_removed_over_hundred <- uda_delivery_prot_removed %>%
 #####adding Average / Year Based on average of 3 months' annualised Delivered UDA
 
 new_2 <- uda_delivery_prot_removed_over_hundred %>%
- mutate (avrg_last_3_month_delivered_UDA
+ mutate (avrg_last_6_month_delivered_UDA
            = rowMeans(select(uda_delivery_prot_removed_over_hundred, 
                              "Delivered UDA in May-2022", "Delivered UDA in June-22", 
                              "Delivered UDA in July-22", 
                              "Delivered UDA in August-2022",
-                             "Delivered UDA in September-2022"), na.rm = TRUE)) %>%
-         mutate(rest_year_delivery = avrg_last_3_month_delivered_UDA *6) %>%
+                             "Delivered UDA in September-2022",
+                             "Delivered UDA in October-2022"), na.rm = TRUE)) %>%
+         mutate(rest_year_delivery = avrg_last_6_month_delivered_UDA *5) %>%
          mutate(projected_tota_year = rowSums(across(c(rest_year_delivery, "Delivered UDA in April-22",
            "Delivered UDA in May-2022", "Delivered UDA in June-22", "Delivered UDA in July-22", 
-           "Delivered UDA in August-2022", "Delivered UDA in September-2022")), na.rm = TRUE)) %>%
+           "Delivered UDA in August-2022", "Delivered UDA in September-2022", "Delivered UDA in October-2022")), na.rm = TRUE)) %>%
        mutate(projection_percent = projected_tota_year / Annual_Contracted_UDA) %>%
-        mutate(Performer = case_when ( is.na(avrg_last_3_month_delivered_UDA) ~ 'ignore',
-                                       avrg_last_3_month_delivered_UDA == 0 ~ 'ignore',
+        mutate(Performer = case_when ( is.na(avrg_last_6_month_delivered_UDA) ~ 'ignore',
+                                       avrg_last_6_month_delivered_UDA == 0 ~ 'ignore',
                                       projection_percent <0.96 ~ 'Projected to deliver less than 96%',
                                       projection_percent >0.95 ~ 'Projected to deliver 96% or more')) 
 
@@ -224,17 +230,17 @@ bar_plot_regional_percent_n
 
 
 
-
+################dont use yet
 
 
 
 test_new <- new_2 %>% select('Contract Number', cost_per_uda,  
                              projection_percent, Performer ) %>%
-  mutate(uda_value_banding = case_when (cost_per_uda < 23 ~ 'less than £23/UDA' ,
-                                        cost_per_uda >= 23 & cost_per_uda <= 50 ~ '£23-£50/UDA',
-                                        cost_per_uda >= 50.1 & cost_per_uda <= 75 ~ '£51-£75/UDA',
-                                        cost_per_uda >= 75.1 & cost_per_uda <= 100 ~ '£76-£100/UDA',
-                                        cost_per_uda >= 100 ~ '£100+/UDA'))
+  mutate(uda_value_banding = case_when (cost_per_uda < 23 ~ 'less than ?23/UDA' ,
+                                        cost_per_uda >= 23 & cost_per_uda <= 50 ~ '?23-?50/UDA',
+                                        cost_per_uda >= 50.1 & cost_per_uda <= 75 ~ '?51-?75/UDA',
+                                        cost_per_uda >= 75.1 & cost_per_uda <= 100 ~ '?76-?100/UDA',
+                                        cost_per_uda >= 100 ~ '?100+/UDA'))
 
 test_new_no_ignore <- test_new %>% filter(Performer != "ignore")
 
@@ -244,11 +250,3 @@ ggplot(test_new_no_ignore_sumry, aes(x=uda_value_banding, y= n, fill= Performer)
   geom_bar(stat="identity") + theme_minimal() + theme(legend.position="none") +
   geom_text(aes(label= n), vjust=-0.3, size=3.5) +
   ggtitle("Number of contractors projected to deliver (in FY 2022/23) more or less than 96% of contracted UDA - National")
-
-
-bar_plot_national <- ggplot(count_of_all_no_region_no_ignore, aes(x=Performer, y= n, fill= Performer)) +
-  geom_bar(stat="identity") + theme_minimal() + theme(legend.position="none") +
-  geom_text(aes(label= n), vjust=-0.3, size=3.5) +
-  ggtitle("Number of contractors projected to deliver (in FY 2022/23) more or less than 96% of contracted UDA - National")
-
-
