@@ -74,7 +74,7 @@ dental_data_111 <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2
 
 #############still to fix
 prototype_contracts <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/prototype_contracts.xlsx")
-contractor_categories <- readRDS("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/contractor_categories.RDS")
+contractor_categories <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/contractor_categories_Oct22.xlsx")
 contract_demographics <- readRDS("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/contract_demographics.rds")
 
 #read in unique patients
@@ -312,6 +312,7 @@ name: contents
  * [UDA activity](#short-uda-activity)
  * [UDA activity by MY category](#short-uda-activity-my-cat)
  * [Cumulative UDA delivery per quarter](#cumulative-udas)
+ * [YTD UDA delivery](#YTD-udas)
  * [Historical UDA delivery](#historic-udas)
  * [Contract size vs delivery scatter plot](#contract-size-scatter)
  * [UDA delivery profile across months](#uda-delivery-profile)
@@ -330,6 +331,7 @@ name: contents
  * [UOA activity](#uoa-activity)
  * [UOA activity by MY category](#uoa-activity-my-cat)
  * [Cumulative UOA delivery per quarter](#cumulative-uoas)
+ * [YTD UOA delivery](#YTD-uoas)
  * [UOA delivery profile across months](#uoa-delivery-profile)
  
 #### Appendix
@@ -1483,6 +1485,202 @@ contracts measured against the expected monthly total activity to achieve the qu
 contracts (
 **`r if(eval11){round(get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP11)*100/get_num_contracts(level = "STP", region_STP_name = STP11))}` %**
 ) have delivered the required UDAs or more to be on track towards the Q1 threshold (95%) by the end of June 2022.
+
+
+]
+]
+
+[Return to contents](#contents)
+
+---
+
+name: YTD-udas
+
+### YTD UDA delivery
+
+```{r xaringan-panelset-UDA-activity_YTD, echo=FALSE}
+xaringanExtra::use_panelset()
+```
+ <font size="2">
+.panelset[
+
+.panel[.panel-name[`r region`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
+plot_YTD_UDA_UOA_delivery(data = UDA_scheduled_data, 
+                                  calendar_data = UDA_calendar_data,
+                                  historic_data = historical_UDA_scheduled_data,
+                                  UDAorUOA = "UDA",
+                                  level = "Regional",
+                                  region_STP_name = region,
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE)
+```
+
+
+]
+.panel[.panel-name[`r STP1`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
+plot_YTD_UDA_UOA_delivery(data = UDA_scheduled_data, 
+                                  calendar_data = UDA_calendar_data,
+                                  historic_data = historical_UDA_scheduled_data,
+                                  UDAorUOA = "UDA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  level = "STP",
+                                  region_STP_name = STP1)
+```
+
+
+]
+.panel[.panel-name[`r STP2``]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
+plot_YTD_UDA_UOA_delivery(data = UDA_scheduled_data, 
+                                  calendar_data = UDA_calendar_data,
+                                  historic_data = historical_UDA_scheduled_data,
+                                  UDAorUOA = "UDA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  level = "STP",
+                                  region_STP_name = STP2)
+```
+
+
+]
+.panel[.panel-name[`r STP3`]
+```{r  echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
+plot_YTD_UDA_UOA_delivery(data = UDA_scheduled_data, 
+                                  calendar_data = UDA_calendar_data,
+                                  historic_data = historical_UDA_scheduled_data,
+                                  UDAorUOA = "UDA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  level = "STP",
+                                  region_STP_name = STP3)
+```
+
+
+]
+.panel[.panel-name[`r STP4`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center', eval=eval4}
+plot_YTD_UDA_UOA_delivery(data = UDA_scheduled_data, 
+                                  calendar_data = UDA_calendar_data,
+                                  historic_data = historical_UDA_scheduled_data,
+                                  UDAorUOA = "UDA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  level = "STP",
+                                  region_STP_name = STP4)
+```
+
+
+]
+.panel[.panel-name[`r STP5`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center', eval=eval5}
+plot_YTD_UDA_UOA_delivery(data = UDA_scheduled_data, 
+                                  calendar_data = UDA_calendar_data,
+                                  historic_data = historical_UDA_scheduled_data,
+                                  UDAorUOA = "UDA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  level = "STP",
+                                  region_STP_name = STP5)
+```
+
+
+]
+.panel[.panel-name[`r STP6`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center', eval=eval6}
+plot_YTD_UDA_UOA_delivery(data = UDA_scheduled_data, 
+                                  calendar_data = UDA_calendar_data,
+                                  historic_data = historical_UDA_scheduled_data,
+                                  UDAorUOA = "UDA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  level = "STP",
+                                  region_STP_name = STP6)
+```
+
+
+]
+.panel[.panel-name[`r STP7`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center', eval=eval7}
+plot_YTD_UDA_UOA_delivery(data = UDA_scheduled_data, 
+                                  calendar_data = UDA_calendar_data,
+                                  historic_data = historical_UDA_scheduled_data,
+                                  UDAorUOA = "UDA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  level = "STP",
+                                  region_STP_name = STP7)
+```
+
+
+]
+.panel[.panel-name[`r STP8`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center', eval=eval8}
+plot_YTD_UDA_UOA_delivery(data = UDA_scheduled_data, 
+                                  calendar_data = UDA_calendar_data,
+                                  historic_data = historical_UDA_scheduled_data,
+                                  UDAorUOA = "UDA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  level = "STP",
+                                  region_STP_name = STP8)
+```
+
+
+]
+.panel[.panel-name[`r STP9`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center', eval=eval9}
+plot_YTD_UDA_UOA_delivery(data = UDA_scheduled_data, 
+                                  calendar_data = UDA_calendar_data,
+                                  historic_data = historical_UDA_scheduled_data,
+                                  UDAorUOA = "UDA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  level = "STP",
+                                  region_STP_name = STP9)
+```
+
+
+]
+.panel[.panel-name[`r STP10`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center', eval=eval10}
+plot_YTD_UDA_UOA_delivery(data = UDA_scheduled_data, 
+                                  calendar_data = UDA_calendar_data,
+                                  historic_data = historical_UDA_scheduled_data,
+                                  UDAorUOA = "UDA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  level = "STP",
+                                  region_STP_name = STP10)
+```
+
+
+]
+.panel[.panel-name[`r STP11`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center', eval=eval11}
+plot_YTD_UDA_UOA_delivery(data = UDA_scheduled_data, 
+                                  calendar_data = UDA_calendar_data,
+                                  historic_data = historical_UDA_scheduled_data,
+                                  UDAorUOA = "UDA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  level = "STP",
+                                  region_STP_name = STP11)
+```
 
 
 ]
@@ -3126,6 +3324,191 @@ contracts (
  ]
 
  [Return to contents](#contents)
+ 
+---
+
+name: YTD-uoas
+
+### YTD UOA delivery
+
+```{r xaringan-panelset-UOA-activity_YTD, echo=FALSE}
+xaringanExtra::use_panelset()
+```
+ <font size="2">
+.panelset[
+
+.panel[.panel-name[`r region`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
+plot_YTD_UDA_UOA_delivery(data = UOA_scheduled_data, 
+                                  calendar_data = UOA_calendar_data,
+                                  UDAorUOA = "UOA",
+                                  level = "Regional",
+                                  region_STP_name = region,
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE)
+```
+
+
+]
+.panel[.panel-name[`r STP1`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
+plot_YTD_UDA_UOA_delivery(data = UOA_scheduled_data, 
+                                  calendar_data = UOA_calendar_data,
+                                  UDAorUOA = "UOA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  level = "STP",
+                                  region_STP_name = STP1)
+```
+
+
+]
+.panel[.panel-name[`r STP2``]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
+plot_YTD_UDA_UOA_delivery(data = UOA_scheduled_data, 
+                                  calendar_data = UOA_calendar_data,
+                                  UDAorUOA = "UOA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  level = "STP",
+                                  region_STP_name = STP2)
+```
+
+
+]
+.panel[.panel-name[`r STP3`]
+```{r  echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
+plot_YTD_UDA_UOA_delivery(data = UOA_scheduled_data, 
+                                  calendar_data = UOA_calendar_data,
+                                  UDAorUOA = "UOA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  level = "STP",
+                                  region_STP_name = STP3)
+```
+
+
+]
+.panel[.panel-name[`r STP4`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center', eval=eval4}
+plot_YTD_UDA_UOA_delivery(data = UOA_scheduled_data, 
+                                  calendar_data = UOA_calendar_data,
+                                  UDAorUOA = "UOA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  level = "STP",
+                                  region_STP_name = STP4)
+```
+
+
+]
+.panel[.panel-name[`r STP5`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center', eval=eval5}
+plot_YTD_UDA_UOA_delivery(data = UOA_scheduled_data, 
+                                  calendar_data = UOA_calendar_data,
+                                  UDAorUOA = "UOA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  level = "STP",
+                                  region_STP_name = STP5)
+```
+
+
+]
+.panel[.panel-name[`r STP6`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center', eval=eval6}
+plot_YTD_UDA_UOA_delivery(data = UOA_scheduled_data, 
+                                  calendar_data = UOA_calendar_data,
+                                  UDAorUOA = "UOA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  level = "STP",
+                                  region_STP_name = STP6)
+```
+
+
+]
+.panel[.panel-name[`r STP7`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center', eval=eval7}
+plot_YTD_UDA_UOA_delivery(data = UOA_scheduled_data, 
+                                  calendar_data = UOA_calendar_data,
+                                  UDAorUOA = "UOA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  level = "STP",
+                                  region_STP_name = STP7)
+```
+
+
+]
+.panel[.panel-name[`r STP8`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center', eval=eval8}
+plot_YTD_UDA_UOA_delivery(data = UOA_scheduled_data, 
+                                  calendar_data = UOA_calendar_data,
+                                  UDAorUOA = "UOA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  level = "STP",
+                                  region_STP_name = STP8)
+```
+
+
+]
+.panel[.panel-name[`r STP9`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center', eval=eval9}
+plot_YTD_UDA_UOA_delivery(data = UOA_scheduled_data, 
+                                  calendar_data = UOA_calendar_data,
+                                  UDAorUOA = "UOA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  level = "STP",
+                                  region_STP_name = STP9)
+```
+
+
+]
+.panel[.panel-name[`r STP10`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center', eval=eval10}
+plot_YTD_UDA_UOA_delivery(data = UOA_scheduled_data, 
+                                  calendar_data = UOA_calendar_data,
+                                  UDAorUOA = "UOA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  level = "STP",
+                                  region_STP_name = STP10)
+```
+
+
+]
+.panel[.panel-name[`r STP11`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center', eval=eval11}
+plot_YTD_UDA_UOA_delivery(data = UOA_scheduled_data, 
+                                  calendar_data = UOA_calendar_data,
+                                  UDAorUOA = "UOA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  level = "STP",
+                                  region_STP_name = STP11)
+```
+
+
+]
+]
+
+[Return to contents](#contents)
+
 
 
 ---

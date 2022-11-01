@@ -71,7 +71,7 @@ dental_data_111 <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2
 
 #############still to fix
 prototype_contracts <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/prototype_contracts.xlsx")
-contractor_categories <- readRDS("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/contractor_categories.RDS")
+contractor_categories <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/contractor_categories_Oct22.xlsx")
 contract_demographics <- readRDS("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/contract_demographics.rds")
 
 #read in unique patients
@@ -115,6 +115,7 @@ name: contents
  * [UDA activity](#short-uda-activity)
  * [UDA activity by MY category](#short-uda-activity-my-cat)
  * [Cumulative UDA delivery per quarter](#cumulative-udas)
+ * [YTD UDA delivery](#YTD-udas)
  * [Historic UDA delivery](#historic-udas)
  * [Contract size vs delivery scatter plot](#contract-size-scatter)
  * [UDA delivery profile across months](#uda-delivery-profile)
@@ -140,6 +141,7 @@ name: contents
  * [UOA activity](#uoa-activity)
  * [UOA activity by MY category](#uoa-activity-my-cat)
  * [Cumulative UOA delivery per quarter](#cumulative-uoas)
+ * [YTD UOA delivery](#YTD-uoas)
  * [UOA delivery profile across months](#uoa-delivery-profile)
  
 #### Appendix
@@ -1150,6 +1152,188 @@ reactable(
     `Montly percentage of quarterly contracted UDAs` = colDef(aggregate = "mean", format = colFormat(suffix = "%", digits = 1), filterable = FALSE),
     `Cumulative percentage of quarterly contracted UDAs` = colDef(aggregate = "mean", format = colFormat(suffix = "%", digits = 1), filterable = FALSE)
   )
+)
+```
+]
+]
+
+[Return to contents](#contents)
+
+---
+
+name: YTD-udas
+
+### YTD UDA delivery
+
+```{r xaringan-panelset-UDA-activity_YTD, echo=FALSE}
+xaringanExtra::use_panelset()
+```
+ <font size="2">
+.panelset[
+
+.panel[.panel-name[National]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
+plot_YTD_UDA_UOA_delivery(data = UDA_scheduled_data, 
+                                  calendar_data = UDA_calendar_data,
+                                  historic_data = historical_UDA_scheduled_data,
+                                  UDAorUOA = "UDA",
+                                  level = "National",
+                                  region_STP_name = NULL,
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE)
+```
+
+
+]
+.panel[.panel-name[South East]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
+plot_YTD_UDA_UOA_delivery(data = UDA_scheduled_data, 
+                                  calendar_data = UDA_calendar_data,
+                                  historic_data = historical_UDA_scheduled_data,
+                                  UDAorUOA = "UDA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  level = "Regional",
+                                  region_STP_name = "South East")
+```
+
+
+]
+.panel[.panel-name[South West]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
+plot_YTD_UDA_UOA_delivery(data = UDA_scheduled_data, 
+                                  calendar_data = UDA_calendar_data,
+                                  historic_data = historical_UDA_scheduled_data,
+                                  UDAorUOA = "UDA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  level = "Regional",
+                                  region_STP_name = "South West")
+```
+
+
+]
+.panel[.panel-name[North West]
+```{r  echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
+plot_YTD_UDA_UOA_delivery(data = UDA_scheduled_data, 
+                                  calendar_data = UDA_calendar_data,
+                                  historic_data = historical_UDA_scheduled_data,
+                                  UDAorUOA = "UDA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  level = "Regional",
+                                  region_STP_name = "North West")
+```
+
+
+]
+.panel[.panel-name[North East and Yorkshire]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
+plot_YTD_UDA_UOA_delivery(data = UDA_scheduled_data, 
+                                  calendar_data = UDA_calendar_data,
+                                  historic_data = historical_UDA_scheduled_data,
+                                  UDAorUOA = "UDA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  level = "Regional",
+                                  region_STP_name = "North East and Yorkshire")
+```
+
+
+]
+.panel[.panel-name[London]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
+plot_YTD_UDA_UOA_delivery(data = UDA_scheduled_data, 
+                                  calendar_data = UDA_calendar_data,
+                                  historic_data = historical_UDA_scheduled_data,
+                                  UDAorUOA = "UDA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  level = "Regional",
+                                  region_STP_name = "London")
+```
+
+
+]
+.panel[.panel-name[Midlands]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
+plot_YTD_UDA_UOA_delivery(data = UDA_scheduled_data, 
+                                  calendar_data = UDA_calendar_data,
+                                  historic_data = historical_UDA_scheduled_data,
+                                  UDAorUOA = "UDA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  level = "Regional",
+                                  region_STP_name = "Midlands")
+```
+
+
+]
+.panel[.panel-name[East of England]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
+plot_YTD_UDA_UOA_delivery(data = UDA_scheduled_data, 
+                                  calendar_data = UDA_calendar_data,
+                                  historic_data = historical_UDA_scheduled_data,
+                                  UDAorUOA = "UDA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  level = "Region",
+                                  region_STP_name = "East of England")
+```
+
+
+]
+.panel[.panel-name[Data]
+
+<font size="1">
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+
+data <- plot_YTD_UDA_UOA_delivery(data = UDA_scheduled_data, 
+                                  calendar_data = UDA_calendar_data,
+                                  historic_data = historical_UDA_scheduled_data,
+                                  UDAorUOA = "UDA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = FALSE, 
+                                  all_regions_and_STPs = FALSE,
+                                  level = "Region",
+                                  region_STP_name = "East of England")
+
+data %>%
+  download_this(
+    output_name = "YTD_UDA_delivery_calendar_data",
+    output_extension = ".xlsx",
+    button_label = "Download data",
+    button_type = "warning",
+    has_icon = TRUE,
+    icon = "fa fa-save"
+  )
+```
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+reactable(
+  plot_YTD_UDA_UOA_delivery(data = UDA_scheduled_data, 
+                                  calendar_data = UDA_calendar_data,
+                                  historic_data = historical_UDA_scheduled_data,
+                                  UDAorUOA = "UDA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = FALSE, 
+                                  all_regions_and_STPs = FALSE,
+                                  level = "Region",
+                                  region_STP_name = "East of England"),
+  filterable = TRUE,
+  paginateSubRows = TRUE,
+  minRows = 5,
+  highlight = TRUE
+  
 )
 ```
 ]
@@ -2615,6 +2799,178 @@ reactable(
  ]
 
  [Return to contents](#contents)
+
+---
+
+name: YTD-uoas
+
+### YTD UOA delivery
+
+```{r xaringan-panelset-UOA-activity_YTD, echo=FALSE}
+xaringanExtra::use_panelset()
+```
+ <font size="2">
+.panelset[
+
+.panel[.panel-name[National]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
+plot_YTD_UDA_UOA_delivery(data = UOA_scheduled_data, 
+                                  calendar_data = UOA_calendar_data,
+                                  UDAorUOA = "UOA",
+                                  level = "National",
+                                  region_STP_name = NULL,
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE)
+```
+
+
+]
+.panel[.panel-name[South East]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
+plot_YTD_UDA_UOA_delivery(data = UOA_scheduled_data, 
+                                  calendar_data = UOA_calendar_data,
+                                  UDAorUOA = "UOA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  level = "Regional",
+                                  region_STP_name = "South East")
+```
+
+
+]
+.panel[.panel-name[South West]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
+plot_YTD_UDA_UOA_delivery(data = UOA_scheduled_data, 
+                                  calendar_data = UOA_calendar_data,
+                                  UDAorUOA = "UOA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  level = "Regional",
+                                  region_STP_name = "South West")
+```
+
+
+]
+.panel[.panel-name[North West]
+```{r  echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
+plot_YTD_UDA_UOA_delivery(data = UOA_scheduled_data, 
+                                  calendar_data = UOA_calendar_data,
+                                  UDAorUOA = "UOA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  level = "Regional",
+                                  region_STP_name = "North West")
+```
+
+
+]
+.panel[.panel-name[North East and Yorkshire]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
+plot_YTD_UDA_UOA_delivery(data = UOA_scheduled_data, 
+                                  calendar_data = UOA_calendar_data,
+                                  UDAorUOA = "UOA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  level = "Regional",
+                                  region_STP_name = "North East and Yorkshire")
+```
+
+
+]
+.panel[.panel-name[London]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
+plot_YTD_UDA_UOA_delivery(data = UOA_scheduled_data, 
+                                  calendar_data = UOA_calendar_data,
+                                  UDAorUOA = "UOA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  level = "Regional",
+                                  region_STP_name = "London")
+```
+
+
+]
+.panel[.panel-name[Midlands]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
+plot_YTD_UDA_UOA_delivery(data = UOA_scheduled_data, 
+                                  calendar_data = UOA_calendar_data,
+                                  UDAorUOA = "UOA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  level = "Regional",
+                                  region_STP_name = "Midlands")
+```
+
+
+]
+.panel[.panel-name[East of England]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
+plot_YTD_UDA_UOA_delivery(data = UOA_scheduled_data, 
+                                  calendar_data = UOA_calendar_data,
+                                  UDAorUOA = "UOA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  level = "Region",
+                                  region_STP_name = "East of England")
+```
+
+
+]
+.panel[.panel-name[Data]
+
+<font size="1">
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+
+data <- plot_YTD_UDA_UOA_delivery(data = UOA_scheduled_data, 
+                                  calendar_data = UOA_calendar_data,
+                                  UDAorUOA = "UOA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = FALSE, 
+                                  all_regions_and_STPs = FALSE,
+                                  level = "Region",
+                                  region_STP_name = "East of England")
+
+data %>%
+  download_this(
+    output_name = "YTD_UOA_delivery_calendar_data",
+    output_extension = ".xlsx",
+    button_label = "Download data",
+    button_type = "warning",
+    has_icon = TRUE,
+    icon = "fa fa-save"
+  )
+```
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+reactable(
+  plot_YTD_UDA_UOA_delivery(data = UOA_scheduled_data, 
+                                  calendar_data = UOA_calendar_data,
+                                  UDAorUOA = "UOA",
+                                  remove_prototypes = TRUE, 
+                                  plotChart = FALSE, 
+                                  all_regions_and_STPs = FALSE,
+                                  level = "Region",
+                                  region_STP_name = "East of England"),
+  filterable = TRUE,
+  paginateSubRows = TRUE,
+  minRows = 5,
+  highlight = TRUE
+  
+)
+```
+]
+]
+
+[Return to contents](#contents)
 
 
 ---

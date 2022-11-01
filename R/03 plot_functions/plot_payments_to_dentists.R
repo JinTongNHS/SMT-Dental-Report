@@ -6,7 +6,7 @@ plot_payments_to_dentists <- function(data = payments_to_dentists,
                                       plotChart = TRUE){
   
   data <- data %>%
-    rename(region_name = Region_Name1)
+    rename(region_name = Region_Name)
   
   #filter for STP or region
   if(level == "Regional"){

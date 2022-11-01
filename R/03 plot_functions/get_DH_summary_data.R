@@ -162,5 +162,70 @@ get_annual_contracted_regionally <- function(data = UDA_scheduled_data,
 }
 
 
+################################################################################
+get_pounds_per_UDA <- function(data = UDA_scheduled_data,
+                               historic_data = historical_UDA_scheduled_data,
+                               prototypes = prototype_contracts,
+                               payments_data = payments_to_dentists){
+  
+  commissioner_lookup <- data %>% 
+    bind_rows(historic_data) %>%
+    #filter(annual_contracted_UDA > 100) %>%
+    #filter(!(contract_number %in% prototypes$prototype_contract_number & month < as.Date("2022-04-01"))) %>%
+    select(contract_number, commissioner_name) %>%
+    distinct()
+  
+  
+  payments_data <- payments_data %>%
+    filter(year %in% c("2018/19", "2019/20")) %>%
+    mutate(Total_Contracted_UDA = as.numeric(Total_Contracted_UDA)) %>%
+    filter(Total_Contracted_UDA > 100) %>%
+    mutate(contract_number = as.numeric(str_replace(Contract, "/", ""))) %>%
+    filter(!(contract_number %in% prototypes$prototype_contract_number)) %>%
+    left_join(commissioner_lookup, by = "contract_number") %>%
+    group_by(commissioner_name) %>%
+    mutate(UDA_value = as.numeric(Baseline_Contract) / as.numeric(Total_Contracted_UDA)) %>%
+    summarise(average_pounds_per_UDA = mean(UDA_value, na.rm = TRUE))
+  
+}
 
 
+################################################################################
+get_yearly_delivered_UDAs <- function(data = UDA_scheduled_data,
+                                      historic_data = historical_UDA_scheduled_data,
+                                      prototypes = prototype_contracts){
+  
+    #Join in region column
+    data <- data %>% 
+      bind_rows(historic_data) %>%
+      mutate(year = case_when(month >= as.Date("2021-04-01") & month < as.Date("2022-04-01") ~ "2021/22",
+                              month >= as.Date("2022-04-01") ~ "2022/23",
+                              TRUE ~ year)) %>%
+      filter(annual_contracted_UDA > 100) %>%
+      filter(!(contract_number %in% prototypes$prototype_contract_number & month < as.Date("2022-04-01"))) %>%
+      group_by(year) %>%
+      summarise(total_UDA_delivered = sum(UDA_delivered, na.rm = T))
+}
+
+
+################################################################################
+get_num_dentists_by_ICB <- function(data = payments_to_dentists,
+                                    scheduled_data = UDA_scheduled_data,
+                                    historic_data = historical_UDA_scheduled_data){
+  
+  
+  contract_ICB_lookup <- scheduled_data %>%
+    bind_rows(historic_data) %>%
+    select(contract_number, commissioner_name) %>%
+    distinct()
+  
+  data <- data %>%
+    mutate(contract_number = as.numeric(str_replace(Contract, "/", ""))) %>%
+    mutate(Number_of_active_dentists = as.numeric(Number_of_active_dentists)) %>%
+    left_join(contract_ICB_lookup) %>%
+    select(year, contract_number, commissioner_name, STP_Name, Region_Name, Number_of_active_dentists) %>%
+    group_by(year, commissioner_name) %>%
+    summarise(total_number_of_active_dentists = sum(Number_of_active_dentists, na.rm = TRUE)) %>%
+    pivot_wider(names_from = year, names_prefix = "Number of active dentists ", values_from = total_number_of_active_dentists)
+  
+}

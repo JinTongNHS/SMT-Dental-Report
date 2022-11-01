@@ -64,13 +64,17 @@ plot_cumulative_UDA_UOA_to_target <- function(data = UDA_scheduled_data,
     
   }
   
-  # #add blanks for future dates if on single level
-  # if(all_regions_and_STPs == FALSE & nrow(data) < 19){
-  #   
-  #   if(!(as.Date("2022-09-01") %in% data$month)){
-  #     data <- data %>% add_row(month = as.Date("2022-09-01"))
-  #   }
-  # }
+  #add blanks for future dates if on single level
+  if(all_regions_and_STPs == FALSE & nrow(data) < 22){
+
+    if(!(as.Date("2022-11-01") %in% data$month)){
+      data <- data %>% add_row(month = as.Date("2022-11-01"))
+    }
+    
+    if(!(as.Date("2022-12-01") %in% data$month)){
+      data <- data %>% add_row(month = as.Date("2022-12-01"))
+    }
+  }
   
   #get data in the right format
   data <- data %>%
@@ -82,7 +86,9 @@ plot_cumulative_UDA_UOA_to_target <- function(data = UDA_scheduled_data,
                                          month < as.Date("2022-01-01") ~ "Oct-Dec (Q3)",
                                          month < as.Date("2022-04-01") ~ "Jan-Mar (Q4)",
                                          month < as.Date("2022-07-01") ~ "Apr-Jun (Q1 22/23)",
-                                         month < as.Date("2022-10-01") ~ "Jul-Sep (Q2 22/23)"))
+                                         month < as.Date("2022-10-01") ~ "Jul-Sep (Q2 22/23)",
+                                         month < as.Date("2023-01-01") ~ "Oct-Dec (Q3 22/23)"
+                                         ))
   
   data$financial_quarter <- factor(data$financial_quarter,
                                    levels = c("Apr-Jun (Q1)",
@@ -90,7 +96,8 @@ plot_cumulative_UDA_UOA_to_target <- function(data = UDA_scheduled_data,
                                               "Oct-Dec (Q3)",
                                               "Jan-Mar (Q4)",
                                               "Apr-Jun (Q1 22/23)",
-                                              "Jul-Sep (Q2 22/23)"))
+                                              "Jul-Sep (Q2 22/23)",
+                                              "Oct-Dec (Q3 22/23)"))
   
   
   if(all_regions_and_STPs == FALSE){
@@ -112,9 +119,11 @@ plot_cumulative_UDA_UOA_to_target <- function(data = UDA_scheduled_data,
         seq(from = decemberTarget/3, to = decemberTarget, length.out = 3),
         seq(from = marchTarget/3, to = marchTarget, length.out = 3),
         seq(from = juneTarget/3, to = juneTarget, length.out = 3),
-        seq(from = september22Target/3, to = september22Target, length.out = 3)
+        seq(from = september22Target/3, to = september22Target, length.out = 3),
+        seq(from = 100/3, to = 100, length.out = 3) #threshold is back to 100
       )
-      )
+      ) %>%
+      filter(month >= as.Date("2021-10-01"))
     
   }else{
     #cumulative sum column
@@ -123,7 +132,7 @@ plot_cumulative_UDA_UOA_to_target <- function(data = UDA_scheduled_data,
       mutate(cumulative_perc_of_contracted_UDA_UOAs_delivered = cumsum(perc_of_contracted_UDA_UOAs_delivered)) %>%
       ungroup()
   }
-  
+
   if(plotChart == TRUE){
     #plot code
     p <- ggplot(data_to_plot) +
@@ -142,15 +151,17 @@ plot_cumulative_UDA_UOA_to_target <- function(data = UDA_scheduled_data,
                      colour = financial_quarter),
                  shape = 4,
                  size = 3) +
-      geom_vline(xintercept = as.Date("2021-09-01") + lubridate::days(15),
-                 linetype = "dotted") +
-      geom_vline(xintercept = as.Date("2021-06-01") + lubridate::days(15),
-                 linetype = "dotted") +
+      # geom_vline(xintercept = as.Date("2021-09-01") + lubridate::days(15),
+      #            linetype = "dotted") +
+      # geom_vline(xintercept = as.Date("2021-06-01") + lubridate::days(15),
+      #            linetype = "dotted") +
       geom_vline(xintercept = as.Date("2021-12-01") + lubridate::days(15),
                  linetype = "dotted") +
       geom_vline(xintercept = as.Date("2022-03-01") + lubridate::days(15),
                  linetype = "dotted") +
       geom_vline(xintercept = as.Date("2022-06-01") + lubridate::days(15),
+                 linetype = "dotted") +
+      geom_vline(xintercept = as.Date("2022-09-01") + lubridate::days(15),
                  linetype = "dotted") +
       annotate(geom = "text",
                x = data_to_plot$month,
@@ -162,13 +173,14 @@ plot_cumulative_UDA_UOA_to_target <- function(data = UDA_scheduled_data,
       scale_x_date(date_breaks = "1 month",
                    date_labels = "%b-%y") +
       scale_y_continuous(breaks = seq(0, 120, 10)) +
-      scale_colour_manual(labels = c(paste0("Expected cumulative delivery to reach \nQ1 threshold of ",septemberTarget,"% by end of Jun-21"),
-                                     paste0("Expected cumulative delivery to reach \nQ2 threshold of ",septemberTarget,"% by end of Sep-21"),
+      scale_colour_manual(labels = c(#paste0("Expected cumulative delivery to reach \nQ1 threshold of ",septemberTarget,"% by end of Jun-21"),
+                                     #paste0("Expected cumulative delivery to reach \nQ2 threshold of ",septemberTarget,"% by end of Sep-21"),
                                      paste0("Expected cumulative delivery to reach \nQ3 threshold of ",decemberTarget,"% by end of Dec-21"),
                                      paste0("Expected cumulative delivery to reach \nQ4 threshold of ",marchTarget,"% by end of Mar-22"),
                                      paste0("Expected cumulative delivery to reach \nQ1 threshold of ",juneTarget,"% by end of Jun-22"),
-                                     paste0("Expected cumulative delivery to reach \nQ2 threshold of ",september22Target,"% by end of Sep-22")),
-                          values = c("darkred", "blue", "darkgreen", "darkgoldenrod3", "darkorange3", "deeppink2")) +
+                                     paste0("Expected cumulative delivery to reach \nQ2 threshold of ",september22Target,"% by end of Sep-22"),
+                                     paste0("Expected cumulative delivery to reach \nQ3 threshold of ",100,"% by end of Dec-22")),
+                          values = c("darkred", "blue", "darkgreen", "darkgoldenrod3", "darkorange3", "deeppink2", "green")) +
       labs(title = title,
            x = "Month",
            y = ylab,
@@ -178,51 +190,51 @@ plot_cumulative_UDA_UOA_to_target <- function(data = UDA_scheduled_data,
       theme(legend.position = "bottom"#, legend.box="vertical", legend.margin=margin()
       ) +
       guides(colour=guide_legend(nrow=2,byrow=TRUE))
-    
-    
+
+
     p
   }else{
-    
+
     if(UDAorUOA == "UDA"){
       data %>%
         select(-threshold_period) %>%
         mutate(`Quarterly contracted UDAs` = total_annual_UDA_UOAs_contracted / 4) %>%
-        rename(Month = "month", 
-               `Region Name` = "region_name", 
-               `Commissioner Name` = "commissioner_name", 
-               `Monthly UDAs delivered` = "monthly_UDA_UOAs_delivered", 
-               `Total annual contracted UDAs` = "total_annual_UDA_UOAs_contracted", 
-               `Threshold percentage` = "threshold_perc", 
-               `Threshold contracted UDAs for quarter` = "threshold_UDA_UOAs_contracted_in_threshold_period", 
-               `Monthly percentage of threshold UDAs delivered` = "perc_of_UDA_UOA_threshold_delivered", 
-               `Montly percentage of quarterly contracted UDAs` = "perc_of_contracted_UDA_UOAs_delivered", 
-               `Financial quarter` = "financial_quarter", 
+        rename(Month = "month",
+               `Region Name` = "region_name",
+               `Commissioner Name` = "commissioner_name",
+               `Monthly UDAs delivered` = "monthly_UDA_UOAs_delivered",
+               `Total annual contracted UDAs` = "total_annual_UDA_UOAs_contracted",
+               `Threshold percentage` = "threshold_perc",
+               `Threshold contracted UDAs for quarter` = "threshold_UDA_UOAs_contracted_in_threshold_period",
+               `Monthly percentage of threshold UDAs delivered` = "perc_of_UDA_UOA_threshold_delivered",
+               `Montly percentage of quarterly contracted UDAs` = "perc_of_contracted_UDA_UOAs_delivered",
+               `Financial quarter` = "financial_quarter",
                `Cumulative percentage of quarterly contracted UDAs` = "cumulative_perc_of_contracted_UDA_UOAs_delivered") %>%
-        select(Month, `Financial quarter`, `Region Name`, `Commissioner Name`, 
-               `Monthly UDAs delivered`, `Quarterly contracted UDAs`, 
+        select(Month, `Financial quarter`, `Region Name`, `Commissioner Name`,
+               `Monthly UDAs delivered`, `Quarterly contracted UDAs`,
                `Montly percentage of quarterly contracted UDAs`,
                `Cumulative percentage of quarterly contracted UDAs`)
     }else{
       data %>%
         select(-threshold_period) %>%
         mutate(`Quarterly contracted UOAs` = total_annual_UDA_UOAs_contracted / 4) %>%
-        rename(Month = "month", 
-               `Region Name` = "region_name", 
-               `Commissioner Name` = "commissioner_name", 
-               `Monthly UOAs delivered` = "monthly_UDA_UOAs_delivered", 
-               `Total annual contracted UOAs` = "total_annual_UDA_UOAs_contracted", 
-               `Threshold percentage` = "threshold_perc", 
-               `Threshold contracted UOAs for quarter` = "threshold_UDA_UOAs_contracted_in_threshold_period", 
-               `Monthly percentage of threshold UOAs delivered` = "perc_of_UDA_UOA_threshold_delivered", 
-               `Montly percentage of quarterly contracted UOAs` = "perc_of_contracted_UDA_UOAs_delivered", 
-               `Financial quarter` = "financial_quarter", 
+        rename(Month = "month",
+               `Region Name` = "region_name",
+               `Commissioner Name` = "commissioner_name",
+               `Monthly UOAs delivered` = "monthly_UDA_UOAs_delivered",
+               `Total annual contracted UOAs` = "total_annual_UDA_UOAs_contracted",
+               `Threshold percentage` = "threshold_perc",
+               `Threshold contracted UOAs for quarter` = "threshold_UDA_UOAs_contracted_in_threshold_period",
+               `Monthly percentage of threshold UOAs delivered` = "perc_of_UDA_UOA_threshold_delivered",
+               `Montly percentage of quarterly contracted UOAs` = "perc_of_contracted_UDA_UOAs_delivered",
+               `Financial quarter` = "financial_quarter",
                `Cumulative percentage of quarterly contracted UOAs` = "cumulative_perc_of_contracted_UDA_UOAs_delivered") %>%
-        select(Month, `Financial quarter`, `Region Name`, `Commissioner Name`, 
-               `Monthly UOAs delivered`, `Quarterly contracted UOAs`, 
+        select(Month, `Financial quarter`, `Region Name`, `Commissioner Name`,
+               `Monthly UOAs delivered`, `Quarterly contracted UOAs`,
                `Montly percentage of quarterly contracted UOAs`,
                `Cumulative percentage of quarterly contracted UOAs`)
     }
-    
+
   }
-  
+
 }

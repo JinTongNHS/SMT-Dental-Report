@@ -53,7 +53,8 @@ table_number_cat_contracts <- function(data = UDA_scheduled_data,
     add_row(category_sub_type = "TOTAL", number_of_contracts = sum(data$number_of_contracts), percentage_of_contracts = 100) %>%
     rename(`category sub type` = category_sub_type,
            `number of contracts` = number_of_contracts,
-           `percentage of contracts` = percentage_of_contracts)
+           `percentage of contracts` = percentage_of_contracts) %>%
+    mutate(`category sub type` = if_else(is.na(`category sub type`), "Category not known", `category sub type`))
   
   data
   

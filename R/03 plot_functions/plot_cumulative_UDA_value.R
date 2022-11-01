@@ -81,7 +81,8 @@ plot_cumulative_UDA_value <- function(data = UDA_scheduled_data,
   
   data <- data_this_year %>%
     pivot_longer(cols = c("cum_financial_delivery_million_pounds", "financial_delivery_million_pounds_2017_2020_mean"),
-                 names_to = "line")
+                 names_to = "line") %>%
+    mutate(month = as.Date(month))
   
 
   title <- "Cumulative financial value of UDAs delivered  YTD 2022/23 (Million GBP)"
@@ -118,8 +119,8 @@ plot_cumulative_UDA_value <- function(data = UDA_scheduled_data,
       scale_colour_manual(values = c("steelblue", "red"), labels = c("YTD cumulative financial delivery",
                                                                      "Mean annual financial delivery \nover 2017/18 to 2019/20")) +
       theme_bw() +
-      # scale_x_date(date_breaks = "3 month", 
-      #              date_labels = "%b-%y") +
+      scale_x_date(date_breaks = "1 month",
+                   date_labels = "%b-%y") +
       theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
             legend.position="bottom") +
       labs(title = title,

@@ -68,6 +68,7 @@ import_clean_combine_upload_all_data <- function(raw_UDA_scheduled_data_folder_p
   dbWriteTable(con, Id(catalog="NHSE_Sandbox_PrimaryCareNHSContracts",schema="Dental",table="UOA_calendar"),
                value = UOA_calendar_data_latest, row.names = FALSE, append = FALSE, overwrite = TRUE)
 
+  #list(UDA_scheduled_data_latest, UOA_scheduled_data_latest, UDA_calendar_data_latest, UOA_calendar_data_latest)
 
 }
 
@@ -187,8 +188,8 @@ update_SOF_table_S109 <- function(calendar_data = UDA_calendar_data,
 upload_unique_patients_data <- function(data_path = "N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/unique_patients/"){
   
   # Gets last month 
-  data_month <- lubridate::floor_date(Sys.Date()  - lubridate::weeks(4), unit = "month")
-  data_month_name <- format(Sys.Date()  - lubridate::weeks(4), format = "%b%y")
+  data_month <- lubridate::floor_date(Sys.Date()  - lubridate::weeks(8), unit = "month")
+  data_month_name <- format(Sys.Date()  - lubridate::weeks(8), format = "%b%y")
   
   unique_patients <- readxl::read_excel(paste0(data_path, "unique_patients_rolling_", data_month_name,".xlsx"),
                                         skip = 19)
@@ -459,8 +460,36 @@ import_and_clean_calendar_UDA_data <- function(data_path = "data/raw_data/dashbo
            total_other_FP17s = X__80
     ) 
   
+  #add column for date and rename columns, split data for just october
+  data_oct <- data %>%
+    mutate(data_month = as.Date("2022-10-01")) %>%
+    select(data_month, X__1, X__2, X__3, X__4, X__5, X__6, X__7, X__8, 
+           X__81, X__82, X__83, X__84, X__85, X__86, X__87, X__88, X__89, X__90, X__91, X__92) %>%
+    rename(contract_number = X__1,
+           latest_contract_type = X__2,
+           name_or_company_name = X__3,
+           commissioner_name = X__4,
+           region_name = X__5,
+           paid_by_BSA = X__6,
+           contract_start_date = X__7, 
+           contract_end_date = X__8, 
+           
+           UDA_total = X__81, 
+           UDA_band_1_total = X__82,
+           UDA_band_2_total = X__83,
+           UDA_band_3_total = X__84, 
+           UDA_urgent_total = X__85, 
+           UDA_other_total = X__86, 
+           total_FP17s = X__87, 
+           total_band_1_FP17s  = X__88,
+           total_band_2_FP17s = X__89,
+           total_band_3_FP17s = X__90,
+           total_urgent_FP17s = X__91,
+           total_other_FP17s = X__92
+    ) 
   
-  UDA_calendar_data <- bind_rows(data_apr, data_may, data_jun, data_jul, data_aug, data_sep)
+  
+  UDA_calendar_data <- bind_rows(data_apr, data_may, data_jun, data_jul, data_aug, data_sep, data_oct)
   
 }
 
@@ -598,7 +627,23 @@ import_and_clean_calendar_UOA_data <- function(data_path = "data/raw_data/dashbo
            UOA_total = X__13
     )
   
-  UOA_calendar_data <- bind_rows(data_apr, data_may, data_jun, data_jul, data_aug, data_sep)
+  #add column for date and rename columns, split data for just oct
+  data_oct <- data %>%
+    mutate(data_month = as.Date("2022-10-01")) %>%
+    select(data_month, X__1, X__2, X__3, X__4, X__5, X__6, X__7, 
+           X__14) %>%
+    rename(contract_number = X__1,
+           contract_type = X__2,
+           name_or_company_name = X__3,
+           commissioner_name = X__4,
+           paid_by_BSA = X__5,
+           contract_start_date = X__6, 
+           contract_end_date = X__7, 
+           
+           UOA_total = X__14
+    )
+  
+  UOA_calendar_data <- bind_rows(data_apr, data_may, data_jun, data_jul, data_aug, data_sep, data_oct)
   
 }
 
