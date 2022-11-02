@@ -3,17 +3,11 @@ setwd("N:/_Everyone/Mohammed_Emran/UDA_Projection_Monthly")
 
 ######Connecting to SQL
 
-library (tidyverse)
+library(tidyverse)
 library(readxl)
 library(DBI)
 library(odbc)
-library(reactable) #make sure you have the latest version by doing install.packages("reactable")
-library(downloadthis)
-library(dplyr)
-library(ggplot2)
 library(scales)
-library(ggplot2)
-library(magrittr)
 library(corrr)
 
 UDA_Projection <- function(){
