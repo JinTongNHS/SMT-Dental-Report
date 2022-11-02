@@ -1,5 +1,9 @@
 #september_BSA_UDA_value_data <- pull_September_BSA_UDA_value_data()
 
+#What do do with missing UDA delivery data for average
+
+#What to do when contracted UDAs changes month on month for one contract?
+
 get_UDA_projection_data <- function(data = UDA_scheduled_data,
                                     UDA_value_data = september_BSA_UDA_value_data, 
                                     calendar_data = UDA_calendar_data,
