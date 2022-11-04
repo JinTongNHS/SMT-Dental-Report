@@ -75,7 +75,7 @@ get_UDA_projection_data <- function(data = UDA_scheduled_data,
     select(contract_number, name_or_company_name, commissioner_name, region_name, contract_start_date, contract_end_date, annual_contracted_UDA)
 
   #get number of months left in financial year
-  num_months_left_in_financial_year <- 12 - (as.numeric(substr(max(data$month), 6, 7)) - 4)
+  num_months_left_in_financial_year <- 12 - (as.numeric(substr(max(data$month), 6, 7)) - 3)
 
   #join in UDA means to rest of data
   data <- data_wide %>%
