@@ -1254,7 +1254,7 @@ contracts measured against the expected monthly total activity to achieve the qu
 **`r get_Q1_22_num_contracts_on_target(level = "Regional", region_STP_name = region)`**
 contracts (
 **`r round(get_Q1_22_num_contracts_on_target(level = "Regional", region_STP_name = region)*100/get_num_contracts(level = "Regional", region_STP_name = region))` %**
-) have delivered the required UDAs or more to be on track towards the Q1 threshold (95%) by the end of June 2022.
+) have delivered the required UDAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
 
 ]
 .panel[.panel-name[`r STP1`]
@@ -1274,7 +1274,7 @@ contracts measured against the expected monthly total activity to achieve the qu
 **`r get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP1)`**
 contracts (
 **`r round(get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP1)*100/get_num_contracts(level = "STP", region_STP_name = STP1))` %**
-) have delivered the required UDAs or more to be on track towards the Q1 threshold (95%) by the end of June 2022.
+) have delivered the required UDAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
 
 
 ]
@@ -1295,7 +1295,7 @@ contracts measured against the expected monthly total activity to achieve the qu
 **`r get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP2)`**
 contracts (
 **`r round(get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP2)*100/get_num_contracts(level = "STP", region_STP_name = STP2))` %**
-) have delivered the required UDAs or more to be on track towards the Q1 threshold (95%) by the end of June 2022.
+) have delivered the required UDAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
 
 
 ]
@@ -1316,7 +1316,7 @@ contracts measured against the expected monthly total activity to achieve the qu
 **`r get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP3)`**
 contracts (
 **`r round(get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP3)*100/get_num_contracts(level = "STP", region_STP_name = STP3))` %**
-) have delivered the required UDAs or more to be on track towards the Q1 threshold (95%) by the end of June 2022.
+) have delivered the required UDAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
 
 
 ]
@@ -1337,7 +1337,7 @@ contracts measured against the expected monthly total activity to achieve the qu
 **`r if(eval4){get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP4)}`**
 contracts (
 **`r if(eval4){round(get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP4)*100/get_num_contracts(level = "STP", region_STP_name = STP4))}` %**
-) have delivered the required UDAs or more to be on track towards the Q1 threshold (95%) by the end of June 2022.
+) have delivered the required UDAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
 
 
 ]
@@ -1358,7 +1358,7 @@ contracts measured against the expected monthly total activity to achieve the qu
 **`r if(eval5){get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP5)}`**
 contracts (
 **`r if(eval5){round(get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP5)*100/get_num_contracts(level = "STP", region_STP_name = STP5))}` %**
-) have delivered the required UDAs or more to be on track towards the Q1 threshold (95%) by the end of June 2022.
+) have delivered the required UDAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
 
 
 ]
@@ -1379,7 +1379,7 @@ contracts measured against the expected monthly total activity to achieve the qu
 **`r if(eval6){get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP6)}`**
 contracts (
 **`r if(eval6){round(get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP6)*100/get_num_contracts(level = "STP", region_STP_name = STP6))}` %**
-) have delivered the required UDAs or more to be on track towards the Q1 threshold (95%) by the end of June 2022.
+) have delivered the required UDAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
 
 
 ]
@@ -1400,7 +1400,7 @@ contracts measured against the expected monthly total activity to achieve the qu
 **`r if(eval7){get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP7)}`**
 contracts (
 **`r if(eval7){round(get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP7)*100/get_num_contracts(level = "STP", region_STP_name = STP7))}` %**
-) have delivered the required UDAs or more to be on track towards the Q1 threshold (95%) by the end of June 2022.
+) have delivered the required UDAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
 
 
 ]
@@ -1421,7 +1421,7 @@ contracts measured against the expected monthly total activity to achieve the qu
 **`r if(eval8){get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP8)}`**
 contracts (
 **`r if(eval8){round(get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP8)*100/get_num_contracts(level = "STP", region_STP_name = STP8))}` %**
-) have delivered the required UDAs or more to be on track towards the Q1 threshold (95%) by the end of June 2022.
+) have delivered the required UDAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
 
 
 ]
@@ -1442,7 +1442,7 @@ contracts measured against the expected monthly total activity to achieve the qu
 **`r if(eval9){get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP9)}`**
 contracts (
 **`r if(eval9){round(get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP9)*100/get_num_contracts(level = "STP", region_STP_name = STP9))}` %**
-) have delivered the required UDAs or more to be on track towards the Q1 threshold (95%) by the end of June 2022.
+) have delivered the required UDAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
 
 
 ]
@@ -1463,7 +1463,7 @@ contracts measured against the expected monthly total activity to achieve the qu
 **`r if(eval10){get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP10)}`**
 contracts (
 **`r if(eval10){round(get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP10)*100/get_num_contracts(level = "STP", region_STP_name = STP10))}` %**
-) have delivered the required UDAs or more to be on track towards the Q1 threshold (95%) by the end of June 2022.
+) have delivered the required UDAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
 
 
 ]
@@ -1484,7 +1484,7 @@ contracts measured against the expected monthly total activity to achieve the qu
 **`r if(eval11){get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP11)}`**
 contracts (
 **`r if(eval11){round(get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP11)*100/get_num_contracts(level = "STP", region_STP_name = STP11))}` %**
-) have delivered the required UDAs or more to be on track towards the Q1 threshold (95%) by the end of June 2022.
+) have delivered the required UDAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
 
 
 ]
@@ -3065,7 +3065,7 @@ expected monthly total activity to achieve the quarterly thresholds (100% for Ap
 **`r get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = region)`**
 contracts (
 **`r round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = region)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, "UOA", level = "Regional", region_STP_name = region))` %**
-) have delivered the required UOAs or more to be on track towards the Q2 threshold (100%) by the end of September 2022.
+) have delivered the required UOAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
 
  ]
  .panel[.panel-name[`r STP1`]
@@ -3087,7 +3087,7 @@ expected monthly total activity to achieve the quarterly thresholds (100% for Ap
 **`r get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UOA_calendar_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP1)`**
 contracts (
 **`r round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UOA_calendar_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP1)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, "UOA", level = "STP", region_STP_name = STP1))` %**
-) have delivered the required UOAs or more to be on track towards the Q2 threshold (100%) by the end of September 2022.
+) have delivered the required UOAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
 
 
  ]
@@ -3110,7 +3110,7 @@ expected monthly total activity to achieve the quarterly thresholds (100% for Ap
 **`r get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UOA_calendar_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP2)`**
 contracts (
 **`r round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UOA_calendar_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP2)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, "UOA", level = "STP", region_STP_name = STP2))` %**
-) have delivered the required UOAs or more to be on track towards the Q2 threshold (100%) by the end of September 2022.
+) have delivered the required UOAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
 
 
  ]
@@ -3133,7 +3133,7 @@ expected monthly total activity to achieve the quarterly thresholds (100% for Ap
 **`r get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UOA_calendar_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP3)`**
 contracts (
 **`r round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UOA_calendar_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP3)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, "UOA", level = "STP", region_STP_name = STP3))` %**
-) have delivered the required UOAs or more to be on track towards the Q2 threshold (100%) by the end of September 2022.
+) have delivered the required UOAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
 
 
  ]
@@ -3156,7 +3156,7 @@ expected monthly total activity to achieve the quarterly thresholds (100% for Ap
 **`r if(eval4){get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UOA_calendar_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP4)}`**
 contracts (
 **`r if(eval4){round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UOA_calendar_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP4)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, "UOA", level = "STP", region_STP_name = STP4))}` %**
-) have delivered the required UOAs or more to be on track towards the Q2 threshold (100%) by the end of September 2022.
+) have delivered the required UOAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
 
 
  ]
@@ -3179,7 +3179,7 @@ expected monthly total activity to achieve the quarterly thresholds (100% for Ap
 **`r if(eval5){get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UOA_calendar_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP5)}`**
 contracts (
 **`r if(eval5){round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UOA_calendar_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP5)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, "UOA", level = "STP", region_STP_name = STP5))}` %**
-) have delivered the required UOAs or more to be on track towards the Q2 threshold (100%) by the end of September 2022.
+) have delivered the required UOAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
 
 
  ]
@@ -3202,7 +3202,7 @@ expected monthly total activity to achieve the quarterly thresholds (100% for Ap
 **`r if(eval6){get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UOA_calendar_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP6)}`**
 contracts (
 **`r if(eval6){round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UOA_calendar_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP6)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, "UOA", level = "STP", region_STP_name = STP6))}` %**
-) have delivered the required UOAs or more to be on track towards the Q2 threshold (100%) by the end of September 2022.
+) have delivered the required UOAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
 
 
  ]
@@ -3225,7 +3225,7 @@ expected monthly total activity to achieve the quarterly thresholds (100% for Ap
 **`r if(eval7){get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UOA_calendar_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP7)}`**
 contracts (
 **`r if(eval7){round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UOA_calendar_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP7)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, "UOA", level = "STP", region_STP_name = STP7))}` %**
-) have delivered the required UOAs or more to be on track towards the Q2 threshold (100%) by the end of September 2022.
+) have delivered the required UOAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
 
 
  ]
@@ -3248,7 +3248,7 @@ expected monthly total activity to achieve the quarterly thresholds (100% for Ap
 **`r if(eval8){get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UOA_calendar_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP8)}`**
 contracts (
 **`r if(eval8){round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UOA_calendar_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP8)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, "UOA", level = "STP", region_STP_name = STP8))}` %**
-) have delivered the required UOAs or more to be on track towards the Q2 threshold (100%) by the end of September 2022.
+) have delivered the required UOAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
 
 
  ]
@@ -3271,7 +3271,7 @@ expected monthly total activity to achieve the quarterly thresholds (100% for Ap
 **`r if(eval9){get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UOA_calendar_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP9)}`**
 contracts (
 **`r if(eval9){round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UOA_calendar_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP9)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, "UOA", level = "STP", region_STP_name = STP9))}` %**
-) have delivered the required UOAs or more to be on track towards the Q2 threshold (100%) by the end of September 2022.
+) have delivered the required UOAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
 
 
  ]
@@ -3294,7 +3294,7 @@ expected monthly total activity to achieve the quarterly thresholds (100% for Ap
 **`r if(eval10){get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UOA_calendar_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP10)}`**
 contracts (
 **`r if(eval10){round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UOA_calendar_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP10)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, "UOA", level = "STP", region_STP_name = STP10))}` %**
-) have delivered the required UOAs or more to be on track towards the Q2 threshold (100%) by the end of September 2022.
+) have delivered the required UOAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
 
 
  ]
@@ -3317,7 +3317,7 @@ expected monthly total activity to achieve the quarterly thresholds (100% for Ap
 **`r if(eval11){get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UOA_calendar_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP11)}`**
 contracts (
 **`r if(eval11){round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UOA_calendar_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP11)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, "UOA", level = "STP", region_STP_name = STP11))}` %**
-) have delivered the required UOAs or more to be on track towards the Q2 threshold (100%) by the end of September 2022.
+) have delivered the required UOAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
 
 
  ]

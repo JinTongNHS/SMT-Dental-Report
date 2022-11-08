@@ -958,7 +958,7 @@ contracts measured against the expected monthly total activity to achieve the qu
 **`r get_Q1_22_num_contracts_on_target(level = "National", region_STP_name = NULL)`**
 contracts (
 **`r round(get_Q1_22_num_contracts_on_target(level = "National", region_STP_name = NULL)*100/get_num_contracts(level = "National", region_STP_name = NULL))` %**
-) have delivered the required UDAs or more to be on track towards the Q2 threshold (100%) by the end of September 2022.
+) have delivered the required UDAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
 
 ]
 .panel[.panel-name[South East]
@@ -978,7 +978,7 @@ contracts measured against the expected monthly total activity to achieve the qu
 **`r get_Q1_22_num_contracts_on_target(level = "Regional", region_STP_name = "South East")`**
 contracts (
 **`r round(get_Q1_22_num_contracts_on_target(level = "Regional", region_STP_name = "South East")*100/get_num_contracts(level = "Regional", region_STP_name = "South East"))` %**
-) have delivered the required UDAs or more to be on track towards the Q2 threshold (100%) by the end of September 2022.
+) have delivered the required UDAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
 
 
 ]
@@ -999,7 +999,7 @@ contracts measured against the expected monthly total activity to achieve the qu
 **`r get_Q1_22_num_contracts_on_target(level = "Regional", region_STP_name = "South West")`**
 contracts (
 **`r round(get_Q1_22_num_contracts_on_target(level = "Regional", region_STP_name = "South West")*100/get_num_contracts(level = "Regional", region_STP_name = "South West"))` %**
-) have delivered the required UDAs or more to be on track towards the Q2 threshold (100%) by the end of September 2022.
+) have delivered the required UDAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
 
 
 ]
@@ -1020,7 +1020,7 @@ contracts measured against the expected monthly total activity to achieve the qu
 **`r get_Q1_22_num_contracts_on_target(level = "Regional", region_STP_name = "North West")`**
 contracts (
 **`r round(get_Q1_22_num_contracts_on_target(level = "Regional", region_STP_name = "North West")*100/get_num_contracts(level = "Regional", region_STP_name = "North West"))` %**
-) have delivered the required UDAs or more to be on track towards the Q2 threshold (100%) by the end of September 2022.
+) have delivered the required UDAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
 
 
 ]
@@ -1041,7 +1041,7 @@ contracts measured against the expected monthly total activity to achieve the qu
 **`r get_Q1_22_num_contracts_on_target(level = "Regional", region_STP_name = "North East and Yorkshire")`**
 contracts (
 **`r round(get_Q1_22_num_contracts_on_target(level = "Regional", region_STP_name = "North East and Yorkshire")*100/get_num_contracts(level = "Regional", region_STP_name = "North East and Yorkshire"))` %**
-) have delivered the required UDAs or more to be on track towards the Q2 threshold (100%) by the end of September 2022.
+) have delivered the required UDAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
 
 
 ]
@@ -1062,7 +1062,7 @@ contracts measured against the expected monthly total activity to achieve the qu
 **`r get_Q1_22_num_contracts_on_target(level = "Regional", region_STP_name = "London")`**
 contracts (
 **`r round(get_Q1_22_num_contracts_on_target(level = "Regional", region_STP_name = "London")*100/get_num_contracts(level = "Regional", region_STP_name = "London"))` %**
-) have delivered the required UDAs or more to be on track towards the Q2 threshold (100%) by the end of September 2022.
+) have delivered the required UDAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
 
 ]
 .panel[.panel-name[Midlands]
@@ -1082,7 +1082,7 @@ contracts measured against the expected monthly total activity to achieve the qu
 **`r get_Q1_22_num_contracts_on_target(level = "Regional", region_STP_name = "Midlands")`**
 contracts (
 **`r round(get_Q1_22_num_contracts_on_target(level = "Regional", region_STP_name = "Midlands")*100/get_num_contracts(level = "Regional", region_STP_name = "Midlands"))` %**
-) have delivered the required UDAs or more to be on track towards the Q2 threshold (100%) by the end of September 2022.
+) have delivered the required UDAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
 
 
 ]
@@ -1103,7 +1103,7 @@ contracts measured against the expected monthly total activity to achieve the qu
 **`r get_Q1_22_num_contracts_on_target(level = "Regional", region_STP_name = "East of England")`**
 contracts (
 **`r round(get_Q1_22_num_contracts_on_target(level = "Regional", region_STP_name = "East of England")*100/get_num_contracts(level = "Regional", region_STP_name = "East of England"))` %**
-) have delivered the required UDAs or more to be on track towards the Q2 threshold (100%) by the end of September 2022.
+) have delivered the required UDAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
 
 
 ]
@@ -2583,7 +2583,7 @@ expected monthly total activity to achieve the quarterly thresholds (100% for Ap
 **`r get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, UDAorUOA = "UOA", level = "National", region_STP_name = NULL)`**
 contracts (
 **`r round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, UDAorUOA = "UOA", level = "National", region_STP_name = NULL)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, "UOA", level = "National", region_STP_name = NULL))` %**
-) have delivered the required UOAs or more to be on track towards the Q2 threshold (100%) by the end of September 2022.
+) have delivered the required UOAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
 
  ]
  .panel[.panel-name[South East]
@@ -2605,7 +2605,7 @@ expected monthly total activity to achieve the quarterly thresholds (100% for Ap
 **`r get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "South East")`**
 contracts (
 **`r round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "South East")*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, "UOA", level = "Regional", region_STP_name = "South East"))` %**
-) have delivered the required UOAs or more to be on track towards the Q2 threshold (100%) by the end of September 2022.
+) have delivered the required UOAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
 
 
  ]
@@ -2628,7 +2628,7 @@ expected monthly total activity to achieve the quarterly thresholds (100% for Ap
 **`r get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "South West")`**
 contracts (
 **`r round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "South West")*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, "UOA", level = "Regional", region_STP_name = "South West"))` %**
-) have delivered the required UOAs or more to be on track towards the Q2 threshold (100%) by the end of September 2022.
+) have delivered the required UOAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
 
 
  ]
@@ -2651,7 +2651,7 @@ expected monthly total activity to achieve the quarterly thresholds (100% for Ap
 **`r get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "North West")`**
 contracts (
 **`r round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "North West")*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, "UOA", level = "Regional", region_STP_name = "North West"))` %**
-) have delivered the required UOAs or more to be on track towards the Q2 threshold (100%) by the end of September 2022.
+) have delivered the required UOAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
 
  ]
  .panel[.panel-name[North East and Yorkshire]
@@ -2673,7 +2673,7 @@ expected monthly total activity to achieve the quarterly thresholds (100% for Ap
 **`r get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "North East and Yorkshire")`**
 contracts (
 **`r round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "North East and Yorkshire")*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, "UOA", level = "Regional", region_STP_name = "North East and Yorkshire"))` %**
-) have delivered the required UOAs or more to be on track towards the Q2 threshold (100%) by the end of September 2022.
+) have delivered the required UOAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
 
 
  ]
@@ -2696,7 +2696,7 @@ expected monthly total activity to achieve the quarterly thresholds (100% for Ap
 **`r get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "London")`**
 contracts (
 **`r round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "London")*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, "UOA", level = "Regional", region_STP_name = "London"))` %**
-) have delivered the required UOAs or more to be on track towards the Q2 threshold (100%) by the end of September 2022.
+) have delivered the required UOAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
 
  ]
  .panel[.panel-name[Midlands]
@@ -2718,7 +2718,7 @@ expected monthly total activity to achieve the quarterly thresholds (100% for Ap
 **`r get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "Midlands")`**
 contracts (
 **`r round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "Midlands")*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, "UOA", level = "Regional", region_STP_name = "Midlands"))` %**
-) have delivered the required UOAs or more to be on track towards the Q2 threshold (100%) by the end of September 2022.
+) have delivered the required UOAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
 
 
  ]
@@ -2741,7 +2741,7 @@ expected monthly total activity to achieve the quarterly thresholds (100% for Ap
 **`r get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "East of England")`**
 contracts (
 **`r round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "East of England")*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, "UOA", level = "Regional", region_STP_name = "East of England"))` %**
-) have delivered the required UOAs or more to be on track towards the Q2 threshold (100%) by the end of September 2022.
+) have delivered the required UOAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
 
 
  ]
