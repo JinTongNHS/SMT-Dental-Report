@@ -36,7 +36,7 @@ plot_unique_patients_rolling <- function(data = unique_patients_rolling,
     #create not in function
     `%notin%` = Negate(`%in%`)
     data <- data %>%
-      filter(contract_number %notin% prototype_contracts$prototype_contract_number) %>%
+      filter(!(contract_number %in% prototype_contracts$prototype_contract_number & month < as.Date("2022-04-01"))) %>%
       filter(annual_contracted_UDA > 100)
   }
   
@@ -127,7 +127,7 @@ plot_unique_patients_rolling <- function(data = unique_patients_rolling,
            x = "12 month rolling period end date",
            y = ylab,
            subtitle = subtitle,
-           caption = "*N.B. this analysis uses unique patients per contract** and does not take \ninto account patients who have been seen at more than one dental practice. \n**Excluding prototype contracts and those with annual contracted UDAs < 100."
+           caption = "*N.B. this analysis uses unique patients per contract** and does not take \ninto account patients who have been seen at more than one dental practice. \n**Excluding contracts with annual contracted UDA < 100. Excluding prototype contracts up until April 2022."
       ) +
       scale_x_date(date_breaks = "1 month", 
                    date_labels = "%b-%y") +
