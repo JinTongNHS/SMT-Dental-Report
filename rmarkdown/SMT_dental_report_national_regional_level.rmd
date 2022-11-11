@@ -94,6 +94,10 @@ dental_complaints <- clean_complaints_data(Dental_Access_Complaints_Data_June_22
 #UDA value data
 UDA_values <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/UDA_values.xlsx")
 
+#Pull patient charge data
+patient_exemption_data <- pull_patient_exemption_data()
+patient_exemption_data <- clean_patient_exemption_data()
+
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 
 #avoid standard form
@@ -122,6 +126,7 @@ name: contents
  * [Banded courses of treatment time series](#banded-cots)
  * [Banded courses of treatment time series as % of 2019 delivery](#banded-cots-index)
  * [Urgent treatment form submissions](#urgent-forms)
+ * [UDAs delivered by patient charge status](#patient-charge)
  * [111 call volumes](#111-call-volumes)
  * [Unique patients seen rolling 12 months](#unique-patients)
  * [Unique patients seen rolling 12 months as % of April 2018 delivery](#unique-patients-index)
@@ -3698,6 +3703,82 @@ reactable(
 )
 ```
 ]
+ ]
+
+[Return to contents](#contents)
+
+
+
+---
+
+name: patient-charge
+
+### UDAs delivered by Patient Charge Status
+
+```{r xaringan-panelset-patient-charge, echo=FALSE}
+xaringanExtra::use_panelset()
+```
+ <font size="2">
+.panelset[
+
+ .panel[.panel-name[National]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
+plot_UDAs_by_patient_exemption(data = patient_exemption_data,
+                               region_filter = "England")
+```
+
+
+ ]
+ .panel[.panel-name[South East]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
+plot_UDAs_by_patient_exemption(data = patient_exemption_data,
+                               region_filter = "South East")
+```
+
+ ]
+ .panel[.panel-name[South West]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
+plot_UDAs_by_patient_exemption(data = patient_exemption_data,
+                               region_filter = "South West")
+```
+
+ ]
+ .panel[.panel-name[North West]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
+plot_UDAs_by_patient_exemption(data = patient_exemption_data,
+                               region_filter = "North West")
+```
+
+ ]
+ .panel[.panel-name[North East and Yorkshire]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
+plot_UDAs_by_patient_exemption(data = patient_exemption_data,
+                               region_filter = "North East and Yorkshire")
+```
+
+ ]
+.panel[.panel-name[London]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
+plot_UDAs_by_patient_exemption(data = patient_exemption_data,
+                               region_filter = "London")
+```
+
+ ]
+ .panel[.panel-name[Midlands]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
+plot_UDAs_by_patient_exemption(data = patient_exemption_data,
+                               region_filter = "Midlands")
+```
+
+
+ ]
+ .panel[.panel-name[East of England]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
+plot_UDAs_by_patient_exemption(data = patient_exemption_data,
+                               region_filter = "East of England")
+```
+
+ ]
  ]
 
 [Return to contents](#contents)
