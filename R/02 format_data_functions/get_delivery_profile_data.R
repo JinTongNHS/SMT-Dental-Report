@@ -37,26 +37,19 @@ get_delivery_profile_data <- function(data = UDA_scheduled_data,
   
   #put into bands then sum across these bands by month
   performance_table <- performance_table %>%
-    mutate(performance_band = if_else(monthly_perc_scaled >= 0 & monthly_perc_scaled <10, "0-9%",
-                                      if_else(monthly_perc_scaled >= 10 & monthly_perc_scaled <20, "10-19%",
-                                              if_else(monthly_perc_scaled >= 20 & monthly_perc_scaled <30, "20-29%",
-                                                      if_else(monthly_perc_scaled >= 30 & monthly_perc_scaled <40, "30-39%",
-                                                              if_else(monthly_perc_scaled >= 40 & monthly_perc_scaled <50, "40-49%",
-                                                                      if_else(monthly_perc_scaled >= 50 & monthly_perc_scaled <60, "50-59%",
-                                                                              if_else(monthly_perc_scaled >= 60 & monthly_perc_scaled <70, "60-69%",
-                                                                                      if_else(monthly_perc_scaled >= 70 & monthly_perc_scaled <80, "70-79%",
-                                                                                              if_else(monthly_perc_scaled >= 80 & monthly_perc_scaled <90, "80-89%",
-                                                                                                      if_else( monthly_perc_scaled >= 90 & monthly_perc_scaled <100, "90-99%",
-                                                                                                               "100% +")
-                                                                                              )
-                                                                                      )
-                                                                              )
-                                                                      )
-                                                              )
-                                                      )
-                                              )
-                                      )
-    )) %>%
+    mutate(performance_band = case_when(monthly_perc_scaled >= 0 & monthly_perc_scaled <10 ~ "0-9%",
+                                        monthly_perc_scaled >= 10 & monthly_perc_scaled <20 ~ "10-19%",
+                                        monthly_perc_scaled >= 20 & monthly_perc_scaled <30 ~ "20-29%",
+                                        monthly_perc_scaled >= 30 & monthly_perc_scaled <40 ~ "30-39%",
+                                        monthly_perc_scaled >= 40 & monthly_perc_scaled <50 ~ "40-49%",
+                                        monthly_perc_scaled >= 50 & monthly_perc_scaled <60 ~ "50-59%",
+                                        monthly_perc_scaled >= 60 & monthly_perc_scaled <70 ~ "60-69%",
+                                        monthly_perc_scaled >= 70 & monthly_perc_scaled <80 ~ "70-79%",
+                                        monthly_perc_scaled >= 80 & monthly_perc_scaled <90 ~ "80-89%",
+                                        monthly_perc_scaled >= 80 & monthly_perc_scaled <90 ~ "80-89%",
+                                        monthly_perc_scaled >= 90 & monthly_perc_scaled <100 ~ "90-99%",
+                                        TRUE ~ "100% +"
+                                        )) %>%
     #exclude NAs
     filter(!is.na(performance_band)) 
   
