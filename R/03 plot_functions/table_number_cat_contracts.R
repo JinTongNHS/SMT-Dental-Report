@@ -6,6 +6,10 @@ table_number_cat_contracts <- function(data = UDA_scheduled_data,
                                        region_STP_name = NULL){
   
   
+  #filters out double mappings for contractor categories - takes first mapping as correct
+  contractor_cats <- contractor_cats %>%
+    distinct(contract_number, .keep_all = TRUE)
+  
   #filter for STP or region
   if(level == "Regional"){
     data <- data %>% 
@@ -22,10 +26,8 @@ table_number_cat_contracts <- function(data = UDA_scheduled_data,
   
   #remove prototype contracts if specified
   if(remove_prototypes){
-    #create not in function•
-    `%notin%` = Negate(`%in%`)
     data <- data %>%
-      #filter(contract_number %notin% prototype_contracts$prototype_contract_number)%>%
+      filter(!(contract_number %in% prototype_contracts$prototype_contract_number & month < as.Date("2022-04-01"))) %>%
       filter(annual_contracted_UDA > 100)
   }
   
@@ -48,10 +50,6 @@ table_number_cat_contracts <- function(data = UDA_scheduled_data,
     mutate(`category sub type` = if_else(is.na(`category sub type`), "Category not known", `category sub type`))
   
   data
-  
-  # ggplot(data, aes(x="", y=n, fill = category_sub_type)) +
-  #  geom_bar(width = 1, stat = "identity") +
-  #   coord_polar("y", start=0) +
-  #   labs(title = "prototypes") 
+
   
 }
