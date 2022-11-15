@@ -1,17 +1,9 @@
 ################################################################################
 get_num_urgent_forms <- function(data = UDA_scheduled_data, 
                                  historic_data = historical_UDA_scheduled_data,
-                                 calendar_data = UDA_calendar_data,
                                  remove_prototypes = TRUE,
                                  level = "National",
                                  region_STP_name = NULL){
-  
-  #add a region column to the data
-  region_STP_lookup <- calendar_data %>%
-    select(commissioner_name, region_name) %>%
-    distinct()
-  
-  data <- left_join(data, region_STP_lookup, by = "commissioner_name")
   
   #filter for STP or region
   if(level == "Regional"){

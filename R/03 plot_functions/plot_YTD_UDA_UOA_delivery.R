@@ -1,5 +1,4 @@
 plot_YTD_UDA_UOA_delivery <- function(data = UDA_scheduled_data, 
-                                      calendar_data = UDA_calendar_data,
                                       historic_data = historical_UDA_scheduled_data,
                                       UDAorUOA = "UDA",
                                       level = "National",
@@ -7,21 +6,7 @@ plot_YTD_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
                                       remove_prototypes = TRUE, 
                                       plotChart = TRUE, 
                                       all_regions_and_STPs = FALSE){
-  
-  data <- data %>%
-    mutate(month = as.Date(month))
-  
-  calendar_data <- calendar_data %>%
-    mutate(month = as.Date(month))
-  
-  #add a region column to the data
-  region_STP_lookup <- calendar_data %>%
-    select(commissioner_name, region_name) %>%
-    distinct()
-  
-  data <- left_join(data, region_STP_lookup, by = "commissioner_name")
-  
-  
+
   #filter for STP or region
   if(level == "Regional"){
     data <- data %>%

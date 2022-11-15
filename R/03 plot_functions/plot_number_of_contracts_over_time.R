@@ -6,14 +6,7 @@ plot_number_of_contracts_over_time <- function(data = UDA_scheduled_data,
                                                all_regions_and_STPs = FALSE,
                                                plotChart = TRUE,
                                                getChange = FALSE){
-  
-  STp_region_lookup <- historical_data %>%
-    select(commissioner_name, region_name) %>%
-    unique()
-  
-  data <- data %>%
-    left_join(STp_region_lookup, by = "commissioner_name") 
-  
+
   data <- data %>%
     bind_rows(historical_data) 
   

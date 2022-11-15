@@ -6,18 +6,12 @@
 
 get_UDA_projection_data <- function(data = UDA_scheduled_data,
                                     UDA_value_data = september_BSA_UDA_value_data, 
-                                    calendar_data = UDA_calendar_data,
+                                    #calendar_data = UDA_calendar_data,
                                     level = "National",
                                     region_STP_name = NULL,
                                     remove_prototypes = TRUE, 
                                     plotChart = TRUE){
   
-  #add a region column to the data
-  region_STP_lookup <- calendar_data %>%
-    select(commissioner_name, region_name) %>%
-    distinct()
-  
-  data <- left_join(data, region_STP_lookup, by = "commissioner_name")
   
   #filter for STP or region
   if(level == "Regional"){

@@ -1,6 +1,5 @@
 ################################################################################
 plot_urgent_form_submissions <- function(data = UDA_scheduled_data, 
-                                         calendar_data = UDA_calendar_data,
                                          historic_data = historical_UDA_scheduled_data, 
                                          level = "National",
                                          region_STP_name = "Cheshire and Merseyside STP",
@@ -10,14 +9,7 @@ plot_urgent_form_submissions <- function(data = UDA_scheduled_data,
   
   #avoid standard form on axes
   options(scipen = 100)
-  
-  #add a region column to the data
-  region_STP_lookup <- calendar_data %>%
-    select(commissioner_name, region_name) %>%
-    distinct()
-  
-  data <- left_join(data, region_STP_lookup, by = "commissioner_name")
-  
+
   #toggle subtitle
   if(level == "Regional"){
     #filter for region or STP

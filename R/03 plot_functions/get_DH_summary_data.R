@@ -1,16 +1,10 @@
 get_DH_summary_data <- function(data = UDA_scheduled_data,
                                 historic_data = historical_UDA_scheduled_data,
                                 prototypes = prototype_contracts){
-  
-  #get lookup for region from ICB
-  region_ICB_lookup <- historic_data %>%
-    select(commissioner_name, region_name) %>%
-    unique()
-  
+
   
   #Join in region column
   data <- data %>% 
-    left_join(region_ICB_lookup, by = "commissioner_name") %>%
     bind_rows(historic_data) %>%
     filter(annual_contracted_UDA > 100) %>%
     filter(!(contract_number %in% prototypes$prototype_contract_number & month < as.Date("2022-04-01"))) %>%
@@ -68,13 +62,7 @@ get_risk_of_rebasing <- function(data = UDA_scheduled_data,
                                   historic_data = historical_UDA_scheduled_data,
                                   prototypes = prototype_contracts){
   
-  region_ICB_lookup <- historic_data %>%
-    select(commissioner_name, region_name) %>%
-    unique()
-  
-  
   data <- data %>% 
-    left_join(region_ICB_lookup, by = "commissioner_name") %>%
     bind_rows(historic_data) %>%
     filter(annual_contracted_UDA > 100) %>%
     filter(!(contract_number %in% prototypes$prototype_contract_number & month < as.Date("2022-04-01"))) %>%
@@ -134,17 +122,12 @@ get_risk_of_rebasing <- function(data = UDA_scheduled_data,
 
 }
 
-
+################################################################################
 get_annual_contracted_regionally <- function(data = UDA_scheduled_data,
                                              historic_data = historical_UDA_scheduled_data,
                                              prototypes = prototype_contracts){
-  region_ICB_lookup <- historic_data %>%
-    select(commissioner_name, region_name) %>%
-    unique()
-  
-  
+
   data <- data %>% 
-    left_join(region_ICB_lookup, by = "commissioner_name") %>%
     bind_rows(historic_data) %>%
     filter(annual_contracted_UDA > 100) %>%
     filter(!(contract_number %in% prototypes$prototype_contract_number & month < as.Date("2022-04-01"))) %>%
@@ -168,12 +151,12 @@ get_pounds_per_UDA <- function(data = UDA_scheduled_data,
                                prototypes = prototype_contracts,
                                payments_data = payments_to_dentists){
   
-  commissioner_lookup <- data %>% 
-    bind_rows(historic_data) %>%
-    #filter(annual_contracted_UDA > 100) %>%
-    #filter(!(contract_number %in% prototypes$prototype_contract_number & month < as.Date("2022-04-01"))) %>%
-    select(contract_number, commissioner_name) %>%
-    distinct()
+  # commissioner_lookup <- data %>% 
+  #   bind_rows(historic_data) %>%
+  #   #filter(annual_contracted_UDA > 100) %>%
+  #   #filter(!(contract_number %in% prototypes$prototype_contract_number & month < as.Date("2022-04-01"))) %>%
+  #   select(contract_number, commissioner_name) %>%
+  #   distinct()
   
   
   payments_data <- payments_data %>%
@@ -182,7 +165,7 @@ get_pounds_per_UDA <- function(data = UDA_scheduled_data,
     filter(Total_Contracted_UDA > 100) %>%
     mutate(contract_number = as.numeric(str_replace(Contract, "/", ""))) %>%
     filter(!(contract_number %in% prototypes$prototype_contract_number)) %>%
-    left_join(commissioner_lookup, by = "contract_number") %>%
+    #left_join(commissioner_lookup, by = "contract_number") %>%
     group_by(commissioner_name) %>%
     mutate(UDA_value = as.numeric(Baseline_Contract) / as.numeric(Total_Contracted_UDA)) %>%
     summarise(average_pounds_per_UDA = mean(UDA_value, na.rm = TRUE))

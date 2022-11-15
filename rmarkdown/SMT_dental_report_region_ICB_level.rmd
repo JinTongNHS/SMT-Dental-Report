@@ -53,21 +53,15 @@ UOA_calendar_data <- UOA_calendar_data %>%
   rename(month = data_month) %>%
   mutate(contract_number = as.numeric(contract_number),
          UOA_total = as.numeric(UOA_total)) 
-    #add a region column to the data
-    region_STP_lookup <- UDA_calendar_data %>%
-      select(contract_number, name_or_company_name, commissioner_name, region_name) %>%
-      distinct()
-    
-UOA_calendar_data <- left_join(UOA_calendar_data, region_STP_lookup, by = c("contract_number", "name_or_company_name", "commissioner_name"))
+
 UDA_scheduled_data <- rename(UDA_scheduled_data, month = data_month)
 UOA_scheduled_data <- rename(UOA_scheduled_data, month = data_month)
 
+UDA_scheduled_data <- mutate(UDA_scheduled_data, month = as.Date(month))
+UOA_scheduled_data <- mutate(UOA_scheduled_data, month = as.Date(month))
+
 #sort out STP ICB changes
 STP_ICB_lookup_codes <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/STP_ICB_lookup_codes.xlsx")
-UDA_scheduled_data <- correct_STP_ICBs(UDA_scheduled_data, output = "UDA scheduled")
-UDA_calendar_data <- correct_STP_ICBs(UDA_calendar_data, output = "UDA calendar")
-UOA_scheduled_data <- correct_STP_ICBs(UOA_scheduled_data, output = "UOA scheduled")
-UOA_calendar_data <- correct_STP_ICBs(UOA_calendar_data, output = "UOA calendar")
 
 #Read local 111 file
 dental_data_111 <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/111_pathways_data/dental_data_111.xlsx")

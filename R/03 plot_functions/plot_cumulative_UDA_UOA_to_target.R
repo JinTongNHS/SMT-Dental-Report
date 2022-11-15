@@ -1,19 +1,12 @@
 ################################################################################
 plot_cumulative_UDA_UOA_to_target <- function(data = UDA_scheduled_data, 
-                                              calendar_data = UDA_calendar_data,
                                               UDAorUOA = "UDA", 
                                               level = "National",
                                               region_STP_name = NULL,
                                               plotChart = TRUE,
                                               all_regions_and_STPs = FALSE,
                                               remove_prototypes = TRUE){
-  
-  #add a region column to the data
-  region_STP_lookup <- calendar_data %>%
-    select(commissioner_name, region_name) %>%
-    distinct()
-  
-  data <- left_join(data, region_STP_lookup, by = "commissioner_name")
+
   
   #filter for region or STP
   if(level == "Regional"){

@@ -6,15 +6,7 @@ plot_UDAs_commissioned <- function(data = UDA_scheduled_data,
                                    all_regions_and_STPs = FALSE,
                                    plotChart = TRUE,
                                    getChange = FALSE){
-  
-  STp_region_lookup <- historical_data %>%
-    select(commissioner_name, region_name) %>%
-    unique()
-  
-  data <- data %>%
-    left_join(STp_region_lookup, by = "commissioner_name") %>%
-    bind_rows(historical_data) #%>%
-  #filter(month < as.Date("2020-01-01") | month > as.Date("2020-12-01"))
+
   
   #filter for STP or region
   if(level == "Regional"){

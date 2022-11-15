@@ -1,7 +1,6 @@
 ################################################################################
 #function to plot unique patients by band
 plot_unique_patients_rolling <- function(data = unique_patients_rolling,
-                                         calendar_data = UDA_calendar_data,
                                          scheduled_data = UDA_scheduled_data,
                                          level = "National",
                                          region_STP_name = NULL,
@@ -16,19 +15,13 @@ plot_unique_patients_rolling <- function(data = unique_patients_rolling,
   
   data <- data %>%
     rename(month = month_ending)
-  
-  #join in region and STP data
-  region_STP_lookup <- calendar_data %>%
-    select(contract_number, commissioner_name, region_name) %>%
-    unique()
-  
+
   #join annual contracted UDAs
   contracted_UDAs <- scheduled_data %>%
     filter(month == max(scheduled_data$month, na.rm = TRUE)) %>%
     select(contract_number, annual_contracted_UDA)
   
   data <- data %>%
-    left_join(region_STP_lookup, by = "contract_number") %>%
     left_join(contracted_UDAs, by = "contract_number")
   
   #remove prototype contracts if specified

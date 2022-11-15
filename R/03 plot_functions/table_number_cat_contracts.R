@@ -1,19 +1,10 @@
 ################################################################################
 table_number_cat_contracts <- function(data = UDA_scheduled_data, 
-                                       calendar_data = UDA_calendar_data,
                                        contractor_cats = contractor_categories,
                                        remove_prototypes = F,
                                        level = NULL,
                                        region_STP_name = NULL){
   
-  
-  #join in region column from calendar data
-  region_icb_lookup <- calendar_data %>%
-    select(commissioner_name, region_name) %>%
-    unique()
-  
-  data <- data %>%
-    left_join(region_icb_lookup, by = "commissioner_name")
   
   #filter for STP or region
   if(level == "Regional"){

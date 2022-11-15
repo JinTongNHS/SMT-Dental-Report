@@ -1,6 +1,5 @@
 ################################################################################
 plot_delivery_vs_contract_size_scatter_corporate <- function(data = UDA_scheduled_data,
-                                                             calendar_data = UDA_calendar_data,
                                                              demographics_data = contract_demographics,
                                                              remove_prototypes = T,
                                                              plot_month = NULL,
@@ -12,13 +11,6 @@ plot_delivery_vs_contract_size_scatter_corporate <- function(data = UDA_schedule
     #use latest month in data
     plot_month <- max(data$month)
   }
-  
-  #add a region column to the data
-  region_STP_lookup <- calendar_data %>%
-    select(commissioner_name, region_name) %>%
-    distinct()
-  
-  data <- left_join(data, region_STP_lookup, by = c("commissioner_name"))
   
   #filter for STP or region
   if(level == "Regional"){

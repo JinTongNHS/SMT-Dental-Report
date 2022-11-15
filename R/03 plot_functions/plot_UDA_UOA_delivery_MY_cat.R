@@ -1,6 +1,5 @@
 ################################################################################
 plot_UDA_UOA_delivery_MY_cat <- function(data = UDA_scheduled_data, 
-                                           calendar_data = UDA_calendar_data,
                                            contractor_cats = contractor_categories,
                                            UDAorUOA = "UDA",
                                            level = "National",
@@ -10,20 +9,7 @@ plot_UDA_UOA_delivery_MY_cat <- function(data = UDA_scheduled_data,
                                            STP_lines = F,
                                            cat_lines = F,
                                            plotChart = T){
-  
-  data <- data %>%
-    mutate(month = as.Date(month))
-  
-  calendar_data <- calendar_data %>%
-    mutate(month = as.Date(month)) 
-  
-  #add a region column to the data
-  region_STP_lookup <- calendar_data %>%
-    select(commissioner_name, region_name) %>%
-    distinct()
-  
-  data <- left_join(data, region_STP_lookup, by = "commissioner_name")
-  
+
   #join in MY categories
   data <- data %>%
     left_join(contractor_cats, by = "contract_number")

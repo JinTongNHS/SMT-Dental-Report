@@ -50,21 +50,17 @@ UOA_calendar_data <- UOA_calendar_data %>%
   rename(month = data_month) %>%
   mutate(contract_number = as.numeric(contract_number),
          UOA_total = as.numeric(UOA_total)) 
-    #add a region column to the data
-    region_STP_lookup <- UDA_calendar_data %>%
-      select(contract_number, name_or_company_name, commissioner_name, region_name) %>%
-      distinct()
+
     
-UOA_calendar_data <- left_join(UOA_calendar_data, region_STP_lookup, by = c("contract_number", "name_or_company_name", "commissioner_name"))
+# UOA_calendar_data <- left_join( region_STP_lookup, by = c("contract_number", "name_or_company_name", "commissioner_name"))
 UDA_scheduled_data <- rename(UDA_scheduled_data, month = data_month)
 UOA_scheduled_data <- rename(UOA_scheduled_data, month = data_month)
 
+UDA_scheduled_data <- mutate(UDA_scheduled_data, month = as.Date(month))
+UOA_scheduled_data <- mutate(UOA_scheduled_data, month = as.Date(month))
+
 #sort out STP ICB changes
 STP_ICB_lookup_codes <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/STP_ICB_lookup_codes.xlsx")
-UDA_scheduled_data <- correct_STP_ICBs(UDA_scheduled_data, output = "UDA scheduled")
-UDA_calendar_data <- correct_STP_ICBs(UDA_calendar_data, output = "UDA calendar")
-UOA_scheduled_data <- correct_STP_ICBs(UOA_scheduled_data, output = "UOA scheduled")
-UOA_calendar_data <- correct_STP_ICBs(UOA_calendar_data, output = "UOA calendar")
 
 #Read local 111 file
 dental_data_111 <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/111_pathways_data/dental_data_111.xlsx")
@@ -360,7 +356,6 @@ xaringanExtra::use_panelset()
 .panel[.panel-name[National]
 ```{r UDA_activity_Calendar1, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
 plot_UDA_UOA_delivery(data = UDA_scheduled_data, 
-                                  calendar_data = UDA_calendar_data,
                                   historic_data = historical_UDA_scheduled_data,
                                   UDAorUOA = "UDA",
                                   level = "National",
@@ -378,7 +373,7 @@ plot_UDA_UOA_delivery(data = UDA_scheduled_data,
 .panel[.panel-name[South East]
 ```{r UDA_activity_Calendar2, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
 plot_UDA_UOA_delivery(data = UDA_scheduled_data, 
-                                  calendar_data = UDA_calendar_data,
+                                  
                                   historic_data = historical_UDA_scheduled_data,
                                   UDAorUOA = "UDA",
                                   remove_prototypes = TRUE, 
@@ -396,7 +391,7 @@ plot_UDA_UOA_delivery(data = UDA_scheduled_data,
 .panel[.panel-name[South West]
 ```{r UDA_activity_Calendar3, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
 plot_UDA_UOA_delivery(data = UDA_scheduled_data, 
-                                  calendar_data = UDA_calendar_data,
+                                  
                                   historic_data = historical_UDA_scheduled_data,
                                   UDAorUOA = "UDA",
                                   remove_prototypes = TRUE, 
@@ -414,7 +409,7 @@ plot_UDA_UOA_delivery(data = UDA_scheduled_data,
 .panel[.panel-name[North West]
 ```{r UDA_activity_Calendar4, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
 plot_UDA_UOA_delivery(data = UDA_scheduled_data, 
-                                  calendar_data = UDA_calendar_data,
+                                  
                                   historic_data = historical_UDA_scheduled_data,
                                   UDAorUOA = "UDA",
                                   remove_prototypes = TRUE, 
@@ -432,7 +427,7 @@ plot_UDA_UOA_delivery(data = UDA_scheduled_data,
 .panel[.panel-name[North East and Yorkshire]
 ```{r UDA_activity_Calendar5, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
 plot_UDA_UOA_delivery(data = UDA_scheduled_data, 
-                                  calendar_data = UDA_calendar_data,
+                                  
                                   historic_data = historical_UDA_scheduled_data,
                                   UDAorUOA = "UDA",
                                   remove_prototypes = TRUE, 
@@ -450,7 +445,7 @@ plot_UDA_UOA_delivery(data = UDA_scheduled_data,
 .panel[.panel-name[London]
 ```{r UDA_activity_Calendar6, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
 plot_UDA_UOA_delivery(data = UDA_scheduled_data, 
-                                  calendar_data = UDA_calendar_data,
+                                  
                                   historic_data = historical_UDA_scheduled_data,
                                   UDAorUOA = "UDA",
                                   remove_prototypes = TRUE, 
@@ -468,7 +463,7 @@ plot_UDA_UOA_delivery(data = UDA_scheduled_data,
 .panel[.panel-name[Midlands]
 ```{r UDA_activity_Calendar7, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
 plot_UDA_UOA_delivery(data = UDA_scheduled_data, 
-                                  calendar_data = UDA_calendar_data,
+                                  
                                   historic_data = historical_UDA_scheduled_data,
                                   UDAorUOA = "UDA",
                                   remove_prototypes = TRUE, 
@@ -486,7 +481,7 @@ plot_UDA_UOA_delivery(data = UDA_scheduled_data,
 .panel[.panel-name[East of England]
 ```{r UDA_activity_Calendar8, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
 plot_UDA_UOA_delivery(data = UDA_scheduled_data, 
-                                  calendar_data = UDA_calendar_data,
+                                  
                                   historic_data = historical_UDA_scheduled_data,
                                   UDAorUOA = "UDA",
                                   remove_prototypes = TRUE, 
@@ -503,7 +498,7 @@ plot_UDA_UOA_delivery(data = UDA_scheduled_data,
 .panel[.panel-name[All]
 ```{r UDA_activity_Calendar9, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
 plot_UDA_UOA_delivery_all_regions(data = UDA_scheduled_data, 
-                                              calendar_data = UDA_calendar_data,
+                                              
                                               historic_data = historical_UDA_scheduled_data,
                                               UDAorUOA = "UDA",
                                               level = "National",
@@ -539,7 +534,7 @@ xaringanExtra::use_panelset()
 
 .panel[.panel-name[National]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
+plot_UDA_UOA_delivery_MY_cat(
                              data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
@@ -555,7 +550,7 @@ plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
 ]
 .panel[.panel-name[South East]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
+plot_UDA_UOA_delivery_MY_cat(
                              data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
@@ -572,7 +567,7 @@ plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
 ]
 .panel[.panel-name[South West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
+plot_UDA_UOA_delivery_MY_cat(
                              data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
@@ -589,7 +584,7 @@ plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
 ]
 .panel[.panel-name[North West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
+plot_UDA_UOA_delivery_MY_cat(
                              data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
@@ -606,7 +601,7 @@ plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
 ]
 .panel[.panel-name[North East and Yorkshire]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
+plot_UDA_UOA_delivery_MY_cat(
                              data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
@@ -623,7 +618,7 @@ plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
 ]
 .panel[.panel-name[London]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
+plot_UDA_UOA_delivery_MY_cat(
                              data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
@@ -640,7 +635,7 @@ plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
 ]
 .panel[.panel-name[Midlands]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
+plot_UDA_UOA_delivery_MY_cat(
                              data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
@@ -657,7 +652,7 @@ plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
 ]
 .panel[.panel-name[East of England]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
+plot_UDA_UOA_delivery_MY_cat(
                              data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
@@ -678,7 +673,7 @@ plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 
-data <- plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
+data <- plot_UDA_UOA_delivery_MY_cat(
                              data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
@@ -703,7 +698,7 @@ data %>%
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 reactable(
-  plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
+  plot_UDA_UOA_delivery_MY_cat(
                              data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
@@ -745,7 +740,7 @@ xaringanExtra::use_panelset()
 
 .panel[.panel-name[National]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
+plot_UDA_UOA_delivery_MY_cat(
                              data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
@@ -761,7 +756,7 @@ plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
 ]
 .panel[.panel-name[South East]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
+plot_UDA_UOA_delivery_MY_cat(
                              data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
@@ -777,7 +772,7 @@ plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
 ]
 .panel[.panel-name[South West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
+plot_UDA_UOA_delivery_MY_cat(
                              data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
@@ -794,7 +789,7 @@ plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
 ]
 .panel[.panel-name[North West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
+plot_UDA_UOA_delivery_MY_cat(
                              data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
@@ -811,7 +806,7 @@ plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
 ]
 .panel[.panel-name[North East and Yorkshire]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
+plot_UDA_UOA_delivery_MY_cat(
                              data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
@@ -827,7 +822,7 @@ plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
 ]
 .panel[.panel-name[London]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
+plot_UDA_UOA_delivery_MY_cat(
                              data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
@@ -843,7 +838,7 @@ plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
 ]
 .panel[.panel-name[Midlands]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
+plot_UDA_UOA_delivery_MY_cat(
                              data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
@@ -859,7 +854,7 @@ plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
 ]
 .panel[.panel-name[East of England]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
+plot_UDA_UOA_delivery_MY_cat(
                              data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
@@ -879,7 +874,7 @@ plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 
-data <- plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
+data <- plot_UDA_UOA_delivery_MY_cat(
                              data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
@@ -904,7 +899,7 @@ data %>%
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 reactable(
-  plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
+  plot_UDA_UOA_delivery_MY_cat(
                              data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
@@ -949,7 +944,7 @@ xaringanExtra::use_panelset()
 .panel[.panel-name[National]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
-                                  calendar_data = UDA_calendar_data,
+                                  
                                   UDAorUOA = "UDA",
                                   level = "National",
                                   region_STP_name = NULL)
@@ -969,7 +964,7 @@ contracts (
 .panel[.panel-name[South East]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
-                                  calendar_data = UDA_calendar_data,
+                                  
                                   UDAorUOA = "UDA",
                                   level = "Regional",
                                   region_STP_name = "South East")
@@ -990,7 +985,7 @@ contracts (
 .panel[.panel-name[South West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
-                                  calendar_data = UDA_calendar_data,
+                                  
                                   UDAorUOA = "UDA",
                                   level = "Regional",
                                   region_STP_name = "South West")
@@ -1011,7 +1006,7 @@ contracts (
 .panel[.panel-name[North West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
-                                  calendar_data = UDA_calendar_data,
+                                  
                                   UDAorUOA = "UDA",
                                   level = "Regional",
                                   region_STP_name = "North West")
@@ -1032,7 +1027,7 @@ contracts (
 .panel[.panel-name[North East and Yorkshire]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
-                                  calendar_data = UDA_calendar_data,
+                                  
                                   UDAorUOA = "UDA",
                                   level = "Regional",
                                   region_STP_name = "North East and Yorkshire")
@@ -1053,7 +1048,7 @@ contracts (
 .panel[.panel-name[London]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
-                                  calendar_data = UDA_calendar_data,
+                                  
                                   UDAorUOA = "UDA",
                                   level = "Regional",
                                   region_STP_name = "London")
@@ -1073,7 +1068,7 @@ contracts (
 .panel[.panel-name[Midlands]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
-                                  calendar_data = UDA_calendar_data,
+                                  
                                   UDAorUOA = "UDA",
                                   level = "Regional",
                                   region_STP_name = "Midlands")
@@ -1094,7 +1089,7 @@ contracts (
 .panel[.panel-name[East of England]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
-                                  calendar_data = UDA_calendar_data,
+                                  
                                   UDAorUOA = "UDA",
                                   level = "Regional",
                                   region_STP_name = "East of England")
@@ -1119,7 +1114,7 @@ contracts (
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 
 data <- plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
-                                  calendar_data = UDA_calendar_data,
+                                  
                                   UDAorUOA = "UDA",
                                   level = "National",
                                   region_STP_name = NULL,
@@ -1140,7 +1135,7 @@ data %>%
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 reactable(
   plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
-                                  calendar_data = UDA_calendar_data,
+                                  
                                   UDAorUOA = "UDA",
                                   level = "National",
                                   region_STP_name = NULL,
@@ -1179,7 +1174,7 @@ xaringanExtra::use_panelset()
 .panel[.panel-name[National]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
 plot_YTD_UDA_UOA_delivery(data = UDA_scheduled_data, 
-                                  calendar_data = UDA_calendar_data,
+                                  
                                   historic_data = historical_UDA_scheduled_data,
                                   UDAorUOA = "UDA",
                                   level = "National",
@@ -1194,7 +1189,7 @@ plot_YTD_UDA_UOA_delivery(data = UDA_scheduled_data,
 .panel[.panel-name[South East]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
 plot_YTD_UDA_UOA_delivery(data = UDA_scheduled_data, 
-                                  calendar_data = UDA_calendar_data,
+                                  
                                   historic_data = historical_UDA_scheduled_data,
                                   UDAorUOA = "UDA",
                                   remove_prototypes = TRUE, 
@@ -1209,7 +1204,7 @@ plot_YTD_UDA_UOA_delivery(data = UDA_scheduled_data,
 .panel[.panel-name[South West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
 plot_YTD_UDA_UOA_delivery(data = UDA_scheduled_data, 
-                                  calendar_data = UDA_calendar_data,
+                                  
                                   historic_data = historical_UDA_scheduled_data,
                                   UDAorUOA = "UDA",
                                   remove_prototypes = TRUE, 
@@ -1224,7 +1219,7 @@ plot_YTD_UDA_UOA_delivery(data = UDA_scheduled_data,
 .panel[.panel-name[North West]
 ```{r  echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
 plot_YTD_UDA_UOA_delivery(data = UDA_scheduled_data, 
-                                  calendar_data = UDA_calendar_data,
+                                  
                                   historic_data = historical_UDA_scheduled_data,
                                   UDAorUOA = "UDA",
                                   remove_prototypes = TRUE, 
@@ -1239,7 +1234,7 @@ plot_YTD_UDA_UOA_delivery(data = UDA_scheduled_data,
 .panel[.panel-name[North East and Yorkshire]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
 plot_YTD_UDA_UOA_delivery(data = UDA_scheduled_data, 
-                                  calendar_data = UDA_calendar_data,
+                                  
                                   historic_data = historical_UDA_scheduled_data,
                                   UDAorUOA = "UDA",
                                   remove_prototypes = TRUE, 
@@ -1254,7 +1249,7 @@ plot_YTD_UDA_UOA_delivery(data = UDA_scheduled_data,
 .panel[.panel-name[London]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
 plot_YTD_UDA_UOA_delivery(data = UDA_scheduled_data, 
-                                  calendar_data = UDA_calendar_data,
+                                  
                                   historic_data = historical_UDA_scheduled_data,
                                   UDAorUOA = "UDA",
                                   remove_prototypes = TRUE, 
@@ -1269,7 +1264,7 @@ plot_YTD_UDA_UOA_delivery(data = UDA_scheduled_data,
 .panel[.panel-name[Midlands]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
 plot_YTD_UDA_UOA_delivery(data = UDA_scheduled_data, 
-                                  calendar_data = UDA_calendar_data,
+                                  
                                   historic_data = historical_UDA_scheduled_data,
                                   UDAorUOA = "UDA",
                                   remove_prototypes = TRUE, 
@@ -1284,7 +1279,7 @@ plot_YTD_UDA_UOA_delivery(data = UDA_scheduled_data,
 .panel[.panel-name[East of England]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
 plot_YTD_UDA_UOA_delivery(data = UDA_scheduled_data, 
-                                  calendar_data = UDA_calendar_data,
+                                  
                                   historic_data = historical_UDA_scheduled_data,
                                   UDAorUOA = "UDA",
                                   remove_prototypes = TRUE, 
@@ -1303,7 +1298,7 @@ plot_YTD_UDA_UOA_delivery(data = UDA_scheduled_data,
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 
 data <- plot_YTD_UDA_UOA_delivery(data = UDA_scheduled_data, 
-                                  calendar_data = UDA_calendar_data,
+                                  
                                   historic_data = historical_UDA_scheduled_data,
                                   UDAorUOA = "UDA",
                                   remove_prototypes = TRUE, 
@@ -1326,7 +1321,7 @@ data %>%
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 reactable(
   plot_YTD_UDA_UOA_delivery(data = UDA_scheduled_data, 
-                                  calendar_data = UDA_calendar_data,
+                                  
                                   historic_data = historical_UDA_scheduled_data,
                                   UDAorUOA = "UDA",
                                   remove_prototypes = TRUE, 
@@ -1759,7 +1754,7 @@ xaringanExtra::use_panelset()
  .panel[.panel-name[National]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
-                          calendar_data = UDA_calendar_data,
+                          
                           UDAorUOA = "UDA",
                           level = "National",
                           region_STP_name = NULL,
@@ -1770,7 +1765,7 @@ plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
  .panel[.panel-name[South East]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
-                          calendar_data = UDA_calendar_data,
+                          
                           UDAorUOA = "UDA",
                           level = "Regional",
                           region_STP_name = "South East",
@@ -1782,7 +1777,7 @@ plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
  .panel[.panel-name[South West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
-                          calendar_data = UDA_calendar_data,
+                          
                           UDAorUOA = "UDA",
                           level = "Regional",
                           region_STP_name = "South West",
@@ -1795,7 +1790,7 @@ plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
  .panel[.panel-name[North West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
-                          calendar_data = UDA_calendar_data,
+                          
                           UDAorUOA = "UDA",
                           level = "Regional",
                           region_STP_name = "North West",
@@ -1807,7 +1802,7 @@ plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
  .panel[.panel-name[North East and Yorkshire]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
-                          calendar_data = UDA_calendar_data,
+                          
                           UDAorUOA = "UDA",
                           level = "Regional",
                           region_STP_name = "North East and Yorkshire",
@@ -1818,7 +1813,7 @@ plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
 .panel[.panel-name[London]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
-                          calendar_data = UDA_calendar_data,
+                          
                           UDAorUOA = "UDA",
                           level = "Regional",
                           region_STP_name = "London",
@@ -1829,7 +1824,7 @@ plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
  .panel[.panel-name[Midlands]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
-                          calendar_data = UDA_calendar_data,
+                          
                           UDAorUOA = "UDA",
                           level = "Regional",
                           region_STP_name = "Midlands",
@@ -1840,7 +1835,7 @@ plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
  .panel[.panel-name[East of England]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
-                          calendar_data = UDA_calendar_data,
+                          
                           UDAorUOA = "UDA",
                           level = "Regional",
                           region_STP_name = "East of England",
@@ -1855,7 +1850,7 @@ plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 
 data <- plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
-                          calendar_data = UDA_calendar_data,
+                          
                           UDAorUOA = "UDA",
                           level = "National",
                           region_STP_name = NULL,
@@ -1876,7 +1871,7 @@ data %>%
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 reactable(
   plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
-                          calendar_data = UDA_calendar_data,
+                          
                           UDAorUOA = "UDA",
                           level = "National",
                           region_STP_name = NULL,
@@ -1919,7 +1914,7 @@ xaringanExtra::use_panelset()
  .panel[.panel-name[National]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_UDA_UOA_delivery(data = UOA_scheduled_data, 
-                                  calendar_data = UOA_calendar_data,
+                                  
                                   historic_data = historical_UDA_scheduled_data,
                                   UDAorUOA = "UOA",
                                   level = "National",
@@ -1931,14 +1926,14 @@ plot_UDA_UOA_delivery(data = UOA_scheduled_data,
 ```
 
 * This graph shows the average monthly performance of the
-**`r get_num_contracts(data = UOA_scheduled_data, remove_prototypes = T, calendar_data = UOA_calendar_data, UDAorUOA = "UOA", level = "National", region_STP_name = NULL)`**
+**`r get_num_contracts(data = UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "National", region_STP_name = NULL)`**
 GDS/PDS contracts scaled up by 12 months measured against the delivery thresholds (80% for Apr-Sep 21, 85% for Oct-Dec, 90% for Jan-Mar, 100% for Apr-Jun 22).
 
  ]
  .panel[.panel-name[South East]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_UDA_UOA_delivery(data = UOA_scheduled_data, 
-                                  calendar_data = UOA_calendar_data,
+                                  
                                   historic_data = historical_UDA_scheduled_data,
                                   UDAorUOA = "UOA",
                                   remove_prototypes = TRUE, 
@@ -1950,7 +1945,7 @@ plot_UDA_UOA_delivery(data = UOA_scheduled_data,
 ```
 
 * This graph shows the average monthly performance of the
-**`r get_num_contracts(data = UOA_scheduled_data, remove_prototypes = T, calendar_data = UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "South East")`**
+**`r get_num_contracts(data = UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "Regional", region_STP_name = "South East")`**
 GDS/PDS contracts scaled up by 12 months measured against the delivery thresholds (80% for Apr-Sep 21, 85% for Oct-Dec, 90% for Jan-Mar, 100% for Apr-Jun 22).
 
 
@@ -1958,7 +1953,7 @@ GDS/PDS contracts scaled up by 12 months measured against the delivery threshold
  .panel[.panel-name[South West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_UDA_UOA_delivery(data = UOA_scheduled_data, 
-                                  calendar_data = UOA_calendar_data,
+                                  
                                   historic_data = historical_UDA_scheduled_data,
                                   UDAorUOA = "UOA",
                                   remove_prototypes = TRUE, 
@@ -1970,7 +1965,7 @@ plot_UDA_UOA_delivery(data = UOA_scheduled_data,
 ```
 
 * This graph shows the average monthly performance of the
-**`r get_num_contracts(data = UOA_scheduled_data, remove_prototypes = T, calendar_data = UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "South West")`**
+**`r get_num_contracts(data = UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "Regional", region_STP_name = "South West")`**
 GDS/PDS contracts scaled up by 12 months measured against the delivery thresholds (80% for Apr-Sep 21, 85% for Oct-Dec, 90% for Jan-Mar, 100% for Apr-Jun 22).
 
 
@@ -1978,7 +1973,7 @@ GDS/PDS contracts scaled up by 12 months measured against the delivery threshold
  .panel[.panel-name[North West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_UDA_UOA_delivery(data = UOA_scheduled_data, 
-                                  calendar_data = UOA_calendar_data,
+                                  
                                   historic_data = historical_UDA_scheduled_data,
                                   UDAorUOA = "UOA",
                                   remove_prototypes = TRUE, 
@@ -1990,7 +1985,7 @@ plot_UDA_UOA_delivery(data = UOA_scheduled_data,
 ```
 
 * This graph shows the average monthly performance of the
-**`r get_num_contracts(data = UOA_scheduled_data, remove_prototypes = T, calendar_data = UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "North West")`**
+**`r get_num_contracts(data = UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "Regional", region_STP_name = "North West")`**
 GDS/PDS contracts scaled up by 12 months measured against the delivery thresholds (80% for Apr-Sep 21, 85% for Oct-Dec, 90% for Jan-Mar, 100% for Apr-Jun 22).
 
 
@@ -1998,7 +1993,7 @@ GDS/PDS contracts scaled up by 12 months measured against the delivery threshold
  .panel[.panel-name[North East and Yorkshire]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_UDA_UOA_delivery(data = UOA_scheduled_data, 
-                                  calendar_data = UOA_calendar_data,
+                                  
                                   historic_data = historical_UDA_scheduled_data,
                                   UDAorUOA = "UOA",
                                   remove_prototypes = TRUE, 
@@ -2010,14 +2005,14 @@ plot_UDA_UOA_delivery(data = UOA_scheduled_data,
 ```
 
 * This graph shows the average monthly performance of the
-**`r get_num_contracts(data = UOA_scheduled_data, remove_prototypes = T, calendar_data = UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "North East and Yorkshire")`**
+**`r get_num_contracts(data = UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "Regional", region_STP_name = "North East and Yorkshire")`**
 GDS/PDS contracts scaled up by 12 months measured against the delivery thresholds (80% for Apr-Sep 21, 85% for Oct-Dec, 90% for Jan-Mar, 100% for Apr-Jun 22).
 
  ]
 .panel[.panel-name[London]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_UDA_UOA_delivery(data = UOA_scheduled_data, 
-                                  calendar_data = UOA_calendar_data,
+                                  
                                   historic_data = historical_UDA_scheduled_data,
                                   UDAorUOA = "UOA",
                                   remove_prototypes = TRUE, 
@@ -2029,14 +2024,14 @@ plot_UDA_UOA_delivery(data = UOA_scheduled_data,
 ```
 
 * This graph shows the average monthly performance of the
-**`r get_num_contracts(data = UOA_scheduled_data, remove_prototypes = T, calendar_data = UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "London")`**
+**`r get_num_contracts(data = UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "Regional", region_STP_name = "London")`**
 GDS/PDS contracts scaled up by 12 months measured against the delivery thresholds (80% for Apr-Sep 21, 85% for Oct-Dec, 90% for Jan-Mar, 100% for Apr-Jun 22).
 
  ]
  .panel[.panel-name[Midlands]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_UDA_UOA_delivery(data = UOA_scheduled_data, 
-                                  calendar_data = UOA_calendar_data,
+                                  
                                   historic_data = historical_UDA_scheduled_data,
                                   UDAorUOA = "UOA",
                                   remove_prototypes = TRUE, 
@@ -2048,7 +2043,7 @@ plot_UDA_UOA_delivery(data = UOA_scheduled_data,
 ```
 
 * This graph shows the average monthly performance of the
-**`r get_num_contracts(data = UOA_scheduled_data, remove_prototypes = T, calendar_data = UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "Midlands")`**
+**`r get_num_contracts(data = UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "Regional", region_STP_name = "Midlands")`**
 GDS/PDS contracts scaled up by 12 months measured against the delivery thresholds (80% for Apr-Sep 21, 85% for Oct-Dec, 90% for Jan-Mar, 100% for Apr-Jun 22).
 
 
@@ -2056,7 +2051,7 @@ GDS/PDS contracts scaled up by 12 months measured against the delivery threshold
  .panel[.panel-name[East of England]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_UDA_UOA_delivery(data = UOA_scheduled_data, 
-                                  calendar_data = UOA_calendar_data,
+                                  
                                   historic_data = historical_UDA_scheduled_data,
                                   UDAorUOA = "UOA",
                                   remove_prototypes = TRUE, 
@@ -2068,7 +2063,7 @@ plot_UDA_UOA_delivery(data = UOA_scheduled_data,
 ```
 
 * This graph shows the average monthly performance of the
-**`r get_num_contracts(data = UOA_scheduled_data, remove_prototypes = T, calendar_data = UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "East of England")`**
+**`r get_num_contracts(data = UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "Regional", region_STP_name = "East of England")`**
 GDS/PDS contracts scaled up by 12 months measured against the delivery thresholds (80% for Apr-Sep 21, 85% for Oct-Dec, 90% for Jan-Mar, 100% for Apr-Jun 22).
 
 
@@ -2076,7 +2071,7 @@ GDS/PDS contracts scaled up by 12 months measured against the delivery threshold
   .panel[.panel-name[All]
 ```{r UOA_activity_regional, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_UDA_UOA_delivery_all_regions(data = UOA_scheduled_data, 
-                                              calendar_data = UOA_calendar_data,
+                                              
                                               historic_data = historical_UDA_scheduled_data,
                                               UDAorUOA = "UOA",
                                               level = "National",
@@ -2157,7 +2152,7 @@ xaringanExtra::use_panelset()
 
  .panel[.panel-name[National]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_MY_cat(calendar_data = UOA_calendar_data,
+plot_UDA_UOA_delivery_MY_cat(
                              data = UOA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UOA",
@@ -2174,7 +2169,7 @@ plot_UDA_UOA_delivery_MY_cat(calendar_data = UOA_calendar_data,
  ]
  .panel[.panel-name[South East]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_MY_cat(calendar_data = UOA_calendar_data,
+plot_UDA_UOA_delivery_MY_cat(
                              data = UOA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UOA",
@@ -2191,7 +2186,7 @@ plot_UDA_UOA_delivery_MY_cat(calendar_data = UOA_calendar_data,
  ]
  .panel[.panel-name[South West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_MY_cat(calendar_data = UOA_calendar_data,
+plot_UDA_UOA_delivery_MY_cat(
                              data = UOA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UOA",
@@ -2209,7 +2204,7 @@ plot_UDA_UOA_delivery_MY_cat(calendar_data = UOA_calendar_data,
  ]
  .panel[.panel-name[North West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_MY_cat(calendar_data = UOA_calendar_data,
+plot_UDA_UOA_delivery_MY_cat(
                              data = UOA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UOA",
@@ -2226,7 +2221,7 @@ plot_UDA_UOA_delivery_MY_cat(calendar_data = UOA_calendar_data,
  ]
  .panel[.panel-name[North East and Yorkshire]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_MY_cat(calendar_data = UOA_calendar_data,
+plot_UDA_UOA_delivery_MY_cat(
                              data = UOA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UOA",
@@ -2244,7 +2239,7 @@ plot_UDA_UOA_delivery_MY_cat(calendar_data = UOA_calendar_data,
  ]
 .panel[.panel-name[London]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_MY_cat(calendar_data = UOA_calendar_data,
+plot_UDA_UOA_delivery_MY_cat(
                              data = UOA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UOA",
@@ -2261,7 +2256,7 @@ plot_UDA_UOA_delivery_MY_cat(calendar_data = UOA_calendar_data,
  ]
  .panel[.panel-name[Midlands]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_MY_cat(calendar_data = UOA_calendar_data,
+plot_UDA_UOA_delivery_MY_cat(
                              data = UOA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UOA",
@@ -2278,7 +2273,7 @@ plot_UDA_UOA_delivery_MY_cat(calendar_data = UOA_calendar_data,
  ]
  .panel[.panel-name[East of England]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_MY_cat(calendar_data = UOA_calendar_data,
+plot_UDA_UOA_delivery_MY_cat(
                              data = UOA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UOA",
@@ -2298,7 +2293,7 @@ plot_UDA_UOA_delivery_MY_cat(calendar_data = UOA_calendar_data,
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 
-data <- plot_UDA_UOA_delivery_MY_cat(calendar_data = UOA_calendar_data,
+data <- plot_UDA_UOA_delivery_MY_cat(
                              data = UOA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UOA",
@@ -2323,7 +2318,7 @@ data %>%
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 reactable(
-  plot_UDA_UOA_delivery_MY_cat(calendar_data = UOA_calendar_data,
+  plot_UDA_UOA_delivery_MY_cat(
                              data = UOA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UOA",
@@ -2366,7 +2361,7 @@ xaringanExtra::use_panelset()
 
  .panel[.panel-name[National]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_MY_cat(calendar_data = UOA_calendar_data,
+plot_UDA_UOA_delivery_MY_cat(
                              data = UOA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UOA",
@@ -2382,7 +2377,7 @@ plot_UDA_UOA_delivery_MY_cat(calendar_data = UOA_calendar_data,
  ]
  .panel[.panel-name[South East]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_MY_cat(calendar_data = UOA_calendar_data,
+plot_UDA_UOA_delivery_MY_cat(
                              data = UOA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UOA",
@@ -2399,7 +2394,7 @@ plot_UDA_UOA_delivery_MY_cat(calendar_data = UOA_calendar_data,
  ]
  .panel[.panel-name[South West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_MY_cat(calendar_data = UOA_calendar_data,
+plot_UDA_UOA_delivery_MY_cat(
                              data = UOA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UOA",
@@ -2416,7 +2411,7 @@ plot_UDA_UOA_delivery_MY_cat(calendar_data = UOA_calendar_data,
  ]
  .panel[.panel-name[North West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_MY_cat(calendar_data = UOA_calendar_data,
+plot_UDA_UOA_delivery_MY_cat(
                              data = UOA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UOA",
@@ -2433,7 +2428,7 @@ plot_UDA_UOA_delivery_MY_cat(calendar_data = UOA_calendar_data,
  ]
  .panel[.panel-name[North East and Yorkshire]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_MY_cat(calendar_data = UOA_calendar_data,
+plot_UDA_UOA_delivery_MY_cat(
                              data = UOA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UOA",
@@ -2450,7 +2445,7 @@ plot_UDA_UOA_delivery_MY_cat(calendar_data = UOA_calendar_data,
  ]
 .panel[.panel-name[London]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_MY_cat(calendar_data = UOA_calendar_data,
+plot_UDA_UOA_delivery_MY_cat(
                              data = UOA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UOA",
@@ -2466,7 +2461,7 @@ plot_UDA_UOA_delivery_MY_cat(calendar_data = UOA_calendar_data,
  ]
  .panel[.panel-name[Midlands]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_MY_cat(calendar_data = UOA_calendar_data,
+plot_UDA_UOA_delivery_MY_cat(
                              data = UOA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UOA",
@@ -2482,7 +2477,7 @@ plot_UDA_UOA_delivery_MY_cat(calendar_data = UOA_calendar_data,
  ]
  .panel[.panel-name[East of England]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_MY_cat(calendar_data = UOA_calendar_data,
+plot_UDA_UOA_delivery_MY_cat(
                              data = UOA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UOA",
@@ -2502,7 +2497,7 @@ plot_UDA_UOA_delivery_MY_cat(calendar_data = UOA_calendar_data,
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 
-data <- plot_UDA_UOA_delivery_MY_cat(calendar_data = UOA_calendar_data,
+data <- plot_UDA_UOA_delivery_MY_cat(
                              data = UOA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UOA",
@@ -2527,7 +2522,7 @@ data %>%
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 reactable(
-  plot_UDA_UOA_delivery_MY_cat(calendar_data = UOA_calendar_data,
+  plot_UDA_UOA_delivery_MY_cat(
                              data = UOA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UOA",
@@ -2572,7 +2567,7 @@ xaringanExtra::use_panelset()
  .panel[.panel-name[National]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data, 
-                                              calendar_data = UOA_calendar_data,
+                                              
                                               UDAorUOA = "UOA", 
                                               level = "National",
                                               region_STP_name = NULL,
@@ -2581,20 +2576,20 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data,
                                               remove_prototypes = TRUE)
 ```
 
-* This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, "UOA", level = "National", region_STP_name = NULL)`**
+* This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_scheduled_data, remove_prototypes = T,  "UOA", level = "National", region_STP_name = NULL)`**
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
 * From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, UDAorUOA = "UOA", level = "National", region_STP_name = NULL)`**
+**`r get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "National", region_STP_name = NULL)`**
 contracts (
-**`r round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, UDAorUOA = "UOA", level = "National", region_STP_name = NULL)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, "UOA", level = "National", region_STP_name = NULL))` %**
+**`r round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "National", region_STP_name = NULL)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T,  "UOA", level = "National", region_STP_name = NULL))` %**
 ) have delivered the required UOAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
 
  ]
  .panel[.panel-name[South East]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data, 
-                                              calendar_data = UOA_calendar_data,
+                                              
                                               UDAorUOA = "UOA", 
                                               plotChart = TRUE,
                                               all_regions_and_STPs = FALSE,
@@ -2603,13 +2598,13 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data,
                                   region_STP_name = "South East")
 ```
 
-* This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, "UOA", level = "Regional", region_STP_name = "South East")`**
+* This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_scheduled_data, remove_prototypes = T,  "UOA", level = "Regional", region_STP_name = "South East")`**
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
 * From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "South East")`**
+**`r get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "Regional", region_STP_name = "South East")`**
 contracts (
-**`r round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "South East")*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, "UOA", level = "Regional", region_STP_name = "South East"))` %**
+**`r round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "Regional", region_STP_name = "South East")*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T,  "UOA", level = "Regional", region_STP_name = "South East"))` %**
 ) have delivered the required UOAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
 
 
@@ -2617,7 +2612,7 @@ contracts (
  .panel[.panel-name[South West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data, 
-                                              calendar_data = UOA_calendar_data,
+                                              
                                               UDAorUOA = "UOA", 
                                               plotChart = TRUE,
                                               all_regions_and_STPs = FALSE,
@@ -2626,13 +2621,13 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data,
                                   region_STP_name = "South West")
 ```
 
-* This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, "UOA", level = "Regional", region_STP_name = "South West")`**
+* This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_scheduled_data, remove_prototypes = T,  "UOA", level = "Regional", region_STP_name = "South West")`**
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
 * From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "South West")`**
+**`r get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "Regional", region_STP_name = "South West")`**
 contracts (
-**`r round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "South West")*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, "UOA", level = "Regional", region_STP_name = "South West"))` %**
+**`r round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "Regional", region_STP_name = "South West")*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T,  "UOA", level = "Regional", region_STP_name = "South West"))` %**
 ) have delivered the required UOAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
 
 
@@ -2640,7 +2635,7 @@ contracts (
  .panel[.panel-name[North West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data, 
-                                              calendar_data = UOA_calendar_data,
+                                              
                                               UDAorUOA = "UOA", 
                                               plotChart = TRUE,
                                               all_regions_and_STPs = FALSE,
@@ -2649,20 +2644,20 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data,
                                   region_STP_name = "North West")
 ```
 
-* This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, "UOA", level = "Regional", region_STP_name = "North West")`**
+* This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_scheduled_data, remove_prototypes = T,  "UOA", level = "Regional", region_STP_name = "North West")`**
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
 * From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "North West")`**
+**`r get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "Regional", region_STP_name = "North West")`**
 contracts (
-**`r round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "North West")*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, "UOA", level = "Regional", region_STP_name = "North West"))` %**
+**`r round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "Regional", region_STP_name = "North West")*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T,  "UOA", level = "Regional", region_STP_name = "North West"))` %**
 ) have delivered the required UOAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
 
  ]
  .panel[.panel-name[North East and Yorkshire]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data, 
-                                              calendar_data = UOA_calendar_data,
+                                              
                                               UDAorUOA = "UOA", 
                                               plotChart = TRUE,
                                               all_regions_and_STPs = FALSE,
@@ -2671,13 +2666,13 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data,
                                   region_STP_name = "North East and Yorkshire")
 ```
 
-* This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, "UOA", level = "Regional", region_STP_name = "North East and Yorkshire")`**
+* This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_scheduled_data, remove_prototypes = T,  "UOA", level = "Regional", region_STP_name = "North East and Yorkshire")`**
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
 * From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "North East and Yorkshire")`**
+**`r get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "Regional", region_STP_name = "North East and Yorkshire")`**
 contracts (
-**`r round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "North East and Yorkshire")*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, "UOA", level = "Regional", region_STP_name = "North East and Yorkshire"))` %**
+**`r round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "Regional", region_STP_name = "North East and Yorkshire")*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T,  "UOA", level = "Regional", region_STP_name = "North East and Yorkshire"))` %**
 ) have delivered the required UOAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
 
 
@@ -2685,7 +2680,7 @@ contracts (
 .panel[.panel-name[London]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data, 
-                                              calendar_data = UOA_calendar_data,
+                                              
                                               UDAorUOA = "UOA", 
                                               plotChart = TRUE,
                                               all_regions_and_STPs = FALSE,
@@ -2694,20 +2689,20 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data,
                                   region_STP_name = "London")
 ```
 
-* This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, "UOA", level = "Regional", region_STP_name = "London")`**
+* This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_scheduled_data, remove_prototypes = T,  "UOA", level = "Regional", region_STP_name = "London")`**
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
 * From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "London")`**
+**`r get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "Regional", region_STP_name = "London")`**
 contracts (
-**`r round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "London")*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, "UOA", level = "Regional", region_STP_name = "London"))` %**
+**`r round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "Regional", region_STP_name = "London")*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T,  "UOA", level = "Regional", region_STP_name = "London"))` %**
 ) have delivered the required UOAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
 
  ]
  .panel[.panel-name[Midlands]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data, 
-                                              calendar_data = UOA_calendar_data,
+                                              
                                               UDAorUOA = "UOA", 
                                               plotChart = TRUE,
                                               all_regions_and_STPs = FALSE,
@@ -2716,13 +2711,13 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data,
                                   region_STP_name = "Midlands")
 ```
 
-* This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, "UOA", level = "Regional", region_STP_name = "Midlands")`**
+* This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_scheduled_data, remove_prototypes = T,  "UOA", level = "Regional", region_STP_name = "Midlands")`**
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
 * From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "Midlands")`**
+**`r get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "Regional", region_STP_name = "Midlands")`**
 contracts (
-**`r round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "Midlands")*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, "UOA", level = "Regional", region_STP_name = "Midlands"))` %**
+**`r round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "Regional", region_STP_name = "Midlands")*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T,  "UOA", level = "Regional", region_STP_name = "Midlands"))` %**
 ) have delivered the required UOAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
 
 
@@ -2730,7 +2725,7 @@ contracts (
  .panel[.panel-name[East of England]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data, 
-                                              calendar_data = UOA_calendar_data,
+                                              
                                               UDAorUOA = "UOA", 
                                               plotChart = TRUE,
                                               all_regions_and_STPs = FALSE,
@@ -2739,13 +2734,13 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data,
                                   region_STP_name = "East of England")
 ```
 
-* This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, "UOA", level = "Regional", region_STP_name = "East of England")`**
+* This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_scheduled_data, remove_prototypes = T,  "UOA", level = "Regional", region_STP_name = "East of England")`**
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
 * From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "East of England")`**
+**`r get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "Regional", region_STP_name = "East of England")`**
 contracts (
-**`r round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = "East of England")*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, "UOA", level = "Regional", region_STP_name = "East of England"))` %**
+**`r round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "Regional", region_STP_name = "East of England")*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T,  "UOA", level = "Regional", region_STP_name = "East of England"))` %**
 ) have delivered the required UOAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
 
 
@@ -2757,7 +2752,7 @@ contracts (
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 
 data <- plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data, 
-                                              calendar_data = UOA_calendar_data,
+                                              
                                               UDAorUOA = "UOA", 
                                               remove_prototypes = TRUE,
                                   level = "National",
@@ -2779,7 +2774,7 @@ data %>%
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 reactable(
   plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data, 
-                                              calendar_data = UOA_calendar_data,
+                                              
                                               UDAorUOA = "UOA", 
                                               remove_prototypes = TRUE,
                                   level = "National",
@@ -2820,7 +2815,7 @@ xaringanExtra::use_panelset()
 .panel[.panel-name[National]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
 plot_YTD_UDA_UOA_delivery(data = UOA_scheduled_data, 
-                                  calendar_data = UOA_calendar_data,
+                                  
                                   UDAorUOA = "UOA",
                                   level = "National",
                                   region_STP_name = NULL,
@@ -2834,7 +2829,7 @@ plot_YTD_UDA_UOA_delivery(data = UOA_scheduled_data,
 .panel[.panel-name[South East]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
 plot_YTD_UDA_UOA_delivery(data = UOA_scheduled_data, 
-                                  calendar_data = UOA_calendar_data,
+                                  
                                   UDAorUOA = "UOA",
                                   remove_prototypes = TRUE, 
                                   plotChart = TRUE, 
@@ -2848,7 +2843,7 @@ plot_YTD_UDA_UOA_delivery(data = UOA_scheduled_data,
 .panel[.panel-name[South West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
 plot_YTD_UDA_UOA_delivery(data = UOA_scheduled_data, 
-                                  calendar_data = UOA_calendar_data,
+                                  
                                   UDAorUOA = "UOA",
                                   remove_prototypes = TRUE, 
                                   plotChart = TRUE, 
@@ -2862,7 +2857,7 @@ plot_YTD_UDA_UOA_delivery(data = UOA_scheduled_data,
 .panel[.panel-name[North West]
 ```{r  echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
 plot_YTD_UDA_UOA_delivery(data = UOA_scheduled_data, 
-                                  calendar_data = UOA_calendar_data,
+                                  
                                   UDAorUOA = "UOA",
                                   remove_prototypes = TRUE, 
                                   plotChart = TRUE, 
@@ -2876,7 +2871,7 @@ plot_YTD_UDA_UOA_delivery(data = UOA_scheduled_data,
 .panel[.panel-name[North East and Yorkshire]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
 plot_YTD_UDA_UOA_delivery(data = UOA_scheduled_data, 
-                                  calendar_data = UOA_calendar_data,
+                                  
                                   UDAorUOA = "UOA",
                                   remove_prototypes = TRUE, 
                                   plotChart = TRUE, 
@@ -2890,7 +2885,7 @@ plot_YTD_UDA_UOA_delivery(data = UOA_scheduled_data,
 .panel[.panel-name[London]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
 plot_YTD_UDA_UOA_delivery(data = UOA_scheduled_data, 
-                                  calendar_data = UOA_calendar_data,
+                                  
                                   UDAorUOA = "UOA",
                                   remove_prototypes = TRUE, 
                                   plotChart = TRUE, 
@@ -2904,7 +2899,7 @@ plot_YTD_UDA_UOA_delivery(data = UOA_scheduled_data,
 .panel[.panel-name[Midlands]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
 plot_YTD_UDA_UOA_delivery(data = UOA_scheduled_data, 
-                                  calendar_data = UOA_calendar_data,
+                                  
                                   UDAorUOA = "UOA",
                                   remove_prototypes = TRUE, 
                                   plotChart = TRUE, 
@@ -2918,7 +2913,7 @@ plot_YTD_UDA_UOA_delivery(data = UOA_scheduled_data,
 .panel[.panel-name[East of England]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
 plot_YTD_UDA_UOA_delivery(data = UOA_scheduled_data, 
-                                  calendar_data = UOA_calendar_data,
+                                  
                                   UDAorUOA = "UOA",
                                   remove_prototypes = TRUE, 
                                   plotChart = TRUE, 
@@ -2936,7 +2931,7 @@ plot_YTD_UDA_UOA_delivery(data = UOA_scheduled_data,
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 
 data <- plot_YTD_UDA_UOA_delivery(data = UOA_scheduled_data, 
-                                  calendar_data = UOA_calendar_data,
+                                  
                                   UDAorUOA = "UOA",
                                   remove_prototypes = TRUE, 
                                   plotChart = FALSE, 
@@ -2958,7 +2953,7 @@ data %>%
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 reactable(
   plot_YTD_UDA_UOA_delivery(data = UOA_scheduled_data, 
-                                  calendar_data = UOA_calendar_data,
+                                  
                                   UDAorUOA = "UOA",
                                   remove_prototypes = TRUE, 
                                   plotChart = FALSE, 
@@ -2993,7 +2988,7 @@ xaringanExtra::use_panelset()
  .panel[.panel-name[National]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_UDA_UOA_delivery_profile(data = UOA_scheduled_data,
-                          calendar_data = UOA_calendar_data,
+                          
                           UDAorUOA = "UOA",
                           level = "National",
                           region_STP_name = NULL)
@@ -3008,7 +3003,7 @@ This uses scheduled data.
  .panel[.panel-name[South East]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_UDA_UOA_delivery_profile(data = UOA_scheduled_data,
-                          calendar_data = UOA_calendar_data,
+                          
                           UDAorUOA = "UOA",
                           level = "Regional",
                           region_STP_name = "South East")
@@ -3024,7 +3019,7 @@ This uses scheduled data.
  .panel[.panel-name[South West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_UDA_UOA_delivery_profile(data = UOA_scheduled_data,
-                          calendar_data = UOA_calendar_data,
+                          
                           UDAorUOA = "UOA",
                           level = "Regional",
                           region_STP_name = "South West")
@@ -3040,7 +3035,7 @@ This uses scheduled data.
  .panel[.panel-name[North West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_UDA_UOA_delivery_profile(data = UOA_scheduled_data,
-                          calendar_data = UOA_calendar_data,
+                          
                           UDAorUOA = "UOA",
                           level = "Regional",
                           region_STP_name = "North West")
@@ -3055,7 +3050,7 @@ This uses scheduled data.
  .panel[.panel-name[North East and Yorkshire]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_UDA_UOA_delivery_profile(data = UOA_scheduled_data,
-                          calendar_data = UOA_calendar_data,
+                          
                           UDAorUOA = "UOA",
                           level = "Regional",
                           region_STP_name = "North East and Yorkshire")
@@ -3071,7 +3066,7 @@ This uses scheduled data.
 .panel[.panel-name[London]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_UDA_UOA_delivery_profile(data = UOA_scheduled_data,
-                          calendar_data = UOA_calendar_data,
+                          
                           UDAorUOA = "UOA",
                           level = "Regional",
                           region_STP_name = "London")
@@ -3086,7 +3081,7 @@ This uses scheduled data.
  .panel[.panel-name[Midlands]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_UDA_UOA_delivery_profile(data = UOA_scheduled_data,
-                          calendar_data = UOA_calendar_data,
+                          
                           UDAorUOA = "UOA",
                           level = "Regional",
                           region_STP_name = "Midlands")
@@ -3102,7 +3097,7 @@ This uses scheduled data.
  .panel[.panel-name[East of England]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_UDA_UOA_delivery_profile(data = UOA_scheduled_data,
-                          calendar_data = UOA_calendar_data,
+                          
                           UDAorUOA = "UOA",
                           level = "Regional",
                           region_STP_name = "East of England")
@@ -3122,7 +3117,7 @@ This uses scheduled data.
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 
 data <- plot_UDA_UOA_delivery_profile(data = UOA_scheduled_data,
-                          calendar_data = UOA_calendar_data,
+                          
                           UDAorUOA = "UOA",
                           level = "National",
                           region_STP_name = NULL,
@@ -3143,7 +3138,7 @@ data %>%
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 reactable(
   plot_UDA_UOA_delivery_profile(data = UOA_scheduled_data,
-                          calendar_data = UOA_calendar_data,
+                          
                           UDAorUOA = "UOA",
                           level = "National",
                           region_STP_name = NULL,
@@ -3182,7 +3177,7 @@ xaringanExtra::use_panelset()
  .panel[.panel-name[National]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
 plot_banded_CoT(data = UDA_scheduled_data,
-                calendar_data = UDA_calendar_data,
+                
                 historic_data = historical_UDA_scheduled_data,
                 remove_prototypes = TRUE,
                 level = "National",
@@ -3194,7 +3189,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
  .panel[.panel-name[South East]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
 plot_banded_CoT(data = UDA_scheduled_data,
-                calendar_data = UDA_calendar_data,
+                
                 historic_data = historical_UDA_scheduled_data,
                 remove_prototypes = TRUE,
                 level = "Regional",
@@ -3205,7 +3200,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
  .panel[.panel-name[South West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
 plot_banded_CoT(data = UDA_scheduled_data,
-                calendar_data = UDA_calendar_data,
+                
                 historic_data = historical_UDA_scheduled_data,
                 remove_prototypes = TRUE,
                 level = "Regional",
@@ -3216,7 +3211,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
  .panel[.panel-name[North West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
 plot_banded_CoT(data = UDA_scheduled_data,
-                calendar_data = UDA_calendar_data,
+                
                 historic_data = historical_UDA_scheduled_data,
                 remove_prototypes = TRUE,
                 level = "Regional",
@@ -3227,7 +3222,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
  .panel[.panel-name[North East and Yorkshire]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
 plot_banded_CoT(data = UDA_scheduled_data,
-                calendar_data = UDA_calendar_data,
+                
                 historic_data = historical_UDA_scheduled_data,
                 remove_prototypes = TRUE,
                 level = "Regional",
@@ -3238,7 +3233,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
 .panel[.panel-name[London]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
 plot_banded_CoT(data = UDA_scheduled_data,
-                calendar_data = UDA_calendar_data,
+                
                 historic_data = historical_UDA_scheduled_data,
                 remove_prototypes = TRUE,
                 level = "Regional",
@@ -3249,7 +3244,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
  .panel[.panel-name[Midlands]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
 plot_banded_CoT(data = UDA_scheduled_data,
-                calendar_data = UDA_calendar_data,
+                
                 historic_data = historical_UDA_scheduled_data,
                 remove_prototypes = TRUE,
                 level = "Regional",
@@ -3261,7 +3256,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
  .panel[.panel-name[East of England]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
 plot_banded_CoT(data = UDA_scheduled_data,
-                calendar_data = UDA_calendar_data,
+                
                 historic_data = historical_UDA_scheduled_data,
                 remove_prototypes = TRUE,
                 level = "Regional",
@@ -3276,7 +3271,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 
 data <- plot_banded_CoT(data = UDA_scheduled_data,
-                calendar_data = UDA_calendar_data,
+                
                 historic_data = historical_UDA_scheduled_data,
                 remove_prototypes = TRUE,
                 level = "National",
@@ -3298,7 +3293,7 @@ data %>%
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 reactable(
   plot_banded_CoT(data = UDA_scheduled_data,
-                calendar_data = UDA_calendar_data,
+                
                 historic_data = historical_UDA_scheduled_data,
                 remove_prototypes = TRUE,
                 level = "National",
@@ -3340,7 +3335,7 @@ xaringanExtra::use_panelset()
  .panel[.panel-name[National]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
 plot_banded_CoT(data = UDA_scheduled_data,
-                calendar_data = UDA_calendar_data,
+                
                 historic_data = historical_UDA_scheduled_data,
                 remove_prototypes = TRUE,
                 level = "National",
@@ -3353,7 +3348,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
  .panel[.panel-name[South East]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
 plot_banded_CoT(data = UDA_scheduled_data,
-                calendar_data = UDA_calendar_data,
+                
                 historic_data = historical_UDA_scheduled_data,
                 remove_prototypes = TRUE,
                 level = "Regional",
@@ -3365,7 +3360,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
  .panel[.panel-name[South West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
 plot_banded_CoT(data = UDA_scheduled_data,
-                calendar_data = UDA_calendar_data,
+                
                 historic_data = historical_UDA_scheduled_data,
                 remove_prototypes = TRUE,
                 level = "Regional",
@@ -3377,7 +3372,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
  .panel[.panel-name[North West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
 plot_banded_CoT(data = UDA_scheduled_data,
-                calendar_data = UDA_calendar_data,
+                
                 historic_data = historical_UDA_scheduled_data,
                 remove_prototypes = TRUE,
                 level = "Regional",
@@ -3389,7 +3384,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
  .panel[.panel-name[North East and Yorkshire]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
 plot_banded_CoT(data = UDA_scheduled_data,
-                calendar_data = UDA_calendar_data,
+                
                 historic_data = historical_UDA_scheduled_data,
                 remove_prototypes = TRUE,
                 level = "Regional",
@@ -3401,7 +3396,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
 .panel[.panel-name[London]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
 plot_banded_CoT(data = UDA_scheduled_data,
-                calendar_data = UDA_calendar_data,
+                
                 historic_data = historical_UDA_scheduled_data,
                 remove_prototypes = TRUE,
                 level = "Regional",
@@ -3413,7 +3408,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
  .panel[.panel-name[Midlands]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
 plot_banded_CoT(data = UDA_scheduled_data,
-                calendar_data = UDA_calendar_data,
+                
                 historic_data = historical_UDA_scheduled_data,
                 remove_prototypes = TRUE,
                 level = "Regional",
@@ -3426,7 +3421,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
  .panel[.panel-name[East of England]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
 plot_banded_CoT(data = UDA_scheduled_data,
-                calendar_data = UDA_calendar_data,
+                
                 historic_data = historical_UDA_scheduled_data,
                 remove_prototypes = TRUE,
                 level = "Regional",
@@ -3454,7 +3449,7 @@ xaringanExtra::use_panelset()
  .panel[.panel-name[National]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_urgent_form_submissions(data = UDA_scheduled_data,
-                calendar_data = UDA_calendar_data,
+                
                 historic_data = historical_UDA_scheduled_data,
                 remove_prototypes = TRUE,
                 level = "National",
@@ -3479,7 +3474,7 @@ change from the pre-COVID world.
  .panel[.panel-name[South East]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_urgent_form_submissions(data = UDA_scheduled_data,
-                calendar_data = UDA_calendar_data,
+                
                 historic_data = historical_UDA_scheduled_data,
                 remove_prototypes = TRUE,
                 level = "Regional",
@@ -3505,7 +3500,7 @@ change from the pre-COVID world.
  .panel[.panel-name[South West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_urgent_form_submissions(data = UDA_scheduled_data,
-                calendar_data = UDA_calendar_data,
+                
                 historic_data = historical_UDA_scheduled_data,
                 remove_prototypes = TRUE,
                 level = "Regional",
@@ -3531,7 +3526,7 @@ change from the pre-COVID world.
  .panel[.panel-name[North West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_urgent_form_submissions(data = UDA_scheduled_data,
-                calendar_data = UDA_calendar_data,
+                
                 historic_data = historical_UDA_scheduled_data,
                 remove_prototypes = TRUE,
                 level = "Regional",
@@ -3557,7 +3552,7 @@ change from the pre-COVID world.
  .panel[.panel-name[North East and Yorkshire]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_urgent_form_submissions(data = UDA_scheduled_data,
-                calendar_data = UDA_calendar_data,
+                
                 historic_data = historical_UDA_scheduled_data,
                 remove_prototypes = TRUE,
                 level = "Regional",
@@ -3583,7 +3578,7 @@ change from the pre-COVID world.
 .panel[.panel-name[London]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_urgent_form_submissions(data = UDA_scheduled_data,
-                calendar_data = UDA_calendar_data,
+                
                 historic_data = historical_UDA_scheduled_data,
                 remove_prototypes = TRUE,
                 level = "Regional",
@@ -3608,7 +3603,7 @@ change from the pre-COVID world.
  .panel[.panel-name[Midlands]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_urgent_form_submissions(data = UDA_scheduled_data,
-                calendar_data = UDA_calendar_data,
+                
                 historic_data = historical_UDA_scheduled_data,
                 remove_prototypes = TRUE,
                 level = "Regional",
@@ -3633,7 +3628,7 @@ change from the pre-COVID world.
  .panel[.panel-name[East of England]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_urgent_form_submissions(data = UDA_scheduled_data,
-                calendar_data = UDA_calendar_data,
+                
                 historic_data = historical_UDA_scheduled_data,
                 remove_prototypes = TRUE,
                 level = "Regional",
@@ -3662,7 +3657,7 @@ change from the pre-COVID world.
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 
 data <- plot_urgent_form_submissions(data = UDA_scheduled_data,
-                calendar_data = UDA_calendar_data,
+                
                 historic_data = historical_UDA_scheduled_data,
                 remove_prototypes = TRUE,
                 level = "National",
@@ -3684,7 +3679,7 @@ data %>%
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 reactable(
   plot_urgent_form_submissions(data = UDA_scheduled_data,
-                calendar_data = UDA_calendar_data,
+                
                 historic_data = historical_UDA_scheduled_data,
                 remove_prototypes = TRUE,
                 level = "National",
@@ -3862,7 +3857,7 @@ xaringanExtra::use_panelset()
  .panel[.panel-name[National]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_unique_patients_rolling(data = unique_patients_rolling,
-                                     calendar_data = UDA_calendar_data,
+                                     
                                      scheduled_data = UDA_scheduled_data,
                                      level = "National",
                                      region_STP_name = NULL,
@@ -3878,7 +3873,7 @@ of pre-pandemic levels.
  .panel[.panel-name[South East]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_unique_patients_rolling(data = unique_patients_rolling,
-                                     calendar_data = UDA_calendar_data,
+                                     
                                      scheduled_data = UDA_scheduled_data,
                                      level = "Regional",
                                      region_STP_name = "South East",
@@ -3894,7 +3889,7 @@ of pre-pandemic levels.
  .panel[.panel-name[South West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_unique_patients_rolling(data = unique_patients_rolling,
-                                     calendar_data = UDA_calendar_data,
+                                     
                                      scheduled_data = UDA_scheduled_data,
                                      level = "Regional",
                                      region_STP_name = "South West",
@@ -3910,7 +3905,7 @@ of pre-pandemic levels.
  .panel[.panel-name[North West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_unique_patients_rolling(data = unique_patients_rolling,
-                                     calendar_data = UDA_calendar_data,
+                                     
                                      scheduled_data = UDA_scheduled_data,
                                      level = "Regional",
                                      region_STP_name = "North West",
@@ -3926,7 +3921,7 @@ of pre-pandemic levels.
  .panel[.panel-name[North East and Yorkshire]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_unique_patients_rolling(data = unique_patients_rolling,
-                                     calendar_data = UDA_calendar_data,
+                                     
                                      scheduled_data = UDA_scheduled_data,
                                      level = "Regional",
                                      region_STP_name = "North East and Yorkshire",
@@ -3943,7 +3938,7 @@ of pre-pandemic levels.
 .panel[.panel-name[London]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_unique_patients_rolling(data = unique_patients_rolling,
-                                     calendar_data = UDA_calendar_data,
+                                     
                                      scheduled_data = UDA_scheduled_data,
                                      level = "Regional",
                                      region_STP_name = "London",
@@ -3959,7 +3954,7 @@ of pre-pandemic levels.
  .panel[.panel-name[Midlands]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_unique_patients_rolling(data = unique_patients_rolling,
-                                     calendar_data = UDA_calendar_data,
+                                     
                                      scheduled_data = UDA_scheduled_data,
                                      level = "Regional",
                                      region_STP_name = "Midlands",
@@ -3975,7 +3970,7 @@ of pre-pandemic levels.
  .panel[.panel-name[East of England]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_unique_patients_rolling(data = unique_patients_rolling,
-                                     calendar_data = UDA_calendar_data,
+                                     
                                      scheduled_data = UDA_scheduled_data,
                                      level = "Regional",
                                      region_STP_name = "East of England",
@@ -3995,7 +3990,7 @@ of pre-pandemic levels.
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 
 data <- plot_unique_patients_rolling(data = unique_patients_rolling,
-                                     calendar_data = UDA_calendar_data,
+                                     
                                      scheduled_data = UDA_scheduled_data,
                                      level = "National",
                                      region_STP_name = NULL,
@@ -4017,7 +4012,7 @@ data %>%
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 reactable(
   plot_unique_patients_rolling(data = unique_patients_rolling,
-                                     calendar_data = UDA_calendar_data,
+                                     
                                      scheduled_data = UDA_scheduled_data,
                                      level = "National",
                                      region_STP_name = NULL,
@@ -4060,7 +4055,7 @@ xaringanExtra::use_panelset()
  .panel[.panel-name[National]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_unique_patients_rolling(data = unique_patients_rolling,
-                                     calendar_data = UDA_calendar_data,
+                                     
                                      scheduled_data = UDA_scheduled_data,
                                      level = "National",
                                      region_STP_name = NULL,
@@ -4077,7 +4072,7 @@ of pre-pandemic levels.
  .panel[.panel-name[South East]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_unique_patients_rolling(data = unique_patients_rolling,
-                                     calendar_data = UDA_calendar_data,
+                                     
                                      scheduled_data = UDA_scheduled_data,
                                      level = "Regional",
                                      region_STP_name = "South East",
@@ -4094,7 +4089,7 @@ of pre-pandemic levels.
  .panel[.panel-name[South West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_unique_patients_rolling(data = unique_patients_rolling,
-                                     calendar_data = UDA_calendar_data,
+                                     
                                      scheduled_data = UDA_scheduled_data,
                                      level = "Regional",
                                      region_STP_name = "South West",
@@ -4111,7 +4106,7 @@ of pre-pandemic levels.
  .panel[.panel-name[North West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_unique_patients_rolling(data = unique_patients_rolling,
-                                     calendar_data = UDA_calendar_data,
+                                     
                                      scheduled_data = UDA_scheduled_data,
                                      level = "Regional",
                                      region_STP_name = "North West",
@@ -4128,7 +4123,7 @@ of pre-pandemic levels.
  .panel[.panel-name[North East and Yorkshire]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_unique_patients_rolling(data = unique_patients_rolling,
-                                     calendar_data = UDA_calendar_data,
+                                     
                                      scheduled_data = UDA_scheduled_data,
                                      level = "Regional",
                                      region_STP_name = "North East and Yorkshire",
@@ -4146,7 +4141,7 @@ of pre-pandemic levels.
 .panel[.panel-name[London]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_unique_patients_rolling(data = unique_patients_rolling,
-                                     calendar_data = UDA_calendar_data,
+                                     
                                      scheduled_data = UDA_scheduled_data,
                                      level = "Regional",
                                      region_STP_name = "London",
@@ -4163,7 +4158,7 @@ of pre-pandemic levels.
  .panel[.panel-name[Midlands]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_unique_patients_rolling(data = unique_patients_rolling,
-                                     calendar_data = UDA_calendar_data,
+                                     
                                      scheduled_data = UDA_scheduled_data,
                                      level = "Regional",
                                      region_STP_name = "Midlands",
@@ -4180,7 +4175,7 @@ of pre-pandemic levels.
  .panel[.panel-name[East of England]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_unique_patients_rolling(data = unique_patients_rolling,
-                                     calendar_data = UDA_calendar_data,
+                                     
                                      scheduled_data = UDA_scheduled_data,
                                      level = "Regional",
                                      region_STP_name = "East of England",
@@ -4217,7 +4212,7 @@ plot_patient_recalls_facet(data = dental_recalls_STP_2018_22,
                                  treatment_band = "Band_1",
                                  level = "National",
                                  region_STP_name = NULL,
-                                 calendar_data = UDA_calendar_data,
+                                 
                                  plotChart = TRUE)
 ```
 
@@ -4228,7 +4223,7 @@ plot_patient_recalls_facet(data = dental_recalls_STP_2018_22,
                                  treatment_band = "Band_2",
                                  level = "National",
                                  region_STP_name = NULL,
-                                 calendar_data = UDA_calendar_data,
+                                 
                                  plotChart = TRUE)
 ```
 
@@ -4239,7 +4234,7 @@ plot_patient_recalls_facet(data = dental_recalls_STP_2018_22,
                                  treatment_band = "Band_3",
                                  level = "National",
                                  region_STP_name = NULL,
-                                 calendar_data = UDA_calendar_data,
+                                 
                                  plotChart = TRUE)
 ```
 
@@ -4250,7 +4245,7 @@ plot_patient_recalls_facet(data = dental_recalls_STP_2018_22,
                                  treatment_band = "Urgent",
                                  level = "National",
                                  region_STP_name = NULL,
-                                 calendar_data = UDA_calendar_data,
+                                 
                                  plotChart = TRUE)
 ```
 
@@ -4261,7 +4256,7 @@ plot_patient_recalls_facet(data = dental_recalls_STP_2018_22,
                                  treatment_band = "Other",
                                  level = "National",
                                  region_STP_name = NULL,
-                                 calendar_data = UDA_calendar_data,
+                                 
                                  plotChart = TRUE)
 ```
 
@@ -4274,7 +4269,7 @@ data <- plot_patient_recalls_facet(data = dental_recalls_STP_2018_22,
                                  treatment_band = "Band_1",
                                  level = "National",
                                  region_STP_name = NULL,
-                                 calendar_data = UDA_calendar_data,
+                                 
                                  plotChart = FALSE)
 
 data %>%
@@ -4294,7 +4289,7 @@ reactable(
                                  treatment_band = "Band_1",
                                  level = "National",
                                  region_STP_name = NULL,
-                                 calendar_data = UDA_calendar_data,
+                                 
                                  plotChart = FALSE),
   height = 400,
   filterable = TRUE,
@@ -4333,7 +4328,7 @@ xaringanExtra::use_panelset()
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_CDS_patients_waiting_for_assessment(data = CDS_data,
-                                                     calendar_data = UDA_calendar_data,
+                                                     
                                                      level = "National",
                                                      region_STP_name = NULL,
                                                      all_regions_and_STPs = FALSE)
@@ -4344,7 +4339,7 @@ plot_CDS_patients_waiting_for_assessment(data = CDS_data,
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_CDS_patients_waiting_for_assessment(data = CDS_data,
-                                                     calendar_data = UDA_calendar_data,
+                                                     
                                                      level = "Regional",
                                                      region_STP_name = "South East",
                                                      all_regions_and_STPs = FALSE)
@@ -4354,7 +4349,7 @@ plot_CDS_patients_waiting_for_assessment(data = CDS_data,
  .panel[.panel-name[South West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_CDS_patients_waiting_for_assessment(data = CDS_data,
-                                                     calendar_data = UDA_calendar_data,
+                                                     
                                                      level = "Regional",
                                                      region_STP_name = "South West",
                                                      all_regions_and_STPs = FALSE)
@@ -4365,7 +4360,7 @@ plot_CDS_patients_waiting_for_assessment(data = CDS_data,
  .panel[.panel-name[North West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_CDS_patients_waiting_for_assessment(data = CDS_data,
-                                                     calendar_data = UDA_calendar_data,
+                                                     
                                                      level = "Regional",
                                                      region_STP_name = "North West",
                                                      all_regions_and_STPs = FALSE)
@@ -4377,7 +4372,7 @@ plot_CDS_patients_waiting_for_assessment(data = CDS_data,
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_CDS_patients_waiting_for_assessment(data = CDS_data,
-                                                     calendar_data = UDA_calendar_data,
+                                                     
                                                      level = "Regional",
                                                      region_STP_name = "North East and Yorkshire",
                                                      all_regions_and_STPs = FALSE)
@@ -4387,7 +4382,7 @@ plot_CDS_patients_waiting_for_assessment(data = CDS_data,
 .panel[.panel-name[London]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_CDS_patients_waiting_for_assessment(data = CDS_data,
-                                                     calendar_data = UDA_calendar_data,
+                                                     
                                                      level = "Regional",
                                                      region_STP_name = "London",
                                                      all_regions_and_STPs = FALSE)
@@ -4398,7 +4393,7 @@ plot_CDS_patients_waiting_for_assessment(data = CDS_data,
  .panel[.panel-name[Midlands]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_CDS_patients_waiting_for_assessment(data = CDS_data,
-                                                     calendar_data = UDA_calendar_data,
+                                                     
                                                      level = "Regional",
                                                      region_STP_name = "Midlands",
                                                      all_regions_and_STPs = FALSE)
@@ -4409,7 +4404,7 @@ plot_CDS_patients_waiting_for_assessment(data = CDS_data,
  .panel[.panel-name[East of England]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_CDS_patients_waiting_for_assessment(data = CDS_data,
-                                                     calendar_data = UDA_calendar_data,
+                                                     
                                                      level = "Regional",
                                                      region_STP_name = "East of England",
                                                      all_regions_and_STPs = FALSE)
@@ -4437,7 +4432,7 @@ xaringanExtra::use_panelset()
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_CDS_patients_waiting_for_treatment(data = CDS_data,
-                                                     calendar_data = UDA_calendar_data,
+                                                     
                                                      level = "National",
                                                      region_STP_name = NULL,
                                                      all_regions_and_STPs = FALSE)
@@ -4448,7 +4443,7 @@ plot_CDS_patients_waiting_for_treatment(data = CDS_data,
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_CDS_patients_waiting_for_treatment(data = CDS_data,
-                                                     calendar_data = UDA_calendar_data,
+                                                     
                                                      level = "Regional",
                                                      region_STP_name = "South East",
                                                      all_regions_and_STPs = FALSE)
@@ -4458,7 +4453,7 @@ plot_CDS_patients_waiting_for_treatment(data = CDS_data,
  .panel[.panel-name[South West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_CDS_patients_waiting_for_treatment(data = CDS_data,
-                                                     calendar_data = UDA_calendar_data,
+                                                     
                                                      level = "Regional",
                                                      region_STP_name = "South West",
                                                      all_regions_and_STPs = FALSE)
@@ -4469,7 +4464,7 @@ plot_CDS_patients_waiting_for_treatment(data = CDS_data,
  .panel[.panel-name[North West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_CDS_patients_waiting_for_treatment(data = CDS_data,
-                                                     calendar_data = UDA_calendar_data,
+                                                     
                                                      level = "Regional",
                                                      region_STP_name = "North West",
                                                      all_regions_and_STPs = FALSE)
@@ -4481,7 +4476,7 @@ plot_CDS_patients_waiting_for_treatment(data = CDS_data,
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_CDS_patients_waiting_for_treatment(data = CDS_data,
-                                                     calendar_data = UDA_calendar_data,
+                                                     
                                                      level = "Regional",
                                                      region_STP_name = "North East and Yorkshire",
                                                      all_regions_and_STPs = FALSE)
@@ -4491,7 +4486,7 @@ plot_CDS_patients_waiting_for_treatment(data = CDS_data,
 .panel[.panel-name[London]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_CDS_patients_waiting_for_treatment(data = CDS_data,
-                                                     calendar_data = UDA_calendar_data,
+                                                     
                                                      level = "Regional",
                                                      region_STP_name = "London",
                                                      all_regions_and_STPs = FALSE)
@@ -4502,7 +4497,7 @@ plot_CDS_patients_waiting_for_treatment(data = CDS_data,
  .panel[.panel-name[Midlands]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_CDS_patients_waiting_for_treatment(data = CDS_data,
-                                                     calendar_data = UDA_calendar_data,
+                                                     
                                                      level = "Regional",
                                                      region_STP_name = "Midlands",
                                                      all_regions_and_STPs = FALSE)
@@ -4513,7 +4508,7 @@ plot_CDS_patients_waiting_for_treatment(data = CDS_data,
  .panel[.panel-name[East of England]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_CDS_patients_waiting_for_treatment(data = CDS_data,
-                                                     calendar_data = UDA_calendar_data,
+                                                     
                                                      level = "Regional",
                                                      region_STP_name = "East of England",
                                                      all_regions_and_STPs = FALSE)
@@ -4542,7 +4537,7 @@ xaringanExtra::use_panelset()
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_CDS_wait_times_for_assessment(data = CDS_data,
-                                                     calendar_data = UDA_calendar_data,
+                                                     
                                                      level = "National",
                                                      region_STP_name = NULL,
                                                      all_regions_and_STPs = FALSE)
@@ -4553,7 +4548,7 @@ plot_CDS_wait_times_for_assessment(data = CDS_data,
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_CDS_wait_times_for_assessment(data = CDS_data,
-                                                     calendar_data = UDA_calendar_data,
+                                                     
                                                      level = "Regional",
                                                      region_STP_name = "South East",
                                                      all_regions_and_STPs = FALSE)
@@ -4563,7 +4558,7 @@ plot_CDS_wait_times_for_assessment(data = CDS_data,
  .panel[.panel-name[South West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_CDS_wait_times_for_assessment(data = CDS_data,
-                                                     calendar_data = UDA_calendar_data,
+                                                     
                                                      level = "Regional",
                                                      region_STP_name = "South West",
                                                      all_regions_and_STPs = FALSE)
@@ -4574,7 +4569,7 @@ plot_CDS_wait_times_for_assessment(data = CDS_data,
  .panel[.panel-name[North West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_CDS_wait_times_for_assessment(data = CDS_data,
-                                                     calendar_data = UDA_calendar_data,
+                                                     
                                                      level = "Regional",
                                                      region_STP_name = "North West",
                                                      all_regions_and_STPs = FALSE)
@@ -4586,7 +4581,7 @@ plot_CDS_wait_times_for_assessment(data = CDS_data,
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_CDS_wait_times_for_assessment(data = CDS_data,
-                                                     calendar_data = UDA_calendar_data,
+                                                     
                                                      level = "Regional",
                                                      region_STP_name = "North East and Yorkshire",
                                                      all_regions_and_STPs = FALSE)
@@ -4596,7 +4591,7 @@ plot_CDS_wait_times_for_assessment(data = CDS_data,
 .panel[.panel-name[London]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_CDS_wait_times_for_assessment(data = CDS_data,
-                                                     calendar_data = UDA_calendar_data,
+                                                     
                                                      level = "Regional",
                                                      region_STP_name = "London",
                                                      all_regions_and_STPs = FALSE)
@@ -4607,7 +4602,7 @@ plot_CDS_wait_times_for_assessment(data = CDS_data,
  .panel[.panel-name[Midlands]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_CDS_wait_times_for_assessment(data = CDS_data,
-                                                     calendar_data = UDA_calendar_data,
+                                                     
                                                      level = "Regional",
                                                      region_STP_name = "Midlands",
                                                      all_regions_and_STPs = FALSE)
@@ -4618,7 +4613,7 @@ plot_CDS_wait_times_for_assessment(data = CDS_data,
  .panel[.panel-name[East of England]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_CDS_wait_times_for_assessment(data = CDS_data,
-                                                     calendar_data = UDA_calendar_data,
+                                                     
                                                      level = "Regional",
                                                      region_STP_name = "East of England",
                                                      all_regions_and_STPs = FALSE)
@@ -4647,7 +4642,7 @@ xaringanExtra::use_panelset()
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_CDS_wait_times_for_treatment(data = CDS_data,
-                                                     calendar_data = UDA_calendar_data,
+                                                     
                                                      level = "National",
                                                      region_STP_name = NULL,
                                                      all_regions_and_STPs = FALSE)
@@ -4658,7 +4653,7 @@ plot_CDS_wait_times_for_treatment(data = CDS_data,
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_CDS_wait_times_for_treatment(data = CDS_data,
-                                                     calendar_data = UDA_calendar_data,
+                                                     
                                                      level = "Regional",
                                                      region_STP_name = "South East",
                                                      all_regions_and_STPs = FALSE)
@@ -4668,7 +4663,7 @@ plot_CDS_wait_times_for_treatment(data = CDS_data,
  .panel[.panel-name[South West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_CDS_wait_times_for_treatment(data = CDS_data,
-                                                     calendar_data = UDA_calendar_data,
+                                                     
                                                      level = "Regional",
                                                      region_STP_name = "South West",
                                                      all_regions_and_STPs = FALSE)
@@ -4679,7 +4674,7 @@ plot_CDS_wait_times_for_treatment(data = CDS_data,
  .panel[.panel-name[North West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_CDS_wait_times_for_treatment(data = CDS_data,
-                                                     calendar_data = UDA_calendar_data,
+                                                     
                                                      level = "Regional",
                                                      region_STP_name = "North West",
                                                      all_regions_and_STPs = FALSE)
@@ -4691,7 +4686,7 @@ plot_CDS_wait_times_for_treatment(data = CDS_data,
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_CDS_wait_times_for_treatment(data = CDS_data,
-                                                     calendar_data = UDA_calendar_data,
+                                                     
                                                      level = "Regional",
                                                      region_STP_name = "North East and Yorkshire",
                                                      all_regions_and_STPs = FALSE)
@@ -4701,7 +4696,7 @@ plot_CDS_wait_times_for_treatment(data = CDS_data,
 .panel[.panel-name[London]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_CDS_wait_times_for_treatment(data = CDS_data,
-                                                     calendar_data = UDA_calendar_data,
+                                                     
                                                      level = "Regional",
                                                      region_STP_name = "London",
                                                      all_regions_and_STPs = FALSE)
@@ -4712,7 +4707,7 @@ plot_CDS_wait_times_for_treatment(data = CDS_data,
  .panel[.panel-name[Midlands]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_CDS_wait_times_for_treatment(data = CDS_data,
-                                                     calendar_data = UDA_calendar_data,
+                                                     
                                                      level = "Regional",
                                                      region_STP_name = "Midlands",
                                                      all_regions_and_STPs = FALSE)
@@ -4723,7 +4718,7 @@ plot_CDS_wait_times_for_treatment(data = CDS_data,
  .panel[.panel-name[East of England]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_CDS_wait_times_for_treatment(data = CDS_data,
-                                                     calendar_data = UDA_calendar_data,
+                                                     
                                                      level = "Regional",
                                                      region_STP_name = "East of England",
                                                      all_regions_and_STPs = FALSE)

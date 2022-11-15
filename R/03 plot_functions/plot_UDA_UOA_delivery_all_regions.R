@@ -1,6 +1,5 @@
 ################################################################################
 plot_UDA_UOA_delivery_all_regions <- function(data = UDA_scheduled_data, 
-                                              calendar_data = UDA_calendar_data,
                                               historic_data = historical_UDA_scheduled_data,
                                               UDAorUOA = "UDA",
                                               level = "National",
@@ -12,17 +11,7 @@ plot_UDA_UOA_delivery_all_regions <- function(data = UDA_scheduled_data,
   
   data <- data %>%
     mutate(month = as.Date(month))
-  
-  calendar_data <- calendar_data %>%
-    mutate(month = as.Date(month))
-  
-  #add a region column to the data
-  region_STP_lookup <- calendar_data %>%
-    select(commissioner_name, region_name) %>%
-    distinct()
-  
-  data <- left_join(data, region_STP_lookup, by = c("commissioner_name"))
-  
+ 
   #bind in historic data if required
   if(include_historic == TRUE & UDAorUOA == "UDA"){
     data <- data %>%

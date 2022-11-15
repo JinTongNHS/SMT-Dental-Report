@@ -1,18 +1,11 @@
 ################################################################################
 get_Q1_22_num_contracts_on_target <- function(data = UDA_scheduled_data, 
-                                              calendar_data = UDA_calendar_data,
                                               remove_prototypes = T,
                                               scheduled_data = UDA_scheduled_data,
                                               UDAorUOA = "UDA",
                                               level = "National",
                                               region_STP_name = NULL){
-  
-  #add a region column to the data
-  region_STP_lookup <- calendar_data %>%
-    select(commissioner_name, region_name) %>%
-    distinct()
-  
-  data <- left_join(data, region_STP_lookup, by = "commissioner_name")
+
   
   #filter for STP or region
   if(level == "Regional"){

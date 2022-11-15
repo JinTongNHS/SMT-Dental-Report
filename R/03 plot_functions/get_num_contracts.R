@@ -1,18 +1,10 @@
 ################################################################################
 get_num_contracts <- function(data = UDA_scheduled_data, 
                               remove_prototypes = TRUE,
-                              calendar_data = UDA_calendar_data,
                               UDAorUOA = "UDA",
                               level = "National",
                               region_STP_name = NULL){
   
-  #join in region column from calendar data
-  region_icb_lookup <- calendar_data %>%
-    select(commissioner_name, region_name) %>%
-    unique()
-  
-  data <- data %>%
-    left_join(region_icb_lookup, by = "commissioner_name")
   
   #filter for STP or region
   if(level == "Regional"){

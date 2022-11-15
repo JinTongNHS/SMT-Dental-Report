@@ -1,6 +1,5 @@
 ###############################################################################
 plot_delivery_vs_workforce_returns <- function(data = UDA_scheduled_data,
-                                               calendar_data = UDA_calendar_data,
                                                remove_prototypes = T,
                                                plot_month = NULL,
                                                level = "National",
@@ -10,15 +9,7 @@ plot_delivery_vs_workforce_returns <- function(data = UDA_scheduled_data,
     #use latest month in data
     plot_month <- max(data$month)
   }
-  
-  #add a region column to the data
-  region_STP_lookup <- calendar_data %>%
-    select(commissioner_name, region_name) %>%
-    distinct()
-  
-  # data <- left_join(data, region_STP_lookup, by = c("contract_number", "name_or_company_name", "commissioner_name"))
-  data <- left_join(data, region_STP_lookup, by = "commissioner_name")
-  
+
   #filter for STP or region
   if(level == "Regional"){
     data <- data %>% 

@@ -26,13 +26,8 @@ plot_cumulative_UDA_value_all_regions <- function(data = UDA_scheduled_data,
            year)
   
   payments_data <- bind_rows(payments_data, UDA_value_data_2021_22)
-  
-  STp_region_lookup <- historical_data %>%
-    select(commissioner_name, region_name) %>%
-    unique()
-  
+
   data <- data %>%
-    left_join(STp_region_lookup, by = "commissioner_name") %>%
     bind_rows(historical_data) %>%
     mutate(year = case_when(month >= as.Date("2021-04-01") & month < as.Date("2022-04-01") ~ "2021/22",
                             month >= as.Date("2022-04-01")  ~ "2022/23 YTD",

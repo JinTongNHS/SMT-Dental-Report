@@ -1,19 +1,9 @@
 ################################################################################
 plot_workforce_returns <- function(data = dental_workforce_returns,
                                    level = "National",
-                                   region_STP_name = NULL,
-                                   calendar_data = UDA_calendar_data){
+                                   region_STP_name = NULL){
   
   data <- clean_workforce_returns(data)
-  
-  
-  #add a region column to the data
-  region_STP_lookup <- calendar_data %>%
-    select(commissioner_name, region_name) %>%
-    distinct()
-  
-  data <- data %>%
-    left_join(region_STP_lookup, by = "commissioner_name")
   
   subtitle <- "England"
   
