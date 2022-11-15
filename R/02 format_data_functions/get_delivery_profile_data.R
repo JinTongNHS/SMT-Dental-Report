@@ -3,10 +3,6 @@ get_delivery_profile_data <- function(data = UDA_scheduled_data,
                                       UDAorUOA = "UDA",
                                       remove_prototypes = T,
                                       all_regions_and_STPs = FALSE){
-  
-  # #filter out ended contracts
-  # data <- data %>%
-  #   filter(is.na(contract_end_date) | contract_end_date > month)
 
   
   #remove prototype contracts if specified
