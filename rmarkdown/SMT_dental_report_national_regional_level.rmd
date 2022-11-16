@@ -1526,17 +1526,17 @@ plot_delivery_vs_contract_size_scatter_corporate(data = UDA_scheduled_data,
 
 * The scatter plot shows the relationship between contract size and delivery for the current month.
 * The number of contracts delivering above 95% contracted value for this month is
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "National", region_STP_name = NULL, get_num_above = 0.95)[1]`**
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "National", region_STP_name = NULL, get_num_above = 95)[1]`**
 (
-**`r round(as.numeric(plot_delivery_vs_contract_size_scatter_corporate(level = "National", region_STP_name = NULL, get_num_above = 0.95)[1]) *100 / get_num_contracts(level = "National", region_STP_name = NULL))`**
+**`r round(as.numeric(plot_delivery_vs_contract_size_scatter_corporate(level = "National", region_STP_name = NULL, get_num_above = 95)[1]) *100 / get_num_contracts(level = "National", region_STP_name = NULL))`**
 % of contracts),
 with a mean contract size of
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "National", region_STP_name = NULL, get_num_above = 0.95)[2]`**
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "National", region_STP_name = NULL, get_num_above = 95)[2]`**
 UDAs.
 * The number of contracts delivering above 100% contracted value for this month is
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "National", region_STP_name = NULL, get_num_above = 1)[1]`**,
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "National", region_STP_name = NULL, get_num_above = 100)[1]`**,
 with a mean contract size of
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "National", region_STP_name = NULL, get_num_above = 1)[2]`**
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "National", region_STP_name = NULL, get_num_above = 100)[2]`**
 UDAs.
 
  ]
@@ -1553,17 +1553,17 @@ plot_delivery_vs_contract_size_scatter_corporate(data = UDA_scheduled_data,
 
 * The scatter plot shows the relationship between contract size and delivery for the current month.
 * The number of contracts delivering above 95% contracted value for this month is
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "South East", get_num_above = 0.95)[1]`**
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "South East", get_num_above = 95)[1]`**
 (
-**`r round(as.numeric(plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "South East", get_num_above = 0.95)[1]) *100 / get_num_contracts(level = "Regional", region_STP_name = "South East"))`**
+**`r round(as.numeric(plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "South East", get_num_above = 95)[1]) *100 / get_num_contracts(level = "Regional", region_STP_name = "South East"))`**
 % of contracts),
 with a mean contract size of
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "South East", get_num_above = 0.95)[2]`**
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "South East", get_num_above = 95)[2]`**
 UDAs.
 * The number of contracts delivering above 100% contracted value for this month is
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "South East", get_num_above = 1)[1]`**,
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "South East", get_num_above = 100)[1]`**,
 with a mean contract size of
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "South East", get_num_above = 1)[2]`**
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "South East", get_num_above = 100)[2]`**
 UDAs.
 
 
@@ -1581,17 +1581,17 @@ plot_delivery_vs_contract_size_scatter_corporate(data = UDA_scheduled_data,
 
 * The scatter plot shows the relationship between contract size and delivery for the current month.
 * The number of contracts delivering above 95% contracted value for this month is
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "South West", get_num_above = 0.95)[1]`**
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "South West", get_num_above = 95)[1]`**
 (
-**`r round(as.numeric(plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "South West", get_num_above = 0.95)[1]) *100 / get_num_contracts(level = "Regional", region_STP_name = "South West"))`**
+**`r round(as.numeric(plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "South West", get_num_above = 95)[1]) *100 / get_num_contracts(level = "Regional", region_STP_name = "South West"))`**
 % of contracts),
 with a mean contract size of
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "South West", get_num_above = 0.95)[2]`**
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "South West", get_num_above = 95)[2]`**
 UDAs.
 * The number of contracts delivering above 100% contracted value for this month is
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "South West", get_num_above = 1)[1]`**,
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "South West", get_num_above = 100)[1]`**,
 with a mean contract size of
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "South West", get_num_above = 1)[2]`**
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "South West", get_num_above = 100)[2]`**
 UDAs.
 
 
@@ -1609,17 +1609,17 @@ plot_delivery_vs_contract_size_scatter_corporate(data = UDA_scheduled_data,
 
 * The scatter plot shows the relationship between contract size and delivery for the current month.
 * The number of contracts delivering above 95% contracted value for this month is
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "North West", get_num_above = 0.95)[1]`**
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "North West", get_num_above = 95)[1]`**
 (
-**`r round(as.numeric(plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "North West", get_num_above = 0.95)[1]) *100 / get_num_contracts(level = "Regional", region_STP_name = "North West"))`**
+**`r round(as.numeric(plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "North West", get_num_above = 95)[1]) *100 / get_num_contracts(level = "Regional", region_STP_name = "North West"))`**
 % of contracts),
 with a mean contract size of
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "North West", get_num_above = 0.95)[2]`**
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "North West", get_num_above = 95)[2]`**
 UDAs.
 * The number of contracts delivering above 100% contracted value for this month is
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "North West", get_num_above = 1)[1]`**,
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "North West", get_num_above = 100)[1]`**,
 with a mean contract size of
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "North West", get_num_above = 1)[2]`**
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "North West", get_num_above = 100)[2]`**
 UDAs.
 
 
@@ -1637,17 +1637,17 @@ plot_delivery_vs_contract_size_scatter_corporate(data = UDA_scheduled_data,
 
 * The scatter plot shows the relationship between contract size and delivery for the current month.
 * The number of contracts delivering above 95% contracted value for this month is
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "North East and Yorkshire", get_num_above = 0.95)[1]`**
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "North East and Yorkshire", get_num_above = 95)[1]`**
 (
-**`r round(as.numeric(plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "North East and Yorkshire", get_num_above = 0.95)[1]) *100 / get_num_contracts(level = "Regional", region_STP_name = "North East and Yorkshire"))`**
+**`r round(as.numeric(plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "North East and Yorkshire", get_num_above = 95)[1]) *100 / get_num_contracts(level = "Regional", region_STP_name = "North East and Yorkshire"))`**
 % of contracts),
 with a mean contract size of
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "North East and Yorkshire", get_num_above = 0.95)[2]`**
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "North East and Yorkshire", get_num_above = 95)[2]`**
 UDAs.
 * The number of contracts delivering above 100% contracted value for this month is
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "North East and Yorkshire", get_num_above = 1)[1]`**,
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "North East and Yorkshire", get_num_above = 100)[1]`**,
 with a mean contract size of
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "North East and Yorkshire", get_num_above = 1)[2]`**
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "North East and Yorkshire", get_num_above = 100)[2]`**
 UDAs.
 
 
@@ -1665,17 +1665,17 @@ plot_delivery_vs_contract_size_scatter_corporate(data = UDA_scheduled_data,
 
 * The scatter plot shows the relationship between contract size and delivery for the current month.
 * The number of contracts delivering above 95% contracted value for this month is
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "London", get_num_above = 0.95)[1]`**
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "London", get_num_above = 95)[1]`**
 (
-**`r round(as.numeric(plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "London", get_num_above = 0.95)[1]) *100 / get_num_contracts(level = "Regional", region_STP_name = "London"))`**
+**`r round(as.numeric(plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "London", get_num_above = 95)[1]) *100 / get_num_contracts(level = "Regional", region_STP_name = "London"))`**
 % of contracts),
 with a mean contract size of
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "London", get_num_above = 0.95)[2]`**
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "London", get_num_above = 95)[2]`**
 UDAs.
 * The number of contracts delivering above 100% contracted value for this month is
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "London", get_num_above = 1)[1]`**,
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "London", get_num_above = 100)[1]`**,
 with a mean contract size of
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "London", get_num_above = 1)[2]`**
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "London", get_num_above = 100)[2]`**
 UDAs.
 
  ]
@@ -1692,17 +1692,17 @@ plot_delivery_vs_contract_size_scatter_corporate(data = UDA_scheduled_data,
 
 * The scatter plot shows the relationship between contract size and delivery for the current month.
 * The number of contracts delivering above 95% contracted value for this month is
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "Midlands", get_num_above = 0.95)[1]`**
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "Midlands", get_num_above = 95)[1]`**
 (
-**`r round(as.numeric(plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "Midlands", get_num_above = 0.95)[1]) *100 / get_num_contracts(level = "Regional", region_STP_name = "Midlands"))`**
+**`r round(as.numeric(plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "Midlands", get_num_above = 95)[1]) *100 / get_num_contracts(level = "Regional", region_STP_name = "Midlands"))`**
 % of contracts),
 with a mean contract size of
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "Midlands", get_num_above = 0.95)[2]`**
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "Midlands", get_num_above = 95)[2]`**
 UDAs.
 * The number of contracts delivering above 100% contracted value for this month is
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "Midlands", get_num_above = 1)[1]`**,
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "Midlands", get_num_above = 100)[1]`**,
 with a mean contract size of
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "Midlands", get_num_above = 1)[2]`**
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "Midlands", get_num_above = 100)[2]`**
 UDAs.
 
 
@@ -1720,17 +1720,17 @@ plot_delivery_vs_contract_size_scatter_corporate(data = UDA_scheduled_data,
 
 * The scatter plot shows the relationship between contract size and delivery for the current month.
 * The number of contracts delivering above 95% contracted value for this month is
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "East of England", get_num_above = 0.95)[1]`**
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "East of England", get_num_above = 95)[1]`**
 (
-**`r round(as.numeric(plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "East of England", get_num_above = 0.95)[1]) *100 / get_num_contracts(level = "Regional", region_STP_name = "East of England"))`**
+**`r round(as.numeric(plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "East of England", get_num_above = 95)[1]) *100 / get_num_contracts(level = "Regional", region_STP_name = "East of England"))`**
 % of contracts),
 with a mean contract size of
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "East of England", get_num_above = 0.95)[2]`**
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "East of England", get_num_above = 95)[2]`**
 UDAs.
 * The number of contracts delivering above 100% contracted value for this month is
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "East of England", get_num_above = 1)[1]`**,
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "East of England", get_num_above = 100)[1]`**,
 with a mean contract size of
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "East of England", get_num_above = 1)[2]`**
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = "East of England", get_num_above = 100)[2]`**
 UDAs.
 
 
@@ -1884,8 +1884,8 @@ reactable(
   groupBy = c("Month", "Performance band", "Region Name"),
   columns = list(
     `Total number of contracts`= colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE),
-    `Number of contracts in performance band` = colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE),
-    `Percentage of contracts in performance band` = colDef(aggregate = "mean", format = colFormat(suffix = "%", digits = 1), filterable = FALSE)
+    `Number of contracts in performance band` = colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE)#,
+    #`Percentage of contracts in performance band` = colDef(aggregate = "mean", format = colFormat(suffix = "%", digits = 1), filterable = FALSE)
   )
 )
 ```

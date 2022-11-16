@@ -61,7 +61,7 @@ plot_UDA_UOA_delivery_profile <- function(data = UDA_scheduled_data,
   data$performance_band <- factor(data$performance_band, levels = c("0-9%","10-19%", 
                                                                     "20-29%", "30-39%", "40-49%", "50-59%",
                                                                     "60-69%", "70-79%", "80-89%", "90-99%",
-                                                                    "100% +"))
+                                                                    "100% +", "UDA delivery data \ninvalid or not given"))
   #colour blind friendly palette
   cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7",
                  "#52854C", "#4E84C4", "#293352", "#FFDB6D")
