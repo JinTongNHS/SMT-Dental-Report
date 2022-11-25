@@ -34,40 +34,39 @@ for_plot_all_t %>% pivot_longer(-DCP_description, names_to = "description", valu
   ggplot(., aes(fill = description, y = value, x = DCP_description)) +
   geom_bar(position = "dodge", stat = "identity")
 
-# ###dpc_main <- read_xlsx("Live E - Country UDA 22-23 monthly data DCPs breakdown.xlsx") 
+# ###dpc_main <- read_xlsx("Live E - Country UDA 22-23 monthly data DCPs breakdown.xlsx")
 
-# ####for regional data
-# UDA_Projection_data <- function(){
-#   
-#   con <- dbConnect(odbc::odbc(), "NCDR")
-#   sql <- "/****** Script for SelectTopNRows command from SSMS  ******/
-# SELECT DISTINCT convert (date, a.[data_month], 105)  as date
-#       , A.[contract_number]
-#       , A.[name_or_company_name]
-#       , A.commissioner_name
-# 		, A.region_name
-# 		, A.[contract_end_date]
-#      , A.[annual_contracted_UDA]
-# 
-#   FROM [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UDA_scheduled] A
-# 
-#   WHERE a.[data_month] between '2022-04-01' and '2022-10-01'"
-#   
-#   result <- dbSendQuery (con, sql)
-#   UDA_Data_pull <- dbFetch(result)
-#   dbClearResult(result)
-#   
-#   UDA_Data_pull
-# }
-# 
-# 
-# names(dpc_main)[1] <- "contract_number"
-# # 
-# # colnames(oct_data)
-# # colnames(dpc_main)
-# # 
-# # oct_data <- UDA_Projection_data ()
-# # 
-# # dpc_merge_region<- left_join(dpc_main, oct_data, by= "contract_number", 
-# #                                                       all.x=TRUE)
-# # 
+ ####for regional data
+ UDA_Projection_data <- function(){
+
+  con <- dbConnect(odbc::odbc(), "NCDR")
+  sql <- "/****** Script for SelectTopNRows command from SSMS  ******/
+SELECT DISTINCT convert (date, a.[data_month], 105)  as date
+      , A.[contract_number]
+      , A.[name_or_company_name]
+      , A.commissioner_name
+		, A.region_name
+		, A.[contract_end_date]
+     , A.[annual_contracted_UDA]
+
+  FROM [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UDA_scheduled] A
+
+  WHERE a.[data_month] between '2022-04-01' and '2022-10-01'"
+
+  result <- dbSendQuery (con, sql)
+  UDA_Data_pull <- dbFetch(result)
+  dbClearResult(result)
+
+  UDA_Data_pull
+}
+
+
+names(dpc_main)[1] <- "contract_number"
+
+colnames(oct_data)
+colnames(dpc_main)
+
+oct_data <- UDA_Projection_data ()
+
+dpc_merge_region<- left_join(dpc_main, oct_data, by= "contract_number", all.x=TRUE)
+
