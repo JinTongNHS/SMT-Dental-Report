@@ -1,72 +1,87 @@
 ###############DPC porject
 
 library(tidyverse)
-library(data.table)
-library(readxl)
-library(DBI)
-library(odbc)
-###library(reactable) #make sure you have the latest version by doing install.packages("reactable")
-library(dplyr)
-library(ggplot2)
-library(scales)
-library(ggplot2)
-library(magrittr)
-getwd()
-
+library(ggpubr)
 
 ##### Import Data
 
 dpc_main <- read.csv("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/DCP_data/DPC_v1_Oct_2022.csv") 
 
-colnames(dpc_main)
-# Barplot- All with no regions
 
-for_plot_all_t <- dpc_main %>%
+###UDA Chart
+UDA_plot_all_t <- dpc_main %>%
   group_by(DCP_description) %>%
-  summarise (total_FP17 = sum(FP17_Current_Year_total, na.rm = TRUE),
-             total_B1 = sum(Band_1._UDA, na.rm = TRUE),
-             total_B2 = sum(Band_2._UDA, na.rm = TRUE),
-             total_B3 = sum(Band_3._UDA, na.rm = TRUE),
-             total_urgent = sum(Urgent_UDA, na.rm = TRUE))
+  summarise (c_total_B1 = sum(Band_1._UDA, na.rm = TRUE),
+             c_total_B2 = sum(Band_2._UDA, na.rm = TRUE),
+             c_total_B3 = sum(Band_3._UDA, na.rm = TRUE),
+             c_total_urgent = sum(Urgent_UDA, na.rm = TRUE)) %>%
+             mutate (ratio_total_B1 = c_total_B1 / (c_total_B1 + c_total_B2 + c_total_B3 +c_total_urgent),
+                    label = percent(ratio_total_B1 %>% round(2)), 
+                    new_o = " (",
+                    new_c = ")",
+                    total_B1 = paste (c_total_B1, new_o, label, new_c, sep = '')) %>%
+  
+            mutate (ratio_total_B2 = c_total_B2 / (c_total_B1 + c_total_B2 + c_total_B3 + c_total_urgent),
+            label_2 = percent(ratio_total_B2 %>% round(2)), 
+            new_o_2 = " (",
+            new_c_2 = ")",
+            total_B2 = paste (c_total_B2, new_o_2, label_2, new_c_2, sep = ''))%>%
+  
+  
+          mutate (ratio_total_B3 = c_total_B3 / (c_total_B1 + c_total_B2 + c_total_B3 +c_total_urgent),
+          label_3 = percent(ratio_total_B3 %>% round(2)), 
+          new_o_3 = " (",
+          new_c_3 = ")",
+          total_B3 = paste (c_total_B3, new_o_3, label_3, new_c_3, sep = '')) %>%
+    
+    mutate (ratio_total_urgent = c_total_urgent / (c_total_B1 + c_total_B2 + c_total_B3 +c_total_urgent),
+          label_urgent = percent(ratio_total_urgent %>% round(2)), 
+          new_o_urgent = " (",
+          new_c_urgent = ")",
+          total_urgent = paste (c_total_urgent, new_o_urgent, label_urgent, new_c_urgent, sep = '')) %>%
+    select (DCP_description, total_B1, total_B2, total_B3, total_urgent )
 
-for_plot_all_t %>% pivot_longer(-DCP_description, names_to = "description", values_to = "value")%>%
+###FP17 Chart
+FP17_plot_all_t <- dpc_main %>%
+  group_by(DCP_description) %>%
+  summarise (c_total_FP17 = sum(FP17_Current_Year_total, na.rm = TRUE)) %>%
+  mutate (FP17_percent = sum(c_total_FP17), 
+          ratio_FP17 = c_total_FP17/FP17_percent, 
+          label_FP17 = percent(ratio_FP17 %>% round(2)), 
+          new_o_FP17 = " (",
+          new_c_FP17 = ")",
+          total_FP17 = paste (c_total_FP17, new_o_FP17, label_FP17, new_c_FP17, sep = '')) %>%
+          select (DCP_description, total_FP17) 
+
+
+
+plot_1<- UDA_plot_all_t %>% pivot_longer(-DCP_description, names_to = "UDAs", values_to = "total_percent_each_DCP")%>%
   group_by(DCP_description) %>% 
-  ggplot(., aes(fill = description, y = value, x = DCP_description)) +
-  geom_bar(position = "dodge", stat = "identity")
-
-# ###dpc_main <- read_xlsx("Live E - Country UDA 22-23 monthly data DCPs breakdown.xlsx")
-
- ####for regional data
- UDA_Projection_data <- function(){
-
-  con <- dbConnect(odbc::odbc(), "NCDR")
-  sql <- "/****** Script for SelectTopNRows command from SSMS  ******/
-SELECT DISTINCT convert (date, a.[data_month], 105)  as date
-      , A.[contract_number]
-      , A.[name_or_company_name]
-      , A.commissioner_name
-		, A.region_name
-		, A.[contract_end_date]
-     , A.[annual_contracted_UDA]
-
-  FROM [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UDA_scheduled] A
-
-  WHERE a.[data_month] between '2022-04-01' and '2022-10-01'"
-
-  result <- dbSendQuery (con, sql)
-  UDA_Data_pull <- dbFetch(result)
-  dbClearResult(result)
-
-  UDA_Data_pull
-}
+  ggplot(., aes(fill = UDAs, y = reorder (UDAs, desc(total_percent_each_DCP)), x = DCP_description)) +
+  geom_bar(position = "dodge", stat = "identity") +
+  geom_text (aes(label = total_percent_each_DCP), position = position_dodge(width = .8)) +
+  coord_flip() +
+  ggtitle("UDAs Delivered by DCPs in October 2022") + 
+  theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
 
 
-names(dpc_main)[1] <- "contract_number"
+plot_2 <- FP17_plot_all_t %>% pivot_longer(-DCP_description, names_to = "FP17", values_to = "total_percent")%>%
+  group_by(DCP_description) %>% 
+  ggplot(., aes(fill = "FP17" , y = total_percent, x = DCP_description)) +
+  geom_bar(position = "dodge", stat = "identity", fill = "grey") +
+  geom_text (aes(label = total_percent), position = position_dodge(width = .8)) +
+  coord_flip() +
+  ggtitle("FP17 Delivered by DCPs in October 2022") +
+  theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y = element_blank())
 
-colnames(oct_data)
-colnames(dpc_main)
+combined_plot <- ggarrange(plot_1,
+                           plot_2,
+                           nrow = 1,
+                           ncol = 2) #nrow & ncol depend on how you want to 
 
-oct_data <- UDA_Projection_data ()
-
-dpc_merge_region<- left_join(dpc_main, oct_data, by= "contract_number", all.x=TRUE)
-
+combined_plot
