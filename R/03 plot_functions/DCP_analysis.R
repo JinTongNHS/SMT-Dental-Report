@@ -44,10 +44,11 @@ plot_1 <- plot_test_1 %>%  ggplot(aes(fill = Total_UDA_Each_Band , y = UDAs, x =
             position = position_dodge(width = .9)) +
   theme(legend.position="bottom") +
   ##coord_flip() +
-  ggtitle("UDAs Delivered by DCPs in October 2022") +
-  theme(axis.title.x=element_blank(),
-        axis.text.x=element_blank(),
-        axis.ticks.x=element_blank())
+  ggtitle("UDAs Delivered by DCPs in October 2022") 
+# +
+#   theme(axis.title.x=element_blank(),
+#         axis.text.x=element_blank(),
+#         axis.ticks.x=element_blank())
 plot_1
 
 ###FP17 Chart
