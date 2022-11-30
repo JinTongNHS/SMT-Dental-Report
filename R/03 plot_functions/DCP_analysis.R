@@ -1,85 +1,129 @@
-###############DPC porject
-
-library(tidyverse)
-library(ggpubr)
-library("scales")
+library (tidyverse)
+##library(readxl)
+library(DBI)
+library(odbc)
+##library(reactable) #make sure you have the latest version by doing install.packages("reactable")
+##library(downloadthis)
+##library(scales)
 library(formattable)
+##library(stringr)
 
-##### Import Data
+
+UDA_scheduled_delivery_pull <- function(){
+  
+  con <- dbConnect(odbc::odbc(), "NCDR")
+  sql <- "SELECT * FROM [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UDA_scheduled]
+--where [data_month] = '2022-10-01'"
+  
+  result <- dbSendQuery (con, sql)
+  UDA_deliver_all <- dbFetch(result)
+  dbClearResult(result)
+  UDA_deliver_all
+}
+
+
+UDA_scheduled_delivery <- UDA_scheduled_delivery_pull () 
+
+UDA_scheduled_delivery <- UDA_scheduled_delivery %>%
+  filter(data_month == max(UDA_scheduled_delivery$data_month))
 
 dcp_main <- read.csv("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/DCP_data/DPC_v1_Oct_2022.csv") 
 
 
-###UDA Chart
-test_1 <- dcp_main %>%
-  group_by(DCP_description, ) %>%
-  summarise (B1 = sum(Band_1._UDA, na.rm = TRUE),
-             B2 = sum(Band_2._UDA, na.rm = TRUE),
-             B3 = sum(Band_3._UDA, na.rm = TRUE),
-             urgent = sum(Urgent_UDA, na.rm = TRUE))
+###setwd("N:/_Everyone/Mohammed_Emran/New_indicators_DPC")
 
-data_long_UDA <- pivot_longer(test_1, cols = -DCP_description, 
-                          names_to = 'Total_UDA_Each_Band', 
-                          values_to = 'UDAs') %>% 
+delivery_total <-  UDA_scheduled_delivery %>% 
+  group_by(data_month) %>%
+  dplyr::summarise( total_FP17 = sum(general_FP17s, na.rm = TRUE),
+                    total_B1 = sum(UDA_band_1, na.rm = TRUE),
+                    total_B2 = sum(UDA_band_2, na.rm = TRUE),
+                    total_B3 = sum(UDA_band_3, na.rm = TRUE),
+                    total_urgent = sum(UDA_urgent, na.rm = TRUE)) %>%
+  mutate (DCP_description = "Total_dentist_only_and_DCP_assisted") %>%
+  select (DCP_description, total_FP17,total_B1, total_B2, total_B3, total_urgent)
+
+###write.csv(UDA_scheduled_delivery, "N:/_Everyone/Mohammed_Emran/New_indicators_DPC/delivery_total_october.csv")
+
+
+###UDA Chart
+pull_dcp<- dcp_main %>%
+  group_by(DCP_description) %>%
+  summarise (total_FP17 = sum(FP17_Current_Year_total, na.rm = TRUE),
+             total_B1 = sum(Band_1._UDA, na.rm = TRUE),
+             total_B2 = sum(Band_2._UDA, na.rm = TRUE),
+             total_B3 = sum(Band_3._UDA, na.rm = TRUE),
+             total_urgent = sum(Urgent_UDA, na.rm = TRUE))
+
+dcp_summary <- pull_dcp %>%
+  mutate(DCP_description=replace(DCP_description, DCP_description== "Hygienist", "Hygienist_assisted"),
+         DCP_description=replace(DCP_description, DCP_description== "Therapist", "Therapist_assisted"),
+         DCP_description=replace(DCP_description, DCP_description== "Dental Nurse", "Dental_Nurse_assisted")) %>%
   mutate_if(is.numeric, round, 0)
 
-# 
-# plot_test_1 <- group_by(data_long, DCP_description) %>% 
-#   mutate(percent = formattable::percent (UDAs/sum(UDAs)))
-  
-plot_test_1 <- group_by(data_long_UDA, DCP_description) %>% 
-  mutate(percent = formattable::percent (UDAs/sum(UDAs), digits = 0))
- 
-# 
-# d_test <-
-#   plot_test_1 %>%
-#   mutate(new_o = " (",
-#          new_c = ")",
-#          label_n = paste (UDAs, new_o, percent, new_c, sep = ''))
+joined <- rbind(dcp_summary, delivery_total) %>%mutate_if(is.numeric, round, 2)
 
-plot_1 <- plot_test_1 %>%  ggplot(aes(fill = Total_UDA_Each_Band , y = UDAs, x = DCP_description)) +
+test_UDA <- group_by(joined, DCP_description) %>%
+  mutate (Assisted_FP17_Percentage = 
+            formattable::percent (total_FP17 / joined %>% with(total_FP17[DCP_description == 'Total_dentist_only_and_DCP_assisted']), digits=2))%>%
+  mutate (Assisted_B1_Percentage = 
+            formattable::percent (total_B1 / joined %>% with(total_B1[DCP_description == 'Total_dentist_only_and_DCP_assisted']), digits=2)) %>%
+  mutate (Assisted_B2_Percentage = 
+            formattable::percent (total_B2  / joined %>% with(total_B2[DCP_description == 'Total_dentist_only_and_DCP_assisted']), digits=2)) %>%
+  mutate (Assisted_B3_Percentage = 
+            formattable::percent (total_B3  / joined %>% with(total_B3[DCP_description == 'Total_dentist_only_and_DCP_assisted']), digits=2)) %>%
+  mutate (Assisted_Urgent_Percentage = 
+            formattable::percent (total_urgent   / joined %>% with(total_urgent[DCP_description == 'Total_dentist_only_and_DCP_assisted']), digits=2)) %>%
+  select(DCP_description, Assisted_B1_Percentage, Assisted_B2_Percentage, Assisted_B3_Percentage, Assisted_Urgent_Percentage)
+
+
+
+data_long_UDA <- pivot_longer(test_UDA, cols = -DCP_description, 
+                              names_to = 'UDAs_in_Bands', 
+                              values_to = 'UDAs')
+
+filtered_data_UDA <- dplyr::filter(data_long_UDA, DCP_description %in% c("Dental_Nurse_assisted", "Hygienist_assisted", 
+                                                                         "Therapist_assisted"))
+
+plot_1 <- filtered_data_UDA %>%  ggplot(aes(fill = UDAs_in_Bands , y = UDAs, x = DCP_description)) +
   geom_bar(stat = "identity", position = "dodge") +
-  geom_text(aes(label = paste0(UDAs, "\n", percent)),
+  geom_text(aes(label = UDAs),
             colour = "black",
-            position = position_dodge(width = .9)) +
+            position = position_dodge(width = 1), vjust=-0.25) +
   theme(legend.position="bottom") +
   ##coord_flip() +
-  ggtitle("UDAs Delivered by DCPs in October 2022") 
+  ggtitle("Percentage of Bandwise DCP Assisted UDAs in October 2022") 
 # +
 #   theme(axis.title.x=element_blank(),
 #         axis.text.x=element_blank(),
 #         axis.ticks.x=element_blank())
 plot_1
 
-###FP17 Chart
 
-FP17_plot_all_t <- dcp_main %>%
-  group_by(DCP_description) %>%
-  summarise (Total_FP17 = sum(FP17_Current_Year_total, na.rm = TRUE)) %>%  
-  mutate(percent_FP = formattable::percent (Total_FP17/sum(Total_FP17), digits = 0))
 
-###select (DCP_description, total_FP17) 
+test_FP17 <- group_by(joined, DCP_description) %>%
+  mutate (Assisted_FP17_Percentage = 
+            formattable::percent (total_FP17 / joined %>% with(total_FP17[DCP_description == 'Total_dentist_only_and_DCP_assisted']), digits=2)) %>%
+  select(DCP_description, Assisted_FP17_Percentage)
 
-plot_2 <- FP17_plot_all_t %>% 
-  ggplot(., aes(fill = Total_FP17 , y = percent_FP, x = DCP_description)) +
-  geom_bar(position = "dodge", stat = "identity", fill = "grey") +
-  ##geom_text (aes(label = total_percent), position = position_dodge(width = 1)) +
-  geom_text(aes(label = paste0(Total_FP17, "\n", percent_FP)),
+
+
+data_long_FP17 <- pivot_longer(test_FP17, cols = -DCP_description, 
+                               names_to = 'UDAs_in_Bands', 
+                               values_to = 'UDAs')
+
+filtered_data_FP17 <- dplyr::filter(data_long_FP17, DCP_description %in% c("Dental_Nurse_assisted", "Hygienist_assisted", 
+                                                                           "Therapist_assisted"))
+
+plot_2 <- filtered_data_FP17 %>%  ggplot(aes(fill = UDAs_in_Bands , y = UDAs, x = DCP_description)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  geom_text(aes(label = UDAs),
             colour = "black",
-            position = position_dodge(width = .9)) +
-##  coord_flip() +
-  ggtitle("FP17 Delivered by DCPs in October 2022") +
-  theme(legend.position="middle") +
-  theme(axis.title.y.left =element_blank(),
-        axis.text.y=element_blank(),
-        axis.ticks.y=element_blank(),
-        axis.title.y = element_blank())
+            position = position_dodge(width = 1), vjust=-0.25) +
+  theme(legend.position="bottom") +
+  ##coord_flip() +
+  ggtitle("Percentage of DCP Assisted Course of Treatement in October 2022") 
+# +
+#   theme(axis.title.x=element_blank(),
+#         axis.text.x=element_blank(),
+#         axis.ticks.x=element_blank())
 plot_2
-
-# 
-# combined_plot <- ggarrange(plot_1,
-#                            plot_2,
-#                            nrow = 1,
-#                            ncol = 2) #nrow & ncol depend on how you want to 
-# 
-# combined_plot
