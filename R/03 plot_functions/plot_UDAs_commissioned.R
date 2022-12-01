@@ -7,6 +7,8 @@ plot_UDAs_commissioned <- function(data = UDA_scheduled_data,
                                    plotChart = TRUE,
                                    getChange = FALSE){
 
+  data <- data %>%
+    bind_rows(historical_data)
   
   #filter for STP or region
   if(level == "Regional"){
