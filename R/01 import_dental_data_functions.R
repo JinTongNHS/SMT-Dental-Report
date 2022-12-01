@@ -185,25 +185,40 @@ update_SOF_table_S109 <- function(calendar_data = UDA_calendar_data,
 }
 
 ################################################################################
-upload_unique_patients_data <- function(data_path = "N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/unique_patients/"){
+upload_unique_patients_data <- function(data_path = "N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/unique_patients/",
+                                        commissioner_lookup = STP_ICB_lookup_codes){
   
   # Gets last month 
-  data_month <- lubridate::floor_date(Sys.Date()  - lubridate::weeks(8), unit = "month")
-  data_month_name <- format(Sys.Date()  - lubridate::weeks(8), format = "%b%y")
+  data_month <- lubridate::floor_date(Sys.Date()  - lubridate::duration("1 week"), unit = "month") ###might need to change week to month 
+  data_month_name <- format(Sys.Date()  - lubridate::duration("1 week"), format = "%b%y")
   
   unique_patients <- readxl::read_excel(paste0(data_path, "unique_patients_rolling_", data_month_name,".xlsx"),
                                         skip = 19)
+  
+  #remove last 7 rows with eDen source
+  unique_patients <-  unique_patients[1:(nrow(unique_patients) - 7),]
   
   #fixes column names
   unique_patients <- unique_patients %>%
     mutate(month_ending = data_month) %>%
     rename(contract_number = "Contract Number",
+           commissioner_ods_code_icb = "Latest Commissioner Code",
            unique_patients_rolling_12M = "Unique Patient Count Rolling 12M",
            band1_unique_patients_rolling_12M = "Band 1 Unique Patient Count Rolling 12M",
            band2_or_3_unique_patients_rolling_12M = "Band 2 or Band 3 Unique Patient Count Rolling 12M",
            band1_urgent_unique_patients_rolling_12M = "Band 1 Urgent Unique Patient Count Rolling 12M",
            band_other_unique_patients_rolling_12M = "Other Unique Patient Count Rolling 12M") %>%
     filter(!is.na(contract_number))
+  
+  #join in commissioner name
+  commissioner_lookup <- commissioner_lookup %>%
+    select(commissioner_ods_code_icb = commissioner_ONS_boundary_code_ICB, 
+           commissioner_name = commissioner_name_ICB, 
+           region_name) %>%
+    distinct()
+  
+  unique_patients <- unique_patients %>%
+    left_join(commissioner_lookup, by = "commissioner_ods_code_icb")
 
   #Append latest data to table on NCDR
   con <- dbConnect(odbc::odbc(), "NCDR")
@@ -217,7 +232,8 @@ upload_unique_patients_data <- function(data_path = "N:/_Everyone/Primary Care G
 #function to import and clean data
 #N.B. this assumes that the columns are in the same order each time!
 import_and_clean_scheduled_UDA_data <- function(data_path = "data/raw_data/dashboard_raw_data/UDA_scheduled_raw_data/UDA_scheduled_Apr21.xlsx",
-                                            data_date = as.Date("2021-04-01")){
+                                                data_date = as.Date("2021-04-01"),
+                                                commissioner_lookup = STP_ICB_lookup_codes){
   
   #read in data with correct types and removing top 3 rows and renaming columns 
   data <- read_excel(data_path,
@@ -236,8 +252,8 @@ import_and_clean_scheduled_UDA_data <- function(data_path = "data/raw_data/dashb
                      col_names = TRUE,
                      .name_repair = ~ paste0("X__", seq_along(.x)))
   
-  #remove last 4 rows with eDen source
-  data <- data[1:(nrow(data) - 4),]
+  # #remove last 4 rows with eDen source
+  # data <- data[1:(nrow(data) - 4),]
   
   #check format of data - manual check should be done to see if columns are in the same order as expected
   if(ncol(data) != 34){
@@ -272,13 +288,24 @@ import_and_clean_scheduled_UDA_data <- function(data_path = "data/raw_data/dashb
     ) %>%
     select(-starts_with("X__"))
   
+  #join in commissioner name
+  commissioner_lookup <- commissioner_lookup %>%
+    select(commissioner_ods_code_icb = commissioner_ONS_boundary_code_ICB, 
+           commissioner_name = commissioner_name_ICB, 
+           region_name) %>%
+    distinct()
+  
+  data <- data %>%
+    left_join(commissioner_lookup, by = "commissioner_name")
+  
 }
 
 
 ################################################################################
 #function to import and clean data
 #N.B. this assumes that the columns are in the same order each time!
-import_and_clean_calendar_UDA_data <- function(data_path = "data/raw_data/dashboard_raw_data/UDA_calendar_raw_data/UDA_calendar_Apr_Aug21.xlsx"){
+import_and_clean_calendar_UDA_data <- function(data_path = "data/raw_data/dashboard_raw_data/UDA_calendar_raw_data/UDA_calendar_Apr_Aug21.xlsx",
+                                               commissioner_lookup = STP_ICB_lookup_codes){
   
   #read in data with correct types and removing top 6 rows and renaming columns 
   data <- read_excel(data_path,
@@ -488,8 +515,45 @@ import_and_clean_calendar_UDA_data <- function(data_path = "data/raw_data/dashbo
            total_other_FP17s = X__92
     ) 
   
+  #add column for date and rename columns, split data for just november
+  data_nov <- data %>%
+    mutate(data_month = as.Date("2022-11-01")) %>%
+    select(data_month, X__1, X__2, X__3, X__4, X__5, X__6, X__7, X__8, 
+           X__93, X__94, X__95, X__96, X__97, X__98, X__99, X__100, X__101, X__102, X__103, X__104) %>%
+    rename(contract_number = X__1,
+           latest_contract_type = X__2,
+           name_or_company_name = X__3,
+           commissioner_name = X__4,
+           region_name = X__5,
+           paid_by_BSA = X__6,
+           contract_start_date = X__7, 
+           contract_end_date = X__8, 
+           
+           UDA_total = X__93, 
+           UDA_band_1_total = X__94,
+           UDA_band_2_total = X__95,
+           UDA_band_3_total = X__96, 
+           UDA_urgent_total = X__97, 
+           UDA_other_total = X__98, 
+           total_FP17s = X__99, 
+           total_band_1_FP17s  = X__100,
+           total_band_2_FP17s = X__101,
+           total_band_3_FP17s = X__102,
+           total_urgent_FP17s = X__103,
+           total_other_FP17s = X__104
+    ) 
   
-  UDA_calendar_data <- bind_rows(data_apr, data_may, data_jun, data_jul, data_aug, data_sep, data_oct)
+  
+  UDA_calendar_data <- bind_rows(data_apr, data_may, data_jun, data_jul, data_aug, data_sep, data_oct, data_nov)
+  
+  #join in commissioner code
+  commissioner_lookup <- commissioner_lookup %>%
+    select(commissioner_ods_code_icb = commissioner_ONS_boundary_code_ICB, 
+           commissioner_name = commissioner_name_ICB) %>%
+    distinct()
+  
+  UDA_calendar_data <- UDA_calendar_data %>%
+    left_join(commissioner_lookup, by = "commissioner_name")
   
 }
 
@@ -499,7 +563,8 @@ import_and_clean_calendar_UDA_data <- function(data_path = "data/raw_data/dashbo
 ################################################################################
 #function to import and clean data
 #N.B. this assumes that the columns are in the same order each time!
-import_and_clean_calendar_UOA_data <- function(data_path = "data/raw_data/dashboard_raw_data/UOA_calendar_raw_data/UOA_calendar_Apr_Dec21.xlsx"){
+import_and_clean_calendar_UOA_data <- function(data_path = "data/raw_data/dashboard_raw_data/UOA_calendar_raw_data/UOA_calendar_Apr_Dec21.xlsx",
+                                               commissioner_lookup = STP_ICB_lookup_codes){
   
   #read in data with correct types and removing top 6 rows and renaming columns 
   data <- read_excel(data_path,
@@ -643,7 +708,33 @@ import_and_clean_calendar_UOA_data <- function(data_path = "data/raw_data/dashbo
            UOA_total = X__14
     )
   
-  UOA_calendar_data <- bind_rows(data_apr, data_may, data_jun, data_jul, data_aug, data_sep, data_oct)
+  #add column for date and rename columns, split data for just nov
+  data_nov <- data %>%
+    mutate(data_month = as.Date("2022-11-01")) %>%
+    select(data_month, X__1, X__2, X__3, X__4, X__5, X__6, X__7, 
+           X__15) %>%
+    rename(contract_number = X__1,
+           contract_type = X__2,
+           name_or_company_name = X__3,
+           commissioner_name = X__4,
+           paid_by_BSA = X__5,
+           contract_start_date = X__6, 
+           contract_end_date = X__7, 
+           
+           UOA_total = X__15
+    )
+  
+  UOA_calendar_data <- bind_rows(data_apr, data_may, data_jun, data_jul, data_aug, data_sep, data_oct, data_nov)
+  
+  #join in commissioner code
+  commissioner_lookup <- commissioner_lookup %>%
+    select(commissioner_ods_code_icb = commissioner_ONS_boundary_code_ICB, 
+           commissioner_name = commissioner_name_ICB,
+           region_name) %>%
+    distinct()
+  
+  UOA_calendar_data <- UOA_calendar_data %>%
+    left_join(commissioner_lookup, by = "commissioner_name")
   
 }
 
@@ -653,7 +744,8 @@ import_and_clean_calendar_UOA_data <- function(data_path = "data/raw_data/dashbo
 #function to import and clean data
 #N.B. this assumes that the columns are in the same order each time!
 import_and_clean_scheduled_UOA_data <- function(data_path = "data/raw_data/dashboard_raw_data/UOA_scheduled_raw_data/UOA_scheduled_Apr21.xlsx",
-                                                data_date = as.Date("2021-04-01")){
+                                                data_date = as.Date("2021-04-01"),
+                                                commissioner_lookup = STP_ICB_lookup_codes){
   
   #read in data with correct types and removing top 3 rows and renaming columns 
   data <- read_excel(data_path, 
@@ -699,6 +791,16 @@ import_and_clean_scheduled_UOA_data <- function(data_path = "data/raw_data/dashb
            orthodontic_completions = X__18 
     ) %>%
     select(-starts_with("X__"))
+  
+  #join in commissioner code
+  commissioner_lookup <- commissioner_lookup %>%
+    select(commissioner_ods_code_icb = commissioner_ONS_boundary_code_ICB, 
+           commissioner_name = commissioner_name_ICB,
+           region_name) %>%
+    distinct()
+  
+  data <- data %>%
+    left_join(commissioner_lookup, by = "commissioner_name")
   
 }
 
