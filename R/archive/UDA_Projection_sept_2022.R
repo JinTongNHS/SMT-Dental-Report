@@ -167,7 +167,7 @@ d <- whole_data_no_ignore %>%
   count (Performer) %>%
   mutate(percent_n = sum(n),
          ratio = n/percent_n,
-         label = percent(ratio %>% round(2)))
+         label = formattable::percent(ratio %>% round(2)))
 
 bar_plot_regional_percent <- ggplot(data = d, aes (Regions, n, group = Performer)) +
   geom_col(aes(fill = Performer)) +
@@ -184,7 +184,7 @@ d_test <- whole_data_no_ignore %>%
   count (Performer) %>%
   mutate(percent_n = sum(n),
          ratio = n/percent_n,
-         label = percent(ratio %>% round(2)),
+         label = formattable::percent(ratio %>% round(2)),
          label_n = paste (n, label, sep = ' - '))
 
 d_test <- whole_data_no_ignore %>%
@@ -192,7 +192,7 @@ d_test <- whole_data_no_ignore %>%
   count (Performer) %>%
   mutate(percent_n = sum(n),
          ratio = n/percent_n,
-         label = percent(ratio %>% round(2)), 
+         label = formattable::percent(ratio %>% round(2)), 
            new_o = " (",
          new_c = ")",
             label_n = paste (n, new_o, label, new_c, sep = ''))

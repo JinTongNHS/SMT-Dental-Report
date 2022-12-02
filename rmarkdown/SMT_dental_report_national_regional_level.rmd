@@ -128,6 +128,7 @@ name: contents
  * [Banded courses of treatment time series as % of 2019 delivery](#banded-cots-index)
  * [Urgent treatment form submissions](#urgent-forms)
  * [UDAs delivered by patient charge status](#patient-charge)
+ * [Contractors projected to deliver at least 96% of contracted UDAs](#UDA-projection)
  * [111 call volumes](#111-call-volumes)
  * [Unique patients seen rolling 12 months](#unique-patients)
  * [Unique patients seen rolling 12 months as % of April 2018 delivery](#unique-patients-index)
@@ -3779,6 +3780,36 @@ plot_UDAs_by_patient_exemption(data = patient_exemption_data,
 ```
 
  ]
+ ]
+
+[Return to contents](#contents)
+
+---
+
+name: uda-projection
+
+### Contracts projected to deliver at least 96% of contracted UDAs
+
+```{r xaringan-panelset-uda_projection, echo=FALSE}
+xaringanExtra::use_panelset()
+```
+ <font size="2">
+.panelset[
+
+ .panel[.panel-name[National]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
+plot_UDA_projection(level = "National")
+```
+
+
+ ]
+ .panel[.panel-name[Regional]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
+plot_UDA_projection(level = "Regional")
+```
+
+ ]
+ 96% is the delivery threshold that contracts are required to meet in order to be paid in full. If they deliver below this, they will be in clawback.
  ]
 
 [Return to contents](#contents)
