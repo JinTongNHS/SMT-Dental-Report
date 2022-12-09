@@ -1,3 +1,10 @@
+library(tidyverse)
+library(readxl)
+library(DBI)
+
+source("R/02 format_data_functions/pull_UDA_scheduled_historical_data.R")
+historical_UDA_scheduled_data <- pull_UDA_scheduled_historical_data()
+STP_ICB_lookup_codes <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/STP_ICB_lookup_codes.xlsx")
 national_acorn <- read_csv("data/Acorn/national_acorn.csv")
 X2018_icb_npop_2022_11_02 <- read_csv("data/Acorn/2018_icb_npop_2022-11-02.csv")
 X2019_icb_npop_2022_11_02 <- read_csv("data/Acorn/2019_icb_npop_2022-11-02.csv")
