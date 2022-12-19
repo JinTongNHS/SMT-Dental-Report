@@ -1,7 +1,7 @@
 ################################################################################
 #function to get dental data into the right format for slide 4
 get_delivery_data <- function(data = UDA_scheduled_data,
-                              calendar_data = UDA_calendar_data,
+                              #calendar_data = UDA_calendar_data,
                               remove_prototypes = T,
                               UDAorUOA = "UDA",
                               all_regions_and_STPs = F,
@@ -19,15 +19,15 @@ get_delivery_data <- function(data = UDA_scheduled_data,
       filter(annual_contracted_UOA > 0)
   }
   
-  if(renameColumns){
-    #add a region column to the data
-    region_STP_lookup <- calendar_data %>%
-      select(commissioner_name, region_name) %>%
-      distinct()
-    
-    data <- left_join(data, region_STP_lookup, by = c("commissioner_name"))
-  }
-  
+  # if(renameColumns){
+  #   #add a region column to the data
+  #   region_STP_lookup <- calendar_data %>%
+  #     select(commissioner_name, region_name) %>%
+  #     distinct()
+  #   
+  #   data <- left_join(data, region_STP_lookup, by = c("commissioner_name"))
+  # }
+  # 
   if(all_regions_and_STPs){
     
     data <- data %>%

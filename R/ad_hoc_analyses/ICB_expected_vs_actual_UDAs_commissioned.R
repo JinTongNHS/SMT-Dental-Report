@@ -45,13 +45,13 @@ national_npop_udas <- national_npop_udas %>%
 icb_npop_comparison <- icb_npop %>%
   filter(gender %in% c(1,2)) %>%
   left_join(national_npop_udas, by = c("gender", "acorn_category", "age_band")) %>%
-  mutate(expected_UDAs_commissioned = national_UDAs_delivered_per_head_of_population_segment * npop)
+  mutate(expected_UDAs_delivered = national_UDAs_delivered_per_head_of_population_segment * npop)
 
 #sum across all population segments for each ICB
-icb_expected_UDAs_commissioned <- icb_npop_comparison %>%
+icb_expected_UDAs_delivered <- icb_npop_comparison %>%
   group_by(year, icb) %>%
   summarise(npop = sum(npop),
-            expected_UDAs_commissioned = sum(expected_UDAs_commissioned, na.rm = TRUE))
+            expected_UDAs_delivered = sum(expected_UDAs_delivered, na.rm = TRUE))
 
 #Join in commissioner codes 
 ICB_code_lookup <- STP_ICB_lookup_codes %>%
@@ -66,10 +66,10 @@ icb_actual_UDAs_commissioned_and_delivered <- historical_UDA_scheduled_data %>%
   left_join(ICB_code_lookup, by = "commissioner_name")
 
 #compare actual figures with expected
-icb_expected_vs_actual_UDAs_commissioned <- icb_expected_UDAs_commissioned %>%
+icb_expected_vs_actual_UDAs_commissioned <- icb_expected_UDAs_delivered %>%
   left_join(icb_actual_UDAs_commissioned_and_delivered, by = c("year", "icb")) %>%
-  mutate(actual_UDAs_commissioned_divided_by_expected_UDAs_commissioned = annual_contracted_UDA / expected_UDAs_commissioned) %>%
-  mutate(actual_UDAs_delivered_divided_by_expected_UDAs_commissioned = UDA_delivered / expected_UDAs_commissioned)
+  #mutate(actual_UDAs_commissioned_divided_by_expected_UDAs_delivered = annual_contracted_UDA / expected_UDAs_delivered) %>%
+  mutate(actual_UDAs_delivered_divided_by_expected_UDAs_delivered = UDA_delivered / expected_UDAs_delivered)
 
 
   

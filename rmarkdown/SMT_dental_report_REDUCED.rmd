@@ -17,6 +17,7 @@ output:
 
 ```{r setup, include=FALSE}
 
+
 library(tidyverse)
 library(readxl)
 library(DBI)
@@ -29,10 +30,10 @@ for (f in list.files(path = "../R/03 plot_functions/", pattern="*.R$")) {
     source(paste0("../R/03 plot_functions/", f))
 }
 
+#source in all files from format data folder
 for (f in list.files(path = "../R/02 format_data_functions/", pattern="*.R$")) {
     source(paste0("../R/02 format_data_functions/", f))
 }
-
 
 #pull data from NCDR
 UDA_calendar_data <- pull_UDA_calendar_data()
@@ -50,21 +51,15 @@ UOA_calendar_data <- UOA_calendar_data %>%
   rename(month = data_month) %>%
   mutate(contract_number = as.numeric(contract_number),
          UOA_total = as.numeric(UOA_total)) 
-    #add a region column to the data
-    region_STP_lookup <- UDA_calendar_data %>%
-      select(contract_number, name_or_company_name, commissioner_name, region_name) %>%
-      distinct()
-    
-UOA_calendar_data <- left_join(UOA_calendar_data, region_STP_lookup, by = c("contract_number", "name_or_company_name", "commissioner_name"))
+
 UDA_scheduled_data <- rename(UDA_scheduled_data, month = data_month)
 UOA_scheduled_data <- rename(UOA_scheduled_data, month = data_month)
 
+UDA_scheduled_data <- mutate(UDA_scheduled_data, month = as.Date(month))
+UOA_scheduled_data <- mutate(UOA_scheduled_data, month = as.Date(month))
+
 #sort out STP ICB changes
 STP_ICB_lookup_codes <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/STP_ICB_lookup_codes.xlsx")
-UDA_scheduled_data <- correct_STP_ICBs(UDA_scheduled_data, output = "UDA scheduled")
-UDA_calendar_data <- correct_STP_ICBs(UDA_calendar_data, output = "UDA calendar")
-UOA_scheduled_data <- correct_STP_ICBs(UOA_scheduled_data, output = "UOA scheduled")
-UOA_calendar_data <- correct_STP_ICBs(UOA_calendar_data, output = "UOA calendar")
 
 #Read local 111 file
 dental_data_111 <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/111_pathways_data/dental_data_111.xlsx")
@@ -82,7 +77,7 @@ unique_patients_rolling <- pull_unique_patients_data()
 dental_recalls_STP_2018_22 <- readRDS("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/dental_recalls_STP_2018_22.rds")
 
 #read in CDS data
-CDS_data <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/CDS/CDS_Data_July22.xlsx")
+CDS_data <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/CDS/CDS_data_Oct22.xlsx")
 
 #read in hand backs data
 contract_handbacks <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/contract_handbacks.xlsx")
@@ -118,7 +113,7 @@ xaringanExtra::use_panelset()
 .panel[.panel-name[National]
 ```{r UDA_activity_Calendar1, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
 plot_UDA_UOA_delivery(data = UDA_scheduled_data, 
-                                  calendar_data = UDA_calendar_data,
+                                  
                                   historic_data = historical_UDA_scheduled_data,
                                   UDAorUOA = "UDA",
                                   level = "National",
@@ -137,7 +132,7 @@ plot_UDA_UOA_delivery(data = UDA_scheduled_data,
 .panel[.panel-name[Regions]
 ```{r UDA_activity_Calendar9, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
 plot_UDA_UOA_delivery_all_regions(data = UDA_scheduled_data, 
-                                              calendar_data = UDA_calendar_data,
+                                              
                                               historic_data = historical_UDA_scheduled_data,
                                               UDAorUOA = "UDA",
                                               level = "National",
@@ -166,7 +161,7 @@ xaringanExtra::use_panelset()
 
 .panel[.panel-name[National]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_MY_cat(calendar_data = UDA_calendar_data,
+plot_UDA_UOA_delivery_MY_cat(
                              data = UDA_scheduled_data,
                                   contractor_cats = contractor_categories,
                                   UDAorUOA = "UDA",
@@ -197,7 +192,7 @@ xaringanExtra::use_panelset()
 .panel[.panel-name[National]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
-                                  calendar_data = UDA_calendar_data,
+                                  
                                   UDAorUOA = "UDA",
                                   level = "National",
                                   region_STP_name = NULL)
@@ -256,7 +251,7 @@ xaringanExtra::use_panelset()
  .panel[.panel-name[National]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
-                          calendar_data = UDA_calendar_data,
+                          
                           UDAorUOA = "UDA",
                           level = "National",
                           region_STP_name = NULL,
@@ -287,7 +282,7 @@ xaringanExtra::use_panelset()
  .panel[.panel-name[National]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_UDA_UOA_delivery(data = UOA_scheduled_data, 
-                                  calendar_data = UOA_calendar_data,
+                                  
                                   historic_data = historical_UDA_scheduled_data,
                                   UDAorUOA = "UOA",
                                   level = "National",
@@ -299,7 +294,7 @@ plot_UDA_UOA_delivery(data = UOA_scheduled_data,
 ```
 
 * This graph shows the average monthly performance of the
-**`r get_num_contracts(data = UOA_scheduled_data, remove_prototypes = T, calendar_data = UOA_calendar_data, UDAorUOA = "UOA", level = "National", region_STP_name = NULL)`**
+**`r get_num_contracts(data = UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "National", region_STP_name = NULL)`**
 GDS/PDS contracts scaled up by 12 months measured against the delivery thresholds (80% for Apr-Sep 21, 85% for Oct-Dec, 90% for Jan-Mar, 100% for Apr-Jun 22).
 
  ]
@@ -320,7 +315,7 @@ xaringanExtra::use_panelset()
  .panel[.panel-name[National]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data, 
-                                              calendar_data = UOA_calendar_data,
+                                              
                                               UDAorUOA = "UOA", 
                                               level = "National",
                                               region_STP_name = NULL,
@@ -329,13 +324,13 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data,
                                               remove_prototypes = TRUE)
 ```
 
-* This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, "UOA", level = "National", region_STP_name = NULL)`**
+* This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UDAorUOA = "UOA", level = "National", region_STP_name = NULL)`**
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
 * From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, UDAorUOA = "UOA", level = "National", region_STP_name = NULL)`**
+**`r get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UDAorUOA = "UOA", level = "National", region_STP_name = NULL)`**
 contracts (
-**`r round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, UDAorUOA = "UOA", level = "National", region_STP_name = NULL)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UOA_calendar_data, "UOA", level = "National", region_STP_name = NULL))` %**
+**`r round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UDAorUOA = "UOA", level = "National", region_STP_name = NULL)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UDAorUOA = "UOA", level = "National", region_STP_name = NULL))` %**
 ) have delivered the required UOAs or more to be on track towards the Q2 threshold (100%) by the end of September 2022.
 
  ]
@@ -356,7 +351,7 @@ xaringanExtra::use_panelset()
  .panel[.panel-name[National]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_UDA_UOA_delivery_profile(data = UOA_scheduled_data,
-                          calendar_data = UOA_calendar_data,
+                          
                           UDAorUOA = "UOA",
                           level = "National",
                           region_STP_name = NULL)
@@ -385,7 +380,7 @@ xaringanExtra::use_panelset()
  .panel[.panel-name[National]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_urgent_form_submissions(data = UDA_scheduled_data,
-                calendar_data = UDA_calendar_data,
+                
                 historic_data = historical_UDA_scheduled_data,
                 remove_prototypes = TRUE,
                 level = "National",

@@ -76,6 +76,7 @@ import_clean_combine_upload_all_data <- function(raw_UDA_scheduled_data_folder_p
 ################################################################################
 upload_delivery_data <- function(calendar_data = UDA_calendar_data,  
                                  scheduled_data = UDA_scheduled_data,
+                                 historic_data = historical_UDA_scheduled_data,
                                  lookup = STP_ICB_lookup_codes){
 
   UDA_delivery_calendar <- get_delivery_data_calendar(calendar_data = calendar_data,  
@@ -87,8 +88,7 @@ upload_delivery_data <- function(calendar_data = UDA_calendar_data,
                                                       cat_lines = F, 
                                                       renameColumns = T)
 
-  UDA_delivery_scheduled <- get_delivery_data(data = scheduled_data,
-                                               calendar_data = calendar_data,
+  UDA_delivery_scheduled <- get_delivery_data(data = bind_rows(scheduled_data, historic_data),
                                                remove_prototypes = T,
                                                UDAorUOA = "UDA",
                                                all_regions_and_STPs = T,
@@ -128,13 +128,14 @@ upload_delivery_data <- function(calendar_data = UDA_calendar_data,
 
 #This is the table used for SOF
 ################################################################################
-update_SOF_table_S109 <- function(calendar_data = UDA_calendar_data,  
-                                  scheduled_data = UDA_scheduled_data,
+update_SOF_table_S109 <- function(scheduled_data = UDA_scheduled_data,
+                                  historic_data = historical_UDA_scheduled_data,
                                   lookup = STP_ICB_lookup_codes){
+  
+  scheduled_data <- bind_rows(scheduled_data, historic_data)
   
   #wide_data <- pull_PCDID_data()
   UDA_delivery_scheduled <- get_delivery_data(data = scheduled_data,
-                                              calendar_data = calendar_data,
                                               remove_prototypes = T,
                                               UDAorUOA = "UDA",
                                               all_regions_and_STPs = T,
@@ -179,9 +180,10 @@ update_SOF_table_S109 <- function(calendar_data = UDA_calendar_data,
   #append latest data to table in NCDR
   #[NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[SOF_S109a]
   con <- dbConnect(odbc::odbc(), "NCDR")
-  
+
   dbWriteTable(con, Id(catalog="NHSE_Sandbox_PrimaryCareNHSContracts",schema="Dental",table="SOF_S109a"),
                value = SOF_data, row.names = FALSE, append = TRUE)
+
 }
 
 ################################################################################
