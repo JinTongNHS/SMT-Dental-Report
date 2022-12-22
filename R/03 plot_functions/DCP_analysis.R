@@ -1,19 +1,20 @@
+# 
+# getwd()
+# setwd("N:/_Everyone/Mohammed_Emran/New_indicators_DPC/DPC")
 library (tidyverse)
 ##library(readxl)
 library(DBI)
 library(odbc)
-##library(reactable) #make sure you have the latest version by doing install.packages("reactable")
-##library(downloadthis)
 ##library(scales)
 library(formattable)
 ##library(stringr)
 
+###UDA data
 
-UDA_scheduled_delivery_pull <- function(){
+UDA_scheduled_data_pull <- function(){
   
   con <- dbConnect(odbc::odbc(), "NCDR")
-  sql <- "SELECT * FROM [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UDA_scheduled]
---where [data_month] = '2022-10-01'"
+  sql <- "SELECT * FROM [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UDA_scheduled]"
   
   result <- dbSendQuery (con, sql)
   UDA_deliver_all <- dbFetch(result)
@@ -21,33 +22,61 @@ UDA_scheduled_delivery_pull <- function(){
   UDA_deliver_all
 }
 
+UDA_scheduled_data <- UDA_scheduled_data_pull () %>%
+  filter(data_month >= as.Date("2022-10-01")) %>%
+  rename (Month = data_month)
+###filter(data_month == max(UDA_scheduled_data$data_month))
 
-UDA_scheduled_delivery <- UDA_scheduled_delivery_pull () 
+###DCP data
 
-UDA_scheduled_delivery <- UDA_scheduled_delivery %>%
-  filter(data_month == max(UDA_scheduled_delivery$data_month))
+dcp_data_pull <- function(){
+  con <- dbConnect(odbc::odbc(), "NCDR")
+  sql <- "SELECT * FROM [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[DCP]"
+  result <- dbSendQuery (con, sql)
+  DCP_all <- dbFetch(result)
+  dbClearResult(result)
+  DCP_all
+}
 
-dcp_main <- read.csv("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/DCP_data/DPC_v1_Oct_2022.csv") 
+dcp_main_new <- dcp_data_pull () %>%
+  rename (Contract_Number = "Contract Number",
+          Contract.Type = "Contract Type",
+          Name.or.Company.Name = "Name or Company Name", commissioner_name = "Commissioner Name", 
+          Paid.by.BSA ="Paid by BSA", Contract.Start.Date = "Contract Start Date", 
+          Contract.End.Date = "Contract End Date",  DCP_description = "DCP Description",
+          UDA_Delivered_Current_Year =  "@{pv_mth} UDA Delivered Current Year",               
+          FP17_Current_Year_total = "@{pv_mth} General FP17s Current Year", 
+          UDA_Delivered_Previous.Year_NN = "@{pv_mth} UDA Delivered Previous Year", 
+          General.FP17s.Previous.Year_NN = "@{pv_mth} General FP17s Previous Year", 
+          Band_1._UDA = "UDA - Band 1 @{pv_mth} (Current Year)",          
+          Band_2._UDA = "UDA - Band 2 @{pv_mth} (Current Year)" ,        
+          Band_3._UDA = "UDA - Band 3 @{pv_mth} (Current Year)",
+          Urgent_UDA = "UDA - Urgent @{pv_mth} (Current Year)",
+          other_UDA = "UDA - Other (General) @{pv_mth} (Current Year)", 
+          FP17_Current_Year_B1= "FP17s - Band 1 @{pv_mth} (Current Year)",       
+          FP17_Current_Year_B2 = "FP17s - Band 2 @{pv_mth} (Current Year)",       
+          FP17_Current_Year_B3 = "FP17s - Band 3 @{pv_mth} (Current Year)",       
+          FP17_Current_Year_urgent = "FP17s - Band Urgent @{pv_mth} (Current Year)",
+          FP17_Current_Year_other= "FP17s - Band Other @{pv_mth} (Current Year)")
+
+###colnames(dcp_main_new)
+###dcp_main <- read.csv("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/DCP_data/DPC_v1_Oct_2022.csv") 
 
 
-###setwd("N:/_Everyone/Mohammed_Emran/New_indicators_DPC")
-
-delivery_total <-  UDA_scheduled_delivery %>% 
-  group_by(data_month) %>%
+delivery_total <-  UDA_scheduled_data %>% 
+  group_by(Month) %>%
   dplyr::summarise( total_FP17 = sum(general_FP17s, na.rm = TRUE),
                     total_B1 = sum(UDA_band_1, na.rm = TRUE),
                     total_B2 = sum(UDA_band_2, na.rm = TRUE),
                     total_B3 = sum(UDA_band_3, na.rm = TRUE),
                     total_urgent = sum(UDA_urgent, na.rm = TRUE)) %>%
   mutate (DCP_description = "Total_dentist_only_and_DCP_assisted") %>%
-  select (DCP_description, total_FP17,total_B1, total_B2, total_B3, total_urgent)
+  select (Month, DCP_description, total_FP17,total_B1, total_B2, total_B3, total_urgent)
 
-###write.csv(UDA_scheduled_delivery, "N:/_Everyone/Mohammed_Emran/New_indicators_DPC/delivery_total_october.csv")
-
-
+###write.csv(UDA_scheduled_data, "N:/_Everyone/Mohammed_Emran/New_indicators_DPC/delivery_total_october.csv")
 ###UDA Chart
-pull_dcp<- dcp_main %>%
-  group_by(DCP_description) %>%
+pull_dcp<- dcp_main_new %>%
+  group_by(Month, DCP_description) %>%
   summarise (total_FP17 = sum(FP17_Current_Year_total, na.rm = TRUE),
              total_B1 = sum(Band_1._UDA, na.rm = TRUE),
              total_B2 = sum(Band_2._UDA, na.rm = TRUE),
@@ -57,73 +86,85 @@ pull_dcp<- dcp_main %>%
 dcp_summary <- pull_dcp %>%
   mutate(DCP_description=replace(DCP_description, DCP_description== "Hygienist", "Hygienist_assisted"),
          DCP_description=replace(DCP_description, DCP_description== "Therapist", "Therapist_assisted"),
-         DCP_description=replace(DCP_description, DCP_description== "Dental Nurse", "Dental_Nurse_assisted")) %>%
+         DCP_description=replace(DCP_description, DCP_description== "Dental Nurse", "Dental_Nurse_assisted"),
+         DCP_description=replace(DCP_description, DCP_description== "Clinical Technician", "Clinical_Technician_assisted")) %>%
   mutate_if(is.numeric, round, 0)
 
-joined <- rbind(dcp_summary, delivery_total) %>%mutate_if(is.numeric, round, 2)
 
-test_UDA <- group_by(joined, DCP_description) %>%
-  mutate (Assisted_FP17_Percentage = 
-            formattable::percent (total_FP17 / joined %>% with(total_FP17[DCP_description == 'Total_dentist_only_and_DCP_assisted']), digits=2))%>%
-  mutate (Assisted_B1_Percentage = 
-            formattable::percent (total_B1 / joined %>% with(total_B1[DCP_description == 'Total_dentist_only_and_DCP_assisted']), digits=2)) %>%
-  mutate (Assisted_B2_Percentage = 
-            formattable::percent (total_B2  / joined %>% with(total_B2[DCP_description == 'Total_dentist_only_and_DCP_assisted']), digits=2)) %>%
-  mutate (Assisted_B3_Percentage = 
-            formattable::percent (total_B3  / joined %>% with(total_B3[DCP_description == 'Total_dentist_only_and_DCP_assisted']), digits=2)) %>%
-  mutate (Assisted_Urgent_Percentage = 
-            formattable::percent (total_urgent   / joined %>% with(total_urgent[DCP_description == 'Total_dentist_only_and_DCP_assisted']), digits=2)) %>%
-  select(DCP_description, Assisted_B1_Percentage, Assisted_B2_Percentage, Assisted_B3_Percentage, Assisted_Urgent_Percentage)
+##colnames(dcp_summary_longer)
+##colnames (delivery_total_longer)
+dcp_summary_longer <- dcp_summary %>% pivot_longer (
+  cols = starts_with("total"),
+  names_to = "Bands",
+  names_prefix = "dcp",
+  values_to = "numbers",
+  values_drop_na = TRUE
+) 
+
+delivery_total_longer <- delivery_total %>% pivot_longer(
+  cols = starts_with("total"),
+  names_to = "Bands",
+  names_prefix = "dcp",
+  values_to = "all_numbers",
+  values_drop_na = TRUE
+)
+
+all_lookup <- left_join(dcp_summary_longer, delivery_total_longer, by = 
+                          c("Month"="Month", "Bands"="Bands"))
+total<- all_lookup %>% 
+  mutate (asissted_percent = formattable::percent (numbers / all_numbers, digits=2))
+
+filtered_data_UDA = filter(total, Bands %in% c("total_B1",	"total_B2",	"total_B3", "total_urgent")) %>%
+  select(Month, "DCP_description.x", "Bands", "asissted_percent") %>%
+  rename (DCP_description = DCP_description.x) %>%
+  mutate(Month = strftime(Month, "%B-%y"))
+
+UDA_plot <- ggplot(filtered_data_UDA, aes(x=DCP_description, y= asissted_percent, fill= Bands)) +
+  geom_bar(stat="identity") +
+  facet_grid(cols = vars(Month), labeller = label_value) +
+  theme_minimal()  +
+  geom_text(aes(label= asissted_percent),hjust=0.5, 
+            size=3.5,check_overlap = TRUE,
+            position = position_stack(vjust = 0.6)) +
+  ##theme(axis.text.x = element_text(angle = -90)) +
+  scale_fill_manual(values = c("#009E73", "#F0E442", "#D55E00", "#CC79A7"),
+                    labels = c("Band 1", "Band 2", "Band 3", "Urgent")) +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = -90))+
+  labs(title = "Percentage of total UDAs delivered which had DCP* assistance by band",
+       ## subtitle = paste0(subtitle, ": ",format(data_month, "%b-%Y")),
+       x = "DCP description",
+       y = "Percentage of total UDAs delivered",
+       fill = "Band",
+       caption = "*Dental Care Practitioner")
+
+UDA_plot
+
+filtered_data_FP17 = filter(total, Bands %in% c("total_FP17")) %>% 
+  select("Month", "DCP_description.x", "Bands", "asissted_percent") %>%
+  rename ( Percent_of_FP17 = Bands, DCP_description = DCP_description.x) %>%
+  mutate(Month = strftime(Month, "%B-%y"))
 
 
+# filtered_data_FP17 = filter(total, Bands %in% c("total_B1",	"total_B2",	"total_B3", "total_urgent")) %>%
+#   select(Month, "DCP_description.x", "Bands", "asissted_percent") %>%
+#   rename (DCP_description = DCP_description.x) %>%
 
-data_long_UDA <- pivot_longer(test_UDA, cols = -DCP_description, 
-                              names_to = 'UDAs_in_Bands', 
-                              values_to = 'UDAs')
 
-filtered_data_UDA <- dplyr::filter(data_long_UDA, DCP_description %in% c("Dental_Nurse_assisted", "Hygienist_assisted", 
-                                                                         "Therapist_assisted"))
-
-plot_1 <- filtered_data_UDA %>%  ggplot(aes(fill = UDAs_in_Bands , y = UDAs, x = DCP_description)) +
-  geom_bar(stat = "identity", position = "dodge") +
-  geom_text(aes(label = UDAs),
-            colour = "black",
+FP17_plot <- ggplot(filtered_data_FP17, aes(x=DCP_description, y= asissted_percent)) +
+  geom_bar(stat="identity", position = "dodge", fill = "steelblue") +
+  facet_grid(cols = vars(Month), labeller = label_value) +
+  geom_text(aes(label = asissted_percent), 
+            colour = "black", size= 3.5,
             position = position_dodge(width = 1), vjust=-0.25) +
+  ##scale_y_continuous(labels = scales::percent) +
   theme(legend.position="bottom") +
-  ##coord_flip() +
-  ggtitle("Percentage of Bandwise DCP Assisted UDAs in October 2022") 
-# +
-#   theme(axis.title.x=element_blank(),
-#         axis.text.x=element_blank(),
-#         axis.ticks.x=element_blank())
-plot_1
+  theme_bw() + theme(axis.text.x = element_text(angle = -90)) +
+  labs(title = "Percentage of total Courses of Treatment (CoTs) delivered which had DCP* assistance",
+       ##subtitle = paste0(subtitle, ": ", format(data_month, "%b-%Y")),
+       x = "DCP description",
+       y = "Percentage of total CoTs delivered",
+       caption = "*Dental Care Practitioner")
 
-
-
-test_FP17 <- group_by(joined, DCP_description) %>%
-  mutate (Assisted_FP17_Percentage = 
-            formattable::percent (total_FP17 / joined %>% with(total_FP17[DCP_description == 'Total_dentist_only_and_DCP_assisted']), digits=2)) %>%
-  select(DCP_description, Assisted_FP17_Percentage)
-
-
-
-data_long_FP17 <- pivot_longer(test_FP17, cols = -DCP_description, 
-                               names_to = 'UDAs_in_Bands', 
-                               values_to = 'UDAs')
-
-filtered_data_FP17 <- dplyr::filter(data_long_FP17, DCP_description %in% c("Dental_Nurse_assisted", "Hygienist_assisted", 
-                                                                           "Therapist_assisted"))
-
-plot_2 <- filtered_data_FP17 %>%  ggplot(aes(fill = UDAs_in_Bands , y = UDAs, x = DCP_description)) +
-  geom_bar(stat = "identity", position = "dodge") +
-  geom_text(aes(label = UDAs),
-            colour = "black",
-            position = position_dodge(width = 1), vjust=-0.25) +
-  theme(legend.position="bottom") +
-  ##coord_flip() +
-  ggtitle("Percentage of DCP Assisted Course of Treatement in October 2022") 
-# +
-#   theme(axis.title.x=element_blank(),
-#         axis.text.x=element_blank(),
-#         axis.ticks.x=element_blank())
-plot_2
+FP17_plot
+UDA_plot
