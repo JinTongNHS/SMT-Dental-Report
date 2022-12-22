@@ -87,3 +87,5 @@ get_UDA_projection_data <- function(data = UDA_scheduled_data,
            UDA_finanical_value, cost_per_UDA, everything())
   
 }
+
+report <- get_UDA_projection_data()
