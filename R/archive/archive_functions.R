@@ -1796,3 +1796,125 @@ import_and_clean_scheduled_UOA_data <- function(data_path = "data/raw_data/dashb
   #mutate(UOA_financial_half_target = if_else(data_month >= as.Date("2021-10-01"), annual_contracted_UOA * 0.65 /2, UOA_financial_half_target))
   
 }
+
+
+###############################################################################
+#function to import and clean data
+#N.B. this assumes that the columns are in the same order each time!
+import_and_clean_historical_scheduled_data <- function(data_path = "data/raw_data/dashboard_raw_data/UDA_calendar_raw_data/UDA_calendar_Apr_Aug21.xlsx"){
+  
+  #read in data with correct types and removing top 6 rows and renaming columns 
+  data <- read_excel("data/historical_UDA_scheduled_data.xlsx", 
+                     sheet = "Sheet6", 
+                     skip = 2,
+                     .name_repair = ~ paste0("X__", seq_along(.x)))
+  
+  
+  #add column for date and rename columns, split data for just april
+  data_apr <- data %>%
+    mutate(data_month = as.Date("2020-04-01")) %>%
+    select(data_month, X__1, 
+           X__2, X__3, X__4, X__5, X__6) %>%
+    rename(contract_number = X__1,
+           band1_FP17 = X__2,
+           band2_FP17 = X__3,
+           band3_FP17 = X__4,
+           other_FP17 = X__5,
+           urgent_FP17 = X__6
+    ) 
+  
+  #add column for date and rename columns, split data for just may
+  data_may <- data %>%
+    mutate(data_month = as.Date("2020-05-01")) %>%
+    select(data_month, X__1, 
+           X__7, X__8, X__9, X__10, X__11) %>%
+    rename(contract_number = X__1,
+           band1_FP17 = X__7,
+           band2_FP17 = X__8,
+           band3_FP17 = X__9,
+           other_FP17 = X__10,
+           urgent_FP17 = X__11
+    )
+  
+  #add column for date and rename columns, split data for just june
+  data_jun <- data %>%
+    mutate(data_month = as.Date("2020-06-01")) %>%
+    select(data_month, X__1, 
+           X__12, X__13, X__14, X__15, X__16) %>%
+    rename(contract_number = X__1,
+           band1_FP17 = X__12,
+           band2_FP17 = X__13,
+           band3_FP17 = X__14,
+           other_FP17 = X__15,
+           urgent_FP17 = X__16
+    )
+  
+  #add column for date and rename columns, split data for just july
+  data_jul <- data %>%
+    mutate(data_month = as.Date("2020-07-01")) %>%
+    select(data_month, X__1, 
+           X__17, X__18, X__19, X__20, X__21) %>%
+    rename(contract_number = X__1,
+           band1_FP17 = X__17,
+           band2_FP17 = X__18,
+           band3_FP17 = X__19,
+           other_FP17 = X__20,
+           urgent_FP17 = X__21
+    )
+  
+  #add column for date and rename columns, split data for just august
+  data_aug <- data %>%
+    mutate(data_month = as.Date("2020-08-01")) %>%
+    select(data_month, X__1, 
+           X__22, X__23, X__24, X__25, X__26) %>%
+    rename(contract_number = X__1,
+           band1_FP17 = X__22,
+           band2_FP17 = X__23,
+           band3_FP17 = X__24,
+           other_FP17 = X__25,
+           urgent_FP17 = X__26
+    )
+  
+  #add column for date and rename columns, split data for just september
+  data_sep <- data %>%
+    mutate(data_month = as.Date("2020-09-01")) %>%
+    select(data_month, X__1, 
+           X__27, X__28, X__29, X__30, X__31) %>%
+    rename(contract_number = X__1,
+           band1_FP17 = X__27,
+           band2_FP17 = X__28,
+           band3_FP17 = X__29,
+           other_FP17 = X__30,
+           urgent_FP17 = X__31
+    )
+  
+  #add column for date and rename columns, split data for just october
+  data_oct <- data %>%
+    mutate(data_month = as.Date("2020-10-01")) %>%
+    select(data_month, X__1, 
+           X__32, X__33, X__34, X__35, X__36) %>%
+    rename(contract_number = X__1,
+           band1_FP17 = X__32,
+           band2_FP17 = X__33,
+           band3_FP17 = X__34,
+           other_FP17 = X__35,
+           urgent_FP17 = X__36
+    )
+  
+  #add column for date and rename columns, split data for just november
+  data_nov <- data %>%
+    mutate(data_month = as.Date("2020-11-01")) %>%
+    select(data_month, X__1, 
+           X__37, X__38, X__39, X__40, X__41) %>%
+    rename(contract_number = X__1,
+           band1_FP17 = X__37,
+           band2_FP17 = X__38,
+           band3_FP17 = X__39,
+           other_FP17 = X__40,
+           urgent_FP17 = X__41
+    )
+  historical_UDA_scheduled_data <- bind_rows(data_apr, data_may, data_jun, data_jul, data_aug, 
+                                             data_sep, data_oct, data_nov)
+  
+}
+

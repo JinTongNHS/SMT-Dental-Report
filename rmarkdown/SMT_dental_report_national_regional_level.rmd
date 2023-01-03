@@ -3987,9 +3987,9 @@ plot_DCP_analysis(data = UDA_scheduled_data,
 ```
 
 
+] 
 ]
-N.B. This data has only been collected since October 2022 and may take a few months for contractors to get used to reporting on DCP assisted courses of treatment. 
-]
+N.B. This data has only been collected since October 2022 and may take a few months for contractors to get used to reporting on DCP assisted courses of treatment.
 
 [Return to contents](#contents)
 

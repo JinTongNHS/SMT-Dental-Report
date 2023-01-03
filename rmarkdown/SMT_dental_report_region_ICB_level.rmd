@@ -29,12 +29,12 @@ library(downloadthis)
 
 #source in all file from plot folder
 for (f in list.files(path = "../R/03 plot_functions/", pattern="*.R$")) {
-    source(paste0("../R/03 plot_functions/", f))
+  source(paste0("../R/03 plot_functions/", f))
 }
 
 #source in all files from format data folder
 for (f in list.files(path = "../R/02 format_data_functions/", pattern="*.R$")) {
-    source(paste0("../R/02 format_data_functions/", f))
+  source(paste0("../R/02 format_data_functions/", f))
 }
 
 #pull data from NCDR

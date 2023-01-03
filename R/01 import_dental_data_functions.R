@@ -2,6 +2,7 @@ library(tidyverse)
 library(readxl)
 library(DBI)
 library(odbc)
+STP_ICB_lookup_codes <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/STP_ICB_lookup_codes.xlsx")
 
 ################################################################################
 import_clean_combine_upload_all_data <- function(raw_UDA_scheduled_data_folder_path = "N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/raw_eDEN_dental_data/UDA_scheduled_raw_data/",
@@ -249,7 +250,12 @@ import_and_clean_scheduled_UDA_data <- function(data_path = "data/raw_data/dashb
                                    "numeric", "numeric", "numeric",
                                    "numeric", "numeric", "numeric",
                                    "numeric", "numeric", "numeric",
-                                   "numeric", "numeric"), 
+                                   "numeric", "numeric",
+                                   
+                                   "numeric", "numeric", "numeric",
+                                   "numeric", "numeric", "numeric",
+                                   "numeric", "numeric", "numeric",
+                                   "numeric", "numeric", "numeric"), 
                      skip = 3,
                      col_names = TRUE,
                      .name_repair = ~ paste0("X__", seq_along(.x)))
@@ -258,7 +264,7 @@ import_and_clean_scheduled_UDA_data <- function(data_path = "data/raw_data/dashb
   # data <- data[1:(nrow(data) - 4),]
   
   #check format of data - manual check should be done to see if columns are in the same order as expected
-  if(ncol(data) != 34){
+  if(ncol(data) != 46){
     print("WARNING: The data you have loaded is not in the usual format. Please check.")
   }
   
@@ -267,9 +273,9 @@ import_and_clean_scheduled_UDA_data <- function(data_path = "data/raw_data/dashb
     mutate(data_month = data_date) %>%
     select(data_month, everything()) %>%
     rename(contract_number = X__1,
-           name_or_company_name = X__3,
-           commissioner_name = X__4,
-           contract_type = X__2,
+           name_or_company_name = X__2,
+           commissioner_name = X__3,
+           contract_type = X__4,
            paid_by_BSA = X__5,
            contract_start_date = X__6,
            contract_end_date = X__7,
@@ -277,18 +283,19 @@ import_and_clean_scheduled_UDA_data <- function(data_path = "data/raw_data/dashb
            annual_contracted_UOA = X__9,
            UDA_delivered = X__11,
            general_FP17s = X__12,
-           UDA_band_1 = X__15,
-           UDA_band_2 = X__16,         
-           UDA_band_3 = X__17,
-           UDA_urgent = X__18,
-           UDA_other = X__19,
-           FP17s_band_1 = X__20,
-           FP17s_band_2 = X__21,
-           FP17s_band_3 = X__22,
-           FP17s_band_urgent = X__23,
-           FP17s_band_other = X__24
+           UDA_band_1 = X__17,
+           UDA_band_2 = X__18,         
+           UDA_band_3 = X__19,
+           UDA_urgent = X__20,
+           UDA_other = X__21,
+           FP17s_band_1 = X__22,
+           FP17s_band_2 = X__23,
+           FP17s_band_3 = X__24,
+           FP17s_band_urgent = X__25,
+           FP17s_band_other = X__26
     ) %>%
-    select(-starts_with("X__"))
+    select(-starts_with("X__")) %>%
+    filter(!is.na(contract_number))
   
   #join in commissioner name
   commissioner_lookup <- commissioner_lookup %>%
@@ -545,8 +552,36 @@ import_and_clean_calendar_UDA_data <- function(data_path = "data/raw_data/dashbo
            total_other_FP17s = X__104
     ) 
   
+  #add column for date and rename columns, split data for just december
+  data_dec <- data %>%
+    mutate(data_month = as.Date("2022-12-01")) %>%
+    select(data_month, X__1, X__2, X__3, X__4, X__5, X__6, X__7, X__8, 
+           X__105, X__106, X__107, X__108, X__109, X__110, X__111, X__112, X__113, X__114, X__115, X__116) %>%
+    rename(contract_number = X__1,
+           latest_contract_type = X__2,
+           name_or_company_name = X__3,
+           commissioner_name = X__4,
+           region_name = X__5,
+           paid_by_BSA = X__6,
+           contract_start_date = X__7, 
+           contract_end_date = X__8, 
+           
+           UDA_total = X__105, 
+           UDA_band_1_total = X__106,
+           UDA_band_2_total = X__107,
+           UDA_band_3_total = X__108, 
+           UDA_urgent_total = X__109, 
+           UDA_other_total = X__110, 
+           total_FP17s = X__111, 
+           total_band_1_FP17s  = X__112,
+           total_band_2_FP17s = X__113,
+           total_band_3_FP17s = X__114,
+           total_urgent_FP17s = X__115,
+           total_other_FP17s = X__116
+    ) 
   
-  UDA_calendar_data <- bind_rows(data_apr, data_may, data_jun, data_jul, data_aug, data_sep, data_oct, data_nov)
+  
+  UDA_calendar_data <- bind_rows(data_apr, data_may, data_jun, data_jul, data_aug, data_sep, data_oct, data_nov, data_dec)
   
   #join in commissioner code
   commissioner_lookup <- commissioner_lookup %>%
@@ -726,7 +761,23 @@ import_and_clean_calendar_UOA_data <- function(data_path = "data/raw_data/dashbo
            UOA_total = X__15
     )
   
-  UOA_calendar_data <- bind_rows(data_apr, data_may, data_jun, data_jul, data_aug, data_sep, data_oct, data_nov)
+  #add column for date and rename columns, split data for just dec
+  data_dec <- data %>%
+    mutate(data_month = as.Date("2022-12-01")) %>%
+    select(data_month, X__1, X__2, X__3, X__4, X__5, X__6, X__7, 
+           X__16) %>%
+    rename(contract_number = X__1,
+           contract_type = X__2,
+           name_or_company_name = X__3,
+           commissioner_name = X__4,
+           paid_by_BSA = X__5,
+           contract_start_date = X__6, 
+           contract_end_date = X__7, 
+           
+           UOA_total = X__16
+    )
+  
+  UOA_calendar_data <- bind_rows(data_apr, data_may, data_jun, data_jul, data_aug, data_sep, data_oct, data_nov, data_dec)
   
   #join in commissioner code
   commissioner_lookup <- commissioner_lookup %>%
@@ -756,7 +807,7 @@ import_and_clean_scheduled_UOA_data <- function(data_path = "data/raw_data/dashb
                                    "numeric", "numeric", "numeric", 
                                    "numeric", "numeric", "numeric", 
                                    "numeric", "numeric", "numeric", 
-                                   "numeric", "numeric", "numeric"), 
+                                   "numeric"), 
                      skip = 3,
                      col_names = TRUE,
                      .name_repair = ~ paste0("X__", seq_along(.x)))
@@ -765,7 +816,7 @@ import_and_clean_scheduled_UOA_data <- function(data_path = "data/raw_data/dashb
   data <- data[1:(nrow(data) - 4),]
   
   #check format of data - manual check should be done to see if columns are in the same order as expected
-  if(ncol(data) != 20){
+  if(ncol(data) != 18){
     print("WARNING: The data you have loaded is not in the usual format. Please check.")
   }
   
@@ -782,17 +833,13 @@ import_and_clean_scheduled_UOA_data <- function(data_path = "data/raw_data/dashb
            contract_end_date = X__7,
            annual_contracted_UOA = X__8,
            annual_contracted_UDA = X__9,
-           #UOA_financial_half_target = X__10, #may need to remove this
-           UOA_delivered = X__19,
-           #UOA_delivered_prev_year = X__12, #may need to remove
-           #UOA_delivered_prev_2_year = X__13, #may need to remove
-           orthodontic_FP17s = X__20, 
-           #orthodontic_FP17s_prev_year = X__15, #remove        
-           #orthodontic_FP17s_prev_2_year = X__16, #remove
+           UOA_delivered = X__11,
+           orthodontic_FP17s = X__14, 
            orthodontic_starts = X__17,
            orthodontic_completions = X__18 
     ) %>%
-    select(-starts_with("X__"))
+    select(-starts_with("X__")) %>%
+    filter(!is.na(contract_number))
   
   #join in commissioner code
   commissioner_lookup <- commissioner_lookup %>%
@@ -805,125 +852,3 @@ import_and_clean_scheduled_UOA_data <- function(data_path = "data/raw_data/dashb
     left_join(commissioner_lookup, by = "commissioner_name")
   
 }
-
-
-################################################################################
-#function to import and clean data
-#N.B. this assumes that the columns are in the same order each time!
-import_and_clean_historical_scheduled_data <- function(data_path = "data/raw_data/dashboard_raw_data/UDA_calendar_raw_data/UDA_calendar_Apr_Aug21.xlsx"){
-  
-  #read in data with correct types and removing top 6 rows and renaming columns 
-  data <- read_excel("data/historical_UDA_scheduled_data.xlsx", 
-                    sheet = "Sheet6", 
-                    skip = 2,
-                    .name_repair = ~ paste0("X__", seq_along(.x)))
-
-  
-  #add column for date and rename columns, split data for just april
-  data_apr <- data %>%
-    mutate(data_month = as.Date("2020-04-01")) %>%
-    select(data_month, X__1, 
-           X__2, X__3, X__4, X__5, X__6) %>%
-    rename(contract_number = X__1,
-           band1_FP17 = X__2,
-           band2_FP17 = X__3,
-           band3_FP17 = X__4,
-           other_FP17 = X__5,
-           urgent_FP17 = X__6
-    ) 
-  
-  #add column for date and rename columns, split data for just may
-  data_may <- data %>%
-    mutate(data_month = as.Date("2020-05-01")) %>%
-    select(data_month, X__1, 
-           X__7, X__8, X__9, X__10, X__11) %>%
-    rename(contract_number = X__1,
-           band1_FP17 = X__7,
-           band2_FP17 = X__8,
-           band3_FP17 = X__9,
-           other_FP17 = X__10,
-           urgent_FP17 = X__11
-    )
-  
-  #add column for date and rename columns, split data for just june
-  data_jun <- data %>%
-    mutate(data_month = as.Date("2020-06-01")) %>%
-    select(data_month, X__1, 
-           X__12, X__13, X__14, X__15, X__16) %>%
-    rename(contract_number = X__1,
-           band1_FP17 = X__12,
-           band2_FP17 = X__13,
-           band3_FP17 = X__14,
-           other_FP17 = X__15,
-           urgent_FP17 = X__16
-    )
-  
-  #add column for date and rename columns, split data for just july
-  data_jul <- data %>%
-    mutate(data_month = as.Date("2020-07-01")) %>%
-    select(data_month, X__1, 
-           X__17, X__18, X__19, X__20, X__21) %>%
-    rename(contract_number = X__1,
-           band1_FP17 = X__17,
-           band2_FP17 = X__18,
-           band3_FP17 = X__19,
-           other_FP17 = X__20,
-           urgent_FP17 = X__21
-    )
-  
-  #add column for date and rename columns, split data for just august
-  data_aug <- data %>%
-    mutate(data_month = as.Date("2020-08-01")) %>%
-    select(data_month, X__1, 
-           X__22, X__23, X__24, X__25, X__26) %>%
-    rename(contract_number = X__1,
-           band1_FP17 = X__22,
-           band2_FP17 = X__23,
-           band3_FP17 = X__24,
-           other_FP17 = X__25,
-           urgent_FP17 = X__26
-    )
-  
-  #add column for date and rename columns, split data for just september
-  data_sep <- data %>%
-    mutate(data_month = as.Date("2020-09-01")) %>%
-    select(data_month, X__1, 
-           X__27, X__28, X__29, X__30, X__31) %>%
-    rename(contract_number = X__1,
-           band1_FP17 = X__27,
-           band2_FP17 = X__28,
-           band3_FP17 = X__29,
-           other_FP17 = X__30,
-           urgent_FP17 = X__31
-    )
-  
-  #add column for date and rename columns, split data for just october
-  data_oct <- data %>%
-    mutate(data_month = as.Date("2020-10-01")) %>%
-    select(data_month, X__1, 
-           X__32, X__33, X__34, X__35, X__36) %>%
-    rename(contract_number = X__1,
-           band1_FP17 = X__32,
-           band2_FP17 = X__33,
-           band3_FP17 = X__34,
-           other_FP17 = X__35,
-           urgent_FP17 = X__36
-    )
-  
-  #add column for date and rename columns, split data for just november
-  data_nov <- data %>%
-    mutate(data_month = as.Date("2020-11-01")) %>%
-    select(data_month, X__1, 
-           X__37, X__38, X__39, X__40, X__41) %>%
-    rename(contract_number = X__1,
-           band1_FP17 = X__37,
-           band2_FP17 = X__38,
-           band3_FP17 = X__39,
-           other_FP17 = X__40,
-           urgent_FP17 = X__41
-    )
-  historical_UDA_scheduled_data <- bind_rows(data_apr, data_may, data_jun, data_jul, data_aug, 
-                                              data_sep, data_oct, data_nov)
-  
-}
-
