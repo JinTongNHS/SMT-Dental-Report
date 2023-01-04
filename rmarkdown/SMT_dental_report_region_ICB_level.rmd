@@ -91,6 +91,8 @@ dental_complaints <- clean_complaints_data(Dental_Access_Complaints_Data_June_22
 #UDA value data
 UDA_values <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/UDA_values.xlsx")
 
+DCP_data <- pull_dcp_data()
+
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 
 #avoid standard form
@@ -313,6 +315,8 @@ name: contents
  * [Banded courses of treatment time series](#banded-cots)
  * [Banded courses of treatment time series as % of 2019 delivery](#banded-cots-index)
  * [Urgent treatment form submissions](#urgent-forms)
+ * [Percentage of CoTs assisted by Dental Care Practitioners (DCPs)](#dcp-fp17)
+ * [Percentage of UDAs assisted by Dental Care Practitioners (DCPs) by band](#dcp-uda)
  * [Unique patients seen rolling 12 months](#unique-patients)
  * [Unique patients seen rolling 12 months as % of April 2018 delivery](#unique-patients-index)
  * [Patient re-attendance intervals](#reattendance)
@@ -4333,6 +4337,282 @@ change from the pre-COVID world.
 
 ]
  ]
+
+[Return to contents](#contents)
+
+---
+
+name: dcp-fp17
+
+### Percentage of CoTs assisted by Dental Care Practitioners (DCPs)
+
+```{r xaringan-panelset-dcp-fp17, echo=FALSE}
+xaringanExtra::use_panelset()
+```
+ <font size="1">
+.panelset[
+
+ .panel[.panel-name[`r region`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
+plot_DCP_analysis(data = UDA_scheduled_data,
+                              dcp_data = DCP_data,
+                              UDA_or_FP17 = "FP17",
+                level = "Regional",
+                region_STP_name = region)
+```
+
+
+ ]
+ .panel[.panel-name[`r STP1`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
+plot_DCP_analysis(data = UDA_scheduled_data,
+                              dcp_data = DCP_data,
+                              UDA_or_FP17 = "FP17",
+                level = "STP",
+                region_STP_name = STP1)
+```
+
+ ]
+ .panel[.panel-name[`r STP2`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
+plot_DCP_analysis(data = UDA_scheduled_data,
+                              dcp_data = DCP_data,
+                              UDA_or_FP17 = "FP17",
+                level = "STP",
+                region_STP_name = STP2)
+```
+
+ ]
+ .panel[.panel-name[`r STP3`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
+plot_DCP_analysis(data = UDA_scheduled_data,
+                              dcp_data = DCP_data,
+                              UDA_or_FP17 = "FP17",
+                level = "STP",
+                region_STP_name = STP3)
+```
+
+ ]
+ .panel[.panel-name[`r STP4`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5, eval = eval4}
+plot_DCP_analysis(data = UDA_scheduled_data,
+                              dcp_data = DCP_data,
+                              UDA_or_FP17 = "FP17",
+                level = "STP",
+                region_STP_name = STP4)
+```
+
+ ]
+ .panel[.panel-name[`r STP5`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5, eval = eval5}
+plot_DCP_analysis(data = UDA_scheduled_data,
+                              dcp_data = DCP_data,
+                              UDA_or_FP17 = "FP17",
+                level = "STP",
+                region_STP_name = STP5)
+```
+
+ ]
+ .panel[.panel-name[`r STP6`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5, eval = eval6}
+plot_DCP_analysis(data = UDA_scheduled_data,
+                              dcp_data = DCP_data,
+                              UDA_or_FP17 = "FP17",
+                level = "STP",
+                region_STP_name = STP6)
+```
+
+ ]
+ .panel[.panel-name[`r STP7`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5, eval = eval7}
+plot_DCP_analysis(data = UDA_scheduled_data,
+                              dcp_data = DCP_data,
+                              UDA_or_FP17 = "FP17",
+                level = "STP",
+                region_STP_name = STP7)
+```
+
+ ]
+ .panel[.panel-name[`r STP8`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5, eval = eval8}
+plot_DCP_analysis(data = UDA_scheduled_data,
+                              dcp_data = DCP_data,
+                              UDA_or_FP17 = "FP17",
+                level = "STP",
+                region_STP_name = STP8)
+```
+
+ ]
+ .panel[.panel-name[`r STP9`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5, eval = eval9}
+plot_DCP_analysis(data = UDA_scheduled_data,
+                              dcp_data = DCP_data,
+                              UDA_or_FP17 = "FP17",
+                level = "STP",
+                region_STP_name = STP9)
+```
+
+ ]
+ .panel[.panel-name[`r STP10`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5, eval = eval10}
+plot_DCP_analysis(data = UDA_scheduled_data,
+                              dcp_data = DCP_data,
+                              UDA_or_FP17 = "FP17",
+                level = "STP",
+                region_STP_name = STP10)
+```
+
+ ]
+ .panel[.panel-name[`r STP11`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5, eval = eval11}
+plot_DCP_analysis(data = UDA_scheduled_data,
+                              dcp_data = DCP_data,
+                              UDA_or_FP17 = "FP17",
+                level = "STP",
+                region_STP_name = STP11)
+```
+
+ ]
+ ]
+ N.B. This data has only been collected since October 2022 and may take a few months for contractors to get used to reporting on DCP assisted courses of treatment. 
+
+[Return to contents](#contents)
+
+---
+
+name: dcp-uda
+
+### Percentage of UDAs assisted by Dental Care Practitioners (DCPs)
+
+```{r xaringan-panelset-dcp-uda, echo=FALSE}
+xaringanExtra::use_panelset()
+```
+ <font size="1">
+.panelset[
+
+ .panel[.panel-name[`r region`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
+plot_DCP_analysis(data = UDA_scheduled_data,
+                              dcp_data = DCP_data,
+                              UDA_or_FP17 = "UDA",
+                level = "Regional",
+                region_STP_name = region)
+```
+
+
+ ]
+ .panel[.panel-name[`r STP1`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
+plot_DCP_analysis(data = UDA_scheduled_data,
+                              dcp_data = DCP_data,
+                              UDA_or_FP17 = "UDA",
+                level = "STP",
+                region_STP_name = STP1)
+```
+
+ ]
+ .panel[.panel-name[`r STP2`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
+plot_DCP_analysis(data = UDA_scheduled_data,
+                              dcp_data = DCP_data,
+                              UDA_or_FP17 = "UDA",
+                level = "STP",
+                region_STP_name = STP2)
+```
+
+ ]
+ .panel[.panel-name[`r STP3`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
+plot_DCP_analysis(data = UDA_scheduled_data,
+                              dcp_data = DCP_data,
+                              UDA_or_FP17 = "UDA",
+                level = "STP",
+                region_STP_name = STP3)
+```
+
+ ]
+ .panel[.panel-name[`r STP4`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5, eval = eval4}
+plot_DCP_analysis(data = UDA_scheduled_data,
+                              dcp_data = DCP_data,
+                              UDA_or_FP17 = "UDA",
+                level = "STP",
+                region_STP_name = STP4)
+```
+
+ ]
+ .panel[.panel-name[`r STP5`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5, eval = eval5}
+plot_DCP_analysis(data = UDA_scheduled_data,
+                              dcp_data = DCP_data,
+                              UDA_or_FP17 = "UDA",
+                level = "STP",
+                region_STP_name = STP5)
+```
+
+ ]
+ .panel[.panel-name[`r STP6`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5, eval = eval6}
+plot_DCP_analysis(data = UDA_scheduled_data,
+                              dcp_data = DCP_data,
+                              UDA_or_FP17 = "UDA",
+                level = "STP",
+                region_STP_name = STP6)
+```
+
+ ]
+ .panel[.panel-name[`r STP7`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5, eval = eval7}
+plot_DCP_analysis(data = UDA_scheduled_data,
+                              dcp_data = DCP_data,
+                              UDA_or_FP17 = "UDA",
+                level = "STP",
+                region_STP_name = STP7)
+```
+
+ ]
+ .panel[.panel-name[`r STP8`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5, eval = eval8}
+plot_DCP_analysis(data = UDA_scheduled_data,
+                              dcp_data = DCP_data,
+                              UDA_or_FP17 = "UDA",
+                level = "STP",
+                region_STP_name = STP8)
+```
+
+ ]
+ .panel[.panel-name[`r STP9`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5, eval = eval9}
+plot_DCP_analysis(data = UDA_scheduled_data,
+                              dcp_data = DCP_data,
+                              UDA_or_FP17 = "UDA",
+                level = "STP",
+                region_STP_name = STP9)
+```
+
+ ]
+ .panel[.panel-name[`r STP10`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5, eval = eval10}
+plot_DCP_analysis(data = UDA_scheduled_data,
+                              dcp_data = DCP_data,
+                              UDA_or_FP17 = "UDA",
+                level = "STP",
+                region_STP_name = STP10)
+```
+
+ ]
+ .panel[.panel-name[`r STP11`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5, eval = eval11}
+plot_DCP_analysis(data = UDA_scheduled_data,
+                              dcp_data = DCP_data,
+                              UDA_or_FP17 = "UDA",
+                level = "STP",
+                region_STP_name = STP11)
+```
+
+ ]
+ ]
+ N.B. This data has only been collected since October 2022 and may take a few months for contractors to get used to reporting on DCP assisted courses of treatment. 
 
 [Return to contents](#contents)
 
