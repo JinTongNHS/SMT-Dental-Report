@@ -99,7 +99,8 @@ health_inequalities_data <- pull_health_inequalities()
 
 missing_contracts_data <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/missing_contract_details.xlsx")
 
-DCP_data_October22 <- read.csv("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/DCP_data/DPC_v1_Oct_2022.csv") 
+#DCP_data <- read.csv("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/DCP_data/DPC_v1_Oct_2022.csv") 
+DCP_data <- pull_dcp_data()
 
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 
@@ -3896,8 +3897,8 @@ xaringanExtra::use_panelset()
 .panel[.panel-name[National]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_DCP_analysis(data = UDA_scheduled_data,
-                              dcp_data = DCP_data_October22,
-                              data_month = as.Date("2022-10-01"),
+                              dcp_data = DCP_data,
+                              
                               UDA_or_FP17 = "FP17",
                               level = "National",
                               region_STP_name = NULL)
@@ -3907,8 +3908,8 @@ plot_DCP_analysis(data = UDA_scheduled_data,
 .panel[.panel-name[South East]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_DCP_analysis(data = UDA_scheduled_data,
-                              dcp_data = DCP_data_October22,
-                              data_month = as.Date("2022-10-01"),
+                              dcp_data = DCP_data,
+                              
                               UDA_or_FP17 = "FP17",
                                   level = "Regional",
                                   region_STP_name = "South East")
@@ -3919,8 +3920,8 @@ plot_DCP_analysis(data = UDA_scheduled_data,
 .panel[.panel-name[South West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_DCP_analysis(data = UDA_scheduled_data,
-                              dcp_data = DCP_data_October22,
-                              data_month = as.Date("2022-10-01"),
+                              dcp_data = DCP_data,
+                              
                               UDA_or_FP17 = "FP17",
                                   level = "Regional",
                                   region_STP_name = "South West")
@@ -3931,8 +3932,8 @@ plot_DCP_analysis(data = UDA_scheduled_data,
 .panel[.panel-name[North West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_DCP_analysis(data = UDA_scheduled_data,
-                              dcp_data = DCP_data_October22,
-                              data_month = as.Date("2022-10-01"),
+                              dcp_data = DCP_data,
+                              
                               UDA_or_FP17 = "FP17",
                                   level = "Regional",
                                   region_STP_name = "North West")
@@ -3943,8 +3944,8 @@ plot_DCP_analysis(data = UDA_scheduled_data,
 .panel[.panel-name[North East and Yorkshire]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_DCP_analysis(data = UDA_scheduled_data,
-                              dcp_data = DCP_data_October22,
-                              data_month = as.Date("2022-10-01"),
+                              dcp_data = DCP_data,
+                              
                               UDA_or_FP17 = "FP17",
                                   level = "Regional",
                                   region_STP_name = "North East and Yorkshire")
@@ -3955,8 +3956,8 @@ plot_DCP_analysis(data = UDA_scheduled_data,
 .panel[.panel-name[London]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_DCP_analysis(data = UDA_scheduled_data,
-                              dcp_data = DCP_data_October22,
-                              data_month = as.Date("2022-10-01"),
+                              dcp_data = DCP_data,
+                              
                               UDA_or_FP17 = "FP17",
                                   level = "Regional",
                                   region_STP_name = "London")
@@ -3967,8 +3968,8 @@ plot_DCP_analysis(data = UDA_scheduled_data,
 .panel[.panel-name[Midlands]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_DCP_analysis(data = UDA_scheduled_data,
-                              dcp_data = DCP_data_October22,
-                              data_month = as.Date("2022-10-01"),
+                              dcp_data = DCP_data,
+                              
                               UDA_or_FP17 = "FP17",
                                   level = "Regional",
                                   region_STP_name = "Midlands")
@@ -3979,8 +3980,8 @@ plot_DCP_analysis(data = UDA_scheduled_data,
 .panel[.panel-name[East of England]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_DCP_analysis(data = UDA_scheduled_data,
-                              dcp_data = DCP_data_October22,
-                              data_month = as.Date("2022-10-01"),
+                              dcp_data = DCP_data,
+                              
                               UDA_or_FP17 = "FP17",
                                   level = "Regional",
                                   region_STP_name = "East of England")
@@ -4008,8 +4009,8 @@ xaringanExtra::use_panelset()
 .panel[.panel-name[National]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_DCP_analysis(data = UDA_scheduled_data,
-                              dcp_data = DCP_data_October22,
-                              data_month = as.Date("2022-10-01"),
+                              dcp_data = DCP_data,
+                              
                               UDA_or_FP17 = "UDA",
                               level = "National",
                               region_STP_name = NULL)
@@ -4019,8 +4020,8 @@ plot_DCP_analysis(data = UDA_scheduled_data,
 .panel[.panel-name[South East]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_DCP_analysis(data = UDA_scheduled_data,
-                              dcp_data = DCP_data_October22,
-                              data_month = as.Date("2022-10-01"),
+                              dcp_data = DCP_data,
+                              
                               UDA_or_FP17 = "UDA",
                                   level = "Regional",
                                   region_STP_name = "South East")
@@ -4031,8 +4032,8 @@ plot_DCP_analysis(data = UDA_scheduled_data,
 .panel[.panel-name[South West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_DCP_analysis(data = UDA_scheduled_data,
-                              dcp_data = DCP_data_October22,
-                              data_month = as.Date("2022-10-01"),
+                              dcp_data = DCP_data,
+                              
                               UDA_or_FP17 = "UDA",
                                   level = "Regional",
                                   region_STP_name = "South West")
@@ -4043,8 +4044,8 @@ plot_DCP_analysis(data = UDA_scheduled_data,
 .panel[.panel-name[North West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_DCP_analysis(data = UDA_scheduled_data,
-                              dcp_data = DCP_data_October22,
-                              data_month = as.Date("2022-10-01"),
+                              dcp_data = DCP_data,
+                              
                               UDA_or_FP17 = "UDA",
                                   level = "Regional",
                                   region_STP_name = "North West")
@@ -4055,8 +4056,8 @@ plot_DCP_analysis(data = UDA_scheduled_data,
 .panel[.panel-name[North East and Yorkshire]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_DCP_analysis(data = UDA_scheduled_data,
-                              dcp_data = DCP_data_October22,
-                              data_month = as.Date("2022-10-01"),
+                              dcp_data = DCP_data,
+                              
                               UDA_or_FP17 = "UDA",
                                   level = "Regional",
                                   region_STP_name = "North East and Yorkshire")
@@ -4067,8 +4068,8 @@ plot_DCP_analysis(data = UDA_scheduled_data,
 .panel[.panel-name[London]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_DCP_analysis(data = UDA_scheduled_data,
-                              dcp_data = DCP_data_October22,
-                              data_month = as.Date("2022-10-01"),
+                              dcp_data = DCP_data,
+                              
                               UDA_or_FP17 = "UDA",
                                   level = "Regional",
                                   region_STP_name = "London")
@@ -4079,8 +4080,8 @@ plot_DCP_analysis(data = UDA_scheduled_data,
 .panel[.panel-name[Midlands]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_DCP_analysis(data = UDA_scheduled_data,
-                              dcp_data = DCP_data_October22,
-                              data_month = as.Date("2022-10-01"),
+                              dcp_data = DCP_data,
+                              
                               UDA_or_FP17 = "UDA",
                                   level = "Regional",
                                   region_STP_name = "Midlands")
@@ -4091,16 +4092,17 @@ plot_DCP_analysis(data = UDA_scheduled_data,
 .panel[.panel-name[East of England]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_DCP_analysis(data = UDA_scheduled_data,
-                              dcp_data = DCP_data_October22,
-                              data_month = as.Date("2022-10-01"),
+                              dcp_data = DCP_data,
+                              
                               UDA_or_FP17 = "UDA",
                                   level = "Regional",
                                   region_STP_name = "East of England")
 ```
-N.B. This data has only been collected since October 2022 and may take a few months for contractors to get used to reporting on DCP assisted courses of treatment. 
+
 
 ]
 ]
+N.B. This data has only been collected since October 2022 and may take a few months for contractors to get used to reporting on DCP assisted courses of treatment. 
 
 [Return to contents](#contents)
 
