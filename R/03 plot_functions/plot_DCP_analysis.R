@@ -1,6 +1,8 @@
 #DCP_data_October22 <- read.csv("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/DCP_data/DPC_v1_Oct_2022.csv") 
 #DCP_data <- pull_dcp_data()
 
+##unique (DCP_data$Month)
+
 plot_DCP_analysis <- function(data = UDA_scheduled_data,
                               dcp_data = DCP_data,
                               UDA_or_FP17 = "UDA",
@@ -87,7 +89,8 @@ plot_DCP_analysis <- function(data = UDA_scheduled_data,
     
     filtered_data_UDA$Month <- factor(filtered_data_UDA$Month,
                                       levels = c("October-22",
-                                                 "November-22"))
+                                                 "November-22", 
+                                                 "December-22"))
     
     UDA_plot <- ggplot(filtered_data_UDA, aes(x=DCP_description, y= asissted_percent, fill= Bands)) +
       geom_bar(stat="identity") +
@@ -119,7 +122,8 @@ plot_DCP_analysis <- function(data = UDA_scheduled_data,
     
     filtered_data_FP17$Month <- factor(filtered_data_FP17$Month,
                                       levels = c("October-22",
-                                                 "November-22"))
+                                                 "November-22",
+                                                 "December-22"))
     
     FP17_plot <- 
       ggplot(filtered_data_FP17, 
@@ -143,3 +147,5 @@ plot_DCP_analysis <- function(data = UDA_scheduled_data,
   }
   
 }
+
+#plot_DCP_analysis ()
