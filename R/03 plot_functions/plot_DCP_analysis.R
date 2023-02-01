@@ -101,8 +101,17 @@ plot_DCP_analysis <- function(data = UDA_scheduled_data,
     filtered_data_FP17$Month <- factor(filtered_data_FP17$Month,
                                       levels = c("October-22",
                                                  "November-22",
-                                                 "December-22"))
-    
+                                                 "December-22",
+                                                 "January-23",
+                                                 "February-23",
+                                                 "March-23",
+                                                 "April-23",
+                                                 "May-23",
+                                                 "June-23",
+                                                 "July-23",
+                                                 "August-23",
+                                                 "September-23"))
+
     FP17_plot <- 
       ggplot(filtered_data_FP17, 
              aes(x=DCP_description, y= asissted_percent)) +

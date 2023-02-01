@@ -10,14 +10,15 @@ plot_breakdown_111_referrals <- function(data = dental_data_111,
   
   #get lines in the right order
   data$disposition_text <- factor(data$disposition_text,
-                                  levels = c("Refer to Dental Treatment Centre within 4 hours",
+                                  levels = c("Refer to Dental Treatment Centre within 1 hour",
+                                             "Refer to Dental Treatment Centre within 4 hours",
                                              "To Speak to a Dental Service within 1 hour",
                                              "To Speak to a Dental Service within 2 hours",
                                              "Speak to a Dental Service within 2 hours",
                                              "To Speak to a Dental Service within 6 hours",
                                              "To Speak to a Dental Service within 12 hours",
                                              "To Speak to a Dental Service within 24 hours",
-                                             "To Speak to a Dental Practice within 7 working days",
+                                             "To Speak to a Dental Practice within 7 days",
                                              "Contact Orthodontist next working day"
                                   ))
   

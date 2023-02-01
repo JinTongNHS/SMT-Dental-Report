@@ -17,26 +17,26 @@ get_Q1_22_num_contracts_on_target <- function(data = UDA_scheduled_data,
     subtitle <- region_STP_name
   }
   
-  if(UDAorUOA == "UDA"){
-    data <- data %>%
-      mutate(UDA_financial_half_target = case_when(month < as.Date("2021-10-01") ~ 0.6 * annual_contracted_UDA/4,
-                                                   month < as.Date("2022-01-01") ~ 0.65 * annual_contracted_UDA/4,
-                                                   month < as.Date("2022-04-01") ~ 0.85 * annual_contracted_UDA/4,
-                                                   month < as.Date("2022-07-01") ~ 0.95 * annual_contracted_UDA/4,
-                                                   TRUE ~ 1 * annual_contracted_UDA/4))
-  }else{
-    data <- data %>%
-      mutate(UDA_financial_half_target = case_when(month < as.Date("2021-10-01") ~ 0.8 * annual_contracted_UOA/4,
-                                                   month < as.Date("2022-01-01") ~ 0.85 * annual_contracted_UOA/4,
-                                                   month < as.Date("2022-04-01") ~ 0.90 * annual_contracted_UOA/4,
-                                                   TRUE ~ 1 * annual_contracted_UOA/4))
-  }
-  
+  # if(UDAorUOA == "UDA"){
+  #   data <- data %>%
+  #     mutate(UDA_financial_half_target = case_when(month < as.Date("2021-10-01") ~ 0.6 * annual_contracted_UDA/4,
+  #                                                  month < as.Date("2022-01-01") ~ 0.65 * annual_contracted_UDA/4,
+  #                                                  month < as.Date("2022-04-01") ~ 0.85 * annual_contracted_UDA/4,
+  #                                                  month < as.Date("2022-07-01") ~ 0.95 * annual_contracted_UDA/4,
+  #                                                  TRUE ~ 1 * annual_contracted_UDA/4))
+  # }else{
+  #   data <- data %>%
+  #     mutate(UDA_financial_half_target = case_when(month < as.Date("2021-10-01") ~ 0.8 * annual_contracted_UOA/4,
+  #                                                  month < as.Date("2022-01-01") ~ 0.85 * annual_contracted_UOA/4,
+  #                                                  month < as.Date("2022-04-01") ~ 0.90 * annual_contracted_UOA/4,
+  #                                                  TRUE ~ 1 * annual_contracted_UOA/4))
+  # }
+  # 
   
   
   #join in contracted UDA/UOAs from scheduled data
   data <- data %>%
-    filter(month >= as.Date("2022-10-01")) ##must update this at start of each quarter
+    filter(month >= as.Date("2023-01-01")) ##must update this at start of each quarter
   
   #create not in function
   `%notin%` = Negate(`%in%`)
@@ -53,13 +53,13 @@ get_Q1_22_num_contracts_on_target <- function(data = UDA_scheduled_data,
   }
   
   #way to progress through the months
-  if(max(data$month) == as.Date("2022-10-01")){
+  if(max(data$month) == as.Date("2023-01-01")){
     month_factor <- 1
   }
-  if(max(data$month) == as.Date("2022-11-01")){
+  if(max(data$month) == as.Date("2023-02-01")){
     month_factor <- 2
   }
-  if(max(data$month) == as.Date("2022-12-01")){
+  if(max(data$month) == as.Date("2023-03-01")){
     month_factor <- 3
   }
   

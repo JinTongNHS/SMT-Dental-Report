@@ -54,7 +54,10 @@ plot_re_and_de_commissioned_UDAs_UOAs <- function(data = contract_handbacks,
                                         "April 2022",
                                         "May 2022",
                                         "June 2022",
-                                        "July 2022"))
+                                        "July 2022",
+                                        "August 2022",
+                                        "September 2022",
+                                        "October 2022"))
   
   
   if(plotChart == TRUE){
