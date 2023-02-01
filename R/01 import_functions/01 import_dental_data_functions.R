@@ -97,18 +97,18 @@ upload_delivery_data <- function(calendar_data = UDA_calendar_data,
   
   lookup <- lookup %>%
     select(commissioner_name = commissioner_name_ICB,
-           commissioner_ODS_code_ICB)
+           commissioner_ONS_boundary_code_ICB)
   
   UDA_delivery_calendar <- UDA_delivery_calendar %>%
     left_join(lookup) %>%
-    select("calendar_month", "commissioner_name", commissioner_ODS_code_ICB, 
+    select("calendar_month", "commissioner_name", commissioner_ONS_boundary_code_ICB, 
            "region_name", "monthly_UDAs_delivered",
            "scaled_monthly_UDAs_delivered", "annual_contracted_UDAs", "scaled_perc_UDAs_delivered",
            "threshold_perc")
 
   UDA_delivery_scheduled <- UDA_delivery_scheduled %>%
     left_join(lookup) %>%
-    select("scheduled_month", "commissioner_name", commissioner_ODS_code_ICB,
+    select("scheduled_month", "commissioner_name", commissioner_ONS_boundary_code_ICB,
            "region_name", "monthly_UDAs_delivered",
            "scaled_monthly_UDAs_delivered", "annual_contracted_UDAs", "scaled_perc_UDAs_delivered",
            "threshold_perc")
@@ -580,8 +580,38 @@ import_and_clean_calendar_UDA_data <- function(data_path = "data/raw_data/dashbo
            total_other_FP17s = X__116
     ) 
   
+  #add column for date and rename columns, split data for just december
+  data_jan <- data %>%
+    mutate(data_month = as.Date("2023-01-01")) %>%
+    select(data_month, X__1, X__2, X__3, X__4, X__5, X__6, X__7, X__8, 
+           X__117, X__118, X__119, X__120, X__121, X__122, X__123, X__124, X__125, X__126, X__127, X__128) %>%
+    rename(contract_number = X__1,
+           latest_contract_type = X__2,
+           name_or_company_name = X__3,
+           commissioner_name = X__4,
+           region_name = X__5,
+           paid_by_BSA = X__6,
+           contract_start_date = X__7, 
+           contract_end_date = X__8, 
+           
+           UDA_total = X__117, 
+           UDA_band_1_total = X__118,
+           UDA_band_2_total = X__119,
+           UDA_band_3_total = X__120, 
+           UDA_urgent_total = X__121, 
+           UDA_other_total = X__122, 
+           total_FP17s = X__123, 
+           total_band_1_FP17s  = X__124,
+           total_band_2_FP17s = X__125,
+           total_band_3_FP17s = X__126,
+           total_urgent_FP17s = X__127,
+           total_other_FP17s = X__128
+    ) 
   
-  UDA_calendar_data <- bind_rows(data_apr, data_may, data_jun, data_jul, data_aug, data_sep, data_oct, data_nov, data_dec)
+  
+  
+  
+  UDA_calendar_data <- bind_rows(data_apr, data_may, data_jun, data_jul, data_aug, data_sep, data_oct, data_nov, data_dec, data_jan)
   
   #join in commissioner code
   commissioner_lookup <- commissioner_lookup %>%
@@ -777,7 +807,24 @@ import_and_clean_calendar_UOA_data <- function(data_path = "data/raw_data/dashbo
            UOA_total = X__16
     )
   
-  UOA_calendar_data <- bind_rows(data_apr, data_may, data_jun, data_jul, data_aug, data_sep, data_oct, data_nov, data_dec)
+  #add column for date and rename columns, split data for just jan
+  data_jan <- data %>%
+    mutate(data_month = as.Date("2023-01-01")) %>%
+    select(data_month, X__1, X__2, X__3, X__4, X__5, X__6, X__7, 
+           X__17) %>%
+    rename(contract_number = X__1,
+           contract_type = X__2,
+           name_or_company_name = X__3,
+           commissioner_name = X__4,
+           paid_by_BSA = X__5,
+           contract_start_date = X__6, 
+           contract_end_date = X__7, 
+           
+           UOA_total = X__17
+    )
+  
+  UOA_calendar_data <- bind_rows(data_apr, data_may, data_jun, data_jul, data_aug, 
+                                 data_sep, data_oct, data_nov, data_dec, data_jan)
   
   #join in commissioner code
   commissioner_lookup <- commissioner_lookup %>%
@@ -792,34 +839,33 @@ import_and_clean_calendar_UOA_data <- function(data_path = "data/raw_data/dashbo
 }
 
 
-
 ################################################################################
 #function to import and clean data
 #N.B. this assumes that the columns are in the same order each time!
 import_and_clean_scheduled_UOA_data <- function(data_path = "data/raw_data/dashboard_raw_data/UOA_scheduled_raw_data/UOA_scheduled_Apr21.xlsx",
                                                 data_date = as.Date("2021-04-01"),
                                                 commissioner_lookup = STP_ICB_lookup_codes){
-  
-  #read in data with correct types and removing top 3 rows and renaming columns 
-  data <- read_excel(data_path, 
+
+  #read in data with correct types and removing top 3 rows and renaming columns
+  data <- read_excel(data_path,
                      col_types = c("numeric", "text", "text",
-                                   "text", "text", "date", "date", "numeric", 
-                                   "numeric", "numeric", "numeric", 
-                                   "numeric", "numeric", "numeric", 
-                                   "numeric", "numeric", "numeric", 
-                                   "numeric"), 
+                                   "text", "text", "date", "date", "numeric",
+                                   "numeric", "numeric", "numeric",
+                                   "numeric", "numeric", "numeric",
+                                   "numeric", "numeric", "numeric",
+                                   "numeric"),
                      skip = 3,
                      col_names = TRUE,
                      .name_repair = ~ paste0("X__", seq_along(.x)))
-  
+
   #remove last 4 rows with eDen source
   data <- data[1:(nrow(data) - 4),]
-  
+
   #check format of data - manual check should be done to see if columns are in the same order as expected
   if(ncol(data) != 18){
     print("WARNING: The data you have loaded is not in the usual format. Please check.")
   }
-  
+
   #add column for date and rename columns
   data <- data %>%
     mutate(data_month = data_date) %>%
@@ -834,21 +880,72 @@ import_and_clean_scheduled_UOA_data <- function(data_path = "data/raw_data/dashb
            annual_contracted_UOA = X__8,
            annual_contracted_UDA = X__9,
            UOA_delivered = X__11,
-           orthodontic_FP17s = X__14, 
+           orthodontic_FP17s = X__14,
            orthodontic_starts = X__17,
-           orthodontic_completions = X__18 
+           orthodontic_completions = X__18
     ) %>%
     select(-starts_with("X__")) %>%
     filter(!is.na(contract_number))
-  
+
   #join in commissioner code
   commissioner_lookup <- commissioner_lookup %>%
-    select(commissioner_ods_code_icb = commissioner_ONS_boundary_code_ICB, 
+    select(commissioner_ods_code_icb = commissioner_ONS_boundary_code_ICB,
            commissioner_name = commissioner_name_ICB,
            region_name) %>%
     distinct()
-  
+
   data <- data %>%
     left_join(commissioner_lookup, by = "commissioner_name")
-  
+
 }
+
+# ################################################################################
+# #function to import and clean data
+# #N.B. this assumes that the columns are in the same order each time!
+# import_and_clean_scheduled_UOA_data <- function(data_path = "data/raw_data/dashboard_raw_data/UOA_scheduled_raw_data/UOA_scheduled_Apr21.xlsx",
+#                                                 data_date = as.Date("2021-04-01"),
+#                                                 commissioner_lookup = contract_ICB_lookup){
+#   
+#   #read in data with correct types and removing top 3 rows and renaming columns 
+#   data <- read_excel(data_path, 
+#                      col_types = c("numeric", "text", "text",
+#                                    "text", "date", "date", "numeric", 
+#                                    "numeric", "numeric", "numeric", "numeric"), 
+#                      skip = 3,
+#                      col_names = TRUE,
+#                      .name_repair = ~ paste0("X__", seq_along(.x)))
+#   
+#   #remove last 4 rows with eDen source
+#   data <- data[1:(nrow(data) - 4),]
+#   
+#   # #check format of data - manual check should be done to see if columns are in the same order as expected
+#   # if(ncol(data) != 18){
+#   #   print("WARNING: The data you have loaded is not in the usual format. Please check.")
+#   # }
+#   
+#   #add column for date and rename columns
+#   data <- data %>%
+#     mutate(data_month = data_date) %>%
+#     select(data_month, everything()) %>%
+#     rename(contract_number = X__1,
+#            contract_type = X__2,
+#            name_or_company_name = X__3,
+#            #commissioner_name = X__4,
+#            paid_by_BSA = X__4,
+#            contract_start_date = X__5,
+#            contract_end_date = X__6,
+#            annual_contracted_UOA = X__7,
+#            annual_contracted_UDA = X__8,
+#            UOA_delivered = X__9,
+#            orthodontic_FP17s = X__10#, 
+#            #orthodontic_starts = X__17,
+#            #orthodontic_completions = X__18 
+#     ) %>%
+#     select(-starts_with("X__")) %>%
+#     filter(!is.na(contract_number))
+#   
+#   #join in commissioner code
+#   data <- data %>%
+#     left_join(contract_ICB_lookup, by = "contract_number")
+#   
+# }

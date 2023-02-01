@@ -68,7 +68,7 @@ dental_data_111 <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2
 
 #############still to fix
 prototype_contracts <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/prototype_contracts.xlsx")
-contractor_categories <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/contractor_categories_Oct22.xlsx")
+contractor_categories <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/contractor_categories_Jan23.xlsx")
 contract_demographics <- readRDS("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/contract_demographics.rds")
 
 #read in unique patients
@@ -1248,11 +1248,11 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
 **`r get_num_contracts(level = "Regional", region_STP_name = region)`**
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (95% for Apr-Jun 22).
-* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
+* From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r get_Q1_22_num_contracts_on_target(level = "Regional", region_STP_name = region)`**
 contracts (
 **`r round(get_Q1_22_num_contracts_on_target(level = "Regional", region_STP_name = region)*100/get_num_contracts(level = "Regional", region_STP_name = region))` %**
-) have delivered the required UDAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
+) have delivered the required UDAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 ]
 .panel[.panel-name[`r STP1`]
@@ -1268,11 +1268,11 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
 **`r get_num_contracts(level = "STP", region_STP_name = STP1)`**
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (95% for Apr-Jun 22).
-* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
+* From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP1)`**
 contracts (
 **`r round(get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP1)*100/get_num_contracts(level = "STP", region_STP_name = STP1))` %**
-) have delivered the required UDAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
+) have delivered the required UDAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 
 ]
@@ -1289,11 +1289,11 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
 **`r get_num_contracts(level = "STP", region_STP_name = STP2)`**
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (95% for Apr-Jun 22).
-* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
+* From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP2)`**
 contracts (
 **`r round(get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP2)*100/get_num_contracts(level = "STP", region_STP_name = STP2))` %**
-) have delivered the required UDAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
+) have delivered the required UDAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 
 ]
@@ -1310,11 +1310,11 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
 **`r get_num_contracts(level = "STP", region_STP_name = STP3)`**
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (95% for Apr-Jun 22).
-* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
+* From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP3)`**
 contracts (
 **`r round(get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP3)*100/get_num_contracts(level = "STP", region_STP_name = STP3))` %**
-) have delivered the required UDAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
+) have delivered the required UDAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 
 ]
@@ -1331,11 +1331,11 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
 **`r if(eval4){get_num_contracts(level = "STP", region_STP_name = STP4)}`**
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (95% for Apr-Jun 22).
-* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
+* From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r if(eval4){get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP4)}`**
 contracts (
 **`r if(eval4){round(get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP4)*100/get_num_contracts(level = "STP", region_STP_name = STP4))}` %**
-) have delivered the required UDAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
+) have delivered the required UDAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 
 ]
@@ -1352,11 +1352,11 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
 **`r if(eval5){get_num_contracts(level = "STP", region_STP_name = STP5)}`**
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (95% for Apr-Jun 22).
-* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
+* From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r if(eval5){get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP5)}`**
 contracts (
 **`r if(eval5){round(get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP5)*100/get_num_contracts(level = "STP", region_STP_name = STP5))}` %**
-) have delivered the required UDAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
+) have delivered the required UDAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 
 ]
@@ -1373,11 +1373,11 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
 **`r if(eval6){get_num_contracts(level = "STP", region_STP_name = STP6)}`**
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (95% for Apr-Jun 22).
-* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
+* From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r if(eval6){get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP6)}`**
 contracts (
 **`r if(eval6){round(get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP6)*100/get_num_contracts(level = "STP", region_STP_name = STP6))}` %**
-) have delivered the required UDAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
+) have delivered the required UDAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 
 ]
@@ -1394,11 +1394,11 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
 **`r if(eval7){get_num_contracts(level = "STP", region_STP_name = STP7)}`**
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (95% for Apr-Jun 22).
-* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
+* From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r if(eval7){get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP7)}`**
 contracts (
 **`r if(eval7){round(get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP7)*100/get_num_contracts(level = "STP", region_STP_name = STP7))}` %**
-) have delivered the required UDAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
+) have delivered the required UDAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 
 ]
@@ -1415,11 +1415,11 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
 **`r if(eval8){get_num_contracts(level = "STP", region_STP_name = STP8)}`**
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (95% for Apr-Jun 22).
-* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
+* From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r if(eval8){get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP8)}`**
 contracts (
 **`r if(eval8){round(get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP8)*100/get_num_contracts(level = "STP", region_STP_name = STP8))}` %**
-) have delivered the required UDAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
+) have delivered the required UDAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 
 ]
@@ -1436,11 +1436,11 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
 **`r if(eval9){get_num_contracts(level = "STP", region_STP_name = STP9)}`**
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (95% for Apr-Jun 22).
-* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
+* From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r if(eval9){get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP9)}`**
 contracts (
 **`r if(eval9){round(get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP9)*100/get_num_contracts(level = "STP", region_STP_name = STP9))}` %**
-) have delivered the required UDAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
+) have delivered the required UDAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 
 ]
@@ -1457,11 +1457,11 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
 **`r if(eval10){get_num_contracts(level = "STP", region_STP_name = STP10)}`**
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (95% for Apr-Jun 22).
-* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
+* From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r if(eval10){get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP10)}`**
 contracts (
 **`r if(eval10){round(get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP10)*100/get_num_contracts(level = "STP", region_STP_name = STP10))}` %**
-) have delivered the required UDAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
+) have delivered the required UDAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 
 ]
@@ -1478,11 +1478,11 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
 **`r if(eval11){get_num_contracts(level = "STP", region_STP_name = STP11)}`**
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (95% for Apr-Jun 22).
-* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
+* From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r if(eval11){get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP11)}`**
 contracts (
 **`r if(eval11){round(get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP11)*100/get_num_contracts(level = "STP", region_STP_name = STP11))}` %**
-) have delivered the required UDAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
+) have delivered the required UDAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 
 ]
@@ -3059,11 +3059,11 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data,
 * This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "Regional", region_STP_name = region)`**
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
-* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
+* From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = region)`**
 contracts (
 **`r round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = region)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "Regional", region_STP_name = region))` %**
-) have delivered the required UOAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
+) have delivered the required UOAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
  ]
  .panel[.panel-name[`r STP1`]
@@ -3081,11 +3081,11 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data,
 * This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP1)`**
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
-* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
+* From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP1)`**
 contracts (
 **`r round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP1)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP1))` %**
-) have delivered the required UOAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
+) have delivered the required UOAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 
  ]
@@ -3104,11 +3104,11 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data,
 * This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP2)`**
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
-* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
+* From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP2)`**
 contracts (
 **`r round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP2)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP2))` %**
-) have delivered the required UOAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
+) have delivered the required UOAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 
  ]
@@ -3127,11 +3127,11 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data,
 * This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP3)`**
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
-* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
+* From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP3)`**
 contracts (
 **`r round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP3)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP3))` %**
-) have delivered the required UOAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
+) have delivered the required UOAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 
  ]
@@ -3150,11 +3150,11 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data,
 * This graph shows the cumulative activity by quarter of the **`r if(eval4){get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP4)}`**
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
-* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
+* From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r if(eval4){get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP4)}`**
 contracts (
 **`r if(eval4){round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP4)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP4))}` %**
-) have delivered the required UOAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
+) have delivered the required UOAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 
  ]
@@ -3173,11 +3173,11 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data,
 * This graph shows the cumulative activity by quarter of the **`r if(eval5){get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP5)}`**
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
-* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
+* From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r if(eval5){get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP5)}`**
 contracts (
 **`r if(eval5){round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP5)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP5))}` %**
-) have delivered the required UOAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
+) have delivered the required UOAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 
  ]
@@ -3196,11 +3196,11 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data,
 * This graph shows the cumulative activity by quarter of the **`r if(eval6){get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP6)}`**
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
-* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
+* From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r if(eval6){get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP6)}`**
 contracts (
 **`r if(eval6){round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP6)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP6))}` %**
-) have delivered the required UOAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
+) have delivered the required UOAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 
  ]
@@ -3219,11 +3219,11 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data,
 * This graph shows the cumulative activity by quarter of the **`r if(eval7){get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP7)}`**
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
-* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
+* From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r if(eval7){get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP7)}`**
 contracts (
 **`r if(eval7){round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP7)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP7))}` %**
-) have delivered the required UOAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
+) have delivered the required UOAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 
  ]
@@ -3242,11 +3242,11 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data,
 * This graph shows the cumulative activity by quarter of the **`r if(eval8){get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP8)}`**
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
-* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
+* From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r if(eval8){get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP8)}`**
 contracts (
 **`r if(eval8){round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP8)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP8))}` %**
-) have delivered the required UOAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
+) have delivered the required UOAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 
  ]
@@ -3265,11 +3265,11 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data,
 * This graph shows the cumulative activity by quarter of the **`r if(eval9){get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP9)}`**
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
-* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
+* From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r if(eval9){get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP9)}`**
 contracts (
 **`r if(eval9){round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP9)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP9))}` %**
-) have delivered the required UOAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
+) have delivered the required UOAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 
  ]
@@ -3288,11 +3288,11 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data,
 * This graph shows the cumulative activity by quarter of the **`r if(eval10){get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP10)}`**
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
-* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
+* From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r if(eval10){get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP10)}`**
 contracts (
 **`r if(eval10){round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP10)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP10))}` %**
-) have delivered the required UOAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
+) have delivered the required UOAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 
  ]
@@ -3311,11 +3311,11 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data,
 * This graph shows the cumulative activity by quarter of the **`r if(eval11){get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP11)}`**
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
-* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
+* From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r if(eval11){get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP11)}`**
 contracts (
 **`r if(eval11){round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP11)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP11))}` %**
-) have delivered the required UOAs or more to be on track towards the Q3 threshold (100%) by the end of December 2022.
+) have delivered the required UOAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 
  ]
