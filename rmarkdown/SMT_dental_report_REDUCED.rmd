@@ -30,10 +30,10 @@ for (f in list.files(path = "../R/03 plot_functions/", pattern="*.R$")) {
     source(paste0("../R/03 plot_functions/", f))
 }
 
-#source in all files from format data folder
 for (f in list.files(path = "../R/02 format_data_functions/", pattern="*.R$")) {
     source(paste0("../R/02 format_data_functions/", f))
 }
+
 
 #pull data from NCDR
 UDA_calendar_data <- pull_UDA_calendar_data()
@@ -52,6 +52,8 @@ UOA_calendar_data <- UOA_calendar_data %>%
   mutate(contract_number = as.numeric(contract_number),
          UOA_total = as.numeric(UOA_total)) 
 
+    
+# UOA_calendar_data <- left_join( region_STP_lookup, by = c("contract_number", "name_or_company_name", "commissioner_name"))
 UDA_scheduled_data <- rename(UDA_scheduled_data, month = data_month)
 UOA_scheduled_data <- rename(UOA_scheduled_data, month = data_month)
 
@@ -66,7 +68,9 @@ dental_data_111 <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2
 
 #############still to fix
 prototype_contracts <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/prototype_contracts.xlsx")
-contractor_categories <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/contractor_categories_Oct22.xlsx")
+contractor_categories <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/contractor_categories_Jan23.xlsx")
+contractor_categories <- contractor_categories %>%
+  mutate(contract_number = as.numeric(contract_number))
 contract_demographics <- readRDS("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/contract_demographics.rds")
 
 #read in unique patients
@@ -88,6 +92,18 @@ dental_complaints <- clean_complaints_data(Dental_Access_Complaints_Data_June_22
 
 #UDA value data
 UDA_values <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/UDA_values.xlsx")
+
+#Pull patient charge data
+patient_exemption_data <- pull_patient_exemption_data()
+patient_exemption_data <- clean_patient_exemption_data()
+
+#pull health inequalities data
+health_inequalities_data <- pull_health_inequalities()
+
+missing_contracts_data <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/missing_contract_details.xlsx")
+
+#DCP_data <- read.csv("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/DCP_data/DPC_v1_Oct_2022.csv") 
+DCP_data <- pull_dcp_data()
 
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 
@@ -201,12 +217,12 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
 * This graph shows the cumulative activity by quarter of the
 **`r get_num_contracts(level = "National", region_STP_name = NULL)`**
 GDS/PDS/PDS+
-contracts measured against the expected monthly total activity to achieve the quarterly thresholds (95% for Apr-Jun 22).
-* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
+contracts measured against the expected monthly total activity to achieve the quarterly thresholds (100% for Jan-Mar 23).
+* From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r get_Q1_22_num_contracts_on_target(level = "National", region_STP_name = NULL)`**
 contracts (
 **`r round(get_Q1_22_num_contracts_on_target(level = "National", region_STP_name = NULL)*100/get_num_contracts(level = "National", region_STP_name = NULL))` %**
-) have delivered the required UDAs or more to be on track towards the Q2 threshold (100%) by the end of September 2022.
+) have delivered the required UDAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 ]
 ]
@@ -327,11 +343,11 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data,
 * This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UDAorUOA = "UOA", level = "National", region_STP_name = NULL)`**
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
-* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
+* From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UDAorUOA = "UOA", level = "National", region_STP_name = NULL)`**
 contracts (
 **`r round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UDAorUOA = "UOA", level = "National", region_STP_name = NULL)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UDAorUOA = "UOA", level = "National", region_STP_name = NULL))` %**
-) have delivered the required UOAs or more to be on track towards the Q2 threshold (100%) by the end of September 2022.
+) have delivered the required UOAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
  ]
  ]
