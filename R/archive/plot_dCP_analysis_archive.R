@@ -1,7 +1,7 @@
 #DCP_data_October22 <- read.csv("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/DCP_data/DPC_v1_Oct_2022.csv") 
 #DCP_data <- pull_dcp_data()
 
-plot_DCP_analysis <- function(data = UDA_scheduled_data,
+plot_DCP_analysis_archive <- function(data = UDA_scheduled_data,
                               dcp_data = DCP_data,
                               UDA_or_FP17 = "UDA",
                               level = "National",
