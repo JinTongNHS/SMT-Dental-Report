@@ -73,120 +73,6 @@ import_clean_combine_upload_all_data <- function(raw_UDA_scheduled_data_folder_p
 
 }
 
-#This is the table used for PCDID
-################################################################################
-upload_delivery_data <- function(calendar_data = UDA_calendar_data,  
-                                 scheduled_data = UDA_scheduled_data,
-                                 historic_data = historical_UDA_scheduled_data,
-                                 lookup = STP_ICB_lookup_codes){
-
-  UDA_delivery_calendar <- get_delivery_data_calendar(calendar_data = calendar_data,  
-                                                      scheduled_data = scheduled_data,
-                                                      remove_prototypes = T,
-                                                      UDAorUOA = "UDA",
-                                                      regional_lines = F,
-                                                      STP_lines = T,
-                                                      cat_lines = F, 
-                                                      renameColumns = T)
-
-  UDA_delivery_scheduled <- get_delivery_data(data = bind_rows(scheduled_data, historic_data),
-                                               remove_prototypes = T,
-                                               UDAorUOA = "UDA",
-                                               all_regions_and_STPs = T,
-                                               renameColumns = T)
-  
-  lookup <- lookup %>%
-    select(commissioner_name = commissioner_name_ICB,
-           commissioner_ONS_boundary_code_ICB)
-  
-  UDA_delivery_calendar <- UDA_delivery_calendar %>%
-    left_join(lookup) %>%
-    select("calendar_month", "commissioner_name", commissioner_ONS_boundary_code_ICB, 
-           "region_name", "monthly_UDAs_delivered",
-           "scaled_monthly_UDAs_delivered", "annual_contracted_UDAs", "scaled_perc_UDAs_delivered",
-           "threshold_perc")
-
-  UDA_delivery_scheduled <- UDA_delivery_scheduled %>%
-    left_join(lookup) %>%
-    select("scheduled_month", "commissioner_name", commissioner_ONS_boundary_code_ICB,
-           "region_name", "monthly_UDAs_delivered",
-           "scaled_monthly_UDAs_delivered", "annual_contracted_UDAs", "scaled_perc_UDAs_delivered",
-           "threshold_perc")
-  
-  
-
-  #Overwrite data in NCDR
-  con <- dbConnect(odbc::odbc(), "NCDR")
-
-  dbWriteTable(con, Id(catalog="NHSE_Sandbox_PrimaryCareNHSContracts",schema="Dental",table="UDA_delivery_calendar"),
-               value = UDA_delivery_calendar, row.names = FALSE, append = FALSE, overwrite = TRUE)
-
-  dbWriteTable(con, Id(catalog="NHSE_Sandbox_PrimaryCareNHSContracts",schema="Dental",table="UDA_delivery_scheduled"),
-               value = UDA_delivery_scheduled, row.names = FALSE, append = FALSE, overwrite = TRUE)
-
-}
-
-
-#This is the table used for SOF
-################################################################################
-update_SOF_table_S109 <- function(scheduled_data = UDA_scheduled_data,
-                                  historic_data = historical_UDA_scheduled_data,
-                                  lookup = STP_ICB_lookup_codes){
-  
-  scheduled_data <- bind_rows(scheduled_data, historic_data)
-  
-  #wide_data <- pull_PCDID_data()
-  UDA_delivery_scheduled <- get_delivery_data(data = scheduled_data,
-                                              remove_prototypes = T,
-                                              UDAorUOA = "UDA",
-                                              all_regions_and_STPs = T,
-                                              renameColumns = T)
-  
-  lookup <- lookup %>%
-    select(commissioner_name = commissioner_name_ICB,
-           commissioner_ONS_boundary_code_ICB)
-  
-  UDA_delivery_scheduled <- UDA_delivery_scheduled %>%
-    left_join(lookup, by = "commissioner_name") %>%
-    ungroup() %>%
-    filter(scheduled_month == max(UDA_delivery_scheduled$scheduled_month))
-  
-  SOF_data <- UDA_delivery_scheduled  %>%
-    select(OrgCode = commissioner_ONS_boundary_code_ICB,
-           Period = scheduled_month,
-           Den = annual_contracted_UDAs,
-           Num = scaled_monthly_UDAs_delivered,
-           Rate = scaled_perc_UDAs_delivered) %>%
-    mutate(Rate = Num / Den) %>%
-    pivot_longer(cols = c("Den", "Num", "Rate"),
-                 names_to = "MetricType",
-                 values_to = "Value") %>%
-    mutate(MetricID = "S109a",
-           MetricName = "Units of Dental Activity delivered as a proportion of all Units of Dental Activity contracted",
-           Domain = "Primary Care",
-           OrgType = "ICB",
-           LastModified = Sys.Date(),
-           Period = substr(Period, 1, 7)) %>%
-    select(MetricID,
-           MetricName,
-           Domain,
-           OrgType,
-           OrgCode,
-           Period,
-           MetricType,
-           Value,
-           LastModified
-           )
-  
-  #append latest data to table in NCDR
-  #[NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[SOF_S109a]
-  con <- dbConnect(odbc::odbc(), "NCDR")
-
-  dbWriteTable(con, Id(catalog="NHSE_Sandbox_PrimaryCareNHSContracts",schema="Dental",table="SOF_S109a"),
-               value = SOF_data, row.names = FALSE, append = TRUE)
-
-}
-
 ################################################################################
 upload_unique_patients_data <- function(data_path = "N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/unique_patients/",
                                         commissioner_lookup = STP_ICB_lookup_codes){
@@ -222,10 +108,10 @@ upload_unique_patients_data <- function(data_path = "N:/_Everyone/Primary Care G
   
   unique_patients <- unique_patients %>%
     left_join(commissioner_lookup, by = "commissioner_ods_code_icb")
-
+  
   #Append latest data to table on NCDR
   con <- dbConnect(odbc::odbc(), "NCDR")
-
+  
   dbWriteTable(con, Id(catalog="NHSE_Sandbox_PrimaryCareNHSContracts",schema="Dental",table="unique_patients_rolling_12_month"),
                value = unique_patients, row.names = FALSE, append = TRUE)
   
