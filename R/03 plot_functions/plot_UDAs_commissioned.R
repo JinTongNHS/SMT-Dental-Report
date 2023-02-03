@@ -69,9 +69,12 @@ plot_UDAs_commissioned <- function(data = UDA_scheduled_data,
       theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
     
   }else if(plotChart == FALSE & getChange == TRUE){
+    
+    this_year <- substr(Sys.Date(),1,4)
+    
     data_2022 <- data %>%
       mutate(year_number = substr(month, 1, 4)) %>%
-      filter(point_col == "this month" & year_number == "2022")
+      filter(point_col == "this month" & year_number == this_year)
     
     data_2018 <- data %>%
       mutate(year_number = substr(month, 1, 4)) %>%
@@ -80,7 +83,7 @@ plot_UDAs_commissioned <- function(data = UDA_scheduled_data,
     change_in_num_contracted_UDA <- data_2022$n[1] - data_2018$n[1]
     perc_change_in_num_contracted_UDA <- change_in_num_contracted_UDA * 100 / data_2018$n[1]
     round(perc_change_in_num_contracted_UDA, 2)
-    
+
   }else{
     data
   }

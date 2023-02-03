@@ -100,12 +100,13 @@ plot_BPE_no_oral_health_risk <- function(data = BPE_data,
               colour = "black", size= 3.5,
               position = position_dodge(width = 1), vjust= -0.5) +
     scale_y_continuous(labels = scales::percent) +
-    labs(title = "Average % of completed FP17s with BPE scores and average % \nof FP17s indicating no oral health risk",
+    labs(title = "Oral Health Risk Assessment",
          subtitle = paste(subtitle, " - December 2022"),
-         x = "Region") +
+         x = "Region",
+         fill = "") +
     scale_fill_manual(values = c("#009E73", "#F0E442"),
-                      label = c("Average % of completed FP17s indicating no oral health risk", 
-                                "% of all FP17s completed with BPE scores")) +
+                      label = c("% of FP17 forms indicating low oral health risk \nwith recall intervalls < 12 months", 
+                                "% of FP17s with complete BPE score data")) +
     theme_bw() +
     theme(legend.position="bottom") 
   
