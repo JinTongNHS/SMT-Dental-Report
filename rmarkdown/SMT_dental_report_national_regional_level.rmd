@@ -104,6 +104,8 @@ missing_contracts_data <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental
 #DCP_data <- read.csv("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/DCP_data/DPC_v1_Oct_2022.csv") 
 DCP_data <- pull_dcp_data()
 
+BPE_data <- pull_BPE_data()
+
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 
 #avoid standard form
@@ -136,6 +138,7 @@ name: contents
  * [Contractors projected to deliver at least 96% of contracted UDAs](#UDA-projection)
  * [Percentage of CoTs assisted by Dental Care Practitioners (DCPs)](#dcp-fp17)
  * [Percentage of UDAs assisted by Dental Care Practitioners (DCPs) by band](#dcp-uda)
+ * [Percentage of FP17s indicating no oral health risk](#bpe)
  * [111 call volumes](#111-call-volumes)
  * [Unique patients seen rolling 12 months](#unique-patients)
  * [Unique patients seen rolling 12 months as % of April 2018 delivery](#unique-patients-index)
@@ -4107,6 +4110,34 @@ plot_DCP_analysis(data = UDA_scheduled_data,
 N.B. This data has only been collected since October 2022 and may take a few months for contractors to get used to reporting on DCP assisted courses of treatment. 
 
 [Return to contents](#contents)
+
+---
+
+name: bpe
+
+### Percentage of FP17s indicating no oral health risk
+
+```{r xaringan-panelset-bpe, echo=FALSE}
+xaringanExtra::use_panelset()
+```
+ <font size="2">
+.panelset[
+
+.panel[.panel-name[All Regions]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_BPE_no_oral_health_risk(data = BPE_data,
+                                         level = "National",
+                                         region_STP_name = NULL,
+                                         ICB_lookup = STP_ICB_lookup_codes)
+```
+
+]
+]
+
+The BPE (Basic Periodontal Examination) Score is a measure of oral health risk with 0 being no risk and 1 being low risk. This graph shows the percentage of FP17 forms received with scores of either 0 or 1. 
+
+[Return to contents](#contents)
+
 
 ---
 
