@@ -69,9 +69,12 @@ plot_number_of_contracts_over_time <- function(data = UDA_scheduled_data,
       theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
     
   }else if(plotChart == FALSE & getChange == TRUE){
+    
+    this_year <- substr(Sys.Date(),1,4)
+    
     data_2022 <- data %>%
       mutate(year_number = substr(month, 1, 4)) %>%
-      filter(point_col == "this month" & year_number == "2022")
+      filter(point_col == "this month" & year_number == this_year)
     
     data_2018 <- data %>%
       mutate(year_number = substr(month, 1, 4)) %>%

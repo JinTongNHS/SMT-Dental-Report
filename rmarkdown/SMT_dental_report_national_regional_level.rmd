@@ -104,6 +104,8 @@ missing_contracts_data <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental
 #DCP_data <- read.csv("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/DCP_data/DPC_v1_Oct_2022.csv") 
 DCP_data <- pull_dcp_data()
 
+BPE_data <- pull_BPE_data()
+
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 
 #avoid standard form
@@ -136,6 +138,7 @@ name: contents
  * [Contractors projected to deliver at least 96% of contracted UDAs](#UDA-projection)
  * [Percentage of CoTs assisted by Dental Care Practitioners (DCPs)](#dcp-fp17)
  * [Percentage of UDAs assisted by Dental Care Practitioners (DCPs) by band](#dcp-uda)
+ * [Percentage of FP17s indicating low oral health risk](#bpe)
  * [111 call volumes](#111-call-volumes)
  * [Unique patients seen rolling 12 months](#unique-patients)
  * [Unique patients seen rolling 12 months as % of April 2018 delivery](#unique-patients-index)
@@ -730,8 +733,8 @@ reactable(
   columns = list(
     `Monthly UDAs delivered`= colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE),
     `Annual contracted UDAs` = colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE),
-    `Scaled monthly UDAs delivered` = colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE),
-    `Scaled percentage of UDAs delivered` = colDef(aggregate = "mean", format = colFormat(suffix = "%", digits = 1), filterable = FALSE)
+    `Scaled monthly UDAs delivered` = colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE)#,
+    #`Scaled percentage of UDAs delivered` = colDef(aggregate = "mean", format = colFormat(suffix = "%", digits = 1), filterable = FALSE)
   )
 )
 ```
@@ -931,8 +934,8 @@ reactable(
   columns = list(
     `Monthly UDAs delivered`= colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE),
     `Annual contracted UDAs` = colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE),
-    `Scaled monthly UDAs delivered` = colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE),
-    `Scaled percentage of UDAs delivered` = colDef(aggregate = "mean", format = colFormat(suffix = "%", digits = 1), filterable = FALSE)
+    `Scaled monthly UDAs delivered` = colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE)#,
+    #`Scaled percentage of UDAs delivered` = colDef(aggregate = "mean", format = colFormat(suffix = "%", digits = 1), filterable = FALSE)
   )
 )
 ```
@@ -1162,8 +1165,8 @@ reactable(
   columns = list(
     `Monthly UDAs delivered`= colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE),
     `Quarterly contracted UDAs` = colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE),
-    `Montly percentage of quarterly contracted UDAs` = colDef(aggregate = "mean", format = colFormat(suffix = "%", digits = 1), filterable = FALSE),
-    `Cumulative percentage of quarterly contracted UDAs` = colDef(aggregate = "mean", format = colFormat(suffix = "%", digits = 1), filterable = FALSE)
+    `Montly percentage of quarterly contracted UDAs` = colDef(aggregate = "mean", format = colFormat(suffix = "%", digits = 1), filterable = FALSE)#,
+    #`Cumulative percentage of quarterly contracted UDAs` = colDef(aggregate = "mean", format = colFormat(suffix = "%", digits = 1), filterable = FALSE)
   )
 )
 ```
@@ -1504,8 +1507,8 @@ reactable(
   columns = list(
     `Monthly UDAs delivered`= colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE),
     `Annual contracted UDAs` = colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE),
-    `Scaled monthly UDAs delivered` = colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE),
-    `Scaled monthly percentage of contracted UDAs delivered` = colDef(aggregate = "mean", format = colFormat(suffix = "%", digits = 1), filterable = FALSE)
+    `Scaled monthly UDAs delivered` = colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE)#,
+    #`Scaled monthly percentage of contracted UDAs delivered` = colDef(aggregate = "mean", format = colFormat(suffix = "%", digits = 1), filterable = FALSE)
   )
 )
 ```
@@ -2138,8 +2141,8 @@ reactable(
   columns = list(
     `Monthly UOAs delivered`= colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE),
     `Annual contracted UOAs` = colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE),
-    `Scaled monthly UOAs delivered` = colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE),
-    `Scaled monthly percentage of contracted UOAs delivered` = colDef(aggregate = "mean", format = colFormat(suffix = "%", digits = 1), filterable = FALSE)
+    `Scaled monthly UOAs delivered` = colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE)#,
+    #`Scaled monthly percentage of contracted UOAs delivered` = colDef(aggregate = "mean", format = colFormat(suffix = "%", digits = 1), filterable = FALSE)
   )
 )
 ```
@@ -2351,8 +2354,8 @@ reactable(
   columns = list(
     `Monthly UOAs delivered`= colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE),
     `Annual contracted UOAs` = colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE),
-    `Scaled monthly UOAs delivered` = colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE),
-    `Scaled percentage of UOAs delivered` = colDef(aggregate = "mean", format = colFormat(suffix = "%", digits = 1), filterable = FALSE)
+    `Scaled monthly UOAs delivered` = colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE)#,
+    #`Scaled percentage of UOAs delivered` = colDef(aggregate = "mean", format = colFormat(suffix = "%", digits = 1), filterable = FALSE)
   )
 )
 ```
@@ -2555,8 +2558,8 @@ reactable(
   columns = list(
     `Monthly UOAs delivered`= colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE),
     `Annual contracted UOAs` = colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE),
-    `Scaled monthly UOAs delivered` = colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE),
-    `Scaled percentage of UOAs delivered` = colDef(aggregate = "mean", format = colFormat(suffix = "%", digits = 1), filterable = FALSE)
+    `Scaled monthly UOAs delivered` = colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE)#,
+    #`Scaled percentage of UOAs delivered` = colDef(aggregate = "mean", format = colFormat(suffix = "%", digits = 1), filterable = FALSE)
   )
 )
 ```
@@ -2802,9 +2805,9 @@ reactable(
   groupBy = c("Month", "Region Name"),
   columns = list(
     `Monthly UOAs delivered`= colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE),
-    `Quarterly contracted UOAs` = colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE),
-    `Montly percentage of quarterly contracted UOAs` = colDef(aggregate = "mean", format = colFormat(suffix = "%", digits = 1), filterable = FALSE),
-    `Cumulative percentage of quarterly contracted UOAs` = colDef(aggregate = "mean", format = colFormat(suffix = "%", digits = 1), filterable = FALSE)
+    `Quarterly contracted UOAs` = colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE)#,
+    #`Montly percentage of quarterly contracted UOAs` = colDef(aggregate = "mean", format = colFormat(suffix = "%", digits = 1), filterable = FALSE),
+    #`Cumulative percentage of quarterly contracted UOAs` = colDef(aggregate = "mean", format = colFormat(suffix = "%", digits = 1), filterable = FALSE)
   )
 )
 ```
@@ -3165,8 +3168,8 @@ reactable(
   groupBy = c("Month", "Performance band", "Region Name"),
   columns = list(
     `Total number of contracts`= colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE),
-    `Number of contracts in performance band` = colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE),
-    `Percentage of contracts in performance band` = colDef(aggregate = "mean", format = colFormat(suffix = "%", digits = 1), filterable = FALSE)
+    `Number of contracts in performance band` = colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE)#,
+    #`Percentage of contracts in performance band` = colDef(aggregate = "mean", format = colFormat(suffix = "%", digits = 1), filterable = FALSE)
   )
 )
 ```
@@ -3472,7 +3475,7 @@ plot_urgent_form_submissions(data = UDA_scheduled_data,
 * This graph shows the number of urgent treatment forms
 declared per month across financial years.
 * The urgent treatment form count in
-**`r format(Sys.Date() - lubridate::weeks(4), "%B")` 2022**
+**`r format(Sys.Date() - lubridate::weeks(4), "%B %Y")`**
 was
 **`r get_num_urgent_forms(level = "National", region_STP_name = NULL)`**
 , whilst in
@@ -4110,6 +4113,34 @@ N.B. This data has only been collected since October 2022 and may take a few mon
 
 ---
 
+name: bpe
+
+### Oral health risk assessment
+
+```{r xaringan-panelset-bpe, echo=FALSE}
+xaringanExtra::use_panelset()
+```
+ <font size="2">
+.panelset[
+
+.panel[.panel-name[All Regions]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_BPE_no_oral_health_risk(data = BPE_data,
+                                         level = "National",
+                                         region_STP_name = NULL,
+                                         ICB_lookup = STP_ICB_lookup_codes)
+```
+
+]
+]
+
+Low risk is defined as having BPE (Basic Periodontal Examination) Score of 0 or 1 and no new tooth decay. 
+
+[Return to contents](#contents)
+
+
+---
+
 name: unique-patients
 
 ### Unique dental patients seen
@@ -4310,7 +4341,7 @@ reactable(
 
 name: unique-patients-index
 
-### Unique dental patients seen as a precentage of April 2018 figures
+### Unique dental patients seen as a percentage of April 2018 figures
 
 ```{r xaringan-panelset-Unique-patients2, echo=FALSE}
 xaringanExtra::use_panelset()
@@ -5322,7 +5353,7 @@ plot_UDAs_commissioned(data = UDA_scheduled_data,
                                 plotChart = TRUE)
 ```
 
-The change in total annual contracted UDAs from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2022 is
+The change in total annual contracted UDAs from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B %Y")` is
 **`r plot_UDAs_commissioned(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,level = "National",region_STP_name = NULL,plotChart = FALSE, getChange = TRUE)`%**.
  ]
  .panel[.panel-name[South East]
@@ -5334,7 +5365,7 @@ plot_UDAs_commissioned(data = UDA_scheduled_data, historical_data = historical_U
                                 plotChart = TRUE)
 ```
 
-The change in total annual contracted UDAs from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2022 is
+The change in total annual contracted UDAs from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B %Y")` is
 **`r plot_UDAs_commissioned(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,level = "Regional",region_STP_name = "South East",plotChart = FALSE, getChange = TRUE)`%**.
  ]
  .panel[.panel-name[South West]
@@ -5345,7 +5376,7 @@ plot_UDAs_commissioned(data = UDA_scheduled_data, historical_data = historical_U
                                 plotChart = TRUE)
 ```
 
-The change in total annual contracted UDAs from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2022 is
+The change in total annual contracted UDAs from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B %Y")` is
 **`r plot_UDAs_commissioned(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,level = "Regional",region_STP_name = "South West",plotChart = FALSE, getChange = TRUE)`%**.
 
  ]
@@ -5357,7 +5388,7 @@ plot_UDAs_commissioned(data = UDA_scheduled_data, historical_data = historical_U
                                 plotChart = TRUE)
 ```
 
-The change in total annual contracted UDAs from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2022 is
+The change in total annual contracted UDAs from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B %Y")` is
 **`r plot_UDAs_commissioned(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,level = "Regional",region_STP_name = "North West",plotChart = FALSE, getChange = TRUE)`%**.
 
  ]
@@ -5370,7 +5401,7 @@ plot_UDAs_commissioned(data = UDA_scheduled_data, historical_data = historical_U
                                 plotChart = TRUE)
 ```
 
-The change in total annual contracted UDAs from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2022 is
+The change in total annual contracted UDAs from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B %Y")` is
 **`r plot_UDAs_commissioned(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,level = "Regional",region_STP_name = "North East and Yorkshire",plotChart = FALSE, getChange = TRUE)`%**.
 
  ]
@@ -5382,7 +5413,7 @@ plot_UDAs_commissioned(data = UDA_scheduled_data, historical_data = historical_U
                                 plotChart = TRUE)
 ```
 
-The change in total annual contracted UDAs from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2022 is
+The change in total annual contracted UDAs from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B %Y")` is
 **`r plot_UDAs_commissioned(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,level = "Regional",region_STP_name = "London",plotChart = FALSE, getChange = TRUE)`%**.
 
  ]
@@ -5394,7 +5425,7 @@ plot_UDAs_commissioned(data = UDA_scheduled_data, historical_data = historical_U
                                 plotChart = TRUE)
 ```
 
-The change in total annual contracted UDAs from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2022 is
+The change in total annual contracted UDAs from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B %Y")` is
 **`r plot_UDAs_commissioned(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,level = "Regional",region_STP_name = "Midlands",plotChart = FALSE, getChange = TRUE)`%**.
 
  ]
@@ -5406,7 +5437,7 @@ plot_UDAs_commissioned(data = UDA_scheduled_data, historical_data = historical_U
                                 plotChart = TRUE)
 ```
 
-The change in total annual contracted UDAs from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2022 is
+The change in total annual contracted UDAs from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B %Y")` is
 **`r plot_UDAs_commissioned(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,level = "Regional",region_STP_name = "East of England",plotChart = FALSE, getChange = TRUE)`%**.
 
  ]
@@ -5438,7 +5469,7 @@ plot_number_of_contracts_over_time(data = UDA_scheduled_data,
                                 plotChart = TRUE)
 ```
 
-The percentage change in total number of contracts from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2022 is
+The percentage change in total number of contracts from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B %Y")` is
 **`r plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,level = "National",region_STP_name = NULL,plotChart = FALSE, getChange = TRUE)`%**.
  ]
  .panel[.panel-name[South East]
@@ -5450,7 +5481,7 @@ plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = 
                                 plotChart = TRUE)
 ```
 
-The percentage change in total number of contracts from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2022 is
+The percentage change in total number of contracts from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B %Y")` is
 **`r plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,level = "Regional",region_STP_name = "South East",plotChart = FALSE, getChange = TRUE)`%**.
  ]
  .panel[.panel-name[South West]
@@ -5461,7 +5492,7 @@ plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = 
                                 plotChart = TRUE)
 ```
 
-The percentage change in total number of contracts from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2022 is
+The percentage change in total number of contracts from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B %Y")` is
 **`r plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,level = "Regional",region_STP_name = "South West",plotChart = FALSE, getChange = TRUE)`%**.
 
  ]
@@ -5473,7 +5504,7 @@ plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = 
                                 plotChart = TRUE)
 ```
 
-The percentage change in total number of contracts from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2022 is
+The percentage change in total number of contracts from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B %Y")` is
 **`r plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,level = "Regional",region_STP_name = "North West",plotChart = FALSE, getChange = TRUE)`%**.
 
  ]
@@ -5486,7 +5517,7 @@ plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = 
                                 plotChart = TRUE)
 ```
 
-The percentage change in total number of contracts from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2022 is
+The percentage change in total number of contracts from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B %Y")` is
 **`r plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,level = "Regional",region_STP_name = "North East and Yorkshire",plotChart = FALSE, getChange = TRUE)`%**.
 
  ]
@@ -5498,7 +5529,7 @@ plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = 
                                 plotChart = TRUE)
 ```
 
-The percentage change in total number of contracts from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2022 is
+The percentage change in total number of contracts from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B %Y")` is
 **`r plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,level = "Regional",region_STP_name = "London",plotChart = FALSE, getChange = TRUE)`%**.
 
  ]
@@ -5510,7 +5541,7 @@ plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = 
                                 plotChart = TRUE)
 ```
 
-The percentage change in total number of contracts from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2022 is
+The percentage change in total number of contracts from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B %Y")` is
 **`r plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,level = "Regional",region_STP_name = "Midlands",plotChart = FALSE, getChange = TRUE)`%**.
 
  ]
@@ -5522,7 +5553,7 @@ plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = 
                                 plotChart = TRUE)
 ```
 
-The percentage change in total number of contracts from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2022 is
+The percentage change in total number of contracts from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B %Y")` is
 **`r plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,level = "Regional",region_STP_name = "East of England",plotChart = FALSE, getChange = TRUE)`%**.
 
  ]
