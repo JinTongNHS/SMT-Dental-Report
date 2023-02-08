@@ -32,7 +32,7 @@ data_org_main[is.na(data_org_main)] <- 0
 ########str(data_org_main)
 
 data_org <- data_org_main %>%
-  group_by(Latest.Region.Description) %>%
+  group_by(Latest.Region.Description, Year_Month ) %>%
   rename("Total_Form_Count_Highest_BPE_Sextant_Score_0_or_1_and_UDT_0_and_RRI_less_than_1_year" =
            "Total_Form_Count_Highest_BPE_Sextant_Score_0_or_1_and_UDT_0_and_RRI_<1_year") %>%
   
@@ -92,11 +92,28 @@ plot_2 [plot_2 == 'average_risk_score_complete_average_over_practices'] <-
 filtered_plot_2_1 = filter(plot_2, Description %in% c("Average % of completed record with no indication of oral health risk",
                                                       "Average % of completed risk scores"))
 
-p1<- ggplot(filtered_plot_2_1, aes(x = Latest.Region.Description, 
+filtered_plot_2_2 = filter(plot_2, Description %in% c("Average % of completed record with no indication of oral health risk"))
+
+
+# library(plotly)
+# 
+# p <-    
+#   ggplot(filtered_plot_2_2, aes(Year_Month, value01, colour = variable)) +
+#   geom_line()
+# 
+# plotly::ggplotly(t)
+# 
+# 
+# str(filtered_plot_2_2)
+# 
+# t<- ggplot(data = filtered_plot_2_2, aes(x=Year_Month, y=Percentage)) + geom_line(aes(colour=Latest.Region.Description))
+
+###setwd("N:/_Everyone/Mohammed_Emran/BPE_sexton/Jan_30")
+p1<- ggplot(filtered_plot_2_1, aes(x = Latest.Region.Description,
                                    y = Percentage, fill= Description)) +
   geom_bar(stat="identity", position = "dodge") +
   ###facet_grid(cols = vars(Year_Month), labeller = label_value) +
-  geom_text(aes(label = Percentage), 
+  geom_text(aes(label = Percentage),
             check_overlap = TRUE,
             colour = "black", size= 3.5,
             position = position_dodge(width = 1), vjust= -0.5) +
@@ -104,7 +121,25 @@ p1<- ggplot(filtered_plot_2_1, aes(x = Latest.Region.Description,
   theme(legend.position="top") +
   labs(title = "Average % of completed FP17s with BPE scores and average % of FP17s indicating no oral health risk") +
   scale_fill_manual(values = c("#009E73", "#F0E442"),
-                    label = c("Average % of completed FP17s indicating no oral health risk", 
+                    label = c("Average % of completed FP17s indicating no oral health risk",
                               "% of all FP17s completed with BPE scores"))
 p1
+
+
+
+# p1<- ggplot(filtered_plot_2_1, aes(x = Latest.Region.Description, 
+#                                    y = Percentage, fill= Description)) +
+#   geom_bar(stat="identity", position = "dodge") +
+#   ###facet_grid(cols = vars(Year_Month), labeller = label_value) +
+#   geom_text(aes(label = Percentage), 
+#             check_overlap = TRUE,
+#             colour = "black", size= 3.5,
+#             position = position_dodge(width = 1), vjust= -0.5) +
+#   scale_y_continuous(labels = scales::percent) +
+#   theme(legend.position="top") +
+#   labs(title = "Average % of completed FP17s with BPE scores and average % of FP17s indicating no oral health risk") +
+#   scale_fill_manual(values = c("#009E73", "#F0E442"),
+#                     label = c("Average % of completed FP17s indicating no oral health risk", 
+#                               "% of all FP17s completed with BPE scores"))
+# p1
 
