@@ -75,7 +75,8 @@ get_UDA_projection_data <- function(data = UDA_scheduled_data,
   data <- data_wide %>%
     left_join(data_contract_details) %>%
     left_join(data_means, by = "contract_number") %>%
-    mutate(projected_of_rest_year_delivery = avrg_last_6_month_delivered_UDA * num_months_left_in_financial_year) %>%
+    mutate(projected_of_rest_year_delivery = 
+             avrg_last_6_month_delivered_UDA * num_months_left_in_financial_year) %>%
     mutate(YTD_delivery = rowSums(across(starts_with("Delivered UDA")), na.rm = TRUE)) %>%
     mutate(projected_total_year_delivery = YTD_delivery + projected_of_rest_year_delivery) %>%
     mutate(projected_percentage_delivery_of_contracted_UDAs = projected_total_year_delivery * 100 / annual_contracted_UDA) %>%
