@@ -1,4 +1,5 @@
 #september_BSA_UDA_value_data <- pull_September_BSA_UDA_value_data()
+# [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UDA_UOA_Value_Reg]
 
 #What do do with missing UDA delivery data for average
 
@@ -69,7 +70,9 @@ get_UDA_projection_data <- function(data = UDA_scheduled_data,
     select(contract_number, name_or_company_name, commissioner_name, region_name, contract_start_date, contract_end_date, annual_contracted_UDA)
 
   #get number of months left in financial year
-  num_months_left_in_financial_year <- 12 - (as.numeric(substr(max(data$month), 6, 7)) - 3)
+  month_number <- as.numeric(substr(max(data$month), 6, 7))
+  month_number <- if_else(month_number %in% c(1,2,3), month_number + 12, month_number) #for Jan, Feb and Mar need to adjust
+  num_months_left_in_financial_year <- 12 - (month_number - 3)
 
   #join in UDA means to rest of data
   data <- data_wide %>%
