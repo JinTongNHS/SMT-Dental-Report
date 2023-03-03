@@ -1,4 +1,4 @@
-september_BSA_UDA_value_data <- pull_September_BSA_UDA_value_data()
+#september_BSA_UDA_value_data <- pull_September_BSA_UDA_value_data()
 # [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UDA_UOA_Value_Reg]
 
 #What do do with missing UDA delivery data for average
