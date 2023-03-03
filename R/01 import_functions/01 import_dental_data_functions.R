@@ -885,56 +885,6 @@ import_and_clean_calendar_UOA_data <- function(data_path,
   
 }
 
-################################################################################
-clean_CDS_data_colnames <- function(data = CDS_data){
-  
-  data <- data %>%
-    select(Month = "Month",
-           TRUSTID = "TRUSTID",
-           Provider = "Provider",
-           NHSREGION = "NHSREGION",
-           routine_num_patients_waiting_for_first_assessment_adult = "Number of adult patients waiting for a first routine assessment",
-           routine_num_patients_waiting_for_first_assessment_child = "Number of paeds patients waiting for a first routine assessment",
-           routine_num_patients_waitng_for_first_treatment_adult = "Number of adult patients assessed and waiting for a first appointment for routine treatment",
-           routine_num_patients_waitng_for_first_treatment_child = "Number of paeds patients assessed and waiting for a first appointment for routine treatment",
-           routine_average_weeks_waiting_for_assessment_adult = "Average waiting time for adult patients first appointment for a routine assessment",
-           routine_averag_weeks_waiting_for_assessment_child = "Average waiting time for paeds patients first appointment for a routine assessment",
-           routine_averag_weeks_waiting_for_treatment_adult = "Average waiting time for adult patients first routine treatment appointment",
-           routine_averag_weeks_waiting_for_treatment_child = "Average waiting time for paeds patients first routine treatment appointment",
-           routine_perc_patients_begining_treatment_within_18_weeks_of_referral = "Percentage of patients who receive and begin routine treatment within 18 weeks of referral",
-           routine_longest_wait_time_for_assessment = "Longest waiting time for a routine assessment",
-           routine_longest_wait_time_for_treatment = "Longest waiting time for routine treatment",
-           routine_perc_prepandemic_capacity_estimated = "Proportion of prepandemic clinical capacity you estimate you are currently operating at for routine CDS",
-           GA_num_patients_waiting_for_first_assessment_adult = "Number of adult patients waiting for a GA assessment",
-           GA_num_patients_waiting_for_first_assessment_child = "Number of paeds patients waiting for a GA assessment",
-           GA_num_patients_waitng_for_first_treatment_adult = "Number of adult patients assessed and waiting for a dental GA procedure appointment",
-           GA_num_patients_waitng_for_first_treatment_child = "Number of paeds patients assessed and waiting for a dental GA procedure appointment",
-           GA_average_weeks_waiting_for_assessment_adult = "Average waiting time for an adult patients appointment for a GA assessment",
-           GA_averag_weeks_waiting_for_assessment_child = "Average waiting time for a paeds patients appointment for a GA assessment",
-           GA_averag_weeks_waiting_for_treatment_adult = "Average waiting time for an adult patients GA treatment",
-           GA_averag_weeks_waiting_for_treatment_child = "Average waiting time for a paeds patients GA treatment",
-           GA_perc_patients_begining_treatment_within_18_weeks_of_referral = "Percentage of patients who receive and begin GA treatment within 18 weeks of referral",
-           GA_longest_wait_time_for_assessment = "Longest waiting time for a GA assessment",
-           GA_longest_wait_time_for_treatment = "Longest waiting time for GA treatment",
-           GA_perc_prepandemic_capacity_estimated = "Proportion of prepandemic clinical capacity you estimate you are currently operating at for GA",
-           SS_num_patients_waiting_for_first_assessment_adult = "Number of adult patients waiting for a first sedation assessment",
-           SS_num_patients_waiting_for_first_assessment_child = "Number of paeds patients waiting for a first sedation assessment",
-           SS_num_patients_waitng_for_first_treatment_adult = "Number of adult patients assessed and waiting for a first appointment for sedation treatment",
-           SS_num_patients_waitng_for_first_treatment_child = "Number of paeds patients assessed and waiting for a first appointment for sedation treatment",
-           SS_average_weeks_waiting_for_assessment_adult = "Average waiting time for adult patients first appointment for a sedation assessment",
-           SS_averag_weeks_waiting_for_assessment_child = "Average waiting time for paeds patients first appointment for a sedation assessment",
-           SS_averag_weeks_waiting_for_treatment_adult = "Average waiting time for adult patients first treatment sedation appointment",
-           SS_averag_weeks_waiting_for_treatment_child = "Average waiting time for paeds patients first treatment sedation appointment",
-           SS_perc_patients_begining_treatment_within_18_weeks_of_referral = "Percentage of patients who receive and begin sedation treatment within 18 weeks of referral",
-           SS_longest_wait_time_for_assessment = "Longest waiting time for a sedation assessment",
-           SS_longest_wait_time_for_treatment = "Longest waiting time for sedation treatment",
-           SS_perc_prepandemic_capacity_estimated = "Proportion of prepandemic clinical capacity you estimate you are currently operating at for sedation",
-           notes = "AnyAdditional",
-           submission_date = "Submission.Date"
-          
-    )
-  
-}
 
 # ################################################################################
 # #function to import and clean data
