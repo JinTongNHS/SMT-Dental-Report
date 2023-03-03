@@ -1,4 +1,4 @@
-#september_BSA_UDA_value_data <- pull_September_BSA_UDA_value_data()
+september_BSA_UDA_value_data <- pull_September_BSA_UDA_value_data()
 # [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UDA_UOA_Value_Reg]
 
 #What do do with missing UDA delivery data for average
@@ -6,12 +6,23 @@
 #What to do when contracted UDAs changes month on month for one contract?
 
 get_UDA_projection_data <- function(data = UDA_scheduled_data,
-                                    UDA_value_data = september_BSA_UDA_value_data, 
-                                    #calendar_data = UDA_calendar_data,
+                                    UDA_value_data = UDA_UOA_value_data, #september_BSA_UDA_value_data, 
                                     level = "National",
                                     region_STP_name = NULL,
                                     remove_prototypes = TRUE, 
                                     plotChart = TRUE){
+  
+  UDA_value_data <- UDA_value_data %>%
+    filter(Date == max(UDA_value_data$Date)) %>%
+    mutate(Total.Financial.Value = as.numeric(str_replace_all(Total.Financial.Value, ",", "")),
+           UDA.Financial.Value = as.numeric(str_replace_all(UDA.Financial.Value, ",", "")),
+           UDA.Performance.Target = as.numeric(str_replace_all(UDA.Performance.Target, ",", "")), 
+           UDA.Carry.Forward = as.numeric(str_replace_all(UDA.Carry.Forward, ",", "")), 
+           UOA.Financial.Value = as.numeric(str_replace_all(UOA.Financial.Value, ",", "")),
+           UOA.Performance.Target = as.numeric(str_replace_all(UOA.Performance.Target, ",", "")), 
+           UOA.Carry.Forward = as.numeric(str_replace_all(UOA.Carry.Forward, ",", "")), 
+           Cost.per.UDA = as.numeric(str_replace_all(Cost.per.UDA, ",", "")), 
+           Cost.Per.UOA = as.numeric(str_replace_all(Cost.Per.UOA, ",", "")))
   
   
   #filter for STP or region

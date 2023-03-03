@@ -93,6 +93,7 @@ dental_complaints <- clean_complaints_data(Dental_Access_Complaints_Data_June_22
 
 #UDA value data
 UDA_values <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/UDA_values.xlsx")
+UDA_UOA_value_data <- pull_UDA_UOA_value()
 
 DCP_data <- pull_dcp_data()
 
