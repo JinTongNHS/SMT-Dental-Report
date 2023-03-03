@@ -1,6 +1,72 @@
+################################################################################
+upload_scheduled_data <- function(UDA_latest,
+                                  UOA_latest){
+  
+  #Append schedule data and overwrite calendar data in NCDR
+  con <- dbConnect(odbc::odbc(), "NCDR")
+  
+  #Append UDA scheduled data
+  dbWriteTable(con, Id(catalog="NHSE_Sandbox_PrimaryCareNHSContracts",schema="Dental",table="UDA_scheduled"),
+               value = UDA_latest, row.names = FALSE, append=TRUE)
+  
+  #Append UOA scheduled data
+  dbWriteTable(con, Id(catalog="NHSE_Sandbox_PrimaryCareNHSContracts",schema="Dental",table="UOA_scheduled"),
+               value = UOA_latest, row.names = FALSE, append=TRUE)
+  
+}
+
+################################################################################
+upload_calendar_data <- function(UDA_latest,
+                                 UOA_latest){
+  
+  con <- dbConnect(odbc::odbc(), "NCDR")
+  
+  #Get UDA calendar table and overwrite this financial year
+  sql <- "SELECT *
+  FROM [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UDA_calendar]"
+  result <- dbSendQuery(con, sql)
+  UDA_calendar_data_full <- dbFetch(result)
+  dbClearResult(result)
+  
+  UDA_calendar_data_latest <- UDA_calendar_data_full %>%
+    filter(data_month < as.Date("2022-04-01")) %>%
+    bind_rows(UDA_latest)
+  
+  dbWriteTable(con, Id(catalog="NHSE_Sandbox_PrimaryCareNHSContracts",schema="Dental",table="UDA_calendar"),
+               value = UDA_calendar_data_latest, row.names = FALSE, append = FALSE, overwrite = TRUE)
+  
+  
+  #Get UOA table and overwrite this financial year
+  sql <- "SELECT *
+  FROM [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UOA_calendar]"
+  
+  result <- dbSendQuery(con, sql)
+  UOA_calendar_data_full <- dbFetch(result)
+  dbClearResult(result)
+  
+  UOA_calendar_data_latest <- UOA_calendar_data_full %>%
+    filter(data_month < as.Date("2022-04-01")) %>%
+    bind_rows(UOA_latest)
+  
+  dbWriteTable(con, Id(catalog="NHSE_Sandbox_PrimaryCareNHSContracts",schema="Dental",table="UOA_calendar"),
+               value = UOA_calendar_data_latest, row.names = FALSE, append = FALSE, overwrite = TRUE)
+  
+}
+
+################################################################################
+upload_unique_patients_data <- function(unique_patients){
+  
+  #Append latest data to table on NCDR
+  con <- dbConnect(odbc::odbc(), "NCDR")
+  
+  dbWriteTable(con, Id(catalog="NHSE_Sandbox_PrimaryCareNHSContracts",schema="Dental",table="unique_patients_rolling_12_month"),
+               value = unique_patients, row.names = FALSE, append = TRUE)
+  
+}
+
 #This is the table used for PCDID
 ################################################################################
-upload_delivery_data <- function(calendar_data = UDA_calendar_data,  
+upload_delivery_metrics <- function(calendar_data = UDA_calendar_data,  
                                  scheduled_data = UDA_scheduled_data,
                                  historic_data = historical_UDA_scheduled_data,
                                  lookup = STP_ICB_lookup_codes){

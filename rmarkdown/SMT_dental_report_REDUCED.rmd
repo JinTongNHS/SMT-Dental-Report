@@ -81,7 +81,8 @@ unique_patients_rolling <- pull_unique_patients_data()
 dental_recalls_STP_2018_22 <- readRDS("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/dental_recalls_STP_2018_22.rds")
 
 #read in CDS data
-CDS_data <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/CDS/CDS_data_Oct22.xlsx")
+CDS_data <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/CDS/CDS_data.xlsx")
+CDS_data <- clean_CDS_data_colnames(CDS_data)
 
 #read in hand backs data
 contract_handbacks <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/contract_handbacks.xlsx")
