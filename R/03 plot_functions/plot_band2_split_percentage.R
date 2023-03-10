@@ -1,4 +1,4 @@
-plot_band2_split <- function(data = band2_split_data,
+plot_band2_split_percentage <- function(data = band2_split_data,
                                         scheduled_data = UDA_scheduled_data,
                                         level = "National",
                                         region_STP_name = NULL,
@@ -53,11 +53,11 @@ plot_band2_split <- function(data = band2_split_data,
                 band_2c_UDAs = sum(band_2c_UDAs, na.rm = TRUE),
                 unsplit_band2s = sum(unsplit_band2s, na.rm = TRUE),
                 total_band2_UDAs_delivered = sum(total_band2_UDAs_delivered, na.rm = TRUE)) %>%
-      pivot_longer(cols = !month, names_to = "band", values_to = "count") %>%
+      pivot_longer(cols = c(band_2a_UDAs, band_2b_UDAs, band_2c_UDAs, unsplit_band2s), names_to = "band", values_to = "count") %>%
+      mutate(percentage = count / total_band2_UDAs_delivered) %>%
       mutate(band = case_when(band == "band_2a_UDAs" ~ "Band 2A",
                               band == "band_2b_UDAs" ~ "Band 2B",
                               band == "band_2c_UDAs" ~ "Band 2C",
-                              band == "total_band2_UDAs_delivered" ~ "Total band 2",
                               band == "unsplit_band2s" ~ "Un-split band 2**"))
   }else if(UDA_or_FP17 == "FP17"){
     data <- data %>%
@@ -69,7 +69,8 @@ plot_band2_split <- function(data = band2_split_data,
                 band_2c_FP17s = sum(band_2c_FP17s, na.rm = TRUE),
                 unsplit_band2s = sum(unsplit_band2s, na.rm = TRUE),
                 total_band2_FP17s_delivered = sum(total_band2_FP17s_delivered, na.rm = TRUE)) %>%
-      pivot_longer(cols = !month, names_to = "band", values_to = "count") %>%
+      pivot_longer(cols = c(band_2a_FP17s, band_2b_FP17s, band_2c_FP17s, unsplit_band2s), names_to = "band", values_to = "count") %>%
+      mutate(percentage = count / total_band2_FP17s_delivered) %>%
       mutate(band = case_when(band == "band_2a_FP17s" ~ "Band 2A",
                               band == "band_2b_FP17s" ~ "Band 2B",
                               band == "band_2c_FP17s" ~ "Band 2C",
@@ -84,23 +85,22 @@ plot_band2_split <- function(data = band2_split_data,
     
     ggplot(data,
            aes(x = month, 
-               y = count,
+               y = percentage,
                colour = band)) +
       geom_line() +
       geom_point() +
       theme_bw() +
-      labs(title = paste0(UDA_or_FP17," band 2 split"),
+      labs(title = paste0("Percentage of total band 2 ",UDA_or_FP17,"s delivered by band 2 category"),
            subtitle = subtitle,
            x = "Month",
-           y = paste0(UDA_or_FP17, "s"),
+           y = paste0("Percentage of total band 2 ", UDA_or_FP17, "s delivered"),
            colour = "",
            caption = "*Excluding contracts with annual contracted UDAs < 100.\n**Some band 2s are still being submitted without the A,B,C distinction and are classed here as 'un-split'") +
-      scale_y_continuous(labels=function(x) format(x, big.mark = ",", scientific = FALSE),
-                         breaks = scales::breaks_pretty()) +
+      scale_y_continuous(breaks = scales::breaks_pretty(),
+                         labels = scales::percent_format(accuracy = 1)) +
       scale_x_date(date_breaks = "1 month", 
                    date_labels = "%b-%y") +
-      theme(axis.text.x = element_text(angle = 90)) +
-      scale_size_manual(c(1,1,1,3,1))
+      theme(axis.text.x = element_text(angle = 90))
     
   }else{
     
