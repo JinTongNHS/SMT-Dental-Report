@@ -7,8 +7,6 @@ load_in_band2_split_data <- function(){
   
   for (f in files){
     
-    print(f)
-    
     #skip first rows
     f_clean <- read_excel(f,
                        col_names = FALSE, 
