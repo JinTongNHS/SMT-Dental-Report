@@ -52,21 +52,26 @@ plot_band2_split <- function(data = band2_split_data,
                             band == "band_2b_UDAs" ~ "Band 2B",
                             band == "band_2c_UDAs" ~ "Band 2C"))
   
-  ggplot(data,
-         aes(x = month, 
-             y = UDAs,
-             colour = band)) +
-    geom_line() +
-    geom_point() +
-    theme_bw() +
-    labs(title = "Band 2 UDA split",
-         subtitle = subtitle,
-         x = "Month",
-         y = "UDAs",
-         colour = "") +
-    scale_y_continuous(labels=function(x) format(x, big.mark = ",", scientific = FALSE),
-                       breaks = scales::breaks_pretty()) +
-    scale_x_date(date_breaks = "1 month", 
-                 date_labels = "%b-%y") +
-    theme(axis.text.x = element_text(angle = 90))
+  if(plotChart == TRUE){
+    ggplot(data,
+           aes(x = month, 
+               y = UDAs,
+               colour = band)) +
+      geom_line() +
+      geom_point() +
+      theme_bw() +
+      labs(title = "Band 2 UDA split",
+           subtitle = subtitle,
+           x = "Month",
+           y = "UDAs",
+           colour = "") +
+      scale_y_continuous(labels=function(x) format(x, big.mark = ",", scientific = FALSE),
+                         breaks = scales::breaks_pretty()) +
+      scale_x_date(date_breaks = "1 month", 
+                   date_labels = "%b-%y") +
+      theme(axis.text.x = element_text(angle = 90))
+  }else{
+    data
+  }
+ 
 }
