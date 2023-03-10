@@ -23,6 +23,7 @@ library(DBI)
 library(odbc)
 library(reactable) #make sure you have the latest version by doing install.packages("reactable")
 library(downloadthis)
+library(lubridate)
 
 #source in all file from plot folder
 for (f in list.files(path = "../R/03 plot_functions/", pattern="*.R$")) {
@@ -107,6 +108,8 @@ missing_contracts_data <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental
 DCP_data <- pull_dcp_data()
 
 BPE_data <- pull_BPE_data()
+
+band2_split_data <- load_in_band2_split_data()
 
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 
@@ -531,7 +534,7 @@ plot_UDA_UOA_delivery_all_regions(data = UDA_scheduled_data,
 .panel[.panel-name[Data]
 
 <font size="2">
-Full scheduled delivery data back to 2016 can be found on [slide 9](#historic-udas).
+Full scheduled delivery data back to 2016 can be found on [slide 10](#historic-udas).
 ]
 ]
 
