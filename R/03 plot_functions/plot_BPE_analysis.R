@@ -1,9 +1,4 @@
-## create table in SQL Server
-library(readxl)
-library(DBI)
-library(odbc)
-library (tidyverse)
-library(formattable)
+
 
 # 
 # #
@@ -86,6 +81,70 @@ plot_BPE_no_oral_health_risk_line <- function(level = "National",
   
   
   
+
+plot_BPE_no_oral_health_risk <- function(data = BPE_data,
+                                         level = "National",
+                                         region_STP_name = NULL,
+                                         ICB_lookup = STP_ICB_lookup_codes){
+  
+  data[is.na(data)] <- 0
+  
+  #join in standardised ICB column
+  ICB_lookup <- ICB_lookup %>%
+    select(commissioner_name = commissioner_name_ICB,
+           Latest_Commissioner_Code = commissioner_ONS_boundary_code_ICB)
+  
+  data <- data %>%
+    left_join(ICB_lookup, by = "Latest_Commissioner_Code")
+  
+  #filter for STP or region
+  if(level == "Regional"){
+    data <- data %>%
+      filter(Latest.Region.Description == region_STP_name )
+    subtitle <- region_STP_name
+  }else if(level == "STP"){
+    data <- data %>%
+      filter(commissioner_name == region_STP_name)
+    subtitle <- region_STP_name
+  }else{
+    subtitle <- "England"
+  }
+  
+  ###filtering and selecting the right columns
+  ########str(data)
+  
+  data_org <- data %>%
+    group_by(Latest.Region.Description) %>%
+    rename("Total_Form_Count_Highest_BPE_Sextant_Score_0_or_1_and_UDT_0_and_RRI_less_than_1_year" =
+             "Total_Form_Count_Highest_BPE_Sextant_Score_0_or_1_and_UDT_0_and_RRI_<1_year") %>%
+    
+    # filter (Year_Month == max(data$Year_Month)) %>%
+    
+    mutate (percentage_low_risk_recall_interval_less_than_1_year	 = 
+              as.numeric(Total_Form_Count_Highest_BPE_Sextant_Score_0_or_1_and_UDT_0_and_RRI_less_than_1_year) /
+              as.numeric(Total_Form_Count_Highest_BPE_Sextant_Score_0_or_1_and_0_UDT)) %>%
+    
+    mutate (percentage_complete_forms	 = 
+              as.numeric (Forms_with_Highest_BPE_Sextant_Score) /
+              as.numeric (Total.Form.Count)) %>%
+    
+    mutate (average_percentage_low_risk_recall_interval_less_than_1_year_average_over_practices
+            = round (mean(percentage_low_risk_recall_interval_less_than_1_year, na.rm = TRUE), digits = 2)) %>%
+    
+    mutate (average_risk_score_complete_average_over_practices = 
+              round (mean(percentage_complete_forms, na.rm = TRUE), digits = 2)) %>%
+    
+    mutate (average_percentage_low_risk_recall_interval_less_than_1_year_average_over_patients_seen	 = 
+              round (as.numeric(sum (Total_Form_Count_Highest_BPE_Sextant_Score_0_or_1_and_UDT_0_and_RRI_less_than_1_year))  /
+                       as.numeric(sum (Total_Form_Count_Highest_BPE_Sextant_Score_0_or_1_and_0_UDT)), digits = 2)) %>%
+    
+    mutate (average_percentage_low_risk_score_complete_average_over_patients_seen = 
+              round (as.numeric (sum (Forms_with_Highest_BPE_Sextant_Score)) /
+                       as.numeric (sum (Total.Form.Count)), digits = 2)) 
+  
+  
+  
+
   ##### plot the bar graph
   
   plot_1 <- data_org %>% group_by(Latest.Region.Description, Year_Month ) %>%
@@ -116,6 +175,7 @@ plot_BPE_no_oral_health_risk_line <- function(level = "National",
   filtered_plot_2_1 = filter(plot_2, Description %in% c("Average % of completed record with no indication of oral health risk",
                                                         "Average % of completed risk scores"))
   
+
   filtered_plot_2_2 = filter(plot_2, Description %in% c("Average % of completed record with no indication of oral health risk"))
   
   
@@ -149,48 +209,5 @@ plot_BPE_no_oral_health_risk_line <- function(level = "National",
     scale_fill_manual(values = c("#009E73", "#F0E442"),
                       label = c("Average % of completed FP17s indicating no oral health risk",
                                 "% of all FP17s completed with BPE scores"))
-  p_test
-  
-  
+  }
 }
-
-
-
-# p1<- ggplot(filtered_plot_2_1, aes(x = Latest.Region.Description,
-#                                    y = Percentage, fill= Description)) +
-#   geom_bar(stat="identity", position = "dodge") +
-#   ###facet_grid(cols = vars(Year_Month), labeller = label_value) +
-#   geom_text(aes(label = Percentage),
-#             check_overlap = TRUE,
-#             colour = "black", size= 3.5,
-#             position = position_dodge(width = 1), vjust= -0.5) +
-#   scale_y_continuous(labels = scales::percent) +
-#   theme(legend.position="top") +
-#   labs(title = "Average % of completed FP17s with BPE scores and average % of FP17s indicating no oral health risk") +
-#   scale_fill_manual(values = c("#009E73", "#F0E442"),
-#                     label = c("Average % of completed FP17s indicating no oral health risk",
-#                               "% of all FP17s completed with BPE scores"))
-# p1
-# 
-
-
-
-
-
-
-# p1<- ggplot(filtered_plot_2_1, aes(x = Latest.Region.Description, 
-#                                    y = Percentage, fill= Description)) +
-#   geom_bar(stat="identity", position = "dodge") +
-#   ###facet_grid(cols = vars(Year_Month), labeller = label_value) +
-#   geom_text(aes(label = Percentage), 
-#             check_overlap = TRUE,
-#             colour = "black", size= 3.5,
-#             position = position_dodge(width = 1), vjust= -0.5) +
-#   scale_y_continuous(labels = scales::percent) +
-#   theme(legend.position="top") +
-#   labs(title = "Average % of completed FP17s with BPE scores and average % of FP17s indicating no oral health risk") +
-#   scale_fill_manual(values = c("#009E73", "#F0E442"),
-#                     label = c("Average % of completed FP17s indicating no oral health risk", 
-#                               "% of all FP17s completed with BPE scores"))
-# p1
-

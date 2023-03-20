@@ -69,6 +69,8 @@ dental_data_111 <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2
 #############still to fix
 prototype_contracts <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/prototype_contracts.xlsx")
 contractor_categories <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/contractor_categories_Jan23.xlsx")
+contractor_categories <- contractor_categories %>%
+  mutate(contract_number = as.numeric(contract_number))
 contract_demographics <- readRDS("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/contract_demographics.rds")
 
 #read in unique patients
@@ -92,6 +94,8 @@ dental_complaints <- clean_complaints_data(Dental_Access_Complaints_Data_June_22
 UDA_values <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/UDA_values.xlsx")
 
 DCP_data <- pull_dcp_data()
+
+BPE_data <- pull_BPE_data()
 
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 
@@ -317,6 +321,7 @@ name: contents
  * [Urgent treatment form submissions](#urgent-forms)
  * [Percentage of CoTs assisted by Dental Care Practitioners (DCPs)](#dcp-fp17)
  * [Percentage of UDAs assisted by Dental Care Practitioners (DCPs) by band](#dcp-uda)
+ * [Percentage of FP17s indicating low oral health risk](#bpe)
  * [Unique patients seen rolling 12 months](#unique-patients)
  * [Unique patients seen rolling 12 months as % of April 2018 delivery](#unique-patients-index)
  * [Patient re-attendance intervals](#reattendance)
@@ -4049,7 +4054,7 @@ plot_urgent_form_submissions(data = UDA_scheduled_data,
 * This graph shows the number of urgent treatment forms
 declared per month across financial years.
 * The urgent treatment form count in
-**`r format(Sys.Date() - lubridate::weeks(4), "%B")` 2022**
+**`r format(Sys.Date() - lubridate::weeks(4), "%B %Y")`**
 was
 **`r get_num_urgent_forms(level = "Regional", region_STP_name = region)`**
 , whilst in
@@ -4618,6 +4623,132 @@ plot_DCP_analysis(data = UDA_scheduled_data,
 
 ---
 
+name: bpe
+
+### Oral health risk assessment
+
+```{r xaringan-panelset-bpe, echo=FALSE}
+xaringanExtra::use_panelset()
+```
+ <font size="1">
+.panelset[
+
+ .panel[.panel-name[`r region`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
+plot_BPE_no_oral_health_risk(data = BPE_data,
+                                         ICB_lookup = STP_ICB_lookup_codes,
+                                         level = "Regional",
+                                         region_STP_name = region)
+```
+
+
+ ]
+ .panel[.panel-name[`r STP1`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
+plot_BPE_no_oral_health_risk(data = BPE_data,
+                                         ICB_lookup = STP_ICB_lookup_codes,
+                level = "STP",
+                region_STP_name = STP1)
+```
+
+ ]
+ .panel[.panel-name[`r STP2`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
+plot_BPE_no_oral_health_risk(data = BPE_data,
+                                         ICB_lookup = STP_ICB_lookup_codes,
+                level = "STP",
+                region_STP_name = STP2)
+```
+
+ ]
+ .panel[.panel-name[`r STP3`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
+plot_BPE_no_oral_health_risk(data = BPE_data,
+                                         ICB_lookup = STP_ICB_lookup_codes,
+                level = "STP",
+                region_STP_name = STP3)
+```
+
+ ]
+ .panel[.panel-name[`r STP4`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5, eval = eval4}
+plot_BPE_no_oral_health_risk(data = BPE_data,
+                                         ICB_lookup = STP_ICB_lookup_codes,
+                level = "STP",
+                region_STP_name = STP4)
+```
+
+ ]
+ .panel[.panel-name[`r STP5`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5, eval = eval5}
+plot_BPE_no_oral_health_risk(data = BPE_data,
+                                         ICB_lookup = STP_ICB_lookup_codes,
+                level = "STP",
+                region_STP_name = STP5)
+```
+
+ ]
+ .panel[.panel-name[`r STP6`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5, eval = eval6}
+plot_BPE_no_oral_health_risk(data = BPE_data,
+                                         ICB_lookup = STP_ICB_lookup_codes,
+                level = "STP",
+                region_STP_name = STP6)
+```
+
+ ]
+ .panel[.panel-name[`r STP7`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5, eval = eval7}
+plot_BPE_no_oral_health_risk(data = BPE_data,
+                                         ICB_lookup = STP_ICB_lookup_codes,
+                level = "STP",
+                region_STP_name = STP7)
+```
+
+ ]
+ .panel[.panel-name[`r STP8`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5, eval = eval8}
+plot_BPE_no_oral_health_risk(data = BPE_data,
+                                         ICB_lookup = STP_ICB_lookup_codes,
+                level = "STP",
+                region_STP_name = STP8)
+```
+
+ ]
+ .panel[.panel-name[`r STP9`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5, eval = eval9}
+plot_BPE_no_oral_health_risk(data = BPE_data,
+                                         ICB_lookup = STP_ICB_lookup_codes,
+                level = "STP",
+                region_STP_name = STP9)
+```
+
+ ]
+ .panel[.panel-name[`r STP10`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5, eval = eval10}
+plot_BPE_no_oral_health_risk(data = BPE_data,
+                                         ICB_lookup = STP_ICB_lookup_codes,
+                level = "STP",
+                region_STP_name = STP10)
+```
+
+ ]
+ .panel[.panel-name[`r STP11`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5, eval = eval11}
+plot_BPE_no_oral_health_risk(data = BPE_data,
+                                         ICB_lookup = STP_ICB_lookup_codes,
+                level = "STP",
+                region_STP_name = STP11)
+```
+
+ ]
+ ]
+Low risk is defined as having BPE (Basic Periodontal Examination) Score of 0 or 1 and no new tooth decay. 
+
+[Return to contents](#contents)
+
+---
+
 name: unique-patients
 
 ### Unique dental patients seen
@@ -4829,7 +4960,7 @@ of pre-pandemic levels.
 
 name: unique-patients-index
 
-### Unique dental patients seen as a precentage of April 2018 figures
+### Unique dental patients seen as a percentage of April 2018 figures
 
 ```{r xaringan-panelset-Unique-patients2, echo=FALSE}
 xaringanExtra::use_panelset()
@@ -5154,7 +5285,7 @@ plot_number_of_contracts_over_time(data = UDA_scheduled_data,
                                 plotChart = TRUE)
 ```
 
-The percentage change in total number of contracts from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2022 is
+The percentage change in total number of contracts from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B %Y")` is
 **`r plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,level = "Regional",region_STP_name = region,plotChart = FALSE, getChange = TRUE)`%**.
  ]
  .panel[.panel-name[`r STP1`]
@@ -5166,7 +5297,7 @@ plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = 
                                 plotChart = TRUE)
 ```
 
-The percentage change in total number of contracts from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2022 is
+The percentage change in total number of contracts from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B %Y")` is
 **`r plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,level = "STP",region_STP_name = STP1,plotChart = FALSE, getChange = TRUE)`%**.
  ]
  .panel[.panel-name[`r STP2`]
@@ -5177,7 +5308,7 @@ plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = 
                                 plotChart = TRUE)
 ```
 
-The percentage change in total number of contracts from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2022 is
+The percentage change in total number of contracts from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B %Y")` is
 **`r plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,level = "STP",region_STP_name = STP2,plotChart = FALSE, getChange = TRUE)`%**.
 
  ]
@@ -5189,7 +5320,7 @@ plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = 
                                 plotChart = TRUE)
 ```
 
-The percentage change in total number of contracts from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2022 is
+The percentage change in total number of contracts from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B %Y")` is
 **`r plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,level = "STP",region_STP_name = STP3,plotChart = FALSE, getChange = TRUE)`%**.
 
  ]
@@ -5305,7 +5436,7 @@ plot_UDAs_commissioned(data = UDA_scheduled_data,
                                 plotChart = TRUE)
 ```
 
-The percentage change in total number of contracts from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2022 is
+The percentage change in total number of contracts from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B %Y")` is
 **`r plot_UDAs_commissioned(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,level = "Regional",region_STP_name = region,plotChart = FALSE, getChange = TRUE)`%**.
  ]
  .panel[.panel-name[`r STP1`]
@@ -5317,7 +5448,7 @@ plot_UDAs_commissioned(data = UDA_scheduled_data, historical_data = historical_U
                                 plotChart = TRUE)
 ```
 
-The percentage change in total number of contracts from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2022 is
+The percentage change in total number of contracts from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B %Y")` is
 **`r plot_UDAs_commissioned(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,level = "STP",region_STP_name = STP1,plotChart = FALSE, getChange = TRUE)`%**.
  ]
  .panel[.panel-name[`r STP2`]
@@ -5328,7 +5459,7 @@ plot_UDAs_commissioned(data = UDA_scheduled_data, historical_data = historical_U
                                 plotChart = TRUE)
 ```
 
-The percentage change in total number of contracts from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2022 is
+The percentage change in total number of contracts from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B %Y")` is
 **`r plot_UDAs_commissioned(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,level = "STP",region_STP_name = STP2,plotChart = FALSE, getChange = TRUE)`%**.
 
  ]
@@ -5340,7 +5471,7 @@ plot_UDAs_commissioned(data = UDA_scheduled_data, historical_data = historical_U
                                 plotChart = TRUE)
 ```
 
-The percentage change in total number of contracts from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2022 is
+The percentage change in total number of contracts from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B %Y")` is
 **`r plot_UDAs_commissioned(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,level = "STP",region_STP_name = STP3,plotChart = FALSE, getChange = TRUE)`%**.
 
  ]
