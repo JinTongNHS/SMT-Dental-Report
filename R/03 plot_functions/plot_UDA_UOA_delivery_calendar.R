@@ -198,7 +198,8 @@ plot_UDA_UOA_delivery_calendar <- function(data = UDA_calendar_data,
     scale_x_date(date_breaks = "1 month", 
                  date_labels = "%b-%y") +
     scale_y_continuous(limits = c(0, max(c(data$scaled_perc_UDA_UOA_delivered, 90), na.rm = T) + 10),
-                       breaks = scales::breaks_pretty()) 
+                       breaks = scales::breaks_pretty()) +
+    theme(axis.text.x = element_text(angle = 90, vjust=-0.0001))
   
   
   if(regional_lines == F & cat_lines == F){
