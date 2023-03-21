@@ -1,6 +1,6 @@
 
 
-# 
+# # 
 # #
 # con <- dbConnect(odbc::odbc(), "NCDR")
 # 
@@ -13,10 +13,10 @@
 #   dbClearResult(result)
 #   bpe_all
 # }
-# 
-# 
-# 
-# data_org_main <- bpe_data_pull()
+
+
+
+data_org_main <- bpe_data_pull()
 
 plot_BPE_no_oral_health_risk_line <- function(level = "National",
                                               stp_region_name = NULL){
