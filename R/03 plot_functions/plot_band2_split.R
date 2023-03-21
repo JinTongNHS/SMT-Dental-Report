@@ -5,8 +5,7 @@ plot_band2_split <- function(data = band2_split_data,
                                         remove_prototypes = TRUE, 
                                         plotChart = TRUE,
                                         commissioner_region_lookup = STP_ICB_lookup_codes,
-                                        UDA_or_FP17 = "UDA",
-                                        as_percentage = FALSE){
+                                        UDA_or_FP17 = "UDA"){
   
   #join in region column and annual contracted UDA column
   commissioner_region_lookup <- commissioner_region_lookup %>%

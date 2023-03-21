@@ -70,52 +70,73 @@ upload_delivery_metrics <- function(calendar_data = UDA_calendar_data,
                                  scheduled_data = UDA_scheduled_data,
                                  historic_data = historical_UDA_scheduled_data,
                                  lookup = STP_ICB_lookup_codes){
-  
-  UDA_delivery_calendar <- get_delivery_data_calendar(calendar_data = calendar_data,  
+
+  UDA_delivery_calendar <- get_delivery_data_calendar(calendar_data = calendar_data,
                                                       scheduled_data = scheduled_data,
                                                       remove_prototypes = T,
                                                       UDAorUOA = "UDA",
                                                       regional_lines = F,
                                                       STP_lines = T,
-                                                      cat_lines = F, 
+                                                      cat_lines = F,
                                                       renameColumns = T)
-  
+
   UDA_delivery_scheduled <- get_delivery_data(data = bind_rows(scheduled_data, historic_data),
                                               remove_prototypes = T,
                                               UDAorUOA = "UDA",
                                               all_regions_and_STPs = T,
                                               renameColumns = T)
   
+  UDA_delivery_scheduled_contract_level <- get_delivery_data(data = scheduled_data,
+                                                             remove_prototypes = FALSE, #we want all contracts in this data
+                                                             UDAorUOA = "UDA",
+                                                             all_regions_and_STPs = F,
+                                                             renameColumns = F,contractor_level = T)
+  
   lookup <- lookup %>%
     select(commissioner_name = commissioner_name_ICB,
-           commissioner_ONS_boundary_code_ICB)
+           commissioner_ODS_code_ICB = commissioner_ONS_boundary_code_ICB)
   
   UDA_delivery_calendar <- UDA_delivery_calendar %>%
     left_join(lookup) %>%
-    select("calendar_month", "commissioner_name", 
-           commissioner_ODS_code_ICB = commissioner_ONS_boundary_code_ICB, 
+    select("calendar_month", "commissioner_name",
+           commissioner_ODS_code_ICB,
            "region_name", "monthly_UDAs_delivered",
+           "scaled_monthly_UDAs_delivered", "annual_contracted_UDAs", "scaled_perc_UDAs_delivered",
+           "threshold_perc")
+
+  UDA_delivery_scheduled <- UDA_delivery_scheduled %>%
+    left_join(lookup) %>%
+    select("scheduled_month", "commissioner_name",
+           commissioner_ODS_code_ICB,
+           "region_name",
+           "monthly_UDAs_delivered",
            "scaled_monthly_UDAs_delivered", "annual_contracted_UDAs", "scaled_perc_UDAs_delivered",
            "threshold_perc")
   
-  UDA_delivery_scheduled <- UDA_delivery_scheduled %>%
-    left_join(lookup) %>%
-    select("scheduled_month", "commissioner_name", 
-           commissioner_ODS_code_ICB = commissioner_ONS_boundary_code_ICB,
-           "region_name", "monthly_UDAs_delivered",
-           "scaled_monthly_UDAs_delivered", "annual_contracted_UDAs", "scaled_perc_UDAs_delivered",
-           "threshold_perc")
+  UDA_delivery_scheduled_contract_level <- UDA_delivery_scheduled_contract_level %>%
+    left_join(lookup, by = "commissioner_name") %>%
+    select(scheduled_month = month, 
+           contract_number,
+           commissioner_name, 
+           commissioner_ODS_code_ICB,
+           monthly_UDAs_delivered = monthly_UDA_UOAs_delivered,
+           scaled_monthly_UDAs_delivered = scaled_monthly_UDA_UOAs_delivered, 
+           annual_contracted_UDAs = annual_contracted_UDA_UOA, 
+           scaled_perc_UDAs_delivered = perc_UDA_UOA_delivered)
   
   
   
   #Overwrite data in NCDR
   con <- dbConnect(odbc::odbc(), "NCDR")
-  
+
   dbWriteTable(con, Id(catalog="NHSE_Sandbox_PrimaryCareNHSContracts",schema="Dental",table="UDA_delivery_calendar"),
                value = UDA_delivery_calendar, row.names = FALSE, append = FALSE, overwrite = TRUE)
-  
+
   dbWriteTable(con, Id(catalog="NHSE_Sandbox_PrimaryCareNHSContracts",schema="metric",table="UDA_delivery_scheduled_ICB"), ##NB schema has changed
                value = UDA_delivery_scheduled, row.names = FALSE, append = FALSE, overwrite = TRUE)
+
+  dbWriteTable(con, Id(catalog="NHSE_Sandbox_PrimaryCareNHSContracts",schema="metric",table="UDA_delivery_scheduled_contract_level"), ##NB schema has changed
+               value = UDA_delivery_scheduled_contract_level, row.names = FALSE, append = FALSE, overwrite = TRUE)
   
 }
 

@@ -8,6 +8,7 @@ plot_unique_patients_rolling <- function(data = unique_patients_rolling,
                                          remove_prototypes = TRUE,
                                          get_perc = FALSE,
                                          all_regiona_and_STPs = FALSE,
+                                         contract_level = FALSE,
                                          asIndex = FALSE){
   
   #avoid standard form notation
@@ -46,9 +47,16 @@ plot_unique_patients_rolling <- function(data = unique_patients_rolling,
     subtitle <- "England"
   }
   
+  #group by different levels depending on inputs
   if(all_regiona_and_STPs == TRUE){
     data <- data %>%
       group_by(month, region_name, commissioner_name)
+    
+  }else if(contract_level == TRUE){
+    
+    data <- data %>%
+      group_by(month, contract_number, region_name, commissioner_name)
+    
   }else{
     data <- data %>%
       group_by(month)
