@@ -112,8 +112,8 @@ new_patients_provider_england <- left_join (new_child_patients_provider_number_e
 colnames(new_patients_provider_england) <- c("Month", "number_of_new_child_patients_provider",
                                               "number_of_new_adult_patients_provider")
 # 
-# write.csv(new_patients_provider_england, "N:/_Everyone/Mohammed_Emran/New_vs_returning_patients/new_patients_provider_england.csv")
-# write.csv(new_patients_provider_regional, "N:/_Everyone/Mohammed_Emran/New_vs_returning_patients/new_patients_provider_regional.csv")
+# write.csv(new_patients_regional_summary, "N:/_Everyone/Mohammed_Emran/New_vs_returning_patients/new_patients_regional_summary.csv")
+# write.csv(new_patients_summary_england, "N:/_Everyone/Mohammed_Emran/New_vs_returning_patients/new_patients_summary_england.csv")
 # write.csv(contractors_number_england, "N:/_Everyone/Mohammed_Emran/New_vs_returning_patients/contractors_number_england.csv")
 # write.csv(contractors_number_regional, "N:/_Everyone/Mohammed_Emran/New_vs_returning_patients/contractors_number_regional.csv")
 # 
@@ -122,6 +122,9 @@ colnames(new_patients_provider_england) <- c("Month", "number_of_new_child_patie
 # 
 
 
+
+new_patients_regional_summary
+new_patients_summary_england
 
 ######################################
 ######################################
