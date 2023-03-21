@@ -10,7 +10,7 @@ import_and_clean_unique_patients_data <- function(data_path = "N:/_Everyone/Prim
                                                   commissioner_lookup = STP_ICB_lookup_codes){
   
   # Gets last month 
-  data_month <- lubridate::floor_date(Sys.Date()  - lubridate::duration("1 week"), unit = "month") ###might need to change week to month 
+  data_month <- lubridate::floor_date(Sys.Date()  - lubridate::duration("1 week"), unit = "month") ###might need to change depending on which week the code is run
   data_month_name <- format(Sys.Date()  - lubridate::duration("1 week"), format = "%b%y")
   
   unique_patients <- readxl::read_excel(paste0(data_path, "unique_patients_rolling_", data_month_name,".xlsx"),

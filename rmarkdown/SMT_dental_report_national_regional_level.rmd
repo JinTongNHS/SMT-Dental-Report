@@ -23,6 +23,7 @@ library(DBI)
 library(odbc)
 library(reactable) #make sure you have the latest version by doing install.packages("reactable")
 library(downloadthis)
+library(lubridate)
 
 #source in all file from plot folder
 for (f in list.files(path = "../R/03 plot_functions/", pattern="*.R$")) {
@@ -108,6 +109,8 @@ DCP_data <- pull_dcp_data()
 
 BPE_data <- pull_BPE_data()
 
+band2_split_data <- load_in_band2_split_data()
+
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 
 #avoid standard form
@@ -155,6 +158,7 @@ name: contents
  * [Total number of contracts trend](#num-contracts-trend)
  * [Total payments to dentists by financial year](#payemts)
  * [Cumulative financial value of UDAs delivered YTD](#uda-value)
+ * [Band 2 UDA Split](#band2-split-UDAs)
  
 #### Orthodontic 
  * [UOA activity](#uoa-activity)
@@ -531,7 +535,7 @@ plot_UDA_UOA_delivery_all_regions(data = UDA_scheduled_data,
 .panel[.panel-name[Data]
 
 <font size="2">
-Full scheduled delivery data back to 2016 can be found on [slide 9](#historic-udas).
+Full scheduled delivery data back to 2016 can be found on [slide 10](#historic-udas).
 ]
 ]
 
@@ -5834,6 +5838,168 @@ reactable(
     `Cumulative financial delivery (million pounds)` = colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE),
     `2017/18 - 2019/20 mean financial delivery (million pounds)` = colDef(aggregate = "sum", format = colFormat(digits = 0), filterable = FALSE)
 )
+)
+```
+
+ ]
+ ]
+
+[Return to contents](#contents)
+
+---
+
+name: band2-split-UDAs
+
+### Band 2 Split UDAs
+
+```{r xaringan-panelset-band2-split-UDAs, echo=FALSE}
+xaringanExtra::use_panelset()
+```
+
+ <font size="2">
+.panelset[
+.panel[.panel-name[National]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_band2_split(data = band2_split_data,
+                             scheduled_data = UDA_scheduled_data,
+                             remove_prototypes = TRUE, 
+                             commissioner_region_lookup = STP_ICB_lookup_codes,
+                           level = "National",
+                           region_STP_name = NULL,
+                             plotChart = TRUE)
+```
+
+]
+ .panel[.panel-name[South East]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_band2_split(data = band2_split_data,
+                             scheduled_data = UDA_scheduled_data,
+                             remove_prototypes = TRUE, 
+                             commissioner_region_lookup = STP_ICB_lookup_codes,
+                                level = "Regional",
+                                region_STP_name = "South East",
+                                plotChart = TRUE)
+```
+
+ ]
+ .panel[.panel-name[South West]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_band2_split(data = band2_split_data,
+                             scheduled_data = UDA_scheduled_data,
+                             remove_prototypes = TRUE, 
+                             commissioner_region_lookup = STP_ICB_lookup_codes,
+                                level = "Regional",
+                                region_STP_name = "South West",
+                                plotChart = TRUE)
+```
+
+
+ ]
+ .panel[.panel-name[North West]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_band2_split(data = band2_split_data,
+                             scheduled_data = UDA_scheduled_data,
+                             remove_prototypes = TRUE, 
+                             commissioner_region_lookup = STP_ICB_lookup_codes,
+                                level = "Regional",
+                                region_STP_name = "North West",
+                                plotChart = TRUE)
+```
+
+
+ ]
+ .panel[.panel-name[North East and Yorkshire]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_band2_split(data = band2_split_data,
+                             scheduled_data = UDA_scheduled_data,
+                             remove_prototypes = TRUE, 
+                             commissioner_region_lookup = STP_ICB_lookup_codes,
+                                level = "Regional",
+                                region_STP_name = "North East and Yorkshire",
+                                plotChart = TRUE)
+```
+
+
+ ]
+.panel[.panel-name[London]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_band2_split(data = band2_split_data,
+                             scheduled_data = UDA_scheduled_data,
+                             remove_prototypes = TRUE, 
+                             commissioner_region_lookup = STP_ICB_lookup_codes,
+                                level = "Regional",
+                                region_STP_name = "London",
+                                plotChart = TRUE)
+```
+
+
+ ]
+ .panel[.panel-name[Midlands]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_band2_split(data = band2_split_data,
+                             scheduled_data = UDA_scheduled_data,
+                             remove_prototypes = TRUE, 
+                             commissioner_region_lookup = STP_ICB_lookup_codes,
+                                level = "Regional",
+                                region_STP_name = "Midlands",
+                                plotChart = TRUE)
+```
+
+
+
+ ]
+ .panel[.panel-name[East of England]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_band2_split(data = band2_split_data,
+                             scheduled_data = UDA_scheduled_data,
+                             remove_prototypes = TRUE, 
+                             commissioner_region_lookup = STP_ICB_lookup_codes,
+                                level = "Regional",
+                                region_STP_name = "East of England",
+                                plotChart = TRUE)
+```
+
+
+ ] 
+ .panel[.panel-name[Data]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=6}
+
+data <- plot_band2_split(data = band2_split_data,
+                             scheduled_data = UDA_scheduled_data,
+                             remove_prototypes = TRUE, 
+                             commissioner_region_lookup = STP_ICB_lookup_codes,
+                                level = "National",
+                                region_STP_name = NULL,
+                                plotChart = FALSE)
+
+data %>%
+  download_this(
+    output_name = "band2_split_UDA_data",
+    output_extension = ".xlsx",
+    button_label = "Download data",
+    button_type = "warning",
+    has_icon = TRUE,
+    icon = "fa fa-save"
+  )
+```
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+reactable(
+  plot_band2_split(data = band2_split_data,
+                             scheduled_data = UDA_scheduled_data,
+                             remove_prototypes = TRUE, 
+                             commissioner_region_lookup = STP_ICB_lookup_codes,
+                                level = "National",
+                                region_STP_name = NULL,
+                                plotChart = FALSE),
+  filterable = TRUE,
+  paginateSubRows = TRUE,
+  minRows = 5,
+  highlight = TRUE
 )
 ```
 

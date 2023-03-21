@@ -17,13 +17,13 @@ output:
 
 ```{r setup, include=FALSE}
 
-
 library(tidyverse)
 library(readxl)
 library(DBI)
 library(odbc)
 library(reactable) #make sure you have the latest version by doing install.packages("reactable")
 library(downloadthis)
+library(lubridate)
 
 #source in all file from plot folder
 for (f in list.files(path = "../R/03 plot_functions/", pattern="*.R$")) {
@@ -93,6 +93,7 @@ dental_complaints <- clean_complaints_data(Dental_Access_Complaints_Data_June_22
 
 #UDA value data
 UDA_values <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/UDA_values.xlsx")
+UDA_UOA_value_data <- pull_UDA_UOA_value()
 
 #Pull patient charge data
 patient_exemption_data <- pull_patient_exemption_data()
@@ -105,6 +106,10 @@ missing_contracts_data <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental
 
 #DCP_data <- read.csv("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/DCP_data/DPC_v1_Oct_2022.csv") 
 DCP_data <- pull_dcp_data()
+
+BPE_data <- pull_BPE_data()
+
+band2_split_data <- load_in_band2_split_data()
 
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 
