@@ -1,8 +1,12 @@
 
-
-# # 
-# #
-# con <- dbConnect(odbc::odbc(), "NCDR")
+library (tidyverse)
+##library(readxl)
+library(DBI)
+library(odbc)
+##library(scales)
+library(formattable)
+##library(stringr)
+con <- dbConnect(odbc::odbc(), "NCDR")
 # 
 # bpe_data_pull <- function(){
 # 
@@ -13,8 +17,8 @@
 #   dbClearResult(result)
 #   bpe_all
 # }
-
-
+# 
+# 
 
 data_org_main <- bpe_data_pull()
 
@@ -79,10 +83,10 @@ plot_BPE_no_oral_health_risk_line <- function(level = "National",
               round (as.numeric (sum (Forms_with_Highest_BPE_Sextant_Score)) /
                        as.numeric (sum (Total.Form.Count)), digits = 2)) 
   
-  
+}
   
 
-plot_BPE_no_oral_health_risk <- function(data = BPE_data,
+plot_BPE_no_oral_health_risk <- function(data = data_org_main,#BPE_data,
                                          level = "National",
                                          region_STP_name = NULL,
                                          ICB_lookup = STP_ICB_lookup_codes){
@@ -209,5 +213,7 @@ plot_BPE_no_oral_health_risk <- function(data = BPE_data,
     scale_fill_manual(values = c("#009E73", "#F0E442"),
                       label = c("Average % of completed FP17s indicating no oral health risk",
                                 "% of all FP17s completed with BPE scores"))
-  }
+  p_test
+  
+  
 }
