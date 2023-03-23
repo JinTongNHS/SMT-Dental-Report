@@ -128,30 +128,21 @@ plot_number_new_vs_returning_patients <- function(data = new_vs_return_data,
                                       names_to='category',
                                       values_to='number')
               
-  ##%>% select(Latest_Region_Description, month, new_adult_patients_number, new_child_patients_number )
-  
-  
-  # new_all_patients_regional_summary <- new_adult_patients_regional_summary %>%  
-  #   pivot_longer(cols=c('new_adult_patients_number', 'new_child_patients_number'),
-  #                names_to='category',
-  #                values_to='number')
-  # 
-  
   if(as_percentage == FALSE){
     new_patient_line_chart_england <- ggplot(patients_number_summary_longer, 
                                              aes(x = month, y = number,
                                             group =category )) +
       geom_line(aes(color=category),
-                linewidth = 1.5)+
+                linewidth = 1.2)+
       geom_point(aes(color=category),
                  size = 3) +
       scale_x_date(date_labels = "%b-%Y", breaks = "1 month") +
-      ##expand_limits(y=0) +
+      expand_limits(y=0) +
       geom_text(aes(label = number), vjust=-.5)+
       theme_classic() +
       ##theme(legend.position="bottom") +
       theme(legend.position="top") +
-      labs(title = "New Patient (no previous visit at all or before 24 months or more) Numbers",
+      labs(title = "New Patient (no previous in last 24 months or before) Numbers",
            subtitle = subtitle)
     
     new_patient_line_chart_england
@@ -204,119 +195,4 @@ plot_number_new_vs_returning_patients <- function(data = new_vs_return_data,
     provider_chart 
     
   }
-
-
-    ###colnames(all_provider)
-    
-    
-    
-    
-    
-    
-    #   mutate(category ="child_new_patients_provider") %>%
-    #   select(month, category, number_of_provider )
-    # 
-    # new_adult_patients_provider_number_summary <- test_1 %>% select(!(child)) %>%
-    #   group_by (month) %>%
-    #   summarise(number_of_provider = sum(!is.na(adult))) %>%
-    #   mutate(category ="adult_new_patients_provider") %>%
-    #   select(month, category, number_of_provider )
-    # 
-    # new_all_patients_provider_regional_summary <- bind_rows (new_child_patients_provider_number_summary,
-    #                                                          new_adult_patients_provider_number_summary)
-    # 
-    # 
-    # ### England providers
-    # 
-    # new_child_patients_provider_england_summary <- test_1 %>% select(!(adult)) %>%
-    #   group_by (month) %>%
-    #   summarise(number_of_provider = sum(!is.na(child))) %>%
-    #   mutate(category ="% of Providers Served New Child Patients") %>%
-    #   select(month,category, number_of_provider )
-    # 
-    # new_adult_patients_provider_england_summary <- test_1 %>% select(!(child)) %>%
-    #   group_by (month) %>%
-    #   summarise(number_of_provider = sum(!is.na(adult))) %>%
-    #   mutate(category ="% of Providers Served New Adult Patients") %>%
-    #   select(month,category, number_of_provider )
-    # 
-    # new_all_patients_provider_england_summary <- bind_rows (new_child_patients_provider_england_summary,
-    #                                                         new_adult_patients_provider_england_summary)
-    # 
-    # 
-    # 
-    # child_patients_comparision_provider_regional<- left_join(contractors_number_regional,
-    #                                                          new_child_patients_provider_number_summary,
-    #                                                          by = c("month" = "month")) %>%
-    #   mutate (Percentage = formattable::percent (number_of_provider/ total_number_of_contractors_submitted_FP17, digits = 0)) %>%
-    #   mutate (category = "% of Providers Served New Child Patients") %>%
-    #   select(region_name, month, category, Percentage )
-    # 
-    # adult_patients_comparision_provider_regional<- left_join(contractors_number_regional,
-    #                                                          new_adult_patients_provider_number_summary,
-    #                                                          by = c("month" = "month")) %>%
-    #   mutate (Percentage = formattable::percent(number_of_provider/ total_number_of_contractors_submitted_FP17, digits = 0)) %>%
-    #   mutate (category = "% of Providers Served New Adult Patients") %>%
-    #   select(region_name, month, category, Percentage )
-    # 
-    # 
-    # 
-    # ###table 1 for CHART -regional providers
-    # regional_provider_chart_1 <- bind_rows(child_patients_comparision_provider_regional,
-    #                                        adult_patients_comparision_provider_regional)
-    # # 
-    # all_england_provider <- left_join (new_all_patients_provider_england_summary, contractors_number_england,
-    #                                    by = c("month" = "month")) %>%
-    #   mutate (Percentage = formattable::percent (number_of_provider/ total_number_of_contractors_submitted_FP17, digits = 0)) %>%
-    #   select (month, category, Percentage)
-    # 
-    # 
-    
-  # # subtitle = subtitle) +
-  # # scale_fill_manual(values = c("#009E73", "#F0E442"),
-  # #                   label = c("Average % of completed FP17s indicating no oral health risk",
-  # #                             "% of all FP17s completed with BPE scores"))
-  # 
-  # 
-  # 
-  # 
-  # 
-  # 
-  # 
-  # 
-  # 
-  # # new_patients_summary_england <- test_1 %>% group_by(month) %>% 
-  # #   dplyr::summarise (adult_new_patients = sum(adult, na.rm = TRUE),
-  # #                     child_new_patients = sum(child, na.rm = TRUE))
-  # 
-  # ##sum(new_patients_summary_england$adult_new_patients)/1000000
-  # 
-  # 
-  # #####################
-  # #####################
-  # #####################  provider ################
-  # 
 }
-####table 1 for chart -england
-# new_patients_provider_regional <- left_join (new_child_patients_provider_number_summary,
-#                                              new_adult_patients_provider_number_summary,
-#                                              by = c("month", "Latest_Region_Description"))
-
-# colnames(new_patients_provider_regional) <- c("month",  "Latest_Region_Description",
-#                                           "number_of_new_child_patients_provider",
-#                                         "number_of_new_adult_patients_provider")
-# new_child_patients_provider_number_england <- test_1 %>% select(!(adult)) %>% 
-#   group_by (month) %>% 
-#   summarise(total = sum(!is.na(child)))
-# 
-# new_adult_patients_provider_number_england <- test_1 %>% select(!(child)) %>% 
-#   group_by (month) %>% 
-#   summarise(total = sum(!is.na(adult)))
-# 
-# new_patients_provider_england <- left_join (new_child_patients_provider_number_england,
-#                                             new_adult_patients_provider_number_england,
-#                                              by = c("month"))
-# 
-# colnames(new_patients_provider_england) <- c("month", "number_of_new_child_patients_provider",
-#                                               "number_of_new_adult_patients_provider")
-#
