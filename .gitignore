@@ -10,3 +10,6 @@ reports/
 
 #html files
 *.html
+*.csv
+*.xls
+*.xlsx
