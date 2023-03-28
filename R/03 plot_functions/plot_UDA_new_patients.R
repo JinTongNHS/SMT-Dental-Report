@@ -150,7 +150,7 @@ plot_number_new_vs_returning_patients <- function(data = new_vs_return_data,
   }
   else{
     
-    ### providers percentage 
+    ## providers percentage 
     
     new_patients_provider_number <- test_1 %>% 
       group_by (month) %>%
