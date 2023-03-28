@@ -1,4 +1,3 @@
-
 plot_BPE_no_oral_health_risk <- function(data = BPE_data,
                                          level = "National",
                                          region_STP_name = NULL,
@@ -61,6 +60,7 @@ plot_BPE_no_oral_health_risk <- function(data = BPE_data,
   
   
   
+
   ##### plot the bar graph
   
   plot_1 <- data_org %>% group_by(Latest.Region.Description, Year_Month ) %>%
@@ -91,27 +91,42 @@ plot_BPE_no_oral_health_risk <- function(data = BPE_data,
   filtered_plot_2_1 = filter(plot_2, Description %in% c("Average % of completed record with no indication of oral health risk",
                                                         "Average % of completed risk scores"))
   
-  p1<- ggplot(filtered_plot_2_1, aes(x = Latest.Region.Description, 
-                                     y = Percentage, fill= Description)) +
-    geom_bar(stat="identity", position = "dodge") +
-    ###facet_grid(cols = vars(Year_Month), labeller = label_value) +
-    geom_text(aes(label = Percentage), 
-              check_overlap = TRUE,
-              colour = "black", size= 3.5,
-              position = position_dodge(width = 1), vjust= -0.5) +
-    scale_y_continuous(labels = scales::percent) +
-    labs(title = "Oral Health Risk Assessment",
-         subtitle = paste(subtitle, " - December 2022"),
-         x = "Region",
-         fill = "") +
-    scale_fill_manual(values = c("#009E73", "#F0E442"),
-                      label = c("% of FP17 forms indicating low oral health risk \nwith recall intervalls < 12 months", 
-                                "% of FP17s with complete BPE score data")) +
-    theme_bw() +
-    theme(legend.position="bottom") 
+
+  filtered_plot_2_2 = filter(plot_2, Description %in% c("Average % of completed record with no indication of oral health risk"))
   
-  p1
+  
+  filtered_plot_2_1$Year_Month 
+  
+  x <- "202210"
+  year_x <- substr(filtered_plot_2_1$Year_Month, 1, 4)
+  month_x <- substr(filtered_plot_2_1$Year_Month, 5, 6)
+  filtered_plot_2_1$Year_Month <- as.Date(paste0(year_x, "-", month_x, "-01"))
+  
+  
+  bpe_england <- filtered_plot_2_1 %>%  group_by(Year_Month, Description) %>% 
+    summarise(Percentage = mean(Percentage))
+  
+  
+  p_test<- ggplot(bpe_england, aes(x = Year_Month, y = Percentage,
+                                   group =Description )) +
+    geom_line(aes(color=Description),
+              linewidth = 1.5)+
+    geom_point(aes(color=Description),
+               size = 3) +
+    expand_limits(y=0) + 
+    geom_text(aes(label = Percentage), vjust=-.5)+
+    theme_classic() + 
+    ##theme(legend.position="bottom") +
+    scale_y_continuous(labels = scales::percent,
+                       limits = c(0, 1.1)) +
+    theme(legend.position="top") +
+    scale_x_date(date_labels = "%b-%Y") +
+    labs(title = "Average % of completed FP17s with BPE scores and average % of FP17s indicating no oral health risk",
+       subtitle = subtitle) +
+    scale_fill_manual(values = c("#009E73", "#F0E442"),
+                      label = c("Average % of completed FP17s indicating no oral health risk",
+                                "% of all FP17s completed with BPE scores"))
+  p_test
+  
   
 }
-
-
