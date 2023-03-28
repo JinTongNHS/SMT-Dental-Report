@@ -1,92 +1,4 @@
-
-library (tidyverse)
-##library(readxl)
-library(DBI)
-library(odbc)
-##library(scales)
-library(formattable)
-##library(stringr)
-con <- dbConnect(odbc::odbc(), "NCDR")
-# 
-# bpe_data_pull <- function(){
-# 
-#   con <- dbConnect(odbc::odbc(), "NCDR")
-#   sql <- "SELECT * FROM [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[BPE]"
-#   result <- dbSendQuery (con, sql)
-#   bpe_all <- dbFetch(result)
-#   dbClearResult(result)
-#   bpe_all
-# }
-# 
-# 
-
-#data_org_main <- bpe_data_pull()
-
-plot_BPE_no_oral_health_risk_line <- function(level = "National",
-                                              stp_region_name = NULL){
-  
-  ###setwd("N:/_Everyone/Mohammed_Emran/BPE_sexton/BSA_Data")
-  ##bpe_data_upload <- read_excel ("BPE_Sextant_Score_Untreated_Decayed_Teeth_and_RRIv2ALL_England.xlsx")
-  ###replace all NA with 0
-  data_org_main[is.na(data_org_main)] <- 0
-  
-  #filter for region or STP if specified
-  if(level == "National"){
-    
-    subtitle <- "England"
-    
-  }else if(level == "Regional"){
-    
-    data_org_main <- data_org_main %>%
-      filter(Latest.Region.Description == stp_region_name)
-    
-    subtitle <- stp_region_name
-    
-  }else{
-    
-    data_org_main <- data_org_main %>%
-      filter(Latest.Commissioner.Name == stp_region_name)
-    
-    subtitle <- stp_region_name
-    
-  }
-  
-  ###filtering and selecting the right columns
-  ########str(data_org_main)
-  
-  data_org <- data_org_main %>%
-    group_by(Latest.Region.Description, Year_Month ) %>%
-    rename("Total_Form_Count_Highest_BPE_Sextant_Score_0_or_1_and_UDT_0_and_RRI_less_than_1_year" =
-             "Total_Form_Count_Highest_BPE_Sextant_Score_0_or_1_and_UDT_0_and_RRI_<1_year") %>%
-    
-    # filter (Year_Month == max(data_org_main$Year_Month)) %>%
-    
-    mutate (percentage_low_risk_recall_interval_less_than_1_year	 = 
-              as.numeric(Total_Form_Count_Highest_BPE_Sextant_Score_0_or_1_and_UDT_0_and_RRI_less_than_1_year) /
-              as.numeric(Total_Form_Count_Highest_BPE_Sextant_Score_0_or_1_and_0_UDT)) %>%
-    
-    mutate (percentage_complete_forms	 = 
-              as.numeric (Forms_with_Highest_BPE_Sextant_Score) /
-              as.numeric (Total.Form.Count)) %>%
-    
-    mutate (average_percentage_low_risk_recall_interval_less_than_1_year_average_over_practices
-            = round (mean(percentage_low_risk_recall_interval_less_than_1_year, na.rm = TRUE), digits = 2)) %>%
-    
-    mutate (average_risk_score_complete_average_over_practices = 
-              round (mean(percentage_complete_forms, na.rm = TRUE), digits = 2)) %>%
-    
-    mutate (average_percentage_low_risk_recall_interval_less_than_1_year_average_over_patients_seen	 = 
-              round (as.numeric(sum (Total_Form_Count_Highest_BPE_Sextant_Score_0_or_1_and_UDT_0_and_RRI_less_than_1_year))  /
-                       as.numeric(sum (Total_Form_Count_Highest_BPE_Sextant_Score_0_or_1_and_0_UDT)), digits = 2)) %>%
-    
-    mutate (average_percentage_low_risk_score_complete_average_over_patients_seen = 
-              round (as.numeric (sum (Forms_with_Highest_BPE_Sextant_Score)) /
-                       as.numeric (sum (Total.Form.Count)), digits = 2)) 
-  
-}
-  
-
-plot_BPE_no_oral_health_risk <- function(data = data_org_main,#BPE_data,
+plot_BPE_no_oral_health_risk <- function(data = BPE_data,
                                          level = "National",
                                          region_STP_name = NULL,
                                          ICB_lookup = STP_ICB_lookup_codes){
@@ -205,7 +117,8 @@ plot_BPE_no_oral_health_risk <- function(data = data_org_main,#BPE_data,
     geom_text(aes(label = Percentage), vjust=-.5)+
     theme_classic() + 
     ##theme(legend.position="bottom") +
-    scale_y_continuous(labels = scales::percent) +
+    scale_y_continuous(labels = scales::percent,
+                       limits = c(0, 1.1)) +
     theme(legend.position="top") +
     scale_x_date(date_labels = "%b-%Y") +
     labs(title = "Average % of completed FP17s with BPE scores and average % of FP17s indicating no oral health risk",
