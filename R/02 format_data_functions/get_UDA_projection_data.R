@@ -12,18 +12,18 @@ get_UDA_projection_data <- function(data = UDA_scheduled_data,
                                     remove_prototypes = TRUE, 
                                     plotChart = TRUE){
   
-  UDA_value_data <- UDA_value_data %>%
-    filter(Date == max(UDA_value_data$Date)) %>%
-    mutate(Total.Financial.Value = as.numeric(str_replace_all(Total.Financial.Value, ",", "")),
-           UDA.Financial.Value = as.numeric(str_replace_all(UDA.Financial.Value, ",", "")),
-           UDA.Performance.Target = as.numeric(str_replace_all(UDA.Performance.Target, ",", "")), 
-           UDA.Carry.Forward = as.numeric(str_replace_all(UDA.Carry.Forward, ",", "")), 
-           UOA.Financial.Value = as.numeric(str_replace_all(UOA.Financial.Value, ",", "")),
-           UOA.Performance.Target = as.numeric(str_replace_all(UOA.Performance.Target, ",", "")), 
-           UOA.Carry.Forward = as.numeric(str_replace_all(UOA.Carry.Forward, ",", "")), 
-           Cost.per.UDA = as.numeric(str_replace_all(Cost.per.UDA, ",", "")), 
-           Cost.Per.UOA = as.numeric(str_replace_all(Cost.Per.UOA, ",", "")))
-  
+  # UDA_value_data <- UDA_value_data %>%
+  #   filter(Date == max(UDA_value_data$Date)) %>%
+  #   mutate(Total.Financial.Value = as.numeric(str_replace_all(Total.Financial.Value, ",", "")),
+  #          UDA.Financial.Value = as.numeric(str_replace_all(UDA.Financial.Value, ",", "")),
+  #          UDA.Performance.Target = as.numeric(str_replace_all(UDA.Performance.Target, ",", "")), 
+  #          UDA.Carry.Forward = as.numeric(str_replace_all(UDA.Carry.Forward, ",", "")), 
+  #          UOA.Financial.Value = as.numeric(str_replace_all(UOA.Financial.Value, ",", "")),
+  #          UOA.Performance.Target = as.numeric(str_replace_all(UOA.Performance.Target, ",", "")), 
+  #          UOA.Carry.Forward = as.numeric(str_replace_all(UOA.Carry.Forward, ",", "")), 
+  #          Cost.per.UDA = as.numeric(str_replace_all(Cost.per.UDA, ",", "")), 
+  #          Cost.Per.UOA = as.numeric(str_replace_all(Cost.Per.UOA, ",", "")))
+  # 
   
   #filter for STP or region
   if(level == "Regional"){
