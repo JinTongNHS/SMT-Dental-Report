@@ -79,11 +79,11 @@ plot_banded_CoT <- function(data = UDA_scheduled_data,
       scale_x_date(date_breaks = "1 month",
                    date_labels = "%b-%y") +
       scale_colour_manual(labels = c("Band 1", "Band 2", "Band 3", "Other", "Urgent"),
-                          values = c("coral3",
-                                     "orange",
-                                     "yellow3",
-                                     "green",
-                                     "blue")
+                          values = get_colour_palette()#c("coral3",
+                                     # "orange",
+                                     # "yellow3",
+                                     # "green",
+                                     # "blue")
       ) +
       scale_y_continuous(breaks = scales::breaks_pretty()) +
       labs(title = title,

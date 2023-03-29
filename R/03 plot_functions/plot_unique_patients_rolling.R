@@ -124,6 +124,7 @@ plot_unique_patients_rolling <- function(data = unique_patients_rolling,
                      y = total_unique_patients,
                      colour = band)) +
       scale_y_continuous(labels=function(x) format(x, big.mark = ",", scientific = FALSE)) +
+      scale_colour_manual(values = get_colour_palette()) +
       labs(title = title,
            x = "12 month rolling period end date",
            y = ylab,
