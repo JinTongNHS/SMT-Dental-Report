@@ -5,7 +5,7 @@ plot_band2_split_percentage <- function(data = band2_split_data,
                                         remove_prototypes = TRUE, 
                                         plotChart = TRUE,
                                         commissioner_region_lookup = STP_ICB_lookup_codes,
-                                        UDA_or_FP17 = "UDA"){
+                                        UDA_or_FP17 = "FP17"){
   
   #join in region column and annual contracted UDA column
   commissioner_region_lookup <- commissioner_region_lookup %>%
@@ -99,11 +99,28 @@ plot_band2_split_percentage <- function(data = band2_split_data,
                          labels = scales::percent_format(accuracy = 1)) +
       scale_x_date(date_breaks = "1 month", 
                    date_labels = "%b-%y") +
+      scale_colour_manual(values = get_colour_palette()) +
       theme(axis.text.x = element_text(angle = 90))
     
-  }else{
+  }else if(plotChart == FALSE & UDA_or_FP17 == "UDA"){
     
-    data
+    data <- data %>%
+      mutate(percentage = round(percentage, 1) * 100) %>%
+      rename(Month = month,
+             `Total band 2 UDAs delivered` = total_band2_UDAs_delivered,
+             `Band 2 sub band` = band,
+             `Number of UDAs` = count,
+             `Percentage of total band 2 UDAs delivered` = percentage)
+    
+  }else if(plotChart == FALSE & UDA_or_FP17 == "FP17"){
+    
+    data <- data %>%
+      mutate(percentage = round(percentage, 1) * 100) %>%
+      rename(Month = month,
+             `Total band 2 FP17s delivered` = total_band2_FP17s_delivered,
+             `Band 2 sub band` = band,
+             `Number of FP17s` = count,
+             `Percentage of total band 2 FP17s delivered (%)` = percentage)
     
   }
   
