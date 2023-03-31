@@ -5,7 +5,7 @@ plot_band2_split <- function(data = band2_split_data,
                                         remove_prototypes = TRUE, 
                                         plotChart = TRUE,
                                         commissioner_region_lookup = STP_ICB_lookup_codes,
-                                        UDA_or_FP17 = "UDA"){
+                                        UDA_or_FP17 = "FP17"){
   
   #join in region column and annual contracted UDA column
   commissioner_region_lookup <- commissioner_region_lookup %>%
@@ -98,6 +98,7 @@ plot_band2_split <- function(data = band2_split_data,
                          breaks = scales::breaks_pretty()) +
       scale_x_date(date_breaks = "1 month", 
                    date_labels = "%b-%y") +
+      scale_colour_manual(values = get_colour_palette()) +
       theme(axis.text.x = element_text(angle = 90)) +
       scale_size_manual(c(1,1,1,3,1))
     
