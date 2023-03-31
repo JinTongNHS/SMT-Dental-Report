@@ -323,9 +323,8 @@ if(params$region == "South West"){
 name: contents
 ### Contents  
 
- <font size="2">
+ <font size="1">
 
-.pull-left[
 #### Dental
  * [Table of number of contracts by MY category](#contracts-table)
  * [UDA activity](#short-uda-activity)
@@ -353,7 +352,6 @@ name: contents
  * [Financial value of UDAs delivered as % of 2018 delivery](#uda-value-index)
 ]
 
-.pull-right[
 #### Orthodontic 
  * [UOA activity](#uoa-activity)
  * [UOA activity by MY category](#uoa-activity-my-cat)
@@ -5405,7 +5403,7 @@ plot_number_new_patients(data = new_vs_return_data,
                                                   scheduled_data = UDA_scheduled_data,
                                                   as_percentage = FALSE,
                                                      level = "STP",
-                                                     region_STP_name = STP3,
+                                                     region_STP_name = STP3
                                                      )
 ```
 
@@ -5417,7 +5415,7 @@ plot_number_new_patients(data = new_vs_return_data,
                                                   scheduled_data = UDA_scheduled_data,
                                                   as_percentage = FALSE,
                                                      level = "STP",
-                                                     region_STP_name = STP4,
+                                                     region_STP_name = STP4
                                                      )
 ```
 
@@ -5429,7 +5427,7 @@ plot_number_new_patients(data = new_vs_return_data,
                                                   scheduled_data = UDA_scheduled_data,
                                                   as_percentage = FALSE,
                                                      level = "STP",
-                                                     region_STP_name = STP5,
+                                                     region_STP_name = STP5
                                                      )
 ```
 
@@ -5441,7 +5439,7 @@ plot_number_new_patients(data = new_vs_return_data,
                                                   scheduled_data = UDA_scheduled_data,
                                                   as_percentage = FALSE,
                                                      level = "STP",
-                                                     region_STP_name = STP6,
+                                                     region_STP_name = STP6
                                                      )
 ```
 
@@ -5453,7 +5451,7 @@ plot_number_new_patients(data = new_vs_return_data,
                                                   scheduled_data = UDA_scheduled_data,
                                                   as_percentage = FALSE,
                                                      level = "STP",
-                                                     region_STP_name = STP7,
+                                                     region_STP_name = STP7
                                                      )
 ```
 
@@ -5465,7 +5463,7 @@ plot_number_new_patients(data = new_vs_return_data,
                                                   scheduled_data = UDA_scheduled_data,
                                                   as_percentage = FALSE,
                                                      level = "STP",
-                                                     region_STP_name = STP8,
+                                                     region_STP_name = STP8
                                                      )
 ```
 
@@ -5477,7 +5475,7 @@ plot_number_new_patients(data = new_vs_return_data,
                                                   scheduled_data = UDA_scheduled_data,
                                                   as_percentage = FALSE,
                                                      level = "STP",
-                                                     region_STP_name = STP9,
+                                                     region_STP_name = STP9
                                                      )
 ```
 
@@ -5489,7 +5487,7 @@ plot_number_new_patients(data = new_vs_return_data,
                                                   scheduled_data = UDA_scheduled_data,
                                                   as_percentage = FALSE,
                                                      level = "STP",
-                                                     region_STP_name = STP10,
+                                                     region_STP_name = STP10
                                                      )
 ```
 
@@ -5501,7 +5499,166 @@ plot_number_new_patients(data = new_vs_return_data,
                                                   scheduled_data = UDA_scheduled_data,
                                                   as_percentage = FALSE,
                                                      level = "STP",
-                                                     region_STP_name = STP11,
+                                                     region_STP_name = STP11
+                                                     )
+```
+
+ ]
+ ]
+
+[Return to contents](#contents)
+
+---
+
+name: new-patients-perc
+
+### Percentage of providers seeing new patients
+
+```{r xaringan-panelset-new-patientspoerc, echo=FALSE}
+xaringanExtra::use_panelset()
+```
+
+ <font size="1">
+.panelset[
+
+ .panel[.panel-name[`r region`]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_number_new_patients(data = new_vs_return_data, 
+                                                  scheduled_data = UDA_scheduled_data,
+                                                  as_percentage = TRUE,
+                                                     level = "Regional",
+                                                     region_STP_name = region)
+```
+
+ ]
+ .panel[.panel-name[`r STP1`]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_number_new_patients(data = new_vs_return_data, 
+                                                  scheduled_data = UDA_scheduled_data,
+                                                  as_percentage = TRUE,
+                                                     level = "STP",
+                                                     region_STP_name = STP1)
+```
+
+ ]
+ .panel[.panel-name[`r STP2`]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_number_new_patients(data = new_vs_return_data, 
+                                                  scheduled_data = UDA_scheduled_data,
+                                                  as_percentage = TRUE,
+                                                     level = "STP",
+                                                     region_STP_name = STP2
+                                                     )
+```
+
+ ]
+ .panel[.panel-name[`r STP3`]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_number_new_patients(data = new_vs_return_data, 
+                                                  scheduled_data = UDA_scheduled_data,
+                                                  as_percentage = TRUE,
+                                                     level = "STP",
+                                                     region_STP_name = STP3
+                                                     )
+```
+
+ ]
+ .panel[.panel-name[`r STP4`]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval4}
+plot_number_new_patients(data = new_vs_return_data, 
+                                                  scheduled_data = UDA_scheduled_data,
+                                                  as_percentage = TRUE,
+                                                     level = "STP",
+                                                     region_STP_name = STP4
+                                                     )
+```
+
+ ]
+ .panel[.panel-name[`r STP5`]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval5}
+plot_number_new_patients(data = new_vs_return_data, 
+                                                  scheduled_data = UDA_scheduled_data,
+                                                  as_percentage = TRUE,
+                                                     level = "STP",
+                                                     region_STP_name = STP5
+                                                     )
+```
+
+ ]
+ .panel[.panel-name[`r STP6`]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval6}
+plot_number_new_patients(data = new_vs_return_data, 
+                                                  scheduled_data = UDA_scheduled_data,
+                                                  as_percentage = TRUE,
+                                                     level = "STP",
+                                                     region_STP_name = STP6
+                                                     )
+```
+
+ ]
+ .panel[.panel-name[`r STP7`]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval7}
+plot_number_new_patients(data = new_vs_return_data, 
+                                                  scheduled_data = UDA_scheduled_data,
+                                                  as_percentage = TRUE,
+                                                     level = "STP",
+                                                     region_STP_name = STP7
+                                                     )
+```
+
+ ]
+ .panel[.panel-name[`r STP8`]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval8}
+plot_number_new_patients(data = new_vs_return_data, 
+                                                  scheduled_data = UDA_scheduled_data,
+                                                  as_percentage = TRUE,
+                                                     level = "STP",
+                                                     region_STP_name = STP8
+                                                     )
+```
+
+ ]
+ .panel[.panel-name[`r STP9`]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval9}
+plot_number_new_patients(data = new_vs_return_data, 
+                                                  scheduled_data = UDA_scheduled_data,
+                                                  as_percentage = TRUE,
+                                                     level = "STP",
+                                                     region_STP_name = STP9
+                                                     )
+```
+
+ ]
+ .panel[.panel-name[`r STP10`]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval10}
+plot_number_new_patients(data = new_vs_return_data, 
+                                                  scheduled_data = UDA_scheduled_data,
+                                                  as_percentage = TRUE,
+                                                     level = "STP",
+                                                     region_STP_name = STP10
+                                                     )
+```
+
+ ]
+ .panel[.panel-name[`r STP11`]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval11}
+plot_number_new_patients(data = new_vs_return_data, 
+                                                  scheduled_data = UDA_scheduled_data,
+                                                  as_percentage = TRUE,
+                                                     level = "STP",
+                                                     region_STP_name = STP11
                                                      )
 ```
 

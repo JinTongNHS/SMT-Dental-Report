@@ -169,6 +169,7 @@ name: contents
 name: contents
 #### Contents 2
 
+ <font size="2">
 #### Orthodontic 
  * [UOA activity](#uoa-activity)
  * [UOA activity by MY category](#uoa-activity-my-cat)
