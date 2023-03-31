@@ -148,6 +148,7 @@ name: contents
  * [111 call volumes](#111-call-volumes)
  * [Unique patients seen rolling 12 months](#unique-patients)
  * [Unique patients seen rolling 12 months as % of April 2018 delivery](#unique-patients-index)
+ * [Number of new patients](#new-patients)
  * [Patient re-attendance intervals](#reattendance)
  * [Community Dental Services (CDS) Patients waiting for assessment](#cds)
  * [CDS Patients waiting for treatment](#cds-treatment)
@@ -4750,6 +4751,106 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
 * The number of unique patients seen in the last 12 months is currently around
 **`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "East of England", plotChart = F,remove_prototypes = T, get_perc = T)` %**
 of pre-pandemic levels.
+
+ ]
+ ]
+
+[Return to contents](#contents)
+
+---
+
+name: new-patients
+
+### New patients seen 
+
+```{r xaringan-panelset-Unique-patients2, echo=FALSE}
+xaringanExtra::use_panelset()
+```
+ <font size="2">
+.panelset[
+
+ .panel[.panel-name[National]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_number_new_patients(data = new_vs_return_data, 
+                                                  scheduled_data = UDA_scheduled_data,
+                                                  as_percentage = FALSE,
+                                                  level = "National",
+                                                  stp_region_name = NULL)
+```
+
+]
+ .panel[.panel-name[South East]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_number_new_patients(data = new_vs_return_data, 
+                                                  scheduled_data = UDA_scheduled_data,
+                                                  as_percentage = FALSE,
+                                     level = "Regional",
+                                     region_STP_name = "South East")
+```
+
+
+ ]
+ .panel[.panel-name[South West]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_number_new_patients(data = new_vs_return_data, 
+                                                  scheduled_data = UDA_scheduled_data,
+                                                  as_percentage = FALSE,
+                                     level = "Regional",
+                                     region_STP_name = "South West")
+```
+
+
+ ]
+ .panel[.panel-name[North West]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_number_new_patients(data = new_vs_return_data, 
+                                                  scheduled_data = UDA_scheduled_data,
+                                                  as_percentage = FALSE,
+                                     level = "Regional",
+                                     region_STP_name = "North West")
+```
+
+
+ ]
+ .panel[.panel-name[North East and Yorkshire]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_number_new_patients(data = new_vs_return_data, 
+                                                  scheduled_data = UDA_scheduled_data,
+                                                  as_percentage = FALSE,
+                                     level = "Regional",
+                                     region_STP_name = "North East and Yorkshire")
+```
+
+ ]
+.panel[.panel-name[London]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_number_new_patients(data = new_vs_return_data, 
+                                                  scheduled_data = UDA_scheduled_data,
+                                                  as_percentage = FALSE,
+                                     level = "Regional",
+                                     region_STP_name = "London")
+```
+
+
+ ]
+ .panel[.panel-name[Midlands]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_number_new_patients(data = new_vs_return_data, 
+                                                  scheduled_data = UDA_scheduled_data,
+                                                  as_percentage = FALSE,
+                                     level = "Regional",
+                                     region_STP_name = "Midlands")
+```
+
+ ]
+ .panel[.panel-name[East of England]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_number_new_patients(data = new_vs_return_data, 
+                                                  scheduled_data = UDA_scheduled_data,
+                                                  as_percentage = FALSE,
+                                     level = "Regional",
+                                     region_STP_name = "East of England")
+```
 
  ]
  ]
