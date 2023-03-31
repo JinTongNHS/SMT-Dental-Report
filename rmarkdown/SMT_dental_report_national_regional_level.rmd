@@ -4293,10 +4293,79 @@ xaringanExtra::use_panelset()
 .panel[.panel-name[All Regions]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_BPE_no_oral_health_risk(data = BPE_data,
+                                         ICB_lookup = STP_ICB_lookup_codes,
                                          level = "National",
-                                         region_STP_name = NULL,
-                                         ICB_lookup = STP_ICB_lookup_codes)
+                                         region_STP_name = NULL)
 ```
+
+].panel[.panel-name[South East]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_BPE_no_oral_health_risk(data = BPE_data,
+                                         ICB_lookup = STP_ICB_lookup_codes,
+                                  level = "Regional",
+                                  region_STP_name = "South East")
+```
+
+
+]
+.panel[.panel-name[South West]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_BPE_no_oral_health_risk(data = BPE_data,
+                                         ICB_lookup = STP_ICB_lookup_codes,
+                                  level = "Regional",
+                                  region_STP_name = "South West")
+```
+
+
+]
+.panel[.panel-name[North West]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_BPE_no_oral_health_risk(data = BPE_data,
+                                         ICB_lookup = STP_ICB_lookup_codes,
+                                  level = "Regional",
+                                  region_STP_name = "North West")
+```
+
+
+]
+.panel[.panel-name[North East and Yorkshire]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_BPE_no_oral_health_risk(data = BPE_data,
+                                         ICB_lookup = STP_ICB_lookup_codes,
+                                  level = "Regional",
+                                  region_STP_name = "North East and Yorkshire")
+```
+
+
+]
+.panel[.panel-name[London]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_BPE_no_oral_health_risk(data = BPE_data,
+                                         ICB_lookup = STP_ICB_lookup_codes,
+                                  level = "Regional",
+                                  region_STP_name = "London")
+```
+
+
+]
+.panel[.panel-name[Midlands]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_BPE_no_oral_health_risk(data = BPE_data,
+                                         ICB_lookup = STP_ICB_lookup_codes,
+                                  level = "Regional",
+                                  region_STP_name = "Midlands")
+```
+
+
+]
+.panel[.panel-name[East of England]
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_BPE_no_oral_health_risk(data = BPE_data,
+                                         ICB_lookup = STP_ICB_lookup_codes,
+                                  level = "Regional",
+                                  region_STP_name = "East of England")
+```
+
 
 ]
 ]
