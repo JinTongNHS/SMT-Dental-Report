@@ -113,6 +113,8 @@ BPE_data <- pull_BPE_data()
 
 band2_split_data <- load_in_band2_split_data()
 
+new_vs_return_data <- pull_new_vs_returning_patients()
+
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 
 #avoid standard form
@@ -321,8 +323,9 @@ if(params$region == "South West"){
 name: contents
 ### Contents  
 
- <font size="1">
- 
+ <font size="2">
+
+.pull-left[
 #### Dental
  * [Table of number of contracts by MY category](#contracts-table)
  * [UDA activity](#short-uda-activity)
@@ -335,17 +338,22 @@ name: contents
  * [Banded courses of treatment time series](#banded-cots)
  * [Banded courses of treatment time series as % of 2019 delivery](#banded-cots-index)
  * [Urgent treatment form submissions](#urgent-forms)
+ * [Percentage of FP17s in each band 2 sub-category](#band2-split-FP17-perc)
  * [Percentage of CoTs assisted by Dental Care Practitioners (DCPs)](#dcp-fp17)
  * [Percentage of UDAs assisted by Dental Care Practitioners (DCPs) by band](#dcp-uda)
  * [Percentage of FP17s indicating low oral health risk](#bpe)
  * [Unique patients seen rolling 12 months](#unique-patients)
  * [Unique patients seen rolling 12 months as % of April 2018 delivery](#unique-patients-index)
+ * [Number of new patients](#new-patients)
+ * [Percentage of practices seeing new patients](#new-patients-perc)
  * [Patient re-attendance intervals](#reattendance)
  * [Total number of contracts trend](#num-contracts-trend)
  * [Total payments to dentists by financial year](#payemts)
  * [Financial value of UDAs delivered](#uda-value)
  * [Financial value of UDAs delivered as % of 2018 delivery](#uda-value-index)
+]
 
+.pull-right[
 #### Orthodontic 
  * [UOA activity](#uoa-activity)
  * [UOA activity by MY category](#uoa-activity-my-cat)
@@ -356,6 +364,7 @@ name: contents
 #### Appendix
  * [MY Category classification breakdown](#my-cat-breakdown)
  * [Data sources](#data-sources)
+ ]
 
 <font size="1">
 #### NOTE 
@@ -4363,6 +4372,156 @@ change from the pre-COVID world.
 
 ---
 
+name: band2-split-FP17-perc
+
+### Percentage of FP17s in each band 2 sub-category
+
+```{r xaringan-panelset-band2-split-fp17-perc, echo=FALSE}
+xaringanExtra::use_panelset()
+```
+ <font size="1">
+.panelset[
+
+ .panel[.panel-name[`r region`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
+plot_band2_split_percentage(data = band2_split_data,
+                             scheduled_data = UDA_scheduled_data,
+                             remove_prototypes = TRUE, 
+                             commissioner_region_lookup = STP_ICB_lookup_codes,
+                level = "Regional",
+                region_STP_name = region)
+```
+
+
+ ]
+ .panel[.panel-name[`r STP1`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
+plot_band2_split_percentage(data = band2_split_data,
+                             scheduled_data = UDA_scheduled_data,
+                             remove_prototypes = TRUE, 
+                             commissioner_region_lookup = STP_ICB_lookup_codes,
+                level = "STP",
+                region_STP_name = STP1)
+```
+
+ ]
+ .panel[.panel-name[`r STP2`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
+plot_band2_split_percentage(data = band2_split_data,
+                             scheduled_data = UDA_scheduled_data,
+                             remove_prototypes = TRUE, 
+                             commissioner_region_lookup = STP_ICB_lookup_codes,
+                level = "STP",
+                region_STP_name = STP2)
+```
+
+ ]
+ .panel[.panel-name[`r STP3`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
+plot_band2_split_percentage(data = band2_split_data,
+                             scheduled_data = UDA_scheduled_data,
+                             remove_prototypes = TRUE, 
+                             commissioner_region_lookup = STP_ICB_lookup_codes,
+                level = "STP",
+                region_STP_name = STP3)
+```
+
+ ]
+ .panel[.panel-name[`r STP4`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5, eval = eval4}
+plot_band2_split_percentage(data = band2_split_data,
+                             scheduled_data = UDA_scheduled_data,
+                             remove_prototypes = TRUE, 
+                             commissioner_region_lookup = STP_ICB_lookup_codes,
+                level = "STP",
+                region_STP_name = STP4)
+```
+
+ ]
+ .panel[.panel-name[`r STP5`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5, eval = eval5}
+plot_band2_split_percentage(data = band2_split_data,
+                             scheduled_data = UDA_scheduled_data,
+                             remove_prototypes = TRUE, 
+                             commissioner_region_lookup = STP_ICB_lookup_codes,
+                level = "STP",
+                region_STP_name = STP5)
+```
+
+ ]
+ .panel[.panel-name[`r STP6`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5, eval = eval6}
+plot_band2_split_percentage(data = band2_split_data,
+                             scheduled_data = UDA_scheduled_data,
+                             remove_prototypes = TRUE, 
+                             commissioner_region_lookup = STP_ICB_lookup_codes,
+                level = "STP",
+                region_STP_name = STP6)
+```
+
+ ]
+ .panel[.panel-name[`r STP7`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5, eval = eval7}
+plot_band2_split_percentage(data = band2_split_data,
+                             scheduled_data = UDA_scheduled_data,
+                             remove_prototypes = TRUE, 
+                             commissioner_region_lookup = STP_ICB_lookup_codes,
+                level = "STP",
+                region_STP_name = STP7)
+```
+
+ ]
+ .panel[.panel-name[`r STP8`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5, eval = eval8}
+plot_band2_split_percentage(data = band2_split_data,
+                             scheduled_data = UDA_scheduled_data,
+                             remove_prototypes = TRUE, 
+                             commissioner_region_lookup = STP_ICB_lookup_codes,
+                level = "STP",
+                region_STP_name = STP8)
+```
+
+ ]
+ .panel[.panel-name[`r STP9`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5, eval = eval9}
+plot_band2_split_percentage(data = band2_split_data,
+                             scheduled_data = UDA_scheduled_data,
+                             remove_prototypes = TRUE, 
+                             commissioner_region_lookup = STP_ICB_lookup_codes,
+                level = "STP",
+                region_STP_name = STP9)
+```
+
+ ]
+ .panel[.panel-name[`r STP10`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5, eval = eval10}
+plot_band2_split_percentage(data = band2_split_data,
+                             scheduled_data = UDA_scheduled_data,
+                             remove_prototypes = TRUE, 
+                             commissioner_region_lookup = STP_ICB_lookup_codes,
+                level = "STP",
+                region_STP_name = STP10)
+```
+
+ ]
+ .panel[.panel-name[`r STP11`]
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5, eval = eval11}
+plot_band2_split_percentage(data = band2_split_data,
+                             scheduled_data = UDA_scheduled_data,
+                             remove_prototypes = TRUE, 
+                             commissioner_region_lookup = STP_ICB_lookup_codes,
+                level = "STP",
+                region_STP_name = STP11)
+```
+
+ ]
+ ]
+
+[Return to contents](#contents)
+
+
+---
+
 name: dcp-fp17
 
 ### Percentage of CoTs assisted by Dental Care Practitioners (DCPs)
@@ -5192,6 +5351,164 @@ of pre-pandemic levels.
 
 [Return to contents](#contents)
 
+---
+
+name: new-patients
+
+### Number of new patients seen
+
+```{r xaringan-panelset-new-patients, echo=FALSE}
+xaringanExtra::use_panelset()
+```
+
+ <font size="1">
+.panelset[
+
+ .panel[.panel-name[`r region`]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_number_new_patients(data = new_vs_return_data, 
+                                                  scheduled_data = UDA_scheduled_data,
+                                                  as_percentage = FALSE,
+                                                     level = "Regional",
+                                                     region_STP_name = region)
+```
+
+ ]
+ .panel[.panel-name[`r STP1`]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_number_new_patients(data = new_vs_return_data, 
+                                                  scheduled_data = UDA_scheduled_data,
+                                                  as_percentage = FALSE,
+                                                     level = "STP",
+                                                     region_STP_name = STP1)
+```
+
+ ]
+ .panel[.panel-name[`r STP2`]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_number_new_patients(data = new_vs_return_data, 
+                                                  scheduled_data = UDA_scheduled_data,
+                                                  as_percentage = FALSE,
+                                                     level = "STP",
+                                                     region_STP_name = STP2
+                                                     )
+```
+
+ ]
+ .panel[.panel-name[`r STP3`]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_number_new_patients(data = new_vs_return_data, 
+                                                  scheduled_data = UDA_scheduled_data,
+                                                  as_percentage = FALSE,
+                                                     level = "STP",
+                                                     region_STP_name = STP3,
+                                                     )
+```
+
+ ]
+ .panel[.panel-name[`r STP4`]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval4}
+plot_number_new_patients(data = new_vs_return_data, 
+                                                  scheduled_data = UDA_scheduled_data,
+                                                  as_percentage = FALSE,
+                                                     level = "STP",
+                                                     region_STP_name = STP4,
+                                                     )
+```
+
+ ]
+ .panel[.panel-name[`r STP5`]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval5}
+plot_number_new_patients(data = new_vs_return_data, 
+                                                  scheduled_data = UDA_scheduled_data,
+                                                  as_percentage = FALSE,
+                                                     level = "STP",
+                                                     region_STP_name = STP5,
+                                                     )
+```
+
+ ]
+ .panel[.panel-name[`r STP6`]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval6}
+plot_number_new_patients(data = new_vs_return_data, 
+                                                  scheduled_data = UDA_scheduled_data,
+                                                  as_percentage = FALSE,
+                                                     level = "STP",
+                                                     region_STP_name = STP6,
+                                                     )
+```
+
+ ]
+ .panel[.panel-name[`r STP7`]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval7}
+plot_number_new_patients(data = new_vs_return_data, 
+                                                  scheduled_data = UDA_scheduled_data,
+                                                  as_percentage = FALSE,
+                                                     level = "STP",
+                                                     region_STP_name = STP7,
+                                                     )
+```
+
+ ]
+ .panel[.panel-name[`r STP8`]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval8}
+plot_number_new_patients(data = new_vs_return_data, 
+                                                  scheduled_data = UDA_scheduled_data,
+                                                  as_percentage = FALSE,
+                                                     level = "STP",
+                                                     region_STP_name = STP8,
+                                                     )
+```
+
+ ]
+ .panel[.panel-name[`r STP9`]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval9}
+plot_number_new_patients(data = new_vs_return_data, 
+                                                  scheduled_data = UDA_scheduled_data,
+                                                  as_percentage = FALSE,
+                                                     level = "STP",
+                                                     region_STP_name = STP9,
+                                                     )
+```
+
+ ]
+ .panel[.panel-name[`r STP10`]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval10}
+plot_number_new_patients(data = new_vs_return_data, 
+                                                  scheduled_data = UDA_scheduled_data,
+                                                  as_percentage = FALSE,
+                                                     level = "STP",
+                                                     region_STP_name = STP10,
+                                                     )
+```
+
+ ]
+ .panel[.panel-name[`r STP11`]
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval11}
+plot_number_new_patients(data = new_vs_return_data, 
+                                                  scheduled_data = UDA_scheduled_data,
+                                                  as_percentage = FALSE,
+                                                     level = "STP",
+                                                     region_STP_name = STP11,
+                                                     )
+```
+
+ ]
+ ]
+
+[Return to contents](#contents)
 
 ---
 
@@ -5281,157 +5598,7 @@ for (i in 1:length(STPs)) {
 `r paste(knitr::knit(text = out), collapse = '\n')`
 
 
-name: num-contracts-trend
 
-### Number of contracts trend
-
-```{r xaringan-panelset-num-contracts-trend, echo=FALSE}
-xaringanExtra::use_panelset()
-```
-
- <font size="2">
-.panelset[
-.panel[.panel-name[`r region`]
-
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_number_of_contracts_over_time(data = UDA_scheduled_data,
-                                     historical_data = historical_UDA_scheduled_data,
-                                level = "Regional",
-                                region_STP_name = region,
-                                plotChart = TRUE)
-```
-
-The percentage change in total number of contracts from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B %Y")` is
-**`r plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,level = "Regional",region_STP_name = region,plotChart = FALSE, getChange = TRUE)`%**.
- ]
- .panel[.panel-name[`r STP1`]
-
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,
-                                level = "STP",
-                                region_STP_name = STP1,
-                                plotChart = TRUE)
-```
-
-The percentage change in total number of contracts from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B %Y")` is
-**`r plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,level = "STP",region_STP_name = STP1,plotChart = FALSE, getChange = TRUE)`%**.
- ]
- .panel[.panel-name[`r STP2`]
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,
-                                level = "STP",
-                                region_STP_name = STP2,
-                                plotChart = TRUE)
-```
-
-The percentage change in total number of contracts from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B %Y")` is
-**`r plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,level = "STP",region_STP_name = STP2,plotChart = FALSE, getChange = TRUE)`%**.
-
- ]
- .panel[.panel-name[`r STP3`]
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,
-                                level = "STP",
-                                region_STP_name = STP3,
-                                plotChart = TRUE)
-```
-
-The percentage change in total number of contracts from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B %Y")` is
-**`r plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,level = "STP",region_STP_name = STP3,plotChart = FALSE, getChange = TRUE)`%**.
-
- ]
- .panel[.panel-name[`r STP4`]
-
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval4}
-plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,
-                                level = "STP",
-                                region_STP_name = STP4,
-                                plotChart = TRUE)
-```
-
-
- ]
-.panel[.panel-name[`r STP5`]
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval5}
-plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,
-                                level = "STP",
-                                region_STP_name = STP5,
-                                plotChart = TRUE)
-```
-
-
- ]
- .panel[.panel-name[`r STP6`]
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval6}
-plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,
-                                level = "STP",
-                                region_STP_name = STP6,
-                                plotChart = TRUE)
-```
-
-
-
- ]
- .panel[.panel-name[`r STP7`]
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval7}
-plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,
-                                level = "STP",
-                                region_STP_name = STP7,
-                                plotChart = TRUE)
-```
-
-
- ]
-.panel[.panel-name[`r STP8`]
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval8}
-plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,
-                                level = "STP",
-                                region_STP_name = STP8,
-                                plotChart = TRUE)
-```
-
-
-
- ]
- .panel[.panel-name[`r STP9`]
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval9}
-plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,
-                                level = "STP",
-                                region_STP_name = STP9,
-                                plotChart = TRUE)
-```
-
-
- ]
- .panel[.panel-name[`r STP10`]
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval10}
-plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,
-                                level = "STP",
-                                region_STP_name = STP10,
-                                plotChart = TRUE)
-```
-
-
-
- ]
- .panel[.panel-name[`r STP11`]
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval11}
-plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,
-                                level = "STP",
-                                region_STP_name = STP11,
-                                plotChart = TRUE)
-```
-
-
-
- ]
- ]
-
- The dips seen every April are most likely due to the fact that new contracts starting at the beginning of the financial year will not have submitted any FP17s until May, which means that they will not show up in the data until May.
-
-[Return to contents](#contents)
-
----
 name: annual-contracted-UDAs-trend
 
 ### Annual contracted UDAs trend
@@ -5579,8 +5746,7 @@ plot_UDAs_commissioned(data = UDA_scheduled_data, historical_data = historical_U
  ]
  ]
 
-The dips seen every April are most likely due to changes to the contracted UDAs by commissioners, following performance reviews at the end of the financial year. It may also be that new contracts starting at the beginning of the financial year will not have submitted any FP17s until May, which means that their contracted UDA data will not show up until May.
-
+The dips seen every April may be due to the fact that new contracts starting at the beginning of the financial year will not have submitted any FP17s until May, which means that their contracted UDA data will not show up until May.
 [Return to contents](#contents)
 
 ---
@@ -6390,7 +6556,7 @@ name: data-sources
 
 <!-- ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5} -->
 <!-- plot_CDS_wait_times_for_treatment(data = CDS_data, -->
-<!--                                                       -->
+
 <!--                                                      level = "Regional", -->
 <!--                                                      region_STP_name = region, -->
 <!--                                                      all_regions_and_STPs = FALSE) -->
@@ -6401,7 +6567,7 @@ name: data-sources
 
 <!-- ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5} -->
 <!-- plot_CDS_wait_times_for_treatment(data = CDS_data, -->
-<!--                                                       -->
+
 <!--                                                      level = "STP", -->
 <!--                                                      region_STP_name = STP1, -->
 <!--                                                      all_regions_and_STPs = FALSE) -->
@@ -6412,7 +6578,7 @@ name: data-sources
 
 <!-- ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5} -->
 <!-- plot_CDS_wait_times_for_treatment(data = CDS_data, -->
-<!--                                                       -->
+
 <!--                                                      level = "STP", -->
 <!--                                                      region_STP_name = STP2, -->
 <!--                                                      all_regions_and_STPs = FALSE) -->
@@ -6423,7 +6589,7 @@ name: data-sources
 
 <!-- ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5} -->
 <!-- plot_CDS_wait_times_for_treatment(data = CDS_data, -->
-<!--                                                       -->
+
 <!--                                                      level = "STP", -->
 <!--                                                      region_STP_name = STP3, -->
 <!--                                                      all_regions_and_STPs = FALSE) -->
@@ -6434,7 +6600,7 @@ name: data-sources
 
 <!-- ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval4} -->
 <!-- plot_CDS_wait_times_for_treatment(data = CDS_data, -->
-<!--                                                       -->
+
 <!--                                                      level = "STP", -->
 <!--                                                      region_STP_name = STP4, -->
 <!--                                                      all_regions_and_STPs = FALSE) -->
@@ -6445,7 +6611,7 @@ name: data-sources
 
 <!-- ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval5} -->
 <!-- plot_CDS_wait_times_for_treatment(data = CDS_data, -->
-<!--                                                       -->
+
 <!--                                                      level = "STP", -->
 <!--                                                      region_STP_name = STP5, -->
 <!--                                                      all_regions_and_STPs = FALSE) -->
@@ -6456,7 +6622,7 @@ name: data-sources
 
 <!-- ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval6} -->
 <!-- plot_CDS_wait_times_for_treatment(data = CDS_data, -->
-<!--                                                       -->
+
 <!--                                                      level = "STP", -->
 <!--                                                      region_STP_name = STP6, -->
 <!--                                                      all_regions_and_STPs = FALSE) -->
@@ -6467,7 +6633,7 @@ name: data-sources
 
 <!-- ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval7} -->
 <!-- plot_CDS_wait_times_for_treatment(data = CDS_data, -->
-<!--                                                       -->
+
 <!--                                                      level = "STP", -->
 <!--                                                      region_STP_name = STP7, -->
 <!--                                                      all_regions_and_STPs = FALSE) -->
@@ -6478,7 +6644,7 @@ name: data-sources
 
 <!-- ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval8} -->
 <!-- plot_CDS_wait_times_for_treatment(data = CDS_data, -->
-<!--                                                       -->
+
 <!--                                                      level = "STP", -->
 <!--                                                      region_STP_name = STP8, -->
 <!--                                                      all_regions_and_STPs = FALSE) -->
@@ -6489,7 +6655,7 @@ name: data-sources
 
 <!-- ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval9} -->
 <!-- plot_CDS_wait_times_for_treatment(data = CDS_data, -->
-<!--                                                       -->
+
 <!--                                                      level = "STP", -->
 <!--                                                      region_STP_name = STP9, -->
 <!--                                                      all_regions_and_STPs = FALSE) -->
@@ -6500,7 +6666,7 @@ name: data-sources
 
 <!-- ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval10} -->
 <!-- plot_CDS_wait_times_for_treatment(data = CDS_data, -->
-<!--                                                       -->
+
 <!--                                                      level = "STP", -->
 <!--                                                      region_STP_name = STP10, -->
 <!--                                                      all_regions_and_STPs = FALSE) -->
@@ -6511,7 +6677,7 @@ name: data-sources
 
 <!-- ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval11} -->
 <!-- plot_CDS_wait_times_for_treatment(data = CDS_data, -->
-<!--                                                       -->
+
 <!--                                                      level = "STP", -->
 <!--                                                      region_STP_name = STP11, -->
 <!--                                                      all_regions_and_STPs = FALSE) -->

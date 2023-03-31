@@ -26,31 +26,31 @@ plot_number_new_patients <- function(data = new_vs_return_data,
   
   #filter for region or STP if specified
   if(level == "National"){
-    
+
     subtitle <- "England"
-    
+
   }else if(level == "Regional"){
-    
+
     data <- data %>%
       filter(Latest_Region_Description == region_STP_name)
-    
+
     scheduled_data <- scheduled_data %>%
       filter(month >= as.Date("2022-04-01")) %>%
       filter(region_name == region_STP_name)
-    
+
     subtitle <- region_STP_name
-    
+
   }else{
-    
+
     data <- data %>%
-      filter("Latest_Commissioner_Name" == region_STP_name)
-    
+      filter(Latest_Commissioner_Name == region_STP_name)
+
     scheduled_data <- scheduled_data %>%
       filter(month >= as.Date("2022-04-01")) %>%
       filter(commissioner_name == region_STP_name)
-    
+
     subtitle <- region_STP_name
-    
+
   }
 
 
@@ -60,9 +60,9 @@ plot_number_new_patients <- function(data = new_vs_return_data,
 
   contractors_number_england <- scheduled_data %>%
     count(month, name = "total_number_of_contractors_submitted_FP17")
-  
+
   data_contract_level <- data %>%
-    mutate(Contract_Number = as.numeric(Contract_Number)) %>% 
+    mutate(Contract_Number = as.numeric(Contract_Number)) %>%
     pivot_longer(cols = -c(Contract_Number, Latest_Provider_Name, Latest_Region,
                            Latest_Region_Description, Latest_Commissioner_Code,  Latest_Commissioner_Name),
                  names_to = c('.value', 'month'),
@@ -70,15 +70,15 @@ plot_number_new_patients <- function(data = new_vs_return_data,
     mutate(year_x = substr(month, 1, 4),
            month_x = substr(month, 6, 7)) %>%
     mutate(month = as.Date(paste0(year_x, "-", month_x, "-01")))
-  
+
   data <- data_contract_level %>%
     group_by(month) %>%
     summarise(new_adult_patients_number = sum(adult, na.rm = TRUE),
               new_child_patients_number = sum(child, na.rm = TRUE)) %>%
     pivot_longer(cols = c('new_adult_patients_number', 'new_child_patients_number'),
                  names_to='category', values_to='number')
-              
-  
+
+
   if(as_percentage == FALSE){
 
     #plot code

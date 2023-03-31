@@ -111,6 +111,8 @@ BPE_data <- pull_BPE_data()
 
 band2_split_data <- load_in_band2_split_data()
 
+new_vs_return_data <- pull_new_vs_returning_patients()
+
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 
 #avoid standard form
@@ -123,10 +125,9 @@ options(dplyr.summarise.inform = FALSE)
 
 
 name: contents
-#### Contents  
+#### Contents 1 
 
- <font size="1">
- 
+ <font size="2">
 #### Dental
  * [Table of number of contracts by MY category](#contracts-table)
  * [UDA activity](#short-uda-activity)
@@ -149,6 +150,7 @@ name: contents
  * [Unique patients seen rolling 12 months](#unique-patients)
  * [Unique patients seen rolling 12 months as % of April 2018 delivery](#unique-patients-index)
  * [Number of new patients](#new-patients)
+ * [Percentage of practices seeing new patients](#new-patients-perc)
  * [Patient re-attendance intervals](#reattendance)
  * [Community Dental Services (CDS) Patients waiting for assessment](#cds)
  * [CDS Patients waiting for treatment](#cds-treatment)
@@ -160,7 +162,13 @@ name: contents
  * [Total number of contracts trend](#num-contracts-trend)
  * [Total payments to dentists by financial year](#payemts)
  * [Cumulative financial value of UDAs delivered YTD](#uda-value)
- 
+
+
+---
+
+name: contents
+#### Contents 2
+
 #### Orthodontic 
  * [UOA activity](#uoa-activity)
  * [UOA activity by MY category](#uoa-activity-my-cat)
@@ -171,6 +179,7 @@ name: contents
 #### Appendix
  * [MY Category classification breakdown](#my-cat-breakdown)
  * [Data sources](#data-sources)
+ 
 
 <font size="1">
 #### NOTE 
@@ -3885,6 +3894,8 @@ reactable(
  ]
  ]
 
+The number of FP17s delivered in each sub-band can be found in the "Data" tab on this slide. 
+
 [Return to contents](#contents)
 
 
@@ -3963,36 +3974,6 @@ plot_UDAs_by_patient_exemption(data = patient_exemption_data,
 [Return to contents](#contents)
 
 ---
-
-<!-- name: uda-projection -->
-
-<!-- ### Contracts projected to deliver at least 96% of contracted UDAs -->
-
-<!-- ```{r xaringan-panelset-uda_projection, echo=FALSE} -->
-<!-- xaringanExtra::use_panelset() -->
-<!-- ``` -->
-<!--  <font size="2"> -->
-<!-- .panelset[ -->
-
-<!--  .panel[.panel-name[National] -->
-<!-- ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5} -->
-<!-- plot_UDA_projection(level = "National") -->
-<!-- ``` -->
-
-
-<!--  ] -->
-<!--  .panel[.panel-name[Regional] -->
-<!-- ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5} -->
-<!-- plot_UDA_projection(level = "Regional") -->
-<!-- ``` -->
-
-<!--  ] -->
-<!--  96% is the delivery threshold that contracts are required to meet in order to be paid in full. If they deliver below this, they will be in clawback. -->
-<!--  ] -->
-
-<!-- [Return to contents](#contents) -->
-
-<!-- --- -->
 
 name: uda-projection
 
@@ -4763,7 +4744,7 @@ name: new-patients
 
 ### New patients seen 
 
-```{r xaringan-panelset-Unique-patients2, echo=FALSE}
+```{r xaringan-panelset-new-pataients-seen, echo=FALSE}
 xaringanExtra::use_panelset()
 ```
  <font size="2">
@@ -4861,9 +4842,9 @@ plot_number_new_patients(data = new_vs_return_data,
 
 name: new-patients-perc
 
-### Percentage of providers servicng new patients
+### Percentage of providers seeing new patients
 
-```{r xaringan-panelset-Unique-patients2, echo=FALSE}
+```{r xaringan-panelset-perc-new-patients, echo=FALSE}
 xaringanExtra::use_panelset()
 ```
  <font size="2">
@@ -5909,125 +5890,10 @@ The change in total annual contracted UDAs from `r format(Sys.Date() - lubridate
  ]
  ]
  
- The dips seen every April are most likely due to changes to the contracted UDAs by commissioners, following performance reviews at the end of the financial year. It may also be that new contracts starting at the beginning of the financial year will not have submitted any FP17s until May, which means that their contracted UDA data will not show up until May.
+The dips seen every April may be due to the fact that new contracts starting at the beginning of the financial year will not have submitted any FP17s until May, which means that their contracted UDA data will not show up until May.
 
 [Return to contents](#contents)
 
-
----
-name: num-contracts-trend
-
-### Number of contracts trend
-
-```{r xaringan-panelset-num-contracts-trend, echo=FALSE}
-xaringanExtra::use_panelset()
-```
-
- <font size="2">
-.panelset[
-.panel[.panel-name[National]
-
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_number_of_contracts_over_time(data = UDA_scheduled_data,
-                                     historical_data = historical_UDA_scheduled_data,
-                                level = "National",
-                                region_STP_name = NULL,
-                                plotChart = TRUE)
-```
-
-The percentage change in total number of contracts from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B %Y")` is
-**`r plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,level = "National",region_STP_name = NULL,plotChart = FALSE, getChange = TRUE)`%**.
- ]
- .panel[.panel-name[South East]
-
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,
-                                level = "Regional",
-                                region_STP_name = "South East",
-                                plotChart = TRUE)
-```
-
-The percentage change in total number of contracts from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B %Y")` is
-**`r plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,level = "Regional",region_STP_name = "South East",plotChart = FALSE, getChange = TRUE)`%**.
- ]
- .panel[.panel-name[South West]
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,
-                                level = "Regional",
-                                region_STP_name = "South West",
-                                plotChart = TRUE)
-```
-
-The percentage change in total number of contracts from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B %Y")` is
-**`r plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,level = "Regional",region_STP_name = "South West",plotChart = FALSE, getChange = TRUE)`%**.
-
- ]
- .panel[.panel-name[North West]
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,
-                                level = "Regional",
-                                region_STP_name = "North West",
-                                plotChart = TRUE)
-```
-
-The percentage change in total number of contracts from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B %Y")` is
-**`r plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,level = "Regional",region_STP_name = "North West",plotChart = FALSE, getChange = TRUE)`%**.
-
- ]
- .panel[.panel-name[North East and Yorkshire]
-
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,
-                                level = "Regional",
-                                region_STP_name = "North East and Yorkshire",
-                                plotChart = TRUE)
-```
-
-The percentage change in total number of contracts from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B %Y")` is
-**`r plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,level = "Regional",region_STP_name = "North East and Yorkshire",plotChart = FALSE, getChange = TRUE)`%**.
-
- ]
-.panel[.panel-name[London]
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,
-                                level = "Regional",
-                                region_STP_name = "London",
-                                plotChart = TRUE)
-```
-
-The percentage change in total number of contracts from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B %Y")` is
-**`r plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,level = "Regional",region_STP_name = "London",plotChart = FALSE, getChange = TRUE)`%**.
-
- ]
- .panel[.panel-name[Midlands]
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,
-                                level = "Regional",
-                                region_STP_name = "Midlands",
-                                plotChart = TRUE)
-```
-
-The percentage change in total number of contracts from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B %Y")` is
-**`r plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,level = "Regional",region_STP_name = "Midlands",plotChart = FALSE, getChange = TRUE)`%**.
-
- ]
- .panel[.panel-name[East of England]
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,
-                                level = "Regional",
-                                region_STP_name = "East of England",
-                                plotChart = TRUE)
-```
-
-The percentage change in total number of contracts from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B %Y")` is
-**`r plot_number_of_contracts_over_time(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,level = "Regional",region_STP_name = "East of England",plotChart = FALSE, getChange = TRUE)`%**.
-
- ]
- ]
- 
-  The dips seen every April are most likely due to the fact that new contracts starting at the beginning of the financial year will not have submitted any FP17s until May, which means that they will not show up in the data until May.
-
-[Return to contents](#contents)
 
 ---
 name: payments
