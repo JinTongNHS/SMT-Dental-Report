@@ -115,7 +115,7 @@ plot_BPE_no_oral_health_risk <- function(data = BPE_data,
                size = 3) +
     expand_limits(y=0) + 
     geom_text(aes(label = Percentage), vjust=-.5)+
-    theme_classic() + 
+    theme_bw() + 
     ##theme(legend.position="bottom") +
     scale_y_continuous(labels = scales::percent,
                        limits = c(0, 1.1)) +
