@@ -13,17 +13,17 @@ get_UDA_projection_data <- function(data = UDA_scheduled_data,
                                     plotChart = TRUE){
   
   UDA_value_data <- UDA_value_data %>%
-    filter(Date == max(UDA_value_data$Date)) %>%
-    mutate(Total.Financial.Value = as.numeric(str_replace_all(Total.Financial.Value, ",", "")),
-           UDA.Financial.Value = as.numeric(str_replace_all(UDA.Financial.Value, ",", "")),
-           UDA.Performance.Target = as.numeric(str_replace_all(UDA.Performance.Target, ",", "")), 
-           UDA.Carry.Forward = as.numeric(str_replace_all(UDA.Carry.Forward, ",", "")), 
-           UOA.Financial.Value = as.numeric(str_replace_all(UOA.Financial.Value, ",", "")),
-           UOA.Performance.Target = as.numeric(str_replace_all(UOA.Performance.Target, ",", "")), 
-           UOA.Carry.Forward = as.numeric(str_replace_all(UOA.Carry.Forward, ",", "")), 
-           Cost.per.UDA = as.numeric(str_replace_all(Cost.per.UDA, ",", "")), 
-           Cost.Per.UOA = as.numeric(str_replace_all(Cost.Per.UOA, ",", "")))
-  
+    filter(Date == max(UDA_value_data$Date)) #%>%
+    # mutate(Total.Financial.Value = as.numeric(str_replace_all(Total.Financial.Value, ",", "")),
+    #        UDA_Financial_Value = as.numeric(str_replace_all(UDA_Financial_Value, ",", "")),
+    #        UDA.Performance.Target = as.numeric(str_replace_all(UDA.Performance.Target, ",", "")),
+    #        UDA.Carry.Forward = as.numeric(str_replace_all(UDA.Carry.Forward, ",", "")),
+    #        UOA.Financial.Value = as.numeric(str_replace_all(UOA.Financial.Value, ",", "")),
+    #        UOA.Performance.Target = as.numeric(str_replace_all(UOA.Performance.Target, ",", "")),
+    #        UOA.Carry.Forward = as.numeric(str_replace_all(UOA.Carry.Forward, ",", "")),
+    #        Cost_per_UDA = as.numeric(str_replace_all(Cost_per_UDA, ",", "")),
+    #        Cost.Per.UOA = as.numeric(str_replace_all(Cost.Per.UOA, ",", "")))
+
   
   #filter for STP or region
   if(level == "Regional"){
@@ -49,9 +49,9 @@ get_UDA_projection_data <- function(data = UDA_scheduled_data,
   names(UDA_value_data) <- names(UDA_value_data) %>% make.names()
   
   UDA_value_data <- UDA_value_data %>%
-    select(contract_number = Contract.Number,
-           UDA_finanical_value = UDA.Financial.Value,
-           cost_per_UDA = Cost.per.UDA)
+    select(contract_number = Contract_Number,
+           UDA_finanical_value = UDA_Financial_Value,
+           cost_per_UDA = Cost_per_UDA)
   
   #join to UDA scheduled data
   data_wide <- data %>%
