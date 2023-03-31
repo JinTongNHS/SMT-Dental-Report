@@ -59,6 +59,7 @@ plot_urgent_form_submissions <- function(data = UDA_scheduled_data,
                    colour = factor(year))) +
     scale_y_continuous(breaks = scales::breaks_pretty(),
                        limits = c(0, max(data$urgent))) +
+    scale_colour_manual(values = get_colour_palette()) +
     labs(title = "Urgent treatment form submissions",
          x = "Month",
          y = "Number of urgent FP17* forms submitted",
