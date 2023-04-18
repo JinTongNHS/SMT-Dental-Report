@@ -5,8 +5,8 @@ pull_UDA_scheduled_historical_data <- function(){
   
   sql <- "SELECT *  FROM [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UDA_scheduled_historical]"
   result <- dbSendQuery(con, sql)
-  UOA_scheduled_historical_data <- dbFetch(result)
+  UDA_scheduled_historical_data <- dbFetch(result)
   dbClearResult(result)
   
-  UOA_scheduled_historical_data
+  UDA_scheduled_historical_data
 }

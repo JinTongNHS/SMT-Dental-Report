@@ -45,6 +45,9 @@ payments_to_dentists <- pull_payments_to_dentist()
 historical_UDA_scheduled_data <- pull_UDA_scheduled_historical_data()
 historical_UDA_scheduled_data <- rename(historical_UDA_scheduled_data, month = data_month)
 
+historical_UOA_scheduled_data <- pull_UOA_scheduled_historical_data()
+historical_UOA_scheduled_data <- rename(historical_UOA_scheduled_data, month = data_month)
+
 #change column names and add regions
 UDA_calendar_data <- rename(UDA_calendar_data, month = data_month)
 UOA_calendar_data <- UOA_calendar_data %>%
