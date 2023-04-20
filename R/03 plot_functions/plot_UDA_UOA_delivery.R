@@ -1,6 +1,7 @@
 ################################################################################
 plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data, 
                                   historic_data = historical_UDA_scheduled_data,
+                                  historic_data_UOA = historical_UOA_scheduled_data,
                                   UDAorUOA = "UDA",
                                   level = "National",
                                   region_STP_name = NULL,
@@ -28,6 +29,20 @@ plot_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
     
     data <- bind_rows(data, historic_data)
     
+  }else if(include_historic == TRUE & UDAorUOA == "UOA"){
+    
+    data <- data %>%
+      select(month, contract_number, commissioner_name, region_name,
+             annual_contracted_UOA, UOA_delivered)
+    
+    historic_data_UOA <- historic_data_UOA %>%
+      mutate(month = as.Date(month)) %>%
+      select(month, contract_number, commissioner_name, region_name,
+             annual_contracted_UOA,
+             UOA_delivered) #%>%
+    #filter(month >= as.Date("2019-04-01"))
+    
+    data <- bind_rows(data, historic_data_UOA)
   }
   
   #filter for STP or region
