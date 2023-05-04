@@ -5,7 +5,7 @@ plot_unique_patients_rolling <- function(data = unique_patients_rolling,
                                          level = "National",
                                          region_STP_name = NULL,
                                          plotChart = TRUE,
-                                         remove_prototypes = TRUE,
+                                         remove_prototypes = FALSE,
                                          get_perc = FALSE,
                                          all_regiona_and_STPs = FALSE,
                                          contract_level = FALSE,
@@ -32,6 +32,11 @@ plot_unique_patients_rolling <- function(data = unique_patients_rolling,
     data <- data %>%
       filter(!(contract_number %in% prototype_contracts$prototype_contract_number & month < as.Date("2022-04-01"))) %>%
       filter(annual_contracted_UDA > 100)
+    
+    chartCaption <- "*N.B. this analysis uses unique patients per contract** and does not take \ninto account patients who have been seen at more than one dental practice. \n**EXCLUDING contracts with annual contracted UDA < 100. Excluding prototype contracts up until April 2022."
+  }else{
+    
+    chartCaption <- "*N.B. this analysis uses unique patients per contract** and does not take \ninto account patients who have been seen at more than one dental practice. \n**INCLUDING contracts with annual contracted UDA < 100. Excluding prototype contracts up until April 2022."
   }
   
   #filter for region or STP
@@ -129,7 +134,7 @@ plot_unique_patients_rolling <- function(data = unique_patients_rolling,
            x = "12 month rolling period end date",
            y = ylab,
            subtitle = subtitle,
-           caption = "*N.B. this analysis uses unique patients per contract** and does not take \ninto account patients who have been seen at more than one dental practice. \n**Excluding contracts with annual contracted UDA < 100. Excluding prototype contracts up until April 2022."
+           caption = chartCaption
       ) +
       scale_x_date(date_breaks = "1 month", 
                    date_labels = "%b-%y") +

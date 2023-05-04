@@ -6,7 +6,7 @@ plot_banded_CoT <- function(data = UDA_scheduled_data,
                             plotChart = TRUE, 
                             all_regions_and_STPs = FALSE,
                             asIndex = FALSE,
-                            remove_prototypes = TRUE){
+                            remove_prototypes = FALSE){
   
   #avoid standard form on axes
   options(scipen = 100)
@@ -62,6 +62,15 @@ plot_banded_CoT <- function(data = UDA_scheduled_data,
     ylab <- "Number of FP17* forms submitted"
   }
   
+  #get caption right for prototypes being removed or not
+  if(remove_prototypes == TRUE){
+    
+    chartCaption <- "*EXCLUDING contracts with annual contracted UDA < 100. EXCLUDING prototype contracts up until April 2022."
+  }else{
+    
+    chartCaption <- "*Contracts with annual contracted UDAs < 100 and prototype contracts are INCLUDED in this graph."
+  }
+  
   if(plotChart == TRUE){
     
     #plot code
@@ -85,17 +94,14 @@ plot_banded_CoT <- function(data = UDA_scheduled_data,
                                      # "green",
                                      # "blue")
       ) +
-      scale_y_continuous(breaks = scales::breaks_pretty()) +
+      scale_y_continuous(breaks = scales::breaks_pretty(),
+                         labels = function(x) format(x, big.mark = ",", scientific = FALSE)) +
       labs(title = title,
            x = "Month",
            y = ylab,
            colour = "Band",
            subtitle = subtitle,
-           caption = "*Excluding contracts with annual contracted UDA < 100. Excluding prototype contracts up until April 2022.
-           **UDA to FP17 conversion has been done assuming a band 1 FP17
-         is equivalent to 1 UDA, a band 2 FP17 = 3 UDAs,
-         a band 3 FP17 = 12 UDAs, an urgent FP17 = 1.2
-         UDAs and an 'other' FP17 = 0.6 UDAs. Scheduled data used.")
+           caption = chartCaption)
     
   }else{
     data_to_print %>%

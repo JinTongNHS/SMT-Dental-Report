@@ -2,7 +2,7 @@ plot_band2_split_percentage <- function(data = band2_split_data,
                                         scheduled_data = UDA_scheduled_data,
                                         level = "National",
                                         region_STP_name = NULL,
-                                        remove_prototypes = TRUE, 
+                                        remove_prototypes = FALSE, 
                                         plotChart = TRUE,
                                         commissioner_region_lookup = STP_ICB_lookup_codes,
                                         UDA_or_FP17 = "FP17"){
@@ -27,6 +27,11 @@ plot_band2_split_percentage <- function(data = band2_split_data,
     data <- data %>%
       filter(!(contract_number %in% prototype_contracts$prototype_contract_number & month < as.Date("2022-04-01"))) %>%
       filter(annual_contracted_UDA > 100)
+    
+    chartCaption <- "*EXCLUDING contracts with annual contracted UDAs < 100.\n**Some band 2s are still being submitted without the A,B,C distinction and are classed here as 'un-split'"
+  }else{
+    
+    chartCaption <- "*INCLUDING contracts with annual contracted UDAs < 100.\n**Some band 2s are still being submitted without the A,B,C distinction and are classed here as 'un-split'"
   }
   
   #filter for STP or region
@@ -94,7 +99,7 @@ plot_band2_split_percentage <- function(data = band2_split_data,
            x = "Month",
            y = paste0("Percentage of total band 2 ", UDA_or_FP17, "s delivered"),
            colour = "",
-           caption = "*Excluding contracts with annual contracted UDAs < 100.\n**Some band 2s are still being submitted without the A,B,C distinction and are classed here as 'un-split'") +
+           caption = chartCaption) +
       scale_y_continuous(breaks = scales::breaks_pretty(),
                          labels = scales::percent_format(accuracy = 1)) +
       scale_x_date(date_breaks = "1 month", 

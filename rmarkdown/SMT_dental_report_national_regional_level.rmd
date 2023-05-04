@@ -991,9 +991,9 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (100% for Jan-Mar 23).
 * From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r get_Q1_22_num_contracts_on_target(level = "National", region_STP_name = NULL)`**
+**`r get_quarterly_num_contracts_on_target(level = "National", region_STP_name = NULL)`**
 contracts (
-**`r round(get_Q1_22_num_contracts_on_target(level = "National", region_STP_name = NULL)*100/get_num_contracts(level = "National", region_STP_name = NULL))` %**
+**`r round(get_quarterly_num_contracts_on_target(level = "National", region_STP_name = NULL)*100/get_num_contracts(level = "National", region_STP_name = NULL))` %**
 ) have delivered the required UDAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 ]
@@ -1011,9 +1011,9 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (100% for Jan-Mar 23).
 * From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r get_Q1_22_num_contracts_on_target(level = "Regional", region_STP_name = "South East")`**
+**`r get_quarterly_num_contracts_on_target(level = "Regional", region_STP_name = "South East")`**
 contracts (
-**`r round(get_Q1_22_num_contracts_on_target(level = "Regional", region_STP_name = "South East")*100/get_num_contracts(level = "Regional", region_STP_name = "South East"))` %**
+**`r round(get_quarterly_num_contracts_on_target(level = "Regional", region_STP_name = "South East")*100/get_num_contracts(level = "Regional", region_STP_name = "South East"))` %**
 ) have delivered the required UDAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 
@@ -1032,9 +1032,9 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (100% for Jan-Mar 23).
 * From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r get_Q1_22_num_contracts_on_target(level = "Regional", region_STP_name = "South West")`**
+**`r get_quarterly_num_contracts_on_target(level = "Regional", region_STP_name = "South West")`**
 contracts (
-**`r round(get_Q1_22_num_contracts_on_target(level = "Regional", region_STP_name = "South West")*100/get_num_contracts(level = "Regional", region_STP_name = "South West"))` %**
+**`r round(get_quarterly_num_contracts_on_target(level = "Regional", region_STP_name = "South West")*100/get_num_contracts(level = "Regional", region_STP_name = "South West"))` %**
 ) have delivered the required UDAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 
@@ -1053,9 +1053,9 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (100% for Jan-Mar 23).
 * From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r get_Q1_22_num_contracts_on_target(level = "Regional", region_STP_name = "North West")`**
+**`r get_quarterly_num_contracts_on_target(level = "Regional", region_STP_name = "North West")`**
 contracts (
-**`r round(get_Q1_22_num_contracts_on_target(level = "Regional", region_STP_name = "North West")*100/get_num_contracts(level = "Regional", region_STP_name = "North West"))` %**
+**`r round(get_quarterly_num_contracts_on_target(level = "Regional", region_STP_name = "North West")*100/get_num_contracts(level = "Regional", region_STP_name = "North West"))` %**
 ) have delivered the required UDAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 
@@ -1074,9 +1074,9 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (100% for Jan-Mar 23).
 * From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r get_Q1_22_num_contracts_on_target(level = "Regional", region_STP_name = "North East and Yorkshire")`**
+**`r get_quarterly_num_contracts_on_target(level = "Regional", region_STP_name = "North East and Yorkshire")`**
 contracts (
-**`r round(get_Q1_22_num_contracts_on_target(level = "Regional", region_STP_name = "North East and Yorkshire")*100/get_num_contracts(level = "Regional", region_STP_name = "North East and Yorkshire"))` %**
+**`r round(get_quarterly_num_contracts_on_target(level = "Regional", region_STP_name = "North East and Yorkshire")*100/get_num_contracts(level = "Regional", region_STP_name = "North East and Yorkshire"))` %**
 ) have delivered the required UDAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 
@@ -1095,9 +1095,9 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (100% for Jan-Mar 23).
 * From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r get_Q1_22_num_contracts_on_target(level = "Regional", region_STP_name = "London")`**
+**`r get_quarterly_num_contracts_on_target(level = "Regional", region_STP_name = "London")`**
 contracts (
-**`r round(get_Q1_22_num_contracts_on_target(level = "Regional", region_STP_name = "London")*100/get_num_contracts(level = "Regional", region_STP_name = "London"))` %**
+**`r round(get_quarterly_num_contracts_on_target(level = "Regional", region_STP_name = "London")*100/get_num_contracts(level = "Regional", region_STP_name = "London"))` %**
 ) have delivered the required UDAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 ]
@@ -1115,9 +1115,9 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (100% for Jan-Mar 23).
 * From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r get_Q1_22_num_contracts_on_target(level = "Regional", region_STP_name = "Midlands")`**
+**`r get_quarterly_num_contracts_on_target(level = "Regional", region_STP_name = "Midlands")`**
 contracts (
-**`r round(get_Q1_22_num_contracts_on_target(level = "Regional", region_STP_name = "Midlands")*100/get_num_contracts(level = "Regional", region_STP_name = "Midlands"))` %**
+**`r round(get_quarterly_num_contracts_on_target(level = "Regional", region_STP_name = "Midlands")*100/get_num_contracts(level = "Regional", region_STP_name = "Midlands"))` %**
 ) have delivered the required UDAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 
@@ -1136,9 +1136,9 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (100% for Jan-Mar 23).
 * From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r get_Q1_22_num_contracts_on_target(level = "Regional", region_STP_name = "East of England")`**
+**`r get_quarterly_num_contracts_on_target(level = "Regional", region_STP_name = "East of England")`**
 contracts (
-**`r round(get_Q1_22_num_contracts_on_target(level = "Regional", region_STP_name = "East of England")*100/get_num_contracts(level = "Regional", region_STP_name = "East of England"))` %**
+**`r round(get_quarterly_num_contracts_on_target(level = "Regional", region_STP_name = "East of England")*100/get_num_contracts(level = "Regional", region_STP_name = "East of England"))` %**
 ) have delivered the required UDAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 
@@ -2616,9 +2616,9 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data,
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
 * From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "National", region_STP_name = NULL)`**
+**`r get_quarterly_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "National", region_STP_name = NULL)`**
 contracts (
-**`r round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "National", region_STP_name = NULL)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T,  "UOA", level = "National", region_STP_name = NULL))` %**
+**`r round(get_quarterly_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "National", region_STP_name = NULL)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T,  "UOA", level = "National", region_STP_name = NULL))` %**
 ) have delivered the required UOAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
  ]
@@ -2638,9 +2638,9 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data,
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
 * From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "Regional", region_STP_name = "South East")`**
+**`r get_quarterly_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "Regional", region_STP_name = "South East")`**
 contracts (
-**`r round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "Regional", region_STP_name = "South East")*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T,  "UOA", level = "Regional", region_STP_name = "South East"))` %**
+**`r round(get_quarterly_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "Regional", region_STP_name = "South East")*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T,  "UOA", level = "Regional", region_STP_name = "South East"))` %**
 ) have delivered the required UOAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 
@@ -2661,9 +2661,9 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data,
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
 * From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "Regional", region_STP_name = "South West")`**
+**`r get_quarterly_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "Regional", region_STP_name = "South West")`**
 contracts (
-**`r round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "Regional", region_STP_name = "South West")*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T,  "UOA", level = "Regional", region_STP_name = "South West"))` %**
+**`r round(get_quarterly_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "Regional", region_STP_name = "South West")*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T,  "UOA", level = "Regional", region_STP_name = "South West"))` %**
 ) have delivered the required UOAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 
@@ -2684,9 +2684,9 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data,
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
 * From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "Regional", region_STP_name = "North West")`**
+**`r get_quarterly_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "Regional", region_STP_name = "North West")`**
 contracts (
-**`r round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "Regional", region_STP_name = "North West")*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T,  "UOA", level = "Regional", region_STP_name = "North West"))` %**
+**`r round(get_quarterly_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "Regional", region_STP_name = "North West")*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T,  "UOA", level = "Regional", region_STP_name = "North West"))` %**
 ) have delivered the required UOAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
  ]
@@ -2706,9 +2706,9 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data,
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
 * From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "Regional", region_STP_name = "North East and Yorkshire")`**
+**`r get_quarterly_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "Regional", region_STP_name = "North East and Yorkshire")`**
 contracts (
-**`r round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "Regional", region_STP_name = "North East and Yorkshire")*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T,  "UOA", level = "Regional", region_STP_name = "North East and Yorkshire"))` %**
+**`r round(get_quarterly_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "Regional", region_STP_name = "North East and Yorkshire")*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T,  "UOA", level = "Regional", region_STP_name = "North East and Yorkshire"))` %**
 ) have delivered the required UOAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 
@@ -2729,9 +2729,9 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data,
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
 * From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "Regional", region_STP_name = "London")`**
+**`r get_quarterly_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "Regional", region_STP_name = "London")`**
 contracts (
-**`r round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "Regional", region_STP_name = "London")*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T,  "UOA", level = "Regional", region_STP_name = "London"))` %**
+**`r round(get_quarterly_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "Regional", region_STP_name = "London")*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T,  "UOA", level = "Regional", region_STP_name = "London"))` %**
 ) have delivered the required UOAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
  ]
@@ -2751,9 +2751,9 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data,
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
 * From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "Regional", region_STP_name = "Midlands")`**
+**`r get_quarterly_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "Regional", region_STP_name = "Midlands")`**
 contracts (
-**`r round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "Regional", region_STP_name = "Midlands")*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T,  "UOA", level = "Regional", region_STP_name = "Midlands"))` %**
+**`r round(get_quarterly_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "Regional", region_STP_name = "Midlands")*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T,  "UOA", level = "Regional", region_STP_name = "Midlands"))` %**
 ) have delivered the required UOAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 
@@ -2774,9 +2774,9 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data,
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
 * From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "Regional", region_STP_name = "East of England")`**
+**`r get_quarterly_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "Regional", region_STP_name = "East of England")`**
 contracts (
-**`r round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "Regional", region_STP_name = "East of England")*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T,  "UOA", level = "Regional", region_STP_name = "East of England"))` %**
+**`r round(get_quarterly_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "Regional", region_STP_name = "East of England")*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T,  "UOA", level = "Regional", region_STP_name = "East of England"))` %**
 ) have delivered the required UOAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 
@@ -3215,7 +3215,7 @@ xaringanExtra::use_panelset()
 plot_banded_CoT(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "National",
                 region_STP_name = NULL)
 ```
@@ -3227,7 +3227,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
 plot_banded_CoT(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "Regional",
                 region_STP_name = "South East")
 ```
@@ -3238,7 +3238,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
 plot_banded_CoT(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "Regional",
                 region_STP_name = "South West")
 ```
@@ -3249,7 +3249,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
 plot_banded_CoT(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "Regional",
                 region_STP_name = "North West")
 ```
@@ -3260,7 +3260,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
 plot_banded_CoT(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "Regional",
                 region_STP_name = "North East and Yorkshire")
 ```
@@ -3271,7 +3271,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
 plot_banded_CoT(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "Regional",
                 region_STP_name = "London")
 ```
@@ -3282,7 +3282,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
 plot_banded_CoT(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "Regional",
                 region_STP_name = "Midlands")
 ```
@@ -3294,7 +3294,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
 plot_banded_CoT(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "Regional",
                 region_STP_name = "East of England")
 ```
@@ -3309,7 +3309,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
 data <- plot_banded_CoT(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "National",
                 region_STP_name = NULL,
                 plotChart = F,
@@ -3331,7 +3331,7 @@ reactable(
   plot_banded_CoT(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "National",
                 region_STP_name = NULL,
                 plotChart = F,
@@ -3373,7 +3373,7 @@ xaringanExtra::use_panelset()
 plot_banded_CoT(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "National",
                 region_STP_name = NULL,
                 asIndex = TRUE)
@@ -3386,7 +3386,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
 plot_banded_CoT(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "Regional",
                 region_STP_name = "South East",
                 asIndex = TRUE)
@@ -3398,7 +3398,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
 plot_banded_CoT(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "Regional",
                 region_STP_name = "South West",
                 asIndex = TRUE)
@@ -3410,7 +3410,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
 plot_banded_CoT(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "Regional",
                 region_STP_name = "North West",
                 asIndex = TRUE)
@@ -3422,7 +3422,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
 plot_banded_CoT(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "Regional",
                 region_STP_name = "North East and Yorkshire",
                 asIndex = TRUE)
@@ -3434,7 +3434,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
 plot_banded_CoT(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "Regional",
                 region_STP_name = "London",
                 asIndex = TRUE)
@@ -3446,7 +3446,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
 plot_banded_CoT(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "Regional",
                 region_STP_name = "Midlands",
                 asIndex = TRUE)
@@ -3459,7 +3459,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
 plot_banded_CoT(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "Regional",
                 region_STP_name = "East of England",
                 asIndex = TRUE)
@@ -3487,7 +3487,7 @@ xaringanExtra::use_panelset()
 plot_urgent_form_submissions(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "National",
                 region_STP_name = NULL)
 ```
@@ -3512,7 +3512,7 @@ change from the pre-COVID world.
 plot_urgent_form_submissions(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "Regional",
                 region_STP_name = "South East")
 ```
@@ -3538,7 +3538,7 @@ change from the pre-COVID world.
 plot_urgent_form_submissions(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "Regional",
                 region_STP_name = "South West")
 ```
@@ -3564,7 +3564,7 @@ change from the pre-COVID world.
 plot_urgent_form_submissions(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "Regional",
                 region_STP_name = "North West")
 ```
@@ -3590,7 +3590,7 @@ change from the pre-COVID world.
 plot_urgent_form_submissions(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "Regional",
                 region_STP_name = "North East and Yorkshire")
 ```
@@ -3616,7 +3616,7 @@ change from the pre-COVID world.
 plot_urgent_form_submissions(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "Regional",
                 region_STP_name = "London")
 ```
@@ -3641,7 +3641,7 @@ change from the pre-COVID world.
 plot_urgent_form_submissions(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "Regional",
                 region_STP_name = "Midlands")
 ```
@@ -3666,7 +3666,7 @@ change from the pre-COVID world.
 plot_urgent_form_submissions(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "Regional",
                 region_STP_name = "East of England")
 ```
@@ -3695,7 +3695,7 @@ change from the pre-COVID world.
 data <- plot_urgent_form_submissions(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "National",
                 region_STP_name = NULL,
                 plotChart = F,
@@ -3717,7 +3717,7 @@ reactable(
   plot_urgent_form_submissions(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "National",
                 region_STP_name = NULL,
                 plotChart = F,
@@ -3755,7 +3755,7 @@ xaringanExtra::use_panelset()
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_band2_split_percentage(data = band2_split_data,
                              scheduled_data = UDA_scheduled_data,
-                             remove_prototypes = TRUE, 
+                             remove_prototypes = FALSE, 
                              commissioner_region_lookup = STP_ICB_lookup_codes,
                            level = "National",
                            region_STP_name = NULL,
@@ -3768,7 +3768,7 @@ plot_band2_split_percentage(data = band2_split_data,
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_band2_split_percentage(data = band2_split_data,
                              scheduled_data = UDA_scheduled_data,
-                             remove_prototypes = TRUE, 
+                             remove_prototypes = FALSE, 
                              commissioner_region_lookup = STP_ICB_lookup_codes,
                                 level = "Regional",
                                 region_STP_name = "South East",
@@ -3780,7 +3780,7 @@ plot_band2_split_percentage(data = band2_split_data,
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_band2_split_percentage(data = band2_split_data,
                              scheduled_data = UDA_scheduled_data,
-                             remove_prototypes = TRUE, 
+                             remove_prototypes = FALSE, 
                              commissioner_region_lookup = STP_ICB_lookup_codes,
                                 level = "Regional",
                                 region_STP_name = "South West",
@@ -3793,7 +3793,7 @@ plot_band2_split_percentage(data = band2_split_data,
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_band2_split_percentage(data = band2_split_data,
                              scheduled_data = UDA_scheduled_data,
-                             remove_prototypes = TRUE, 
+                             remove_prototypes = FALSE, 
                              commissioner_region_lookup = STP_ICB_lookup_codes,
                                 level = "Regional",
                                 region_STP_name = "North West",
@@ -3807,7 +3807,7 @@ plot_band2_split_percentage(data = band2_split_data,
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_band2_split_percentage(data = band2_split_data,
                              scheduled_data = UDA_scheduled_data,
-                             remove_prototypes = TRUE, 
+                             remove_prototypes = FALSE, 
                              commissioner_region_lookup = STP_ICB_lookup_codes,
                                 level = "Regional",
                                 region_STP_name = "North East and Yorkshire",
@@ -3820,7 +3820,7 @@ plot_band2_split_percentage(data = band2_split_data,
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_band2_split_percentage(data = band2_split_data,
                              scheduled_data = UDA_scheduled_data,
-                             remove_prototypes = TRUE, 
+                             remove_prototypes = FALSE, 
                              commissioner_region_lookup = STP_ICB_lookup_codes,
                                 level = "Regional",
                                 region_STP_name = "London",
@@ -3833,7 +3833,7 @@ plot_band2_split_percentage(data = band2_split_data,
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_band2_split_percentage(data = band2_split_data,
                              scheduled_data = UDA_scheduled_data,
-                             remove_prototypes = TRUE, 
+                             remove_prototypes = FALSE, 
                              commissioner_region_lookup = STP_ICB_lookup_codes,
                                 level = "Regional",
                                 region_STP_name = "Midlands",
@@ -3847,7 +3847,7 @@ plot_band2_split_percentage(data = band2_split_data,
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_band2_split_percentage(data = band2_split_data,
                              scheduled_data = UDA_scheduled_data,
-                             remove_prototypes = TRUE, 
+                             remove_prototypes = FALSE, 
                              commissioner_region_lookup = STP_ICB_lookup_codes,
                                 level = "Regional",
                                 region_STP_name = "East of England",
@@ -3862,7 +3862,7 @@ plot_band2_split_percentage(data = band2_split_data,
 
 data <- plot_band2_split_percentage(data = band2_split_data,
                              scheduled_data = UDA_scheduled_data,
-                             remove_prototypes = TRUE, 
+                             remove_prototypes = FALSE, 
                              commissioner_region_lookup = STP_ICB_lookup_codes,
                                 level = "National",
                                 region_STP_name = NULL,
@@ -3883,7 +3883,7 @@ data %>%
 reactable(
   plot_band2_split_percentage(data = band2_split_data,
                              scheduled_data = UDA_scheduled_data,
-                             remove_prototypes = TRUE, 
+                             remove_prototypes = FALSE, 
                              commissioner_region_lookup = STP_ICB_lookup_codes,
                                 level = "National",
                                 region_STP_name = NULL,
@@ -3991,14 +3991,14 @@ xaringanExtra::use_panelset()
 
  .panel[.panel-name[National]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
-plot_UDA_delivered_percent(level = "National")
+plot_UDA_yearly_delivery(level = "National")
 ```
 
 
  ]
  .panel[.panel-name[Regional]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
-plot_UDA_delivered_percent(level = "Regional")
+plot_UDA_yearly_delivery(level = "Regional")
 ```
 
  ]
@@ -4411,11 +4411,11 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
                                      level = "National",
                                      region_STP_name = NULL,
                                      plotChart = TRUE,
-                                     remove_prototypes = TRUE)
+                                     remove_prototypes = FALSE)
 ```
 
 * The number of unique patients seen in the last 12 months is currently around
-**`r plot_unique_patients_rolling(level = "National",region_STP_name = NULL, plotChart = F,remove_prototypes = T, get_perc = T)` %**
+**`r plot_unique_patients_rolling(level = "National",region_STP_name = NULL, plotChart = F,remove_prototypes = FALSE, get_perc = T)` %**
 of pre-pandemic levels.
 
  ]
@@ -4427,11 +4427,11 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
                                      level = "Regional",
                                      region_STP_name = "South East",
                                      plotChart = TRUE,
-                                     remove_prototypes = TRUE)
+                                     remove_prototypes = FALSE)
 ```
 
 * The number of unique patients seen in the last 12 months is currently around
-**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "South East", plotChart = F,remove_prototypes = T, get_perc = T)` %**
+**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "South East", plotChart = F,remove_prototypes = FALSE, get_perc = T)` %**
 of pre-pandemic levels.
 
  ]
@@ -4443,11 +4443,11 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
                                      level = "Regional",
                                      region_STP_name = "South West",
                                      plotChart = TRUE,
-                                     remove_prototypes = TRUE)
+                                     remove_prototypes = FALSE)
 ```
 
 * The number of unique patients seen in the last 12 months is currently around
-**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "South West", plotChart = F,remove_prototypes = T, get_perc = T)` %**
+**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "South West", plotChart = F,remove_prototypes = FALSE, get_perc = T)` %**
 of pre-pandemic levels.
 
  ]
@@ -4459,11 +4459,11 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
                                      level = "Regional",
                                      region_STP_name = "North West",
                                      plotChart = TRUE,
-                                     remove_prototypes = TRUE)
+                                     remove_prototypes = FALSE)
 ```
 
 * The number of unique patients seen in the last 12 months is currently around
-**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "North West", plotChart = F,remove_prototypes = T, get_perc = T)` %**
+**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "North West", plotChart = F,remove_prototypes = FALSE, get_perc = T)` %**
 of pre-pandemic levels.
 
  ]
@@ -4475,11 +4475,11 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
                                      level = "Regional",
                                      region_STP_name = "North East and Yorkshire",
                                      plotChart = TRUE,
-                                     remove_prototypes = TRUE)
+                                     remove_prototypes = FALSE)
 ```
 
 * The number of unique patients seen in the last 12 months is currently around
-**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "North East and Yorkshire", plotChart = F,remove_prototypes = T, get_perc = T)` %**
+**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "North East and Yorkshire", plotChart = F,remove_prototypes = FALSE, get_perc = T)` %**
 of pre-pandemic levels.
 
 
@@ -4492,11 +4492,11 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
                                      level = "Regional",
                                      region_STP_name = "London",
                                      plotChart = TRUE,
-                                     remove_prototypes = TRUE)
+                                     remove_prototypes = FALSE)
 ```
 
 * The number of unique patients seen in the last 12 months is currently around
-**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "London", plotChart = F,remove_prototypes = T, get_perc = T)` %**
+**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "London", plotChart = F,remove_prototypes = FALSE, get_perc = T)` %**
 of pre-pandemic levels.
 
  ]
@@ -4508,11 +4508,11 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
                                      level = "Regional",
                                      region_STP_name = "Midlands",
                                      plotChart = TRUE,
-                                     remove_prototypes = TRUE)
+                                     remove_prototypes = FALSE)
 ```
 
 * The number of unique patients seen in the last 12 months is currently around
-**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "Midlands", plotChart = F,remove_prototypes = T, get_perc = T)` %**
+**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "Midlands", plotChart = F,remove_prototypes = FALSE, get_perc = T)` %**
 of pre-pandemic levels.
 
  ]
@@ -4524,11 +4524,11 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
                                      level = "Regional",
                                      region_STP_name = "East of England",
                                      plotChart = TRUE,
-                                     remove_prototypes = TRUE)
+                                     remove_prototypes = FALSE)
 ```
 
 * The number of unique patients seen in the last 12 months is currently around
-**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "East of England", plotChart = F,remove_prototypes = T, get_perc = T)` %**
+**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "East of England", plotChart = F,remove_prototypes = FALSE, get_perc = T)` %**
 of pre-pandemic levels.
 
  ]
@@ -4544,7 +4544,7 @@ data <- plot_unique_patients_rolling(data = unique_patients_rolling,
                                      level = "National",
                                      region_STP_name = NULL,
                                      plotChart = FALSE,
-                                     remove_prototypes = TRUE,
+                                     remove_prototypes = FALSE,
                                      all_regiona_and_STPs = TRUE)
 
 data %>%
@@ -4566,7 +4566,7 @@ reactable(
                                      level = "National",
                                      region_STP_name = NULL,
                                      plotChart = FALSE,
-                                     remove_prototypes = TRUE,
+                                     remove_prototypes = FALSE,
                                      all_regiona_and_STPs = TRUE),
   height = 400,
   filterable = TRUE,
@@ -4609,12 +4609,12 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
                                      level = "National",
                                      region_STP_name = NULL,
                                      plotChart = TRUE,
-                                     remove_prototypes = TRUE,
+                                     remove_prototypes = FALSE,
                              asIndex = TRUE)
 ```
 
 * The number of unique patients seen in the last 12 months is currently around
-**`r plot_unique_patients_rolling(level = "National",region_STP_name = NULL, plotChart = F,remove_prototypes = T, get_perc = T)` %**
+**`r plot_unique_patients_rolling(level = "National",region_STP_name = NULL, plotChart = F,remove_prototypes = FALSE, get_perc = T)` %**
 of pre-pandemic levels.
 
  ]
@@ -4626,12 +4626,12 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
                                      level = "Regional",
                                      region_STP_name = "South East",
                                      plotChart = TRUE,
-                                     remove_prototypes = TRUE,
+                                     remove_prototypes = FALSE,
                              asIndex = TRUE)
 ```
 
 * The number of unique patients seen in the last 12 months is currently around
-**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "South East", plotChart = F,remove_prototypes = T, get_perc = T)` %**
+**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "South East", plotChart = F,remove_prototypes = FALSE, get_perc = T)` %**
 of pre-pandemic levels.
 
  ]
@@ -4643,12 +4643,12 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
                                      level = "Regional",
                                      region_STP_name = "South West",
                                      plotChart = TRUE,
-                                     remove_prototypes = TRUE,
+                                     remove_prototypes = FALSE,
                              asIndex = TRUE)
 ```
 
 * The number of unique patients seen in the last 12 months is currently around
-**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "South West", plotChart = F,remove_prototypes = T, get_perc = T)` %**
+**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "South West", plotChart = F,remove_prototypes = FALSE, get_perc = T)` %**
 of pre-pandemic levels.
 
  ]
@@ -4660,12 +4660,12 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
                                      level = "Regional",
                                      region_STP_name = "North West",
                                      plotChart = TRUE,
-                                     remove_prototypes = TRUE,
+                                     remove_prototypes = FALSE,
                              asIndex = TRUE)
 ```
 
 * The number of unique patients seen in the last 12 months is currently around
-**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "North West", plotChart = F,remove_prototypes = T, get_perc = T)` %**
+**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "North West", plotChart = F,remove_prototypes = FALSE, get_perc = T)` %**
 of pre-pandemic levels.
 
  ]
@@ -4677,12 +4677,12 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
                                      level = "Regional",
                                      region_STP_name = "North East and Yorkshire",
                                      plotChart = TRUE,
-                                     remove_prototypes = TRUE,
+                                     remove_prototypes = FALSE,
                              asIndex = TRUE)
 ```
 
 * The number of unique patients seen in the last 12 months is currently around
-**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "North East and Yorkshire", plotChart = F,remove_prototypes = T, get_perc = T)` %**
+**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "North East and Yorkshire", plotChart = F,remove_prototypes = FALSE, get_perc = T)` %**
 of pre-pandemic levels.
 
 
@@ -4695,12 +4695,12 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
                                      level = "Regional",
                                      region_STP_name = "London",
                                      plotChart = TRUE,
-                                     remove_prototypes = TRUE,
+                                     remove_prototypes = FALSE,
                              asIndex = TRUE)
 ```
 
 * The number of unique patients seen in the last 12 months is currently around
-**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "London", plotChart = F,remove_prototypes = T, get_perc = T)` %**
+**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "London", plotChart = F,remove_prototypes = FALSE, get_perc = T)` %**
 of pre-pandemic levels.
 
  ]
@@ -4712,12 +4712,12 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
                                      level = "Regional",
                                      region_STP_name = "Midlands",
                                      plotChart = TRUE,
-                                     remove_prototypes = TRUE,
+                                     remove_prototypes = FALSE,
                              asIndex = TRUE)
 ```
 
 * The number of unique patients seen in the last 12 months is currently around
-**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "Midlands", plotChart = F,remove_prototypes = T, get_perc = T)` %**
+**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "Midlands", plotChart = F,remove_prototypes = FALSE, get_perc = T)` %**
 of pre-pandemic levels.
 
  ]
@@ -4729,12 +4729,12 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
                                      level = "Regional",
                                      region_STP_name = "East of England",
                                      plotChart = TRUE,
-                                     remove_prototypes = TRUE,
+                                     remove_prototypes = FALSE,
                              asIndex = TRUE)
 ```
 
 * The number of unique patients seen in the last 12 months is currently around
-**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "East of England", plotChart = F,remove_prototypes = T, get_perc = T)` %**
+**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "East of England", plotChart = F,remove_prototypes = FALSE, get_perc = T)` %**
 of pre-pandemic levels.
 
  ]

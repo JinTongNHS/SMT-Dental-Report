@@ -1280,9 +1280,9 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (100% for Jan-Mar 23).
 * From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r get_Q1_22_num_contracts_on_target(level = "Regional", region_STP_name = region)`**
+**`r get_quarterly_num_contracts_on_target(level = "Regional", region_STP_name = region)`**
 contracts (
-**`r round(get_Q1_22_num_contracts_on_target(level = "Regional", region_STP_name = region)*100/get_num_contracts(level = "Regional", region_STP_name = region))` %**
+**`r round(get_quarterly_num_contracts_on_target(level = "Regional", region_STP_name = region)*100/get_num_contracts(level = "Regional", region_STP_name = region))` %**
 ) have delivered the required UDAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 ]
@@ -1300,9 +1300,9 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (100% for Jan-Mar 23).
 * From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP1)`**
+**`r get_quarterly_num_contracts_on_target(level = "STP", region_STP_name = STP1)`**
 contracts (
-**`r round(get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP1)*100/get_num_contracts(level = "STP", region_STP_name = STP1))` %**
+**`r round(get_quarterly_num_contracts_on_target(level = "STP", region_STP_name = STP1)*100/get_num_contracts(level = "STP", region_STP_name = STP1))` %**
 ) have delivered the required UDAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 
@@ -1321,9 +1321,9 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (100% for Jan-Mar 23).
 * From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP2)`**
+**`r get_quarterly_num_contracts_on_target(level = "STP", region_STP_name = STP2)`**
 contracts (
-**`r round(get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP2)*100/get_num_contracts(level = "STP", region_STP_name = STP2))` %**
+**`r round(get_quarterly_num_contracts_on_target(level = "STP", region_STP_name = STP2)*100/get_num_contracts(level = "STP", region_STP_name = STP2))` %**
 ) have delivered the required UDAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 
@@ -1342,9 +1342,9 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (100% for Jan-Mar 23).
 * From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP3)`**
+**`r get_quarterly_num_contracts_on_target(level = "STP", region_STP_name = STP3)`**
 contracts (
-**`r round(get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP3)*100/get_num_contracts(level = "STP", region_STP_name = STP3))` %**
+**`r round(get_quarterly_num_contracts_on_target(level = "STP", region_STP_name = STP3)*100/get_num_contracts(level = "STP", region_STP_name = STP3))` %**
 ) have delivered the required UDAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 
@@ -1363,9 +1363,9 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (100% for Jan-Mar 23).
 * From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r if(eval4){get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP4)}`**
+**`r if(eval4){get_quarterly_num_contracts_on_target(level = "STP", region_STP_name = STP4)}`**
 contracts (
-**`r if(eval4){round(get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP4)*100/get_num_contracts(level = "STP", region_STP_name = STP4))}` %**
+**`r if(eval4){round(get_quarterly_num_contracts_on_target(level = "STP", region_STP_name = STP4)*100/get_num_contracts(level = "STP", region_STP_name = STP4))}` %**
 ) have delivered the required UDAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 
@@ -1384,9 +1384,9 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (100% for Jan-Mar 23).
 * From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r if(eval5){get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP5)}`**
+**`r if(eval5){get_quarterly_num_contracts_on_target(level = "STP", region_STP_name = STP5)}`**
 contracts (
-**`r if(eval5){round(get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP5)*100/get_num_contracts(level = "STP", region_STP_name = STP5))}` %**
+**`r if(eval5){round(get_quarterly_num_contracts_on_target(level = "STP", region_STP_name = STP5)*100/get_num_contracts(level = "STP", region_STP_name = STP5))}` %**
 ) have delivered the required UDAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 
@@ -1405,9 +1405,9 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (100% for Jan-Mar 23).
 * From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r if(eval6){get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP6)}`**
+**`r if(eval6){get_quarterly_num_contracts_on_target(level = "STP", region_STP_name = STP6)}`**
 contracts (
-**`r if(eval6){round(get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP6)*100/get_num_contracts(level = "STP", region_STP_name = STP6))}` %**
+**`r if(eval6){round(get_quarterly_num_contracts_on_target(level = "STP", region_STP_name = STP6)*100/get_num_contracts(level = "STP", region_STP_name = STP6))}` %**
 ) have delivered the required UDAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 
@@ -1426,9 +1426,9 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (100% for Jan-Mar 23).
 * From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r if(eval7){get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP7)}`**
+**`r if(eval7){get_quarterly_num_contracts_on_target(level = "STP", region_STP_name = STP7)}`**
 contracts (
-**`r if(eval7){round(get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP7)*100/get_num_contracts(level = "STP", region_STP_name = STP7))}` %**
+**`r if(eval7){round(get_quarterly_num_contracts_on_target(level = "STP", region_STP_name = STP7)*100/get_num_contracts(level = "STP", region_STP_name = STP7))}` %**
 ) have delivered the required UDAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 
@@ -1447,9 +1447,9 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (100% for Jan-Mar 23).
 * From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r if(eval8){get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP8)}`**
+**`r if(eval8){get_quarterly_num_contracts_on_target(level = "STP", region_STP_name = STP8)}`**
 contracts (
-**`r if(eval8){round(get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP8)*100/get_num_contracts(level = "STP", region_STP_name = STP8))}` %**
+**`r if(eval8){round(get_quarterly_num_contracts_on_target(level = "STP", region_STP_name = STP8)*100/get_num_contracts(level = "STP", region_STP_name = STP8))}` %**
 ) have delivered the required UDAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 
@@ -1468,9 +1468,9 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (100% for Jan-Mar 23).
 * From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r if(eval9){get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP9)}`**
+**`r if(eval9){get_quarterly_num_contracts_on_target(level = "STP", region_STP_name = STP9)}`**
 contracts (
-**`r if(eval9){round(get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP9)*100/get_num_contracts(level = "STP", region_STP_name = STP9))}` %**
+**`r if(eval9){round(get_quarterly_num_contracts_on_target(level = "STP", region_STP_name = STP9)*100/get_num_contracts(level = "STP", region_STP_name = STP9))}` %**
 ) have delivered the required UDAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 
@@ -1489,9 +1489,9 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (100% for Jan-Mar 23).
 * From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r if(eval10){get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP10)}`**
+**`r if(eval10){get_quarterly_num_contracts_on_target(level = "STP", region_STP_name = STP10)}`**
 contracts (
-**`r if(eval10){round(get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP10)*100/get_num_contracts(level = "STP", region_STP_name = STP10))}` %**
+**`r if(eval10){round(get_quarterly_num_contracts_on_target(level = "STP", region_STP_name = STP10)*100/get_num_contracts(level = "STP", region_STP_name = STP10))}` %**
 ) have delivered the required UDAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 
@@ -1510,9 +1510,9 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (100% for Jan-Mar 23).
 * From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r if(eval11){get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP11)}`**
+**`r if(eval11){get_quarterly_num_contracts_on_target(level = "STP", region_STP_name = STP11)}`**
 contracts (
-**`r if(eval11){round(get_Q1_22_num_contracts_on_target(level = "STP", region_STP_name = STP11)*100/get_num_contracts(level = "STP", region_STP_name = STP11))}` %**
+**`r if(eval11){round(get_quarterly_num_contracts_on_target(level = "STP", region_STP_name = STP11)*100/get_num_contracts(level = "STP", region_STP_name = STP11))}` %**
 ) have delivered the required UDAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 
@@ -3091,9 +3091,9 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data,
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
 * From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = region)`**
+**`r get_quarterly_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = region)`**
 contracts (
-**`r round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = region)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "Regional", region_STP_name = region))` %**
+**`r round(get_quarterly_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = region)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "Regional", region_STP_name = region))` %**
 ) have delivered the required UOAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
  ]
@@ -3113,9 +3113,9 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data,
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
 * From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP1)`**
+**`r get_quarterly_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP1)`**
 contracts (
-**`r round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP1)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP1))` %**
+**`r round(get_quarterly_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP1)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP1))` %**
 ) have delivered the required UOAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 
@@ -3136,9 +3136,9 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data,
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
 * From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP2)`**
+**`r get_quarterly_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP2)`**
 contracts (
-**`r round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP2)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP2))` %**
+**`r round(get_quarterly_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP2)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP2))` %**
 ) have delivered the required UOAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 
@@ -3159,9 +3159,9 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data,
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
 * From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP3)`**
+**`r get_quarterly_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP3)`**
 contracts (
-**`r round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP3)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP3))` %**
+**`r round(get_quarterly_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP3)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP3))` %**
 ) have delivered the required UOAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 
@@ -3182,9 +3182,9 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data,
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
 * From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r if(eval4){get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP4)}`**
+**`r if(eval4){get_quarterly_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP4)}`**
 contracts (
-**`r if(eval4){round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP4)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP4))}` %**
+**`r if(eval4){round(get_quarterly_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP4)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP4))}` %**
 ) have delivered the required UOAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 
@@ -3205,9 +3205,9 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data,
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
 * From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r if(eval5){get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP5)}`**
+**`r if(eval5){get_quarterly_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP5)}`**
 contracts (
-**`r if(eval5){round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP5)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP5))}` %**
+**`r if(eval5){round(get_quarterly_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP5)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP5))}` %**
 ) have delivered the required UOAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 
@@ -3228,9 +3228,9 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data,
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
 * From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r if(eval6){get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP6)}`**
+**`r if(eval6){get_quarterly_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP6)}`**
 contracts (
-**`r if(eval6){round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP6)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP6))}` %**
+**`r if(eval6){round(get_quarterly_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP6)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP6))}` %**
 ) have delivered the required UOAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 
@@ -3251,9 +3251,9 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data,
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
 * From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r if(eval7){get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP7)}`**
+**`r if(eval7){get_quarterly_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP7)}`**
 contracts (
-**`r if(eval7){round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP7)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP7))}` %**
+**`r if(eval7){round(get_quarterly_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP7)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP7))}` %**
 ) have delivered the required UOAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 
@@ -3274,9 +3274,9 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data,
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
 * From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r if(eval8){get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP8)}`**
+**`r if(eval8){get_quarterly_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP8)}`**
 contracts (
-**`r if(eval8){round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP8)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP8))}` %**
+**`r if(eval8){round(get_quarterly_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP8)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP8))}` %**
 ) have delivered the required UOAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 
@@ -3297,9 +3297,9 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data,
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
 * From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r if(eval9){get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP9)}`**
+**`r if(eval9){get_quarterly_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP9)}`**
 contracts (
-**`r if(eval9){round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP9)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP9))}` %**
+**`r if(eval9){round(get_quarterly_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP9)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP9))}` %**
 ) have delivered the required UOAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 
@@ -3320,9 +3320,9 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data,
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
 * From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r if(eval10){get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP10)}`**
+**`r if(eval10){get_quarterly_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP10)}`**
 contracts (
-**`r if(eval10){round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP10)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP10))}` %**
+**`r if(eval10){round(get_quarterly_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP10)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP10))}` %**
 ) have delivered the required UOAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 
@@ -3343,9 +3343,9 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data,
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
 * From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r if(eval11){get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP11)}`**
+**`r if(eval11){get_quarterly_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP11)}`**
 contracts (
-**`r if(eval11){round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP11)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP11))}` %**
+**`r if(eval11){round(get_quarterly_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP11)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP11))}` %**
 ) have delivered the required UOAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 
@@ -3764,7 +3764,7 @@ xaringanExtra::use_panelset()
 plot_banded_CoT(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "Regional",
                 region_STP_name = region)
 ```
@@ -3786,7 +3786,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
 plot_banded_CoT(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "STP",
                 region_STP_name = STP2)
 ```
@@ -3807,7 +3807,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
 plot_banded_CoT(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "STP",
                 region_STP_name = STP4)
 ```
@@ -3818,7 +3818,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
 plot_banded_CoT(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "STP",
                 region_STP_name = STP5)
 ```
@@ -3829,7 +3829,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
 plot_banded_CoT(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "STP",
                 region_STP_name = STP6)
 ```
@@ -3840,7 +3840,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
 plot_banded_CoT(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "STP",
                 region_STP_name = STP7)
 ```
@@ -3851,7 +3851,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
 plot_banded_CoT(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "STP",
                 region_STP_name = STP8)
 ```
@@ -3862,7 +3862,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
 plot_banded_CoT(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "STP",
                 region_STP_name = STP9)
 ```
@@ -3873,7 +3873,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
 plot_banded_CoT(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "STP",
                 region_STP_name = STP10)
 ```
@@ -3884,7 +3884,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
 plot_banded_CoT(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "STP",
                 region_STP_name = STP11)
 ```
@@ -3911,7 +3911,7 @@ xaringanExtra::use_panelset()
 plot_banded_CoT(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "Regional",
                 region_STP_name = region,
                 asIndex = TRUE)
@@ -3924,7 +3924,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
 plot_banded_CoT(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "STP",
                 region_STP_name = STP1,
                 asIndex = TRUE)
@@ -3936,7 +3936,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
 plot_banded_CoT(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "STP",
                 region_STP_name = STP2,
                 asIndex = TRUE)
@@ -3948,7 +3948,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
 plot_banded_CoT(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "STP",
                 region_STP_name = STP3,
                 asIndex = TRUE)
@@ -3960,7 +3960,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
 plot_banded_CoT(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "STP",
                 region_STP_name = STP4,
                 asIndex = TRUE)
@@ -3972,7 +3972,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
 plot_banded_CoT(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "STP",
                 region_STP_name = STP5,
                 asIndex = TRUE)
@@ -3984,7 +3984,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
 plot_banded_CoT(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "STP",
                 region_STP_name = STP6,
                 asIndex = TRUE)
@@ -3996,7 +3996,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
 plot_banded_CoT(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "STP",
                 region_STP_name = STP7,
                 asIndex = TRUE)
@@ -4008,7 +4008,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
 plot_banded_CoT(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "STP",
                 region_STP_name = STP8,
                 asIndex = TRUE)
@@ -4020,7 +4020,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
 plot_banded_CoT(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "STP",
                 region_STP_name = STP9,
                 asIndex = TRUE)
@@ -4032,7 +4032,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
 plot_banded_CoT(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "STP",
                 region_STP_name = STP10,
                 asIndex = TRUE)
@@ -4044,7 +4044,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
 plot_banded_CoT(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "STP",
                 region_STP_name = STP11,
                 asIndex = TRUE)
@@ -4072,7 +4072,7 @@ xaringanExtra::use_panelset()
 plot_urgent_form_submissions(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "Regional",
                 region_STP_name = region)
 ```
@@ -4097,7 +4097,7 @@ change from the pre-COVID world.
 plot_urgent_form_submissions(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "STP",
                 region_STP_name = STP1)
 ```
@@ -4122,7 +4122,7 @@ change from the pre-COVID world.
 plot_urgent_form_submissions(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "STP",
                 region_STP_name = STP2)
 ```
@@ -4147,7 +4147,7 @@ change from the pre-COVID world.
 plot_urgent_form_submissions(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "STP",
                 region_STP_name = STP3)
 ```
@@ -4172,7 +4172,7 @@ change from the pre-COVID world.
 plot_urgent_form_submissions(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "STP",
                 region_STP_name = STP4)
 ```
@@ -4197,7 +4197,7 @@ change from the pre-COVID world.
 plot_urgent_form_submissions(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "STP",
                 region_STP_name = STP5)
 ```
@@ -4222,7 +4222,7 @@ change from the pre-COVID world.
 plot_urgent_form_submissions(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "STP",
                 region_STP_name = STP6)
 ```
@@ -4247,7 +4247,7 @@ change from the pre-COVID world.
 plot_urgent_form_submissions(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "STP",
                 region_STP_name = STP7)
 ```
@@ -4272,7 +4272,7 @@ change from the pre-COVID world.
 plot_urgent_form_submissions(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "STP",
                 region_STP_name = STP8)
 ```
@@ -4297,7 +4297,7 @@ change from the pre-COVID world.
 plot_urgent_form_submissions(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "STP",
                 region_STP_name = STP9)
 ```
@@ -4322,7 +4322,7 @@ change from the pre-COVID world.
 plot_urgent_form_submissions(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "STP",
                 region_STP_name = STP10)
 ```
@@ -4347,7 +4347,7 @@ change from the pre-COVID world.
 plot_urgent_form_submissions(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "STP",
                 region_STP_name = STP11)
 ```
@@ -4387,7 +4387,7 @@ xaringanExtra::use_panelset()
 ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
 plot_band2_split_percentage(data = band2_split_data,
                              scheduled_data = UDA_scheduled_data,
-                             remove_prototypes = TRUE, 
+                             remove_prototypes = FALSE, 
                              commissioner_region_lookup = STP_ICB_lookup_codes,
                 level = "Regional",
                 region_STP_name = region)
@@ -4399,7 +4399,7 @@ plot_band2_split_percentage(data = band2_split_data,
 ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
 plot_band2_split_percentage(data = band2_split_data,
                              scheduled_data = UDA_scheduled_data,
-                             remove_prototypes = TRUE, 
+                             remove_prototypes = FALSE, 
                              commissioner_region_lookup = STP_ICB_lookup_codes,
                 level = "STP",
                 region_STP_name = STP1)
@@ -4410,7 +4410,7 @@ plot_band2_split_percentage(data = band2_split_data,
 ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
 plot_band2_split_percentage(data = band2_split_data,
                              scheduled_data = UDA_scheduled_data,
-                             remove_prototypes = TRUE, 
+                             remove_prototypes = FALSE, 
                              commissioner_region_lookup = STP_ICB_lookup_codes,
                 level = "STP",
                 region_STP_name = STP2)
@@ -4421,7 +4421,7 @@ plot_band2_split_percentage(data = band2_split_data,
 ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
 plot_band2_split_percentage(data = band2_split_data,
                              scheduled_data = UDA_scheduled_data,
-                             remove_prototypes = TRUE, 
+                             remove_prototypes = FALSE, 
                              commissioner_region_lookup = STP_ICB_lookup_codes,
                 level = "STP",
                 region_STP_name = STP3)
@@ -4432,7 +4432,7 @@ plot_band2_split_percentage(data = band2_split_data,
 ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5, eval = eval4}
 plot_band2_split_percentage(data = band2_split_data,
                              scheduled_data = UDA_scheduled_data,
-                             remove_prototypes = TRUE, 
+                             remove_prototypes = FALSE, 
                              commissioner_region_lookup = STP_ICB_lookup_codes,
                 level = "STP",
                 region_STP_name = STP4)
@@ -4443,7 +4443,7 @@ plot_band2_split_percentage(data = band2_split_data,
 ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5, eval = eval5}
 plot_band2_split_percentage(data = band2_split_data,
                              scheduled_data = UDA_scheduled_data,
-                             remove_prototypes = TRUE, 
+                             remove_prototypes = FALSE, 
                              commissioner_region_lookup = STP_ICB_lookup_codes,
                 level = "STP",
                 region_STP_name = STP5)
@@ -4454,7 +4454,7 @@ plot_band2_split_percentage(data = band2_split_data,
 ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5, eval = eval6}
 plot_band2_split_percentage(data = band2_split_data,
                              scheduled_data = UDA_scheduled_data,
-                             remove_prototypes = TRUE, 
+                             remove_prototypes = FALSE, 
                              commissioner_region_lookup = STP_ICB_lookup_codes,
                 level = "STP",
                 region_STP_name = STP6)
@@ -4465,7 +4465,7 @@ plot_band2_split_percentage(data = band2_split_data,
 ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5, eval = eval7}
 plot_band2_split_percentage(data = band2_split_data,
                              scheduled_data = UDA_scheduled_data,
-                             remove_prototypes = TRUE, 
+                             remove_prototypes = FALSE, 
                              commissioner_region_lookup = STP_ICB_lookup_codes,
                 level = "STP",
                 region_STP_name = STP7)
@@ -4476,7 +4476,7 @@ plot_band2_split_percentage(data = band2_split_data,
 ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5, eval = eval8}
 plot_band2_split_percentage(data = band2_split_data,
                              scheduled_data = UDA_scheduled_data,
-                             remove_prototypes = TRUE, 
+                             remove_prototypes = FALSE, 
                              commissioner_region_lookup = STP_ICB_lookup_codes,
                 level = "STP",
                 region_STP_name = STP8)
@@ -4487,7 +4487,7 @@ plot_band2_split_percentage(data = band2_split_data,
 ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5, eval = eval9}
 plot_band2_split_percentage(data = band2_split_data,
                              scheduled_data = UDA_scheduled_data,
-                             remove_prototypes = TRUE, 
+                             remove_prototypes = FALSE, 
                              commissioner_region_lookup = STP_ICB_lookup_codes,
                 level = "STP",
                 region_STP_name = STP9)
@@ -4498,7 +4498,7 @@ plot_band2_split_percentage(data = band2_split_data,
 ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5, eval = eval10}
 plot_band2_split_percentage(data = band2_split_data,
                              scheduled_data = UDA_scheduled_data,
-                             remove_prototypes = TRUE, 
+                             remove_prototypes = FALSE, 
                              commissioner_region_lookup = STP_ICB_lookup_codes,
                 level = "STP",
                 region_STP_name = STP10)
@@ -4509,7 +4509,7 @@ plot_band2_split_percentage(data = band2_split_data,
 ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5, eval = eval11}
 plot_band2_split_percentage(data = band2_split_data,
                              scheduled_data = UDA_scheduled_data,
-                             remove_prototypes = TRUE, 
+                             remove_prototypes = FALSE, 
                              commissioner_region_lookup = STP_ICB_lookup_codes,
                 level = "STP",
                 region_STP_name = STP11)
@@ -4943,11 +4943,11 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
                                      level = "Regional",
                                      region_STP_name = region,
                                      plotChart = TRUE,
-                                     remove_prototypes = TRUE)
+                                     remove_prototypes = FALSE)
 ```
 
 * The number of unique patients seen in the last 12 months is currently around
-**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = region, plotChart = F,remove_prototypes = T, get_perc = T)` %**
+**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = region, plotChart = F,remove_prototypes = FALSE, get_perc = T)` %**
 of pre-pandemic levels.
 
  ]
@@ -4959,11 +4959,11 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
                                      level = "STP",
                                      region_STP_name = STP1,
                                      plotChart = TRUE,
-                                     remove_prototypes = TRUE)
+                                     remove_prototypes = FALSE)
 ```
 
 * The number of unique patients seen in the last 12 months is currently around
-**`r plot_unique_patients_rolling(level = "STP",region_STP_name = STP1, plotChart = F,remove_prototypes = T, get_perc = T)` %**
+**`r plot_unique_patients_rolling(level = "STP",region_STP_name = STP1, plotChart = F, remove_prototypes = FALSE, get_perc = T)` %**
 of pre-pandemic levels.
 
  ]
@@ -4975,11 +4975,11 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
                                      level = "STP",
                                      region_STP_name = STP2,
                                      plotChart = TRUE,
-                                     remove_prototypes = TRUE)
+                                     remove_prototypes = FALSE)
 ```
 
 * The number of unique patients seen in the last 12 months is currently around
-**`r plot_unique_patients_rolling(level = "STP",region_STP_name = STP2, plotChart = F,remove_prototypes = T, get_perc = T)` %**
+**`r plot_unique_patients_rolling(level = "STP",region_STP_name = STP2, plotChart = F, remove_prototypes = T, get_perc = T)` %**
 of pre-pandemic levels.
 
  ]
@@ -4991,11 +4991,11 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
                                      level = "STP",
                                      region_STP_name = STP3,
                                      plotChart = TRUE,
-                                     remove_prototypes = TRUE)
+                                     remove_prototypes = FALSE)
 ```
 
 * The number of unique patients seen in the last 12 months is currently around
-**`r plot_unique_patients_rolling(level = "STP",region_STP_name = STP3, plotChart = F,remove_prototypes = T, get_perc = T)` %**
+**`r plot_unique_patients_rolling(level = "STP",region_STP_name = STP3, plotChart = F, remove_prototypes = FALSE, get_perc = T)` %**
 of pre-pandemic levels.
 
  ]
@@ -5007,11 +5007,11 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
                                      level = "STP",
                                      region_STP_name = STP4,
                                      plotChart = TRUE,
-                                     remove_prototypes = TRUE)
+                                     remove_prototypes = FALSE)
 ```
 
 * The number of unique patients seen in the last 12 months is currently around
-**`r if(eval4){plot_unique_patients_rolling(level = "STP",region_STP_name = STP4, plotChart = F,remove_prototypes = T, get_perc = T)}` %**
+**`r if(eval4){plot_unique_patients_rolling(level = "STP",region_STP_name = STP4, plotChart = F, remove_prototypes = FALSE, get_perc = T)}` %**
 of pre-pandemic levels.
 
  ]
@@ -5023,11 +5023,11 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
                                      level = "STP",
                                      region_STP_name = STP5,
                                      plotChart = TRUE,
-                                     remove_prototypes = TRUE)
+                                     remove_prototypes = FALSE)
 ```
 
 * The number of unique patients seen in the last 12 months is currently around
-**`r if(eval5){plot_unique_patients_rolling(level = "STP",region_STP_name = STP5, plotChart = F,remove_prototypes = T, get_perc = T)}` %**
+**`r if(eval5){plot_unique_patients_rolling(level = "STP",region_STP_name = STP5, plotChart = F, remove_prototypes = FALSE, get_perc = T)}` %**
 of pre-pandemic levels.
 
  ]
@@ -5039,11 +5039,11 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
                                      level = "STP",
                                      region_STP_name = STP6,
                                      plotChart = TRUE,
-                                     remove_prototypes = TRUE)
+                                     remove_prototypes = FALSE)
 ```
 
 * The number of unique patients seen in the last 12 months is currently around
-**`r if(eval6){plot_unique_patients_rolling(level = "STP",region_STP_name = STP6, plotChart = F,remove_prototypes = T, get_perc = T)}` %**
+**`r if(eval6){plot_unique_patients_rolling(level = "STP",region_STP_name = STP6, plotChart = F, remove_prototypes = FALSE, get_perc = T)}` %**
 of pre-pandemic levels.
 
  ]
@@ -5055,11 +5055,11 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
                                      level = "STP",
                                      region_STP_name = STP7,
                                      plotChart = TRUE,
-                                     remove_prototypes = TRUE)
+                                     remove_prototypes = FALSE)
 ```
 
 * The number of unique patients seen in the last 12 months is currently around
-**`r if(eval7){plot_unique_patients_rolling(level = "STP",region_STP_name = STP7, plotChart = F,remove_prototypes = T, get_perc = T)}` %**
+**`r if(eval7){plot_unique_patients_rolling(level = "STP",region_STP_name = STP7, plotChart = F, remove_prototypes = FALSE, get_perc = T)}` %**
 of pre-pandemic levels.
 
  ]
@@ -5071,11 +5071,11 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
                                      level = "STP",
                                      region_STP_name = STP8,
                                      plotChart = TRUE,
-                                     remove_prototypes = TRUE)
+                                     remove_prototypes = FALSE)
 ```
 
 * The number of unique patients seen in the last 12 months is currently around
-**`r if(eval8){plot_unique_patients_rolling(level = "STP",region_STP_name = STP8, plotChart = F,remove_prototypes = T, get_perc = T)}` %**
+**`r if(eval8){plot_unique_patients_rolling(level = "STP",region_STP_name = STP8, plotChart = F, remove_prototypes = FALSE, get_perc = T)}` %**
 of pre-pandemic levels.
 
  ]
@@ -5087,11 +5087,11 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
                                      level = "STP",
                                      region_STP_name = STP9,
                                      plotChart = TRUE,
-                                     remove_prototypes = TRUE)
+                                     remove_prototypes = FALSE)
 ```
 
 * The number of unique patients seen in the last 12 months is currently around
-**`r if(eval9){plot_unique_patients_rolling(level = "STP",region_STP_name = STP9, plotChart = F,remove_prototypes = T, get_perc = T)}` %**
+**`r if(eval9){plot_unique_patients_rolling(level = "STP",region_STP_name = STP9, plotChart = F, remove_prototypes = FALSE, get_perc = T)}` %**
 of pre-pandemic levels.
 
  ]
@@ -5103,11 +5103,11 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
                                      level = "STP",
                                      region_STP_name = STP10,
                                      plotChart = TRUE,
-                                     remove_prototypes = TRUE)
+                                     remove_prototypes = FALSE)
 ```
 
 * The number of unique patients seen in the last 12 months is currently around
-**`r if(eval10){plot_unique_patients_rolling(level = "STP",region_STP_name = STP10, plotChart = F,remove_prototypes = T, get_perc = T)}` %**
+**`r if(eval10){plot_unique_patients_rolling(level = "STP",region_STP_name = STP10, plotChart = F, remove_prototypes = FALSE, get_perc = T)}` %**
 of pre-pandemic levels.
 
  ]
@@ -5119,11 +5119,11 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
                                      level = "STP",
                                      region_STP_name = STP11,
                                      plotChart = TRUE,
-                                     remove_prototypes = TRUE)
+                                     remove_prototypes = FALSE)
 ```
 
 * The number of unique patients seen in the last 12 months is currently around
-**`r if(eval11){plot_unique_patients_rolling(level = "STP",region_STP_name = STP11, plotChart = F,remove_prototypes = T, get_perc = T)}` %**
+**`r if(eval11){plot_unique_patients_rolling(level = "STP",region_STP_name = STP11, plotChart = F, remove_prototypes = FALSE, get_perc = T)}` %**
 of pre-pandemic levels.
 
  ]
@@ -5152,12 +5152,12 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
                                      level = "Regional",
                                      region_STP_name = region,
                                      plotChart = TRUE,
-                                     remove_prototypes = TRUE,
+                                     remove_prototypes = FALSE,
                              asIndex = TRUE)
 ```
 
 * The number of unique patients seen in the last 12 months is currently around
-**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = region, plotChart = F,remove_prototypes = T, get_perc = T)` %**
+**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = region, plotChart = F, remove_prototypes = FALSE, get_perc = T)` %**
 of pre-pandemic levels.
 
  ]
@@ -5169,12 +5169,12 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
                                      level = "STP",
                                      region_STP_name = STP1,
                                      plotChart = TRUE,
-                                     remove_prototypes = TRUE,
+                                     remove_prototypes = FALSE,
                              asIndex = TRUE)
 ```
 
 * The number of unique patients seen in the last 12 months is currently around
-**`r plot_unique_patients_rolling(level = "STP",region_STP_name = STP1, plotChart = F,remove_prototypes = T, get_perc = T)` %**
+**`r plot_unique_patients_rolling(level = "STP",region_STP_name = STP1, plotChart = F, remove_prototypes = FALSE, get_perc = T)` %**
 of pre-pandemic levels.
 
  ]
@@ -5186,12 +5186,12 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
                                      level = "STP",
                                      region_STP_name = STP2,
                                      plotChart = TRUE,
-                                     remove_prototypes = TRUE,
+                                     remove_prototypes = FALSE,
                              asIndex = TRUE)
 ```
 
 * The number of unique patients seen in the last 12 months is currently around
-**`r plot_unique_patients_rolling(level = "STP",region_STP_name = STP2, plotChart = F,remove_prototypes = T, get_perc = T)` %**
+**`r plot_unique_patients_rolling(level = "STP",region_STP_name = STP2, plotChart = F, remove_prototypes = FALSE, get_perc = T)` %**
 of pre-pandemic levels.
 
  ]
@@ -5203,12 +5203,12 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
                                      level = "STP",
                                      region_STP_name = STP3,
                                      plotChart = TRUE,
-                                     remove_prototypes = TRUE,
+                                     remove_prototypes = FALSE,
                              asIndex = TRUE)
 ```
 
 * The number of unique patients seen in the last 12 months is currently around
-**`r plot_unique_patients_rolling(level = "STP",region_STP_name = STP3, plotChart = F,remove_prototypes = T, get_perc = T)` %**
+**`r plot_unique_patients_rolling(level = "STP",region_STP_name = STP3, plotChart = F, remove_prototypes = FALSE, get_perc = T)` %**
 of pre-pandemic levels.
 
  ]
@@ -5220,12 +5220,12 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
                                      level = "STP",
                                      region_STP_name = STP4,
                                      plotChart = TRUE,
-                                     remove_prototypes = TRUE,
+                                     remove_prototypes = FALSE,
                              asIndex = TRUE)
 ```
 
 * The number of unique patients seen in the last 12 months is currently around
-**`r if(eval4){plot_unique_patients_rolling(level = "STP",region_STP_name = STP4, plotChart = F,remove_prototypes = T, get_perc = T)}` %**
+**`r if(eval4){plot_unique_patients_rolling(level = "STP",region_STP_name = STP4, plotChart = F, remove_prototypes = FALSE, get_perc = T)}` %**
 of pre-pandemic levels.
 
  ]
@@ -5237,12 +5237,12 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
                                      level = "STP",
                                      region_STP_name = STP5,
                                      plotChart = TRUE,
-                                     remove_prototypes = TRUE,
+                                     remove_prototypes = FALSE,
                              asIndex = TRUE)
 ```
 
 * The number of unique patients seen in the last 12 months is currently around
-**`r if(eval5){plot_unique_patients_rolling(level = "STP",region_STP_name = STP5, plotChart = F,remove_prototypes = T, get_perc = T)}` %**
+**`r if(eval5){plot_unique_patients_rolling(level = "STP",region_STP_name = STP5, plotChart = F, remove_prototypes = FALSE, get_perc = T)}` %**
 of pre-pandemic levels.
 
  ]
@@ -5254,12 +5254,12 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
                                      level = "STP",
                                      region_STP_name = STP6,
                                      plotChart = TRUE,
-                                     remove_prototypes = TRUE,
+                                     remove_prototypes = FALSE,
                              asIndex = TRUE)
 ```
 
 * The number of unique patients seen in the last 12 months is currently around
-**`r if(eval6){plot_unique_patients_rolling(level = "STP",region_STP_name = STP6, plotChart = F,remove_prototypes = T, get_perc = T)}` %**
+**`r if(eval6){plot_unique_patients_rolling(level = "STP",region_STP_name = STP6, plotChart = F, remove_prototypes = FALSE, get_perc = T)}` %**
 of pre-pandemic levels.
 
  ]
@@ -5271,12 +5271,12 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
                                      level = "STP",
                                      region_STP_name = STP7,
                                      plotChart = TRUE,
-                                     remove_prototypes = TRUE,
+                                     remove_prototypes = FALSE,
                              asIndex = TRUE)
 ```
 
 * The number of unique patients seen in the last 12 months is currently around
-**`r if(eval7){plot_unique_patients_rolling(level = "STP",region_STP_name = STP7, plotChart = F,remove_prototypes = T, get_perc = T)}` %**
+**`r if(eval7){plot_unique_patients_rolling(level = "STP",region_STP_name = STP7, plotChart = F, remove_prototypes = FALSE, get_perc = T)}` %**
 of pre-pandemic levels.
 
  ]
@@ -5288,12 +5288,12 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
                                      level = "STP",
                                      region_STP_name = STP8,
                                      plotChart = TRUE,
-                                     remove_prototypes = TRUE,
+                                     remove_prototypes = FALSE,
                              asIndex = TRUE)
 ```
 
 * The number of unique patients seen in the last 12 months is currently around
-**`r if(eval8){plot_unique_patients_rolling(level = "STP",region_STP_name = STP8, plotChart = F,remove_prototypes = T, get_perc = T)}` %**
+**`r if(eval8){plot_unique_patients_rolling(level = "STP",region_STP_name = STP8, plotChart = F, remove_prototypes = FALSE, get_perc = T)}` %**
 of pre-pandemic levels.
 
  ]
@@ -5305,12 +5305,12 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
                                      level = "STP",
                                      region_STP_name = STP9,
                                      plotChart = TRUE,
-                                     remove_prototypes = TRUE,
+                                     remove_prototypes = FALSE,
                              asIndex = TRUE)
 ```
 
 * The number of unique patients seen in the last 12 months is currently around
-**`r if(eval9){plot_unique_patients_rolling(level = "STP",region_STP_name = STP9, plotChart = F,remove_prototypes = T, get_perc = T)}` %**
+**`r if(eval9){plot_unique_patients_rolling(level = "STP",region_STP_name = STP9, plotChart = F, remove_prototypes = FALSE, get_perc = T)}` %**
 of pre-pandemic levels.
 
  ]
@@ -5322,12 +5322,12 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
                                      level = "STP",
                                      region_STP_name = STP10,
                                      plotChart = TRUE,
-                                     remove_prototypes = TRUE,
+                                     remove_prototypes = FALSE,
                              asIndex = TRUE)
 ```
 
 * The number of unique patients seen in the last 12 months is currently around
-**`r if(eval10){plot_unique_patients_rolling(level = "STP",region_STP_name = STP10, plotChart = F,remove_prototypes = T, get_perc = T)}` %**
+**`r if(eval10){plot_unique_patients_rolling(level = "STP",region_STP_name = STP10, plotChart = F, remove_prototypes = FALSE, get_perc = T)}` %**
 of pre-pandemic levels.
 
  ]
@@ -5339,12 +5339,12 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
                                      level = "STP",
                                      region_STP_name = STP11,
                                      plotChart = TRUE,
-                                     remove_prototypes = TRUE,
+                                     remove_prototypes = FALSE,
                              asIndex = TRUE)
 ```
 
 * The number of unique patients seen in the last 12 months is currently around
-**`r if(eval11){plot_unique_patients_rolling(level = "STP",region_STP_name = STP11, plotChart = F,remove_prototypes = T, get_perc = T)}` %**
+**`r if(eval11){plot_unique_patients_rolling(level = "STP",region_STP_name = STP11, plotChart = F, remove_prototypes = FALSE, get_perc = T)}` %**
 of pre-pandemic levels.
 
  ]

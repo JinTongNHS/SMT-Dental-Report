@@ -5,7 +5,7 @@ plot_urgent_form_submissions <- function(data = UDA_scheduled_data,
                                          region_STP_name = "Cheshire and Merseyside STP",
                                          plotChart = TRUE,
                                          all_regions_and_STPs = FALSE,
-                                         remove_prototypes = TRUE){
+                                         remove_prototypes = FALSE){
   
   #avoid standard form on axes
   options(scipen = 100)
@@ -42,6 +42,15 @@ plot_urgent_form_submissions <- function(data = UDA_scheduled_data,
                             month >= as.Date("2022-04-01") & month < as.Date("2023-04-01") ~ "2022/23"
     ))
   
+  #get caption right for prototypes being reomved or not
+  if(remove_prototypes == TRUE){
+    
+    chartCaption <- "*EXCLUDING contracts with annual contracted UDA < 100. EXCLUDING prototype contracts up until April 2022."
+  }else{
+    
+    chartCaption <- "*Contracts with annual contracted UDAs < 100 and prototype contracts are INCLUDED in this graph."
+  }
+  
   #plot code
   p <- ggplot(data) +
     theme_bw() +
@@ -65,11 +74,7 @@ plot_urgent_form_submissions <- function(data = UDA_scheduled_data,
          y = "Number of urgent FP17* forms submitted",
          colour = "Financial year",
          subtitle = subtitle,
-         caption = "*Excluding contracts with annual contracted UDA < 100. Excluding prototype contracts up until April 2022.
-         **UDA to FP17 conversion has been done assuming a band 1 FP17 
-         is equivalent to 1 UDA, a band 2 FP17 = 3 UDAs, 
-         a band 3 FP17 = 12 UDAs, an urgent FP17 = 1.2 
-         UDAs and an 'other' FP17 = 0.6 UDAs. Scheduled data used.")
+         caption = chartCaption)
   
   if(plotChart == TRUE){
     p

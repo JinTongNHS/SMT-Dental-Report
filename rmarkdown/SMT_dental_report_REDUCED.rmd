@@ -225,9 +225,9 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (100% for Jan-Mar 23).
 * From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r get_Q1_22_num_contracts_on_target(level = "National", region_STP_name = NULL)`**
+**`r get_quarterly_num_contracts_on_target(level = "National", region_STP_name = NULL)`**
 contracts (
-**`r round(get_Q1_22_num_contracts_on_target(level = "National", region_STP_name = NULL)*100/get_num_contracts(level = "National", region_STP_name = NULL))` %**
+**`r round(get_quarterly_num_contracts_on_target(level = "National", region_STP_name = NULL)*100/get_num_contracts(level = "National", region_STP_name = NULL))` %**
 ) have delivered the required UDAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
 ]
@@ -350,9 +350,9 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data,
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
 * From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
-**`r get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UDAorUOA = "UOA", level = "National", region_STP_name = NULL)`**
+**`r get_quarterly_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UDAorUOA = "UOA", level = "National", region_STP_name = NULL)`**
 contracts (
-**`r round(get_Q1_22_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UDAorUOA = "UOA", level = "National", region_STP_name = NULL)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UDAorUOA = "UOA", level = "National", region_STP_name = NULL))` %**
+**`r round(get_quarterly_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T, UDAorUOA = "UOA", level = "National", region_STP_name = NULL)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, UDAorUOA = "UOA", level = "National", region_STP_name = NULL))` %**
 ) have delivered the required UOAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
 
  ]
@@ -404,7 +404,7 @@ xaringanExtra::use_panelset()
 plot_urgent_form_submissions(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = TRUE,
+                remove_prototypes = FALSE,
                 level = "National",
                 region_STP_name = NULL)
 ```

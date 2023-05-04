@@ -1,7 +1,7 @@
 ################################################################################
 get_num_urgent_forms <- function(data = UDA_scheduled_data, 
                                  historic_data = historical_UDA_scheduled_data,
-                                 remove_prototypes = TRUE,
+                                 remove_prototypes = FALSE,
                                  level = "National",
                                  region_STP_name = NULL){
   

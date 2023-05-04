@@ -43,7 +43,7 @@ plot_YTD_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
   
   #add year to date delivery column
   data <- data %>%
-    filter(month >= as.Date("2022-04-01")) %>%
+    filter(month >= as.Date("2023-04-01")) %>% ##must be updated each financial year
     mutate(YTD_delivery = cumsum(monthly_UDA_UOAs_delivered))
   
   #get the mean annual contracted UDAs across the months
@@ -52,24 +52,48 @@ plot_YTD_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
   #add in blanks for the rest of the year
   if(all_regions_and_STPs == FALSE & nrow(data) < 12){
     
-    if(!(as.Date("2022-11-01") %in% data$month)){
-      data <- data %>% add_row(month = as.Date("2022-11-01"))
+    if(!(as.Date("2023-05-01") %in% data$month)){
+      data <- data %>% add_row(month = as.Date("2023-05-01"))
     }
     
-    if(!(as.Date("2022-12-01") %in% data$month)){
-      data <- data %>% add_row(month = as.Date("2022-12-01"))
+    if(!(as.Date("2023-06-01") %in% data$month)){
+      data <- data %>% add_row(month = as.Date("2023-06-01"))
     }
     
-    if(!(as.Date("2023-01-01") %in% data$month)){
-      data <- data %>% add_row(month = as.Date("2023-01-01"))
+    if(!(as.Date("2023-07-01") %in% data$month)){
+      data <- data %>% add_row(month = as.Date("2023-07-01"))
     }
     
-    if(!(as.Date("2023-02-01") %in% data$month)){
-      data <- data %>% add_row(month = as.Date("2023-02-01"))
+    if(!(as.Date("2023-08-01") %in% data$month)){
+      data <- data %>% add_row(month = as.Date("2023-08-01"))
     }
     
-    if(!(as.Date("2023-03-01") %in% data$month)){
-      data <- data %>% add_row(month = as.Date("2023-03-01"))
+    if(!(as.Date("2023-09-01") %in% data$month)){
+      data <- data %>% add_row(month = as.Date("2023-09-01"))
+    }
+    
+    if(!(as.Date("2023-10-01") %in% data$month)){
+      data <- data %>% add_row(month = as.Date("2023-10-01"))
+    }
+    
+    if(!(as.Date("2023-11-01") %in% data$month)){
+      data <- data %>% add_row(month = as.Date("2023-11-01"))
+    }
+    
+    if(!(as.Date("2023-12-01") %in% data$month)){
+      data <- data %>% add_row(month = as.Date("2023-12-01"))
+    }
+    
+    if(!(as.Date("2024-01-01") %in% data$month)){
+      data <- data %>% add_row(month = as.Date("2024-01-01"))
+    }
+    
+    if(!(as.Date("2024-02-01") %in% data$month)){
+      data <- data %>% add_row(month = as.Date("2024-02-01"))
+    }
+    
+    if(!(as.Date("2024-03-01") %in% data$month)){
+      data <- data %>% add_row(month = as.Date("2024-03-01"))
     }
   }
   
@@ -117,13 +141,13 @@ plot_YTD_UDA_UOA_delivery <- function(data = UDA_scheduled_data,
       theme(axis.text.x = element_text(angle = 90, vjust=-0.0001
       )) +
       annotate(geom = "text",
-               x = as.Date("2022-05-01") + lubridate::weeks(2),
+               x = as.Date("2023-05-01") + lubridate::weeks(2),
                y = mean_annual_contracted_UDA_UOAs/1000000 - mean_annual_contracted_UDA_UOAs/16000000,
                label = "Total annual contracted UDAs",
                size = 3) +
-      scale_colour_manual(values = c("grey", lineCol), labels = c("Expected YTD delivery to meet contracted \nUDAs if delivery were equal across the year",
+      scale_colour_manual(values = c("grey", lineCol), labels = c("Expected YTD delivery to meet contracted \nUDAs if delivery were equal across the financial year",
                                                                   "Actual YTD delivery")) +
-      scale_linetype_manual(values = c("dashed", "solid"), labels = c("Expected YTD delivery to meet contracted UDAs \nif delivery were equal across the year",
+      scale_linetype_manual(values = c("dashed", "solid"), labels = c("Expected YTD delivery to meet contracted UDAs \nif delivery were equal across the financial year",
                                                                   "Actual YTD delivery"),
                             guide = "none") +
       # scale_shape_manual(values = c("4", "1"), labels = c("Expected YTD delivery to meet contracted UDAs \nif delivery were equal across the year",
