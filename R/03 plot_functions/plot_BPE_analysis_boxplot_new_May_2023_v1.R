@@ -76,6 +76,13 @@ plot_BPE_no_oral_health_risk <- function(data = BPE_data,
     summarise(med = median(percent_low_risk_whic_are1_year)) %>% 
     filter(Year_Month ==max_month)
   
+
+  numbers_calc <- data %>%  filter(Year_Month ==max_month)
+  
+  summary(numbers_calc$percent_low_risk_whic_are1_year)
+  
+  IQR(numbers_calc$percent_low_risk_whic_are1_year)
+  
   p_meds_latest_p <- formattable::percent (p_meds_latest$med, digits = 0)
   
   p_test <- ggplot(data = data,
@@ -100,12 +107,10 @@ plot_BPE_no_oral_health_risk <- function(data = BPE_data,
   
   ###to be added at the bottom of chart
   
-  description <- c("50% of all the contractors are recalling", formattable::percent (p_meds_latest$med, digits = 0),
-                   " of the patients with low oral health risk ") ##+ "of"
-  
   p
   
-  
+  description <- c("50% of all the contractors are recalling", formattable::percent (p_meds_latest$med, digits = 0),
+                   " of the patients with low oral health risk ") ##+ "of"
 }
 
 

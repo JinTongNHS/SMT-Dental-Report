@@ -69,10 +69,10 @@ ggplot_box_legend <- function(family = "serif"){
     geom_boxplot(data = sample_df,
                  aes(x = parameter, y=values),
                  width = 0.3, fill = "lightgrey") +
-    geom_text(aes(x = 1, y = 950, label = "500"), hjust = 0.5) +
-    geom_text(aes(x = 1.17, y = 950,
-                  label = "Number of values"),
-              fontface = "bold", vjust = 0.4) +
+    # geom_text(aes(x = 1, y = 950, label = "500"), hjust = 0.5) +
+    # geom_text(aes(x = 1.17, y = 950,
+    #               label = "Number of values"),
+    #           fontface = "bold", vjust = 0.4) +
     theme_minimal(base_size = 5, base_family = family) +
     geom_segment(aes(x = 2.3, xend = 2.3,
                      y = ggplot_output[["25th percentile"]],
@@ -115,7 +115,7 @@ ggplot_box_legend <- function(family = "serif"){
           aspect.ratio = 4/3,
           plot.title = element_text(hjust = 0.5, size = 10)) +
     coord_cartesian(xlim = c(1.4,3.1), ylim = c(-600, 900)) +
-    labs(title = "EXPLANATION")
+    labs(title = "Boxplot Explanation")
   
   return(explain_plot)
   
