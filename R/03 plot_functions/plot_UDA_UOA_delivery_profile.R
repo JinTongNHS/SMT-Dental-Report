@@ -63,8 +63,8 @@ plot_UDA_UOA_delivery_profile <- function(data = UDA_scheduled_data,
                                                                     "60-69%", "70-79%", "80-89%", "90-99%",
                                                                     "100% +", "UDA delivery data \ninvalid or not given"))
   #colour blind friendly palette
-  cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7",
-                 "#52854C", "#4E84C4", "#293352", "#FFDB6D")
+  cbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7",
+                 "#52854C", "#4E84C4", "#293352", "#FFDB6D", "#999999")
   
   if(plotChart == TRUE){
     #plot code
@@ -80,7 +80,7 @@ plot_UDA_UOA_delivery_profile <- function(data = UDA_scheduled_data,
            fill = legTitle,
            subtitle = subtitle,
            caption = captionTitle) +
-      #scale_fill_manual(values = cbPalette) +
+      scale_fill_manual(values = cbPalette) +
       scale_x_datetime(breaks = data$month, 
                        labels = scales::date_format("%b-%y")) +
       geom_vline(xintercept = as.Date("2020-07-01"), colour = "black", size = 5) +

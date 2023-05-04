@@ -58,15 +58,15 @@ plot_cumulative_UDA_UOA_to_target <- function(data = UDA_scheduled_data,
   }
   
   #add blanks for future dates if on single level
-  if(all_regions_and_STPs == FALSE & nrow(data) < 25){
+  if(all_regions_and_STPs == FALSE & nrow(data) < 28){
 
     
-    if(!(as.Date("2023-02-01") %in% data$month)){
-      data <- data %>% add_row(month = as.Date("2023-02-01"))
+    if(!(as.Date("2023-05-01") %in% data$month)){
+      data <- data %>% add_row(month = as.Date("2023-05-01"))
     }
     
-    if(!(as.Date("2023-03-01") %in% data$month)){
-      data <- data %>% add_row(month = as.Date("2023-03-01"))
+    if(!(as.Date("2023-06-01") %in% data$month)){
+      data <- data %>% add_row(month = as.Date("2023-06-01"))
     }
   }
   
@@ -75,25 +75,27 @@ plot_cumulative_UDA_UOA_to_target <- function(data = UDA_scheduled_data,
     mutate(month = as.Date(month)) %>%
     mutate(perc_of_UDA_UOA_threshold_delivered = monthly_UDA_UOAs_delivered * 100 / threshold_UDA_UOAs_contracted_in_threshold_period) %>%
     mutate(perc_of_contracted_UDA_UOAs_delivered = monthly_UDA_UOAs_delivered * 100 * 4/ total_annual_UDA_UOAs_contracted) %>%
-    mutate(financial_quarter = case_when(month < as.Date("2021-07-01") ~ "Apr-Jun (Q1)",
-                                         month < as.Date("2021-10-01") ~ "Jul-Sep (Q2)",
-                                         month < as.Date("2022-01-01") ~ "Oct-Dec (Q3)",
-                                         month < as.Date("2022-04-01") ~ "Jan-Mar (Q4)",
+    mutate(financial_quarter = case_when(month < as.Date("2021-07-01") ~ "Apr-Jun (Q1 21/22)",
+                                         month < as.Date("2021-10-01") ~ "Jul-Sep (Q2 21/22)",
+                                         month < as.Date("2022-01-01") ~ "Oct-Dec (Q3 21/22)",
+                                         month < as.Date("2022-04-01") ~ "Jan-Mar (Q4 21/22)",
                                          month < as.Date("2022-07-01") ~ "Apr-Jun (Q1 22/23)",
                                          month < as.Date("2022-10-01") ~ "Jul-Sep (Q2 22/23)",
                                          month < as.Date("2023-01-01") ~ "Oct-Dec (Q3 22/23)",
-                                         month < as.Date("2023-04-01") ~ "Jan-Mar (Q4 22/23)"
+                                         month < as.Date("2023-04-01") ~ "Jan-Mar (Q4 22/23)",
+                                         month < as.Date("2023-07-01") ~ "Apr-Jun (Q1 23/24)"
                                          ))
   
   data$financial_quarter <- factor(data$financial_quarter,
-                                   levels = c("Apr-Jun (Q1)",
-                                              "Jul-Sep (Q2)",
-                                              "Oct-Dec (Q3)",
-                                              "Jan-Mar (Q4)",
+                                   levels = c("Apr-Jun (Q1 21/22)",
+                                              "Jul-Sep (Q2 21/22)",
+                                              "Oct-Dec (Q3 21/22)",
+                                              "Jan-Mar (Q4 21/22)",
                                               "Apr-Jun (Q1 22/23)",
                                               "Jul-Sep (Q2 22/23)",
                                               "Oct-Dec (Q3 22/23)",
-                                              "Jan-Mar (Q4 22/23)"))
+                                              "Jan-Mar (Q4 22/23)",
+                                              "Apr-Jun (Q1 23/24)"))
   
   
   if(all_regions_and_STPs == FALSE){
@@ -115,12 +117,13 @@ plot_cumulative_UDA_UOA_to_target <- function(data = UDA_scheduled_data,
         seq(from = decemberTarget/3, to = decemberTarget, length.out = 3),
         seq(from = marchTarget/3, to = marchTarget, length.out = 3),
         seq(from = juneTarget/3, to = juneTarget, length.out = 3),
-        seq(from = september22Target/3, to = september22Target, length.out = 3),
-        seq(from = 100/3, to = 100, length.out = 3),#threshold is back to 100
-        seq(from = 100/3, to = 100, length.out = 3) 
+        seq(from = 100/3, to = 100, length.out = 3),
+        seq(from = 100/3, to = 100, length.out = 3),
+        seq(from = 100/3, to = 100, length.out = 3),
+        seq(from = 100/3, to = 100, length.out = 3)
       )
       ) %>%
-      filter(month >= as.Date("2022-01-01"))
+      filter(month >= as.Date("2022-04-01"))
     
   }else{
     #cumulative sum column
@@ -148,19 +151,13 @@ plot_cumulative_UDA_UOA_to_target <- function(data = UDA_scheduled_data,
                      colour = financial_quarter),
                  shape = 4,
                  size = 3) +
-      # geom_vline(xintercept = as.Date("2021-09-01") + lubridate::days(15),
-      #            linetype = "dotted") +
-      # geom_vline(xintercept = as.Date("2021-06-01") + lubridate::days(15),
-      #            linetype = "dotted") +
-      # geom_vline(xintercept = as.Date("2021-12-01") + lubridate::days(15),
-      #            linetype = "dotted") +
-      geom_vline(xintercept = as.Date("2022-03-01") + lubridate::days(15),
-                 linetype = "dotted") +
       geom_vline(xintercept = as.Date("2022-06-01") + lubridate::days(15),
                  linetype = "dotted") +
       geom_vline(xintercept = as.Date("2022-09-01") + lubridate::days(15),
                  linetype = "dotted") +
       geom_vline(xintercept = as.Date("2022-12-01") + lubridate::days(15),
+                 linetype = "dotted") +
+      geom_vline(xintercept = as.Date("2023-03-01") + lubridate::days(15),
                  linetype = "dotted") +
       annotate(geom = "text",
                x = data_to_plot$month,
@@ -175,11 +172,12 @@ plot_cumulative_UDA_UOA_to_target <- function(data = UDA_scheduled_data,
       scale_colour_manual(labels = c(#paste0("Expected cumulative delivery to reach \nQ1 threshold of ",septemberTarget,"% by end of Jun-21"),
                                      #paste0("Expected cumulative delivery to reach \nQ2 threshold of ",septemberTarget,"% by end of Sep-21"),
                                      #paste0("Expected cumulative delivery to reach \nQ3 threshold of ",decemberTarget,"% by end of Dec-21"),
-                                     paste0("Expected cumulative delivery to reach \nQ4 threshold of ",marchTarget,"% by end of Mar-22"),
+                                     #paste0("Expected cumulative delivery to reach \nQ4 threshold of ",marchTarget,"% by end of Mar-22"),
                                      paste0("Expected cumulative delivery to reach \nQ1 threshold of ",juneTarget,"% by end of Jun-22"),
                                      paste0("Expected cumulative delivery to reach \nQ2 threshold of ",september22Target,"% by end of Sep-22"),
                                      paste0("Expected cumulative delivery to reach \nQ3 threshold of ",100,"% by end of Dec-22"),
-                                     paste0("Expected cumulative delivery to reach \nQ4 threshold of ",100,"% by end of Mar-23")),
+                                     paste0("Expected cumulative delivery to reach \nQ4 threshold of ",100,"% by end of Mar-23"),
+                                     paste0("Expected cumulative delivery to reach \nQ1 threshold of ",100,"% by end of Jun-24")),
                           values = c("darkred", "blue", "darkgreen", "darkgoldenrod3", "darkorange3", "deeppink2", "green")) +
       labs(title = title,
            x = "Month",

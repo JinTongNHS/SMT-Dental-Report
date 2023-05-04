@@ -2,10 +2,10 @@ plot_band2_split <- function(data = band2_split_data,
                                         scheduled_data = UDA_scheduled_data,
                                         level = "National",
                                         region_STP_name = NULL,
-                                        remove_prototypes = TRUE, 
+                                        remove_prototypes = FALSE, 
                                         plotChart = TRUE,
                                         commissioner_region_lookup = STP_ICB_lookup_codes,
-                                        UDA_or_FP17 = "UDA"){
+                                        UDA_or_FP17 = "FP17"){
   
   #join in region column and annual contracted UDA column
   commissioner_region_lookup <- commissioner_region_lookup %>%
@@ -79,6 +79,15 @@ plot_band2_split <- function(data = band2_split_data,
   
   data$band <- factor(data$band, levels = c("Total band 2", "Band 2A", "Band 2B", "Band 2C", "Un-split band 2**"))
   
+  #get caption right for prototypes being removed or not
+  if(remove_prototypes == TRUE){
+    
+    chartCaption <- "*EXCLUDING contracts with annual contracted UDAs < 100.\n**Some band 2s are still being submitted without the A,B,C distinction and are classed here as 'un-split'"
+  }else{
+    
+    chartCaption <- "*INCLUDING contracts with annual contracted UDAs < 100.\n**Some band 2s are still being submitted without the A,B,C distinction and are classed here as 'un-split'"
+  }
+  
   if(plotChart == TRUE){
     
     ggplot(data,
@@ -93,11 +102,12 @@ plot_band2_split <- function(data = band2_split_data,
            x = "Month",
            y = paste0(UDA_or_FP17, "s"),
            colour = "",
-           caption = "*Excluding contracts with annual contracted UDAs < 100.\n**Some band 2s are still being submitted without the A,B,C distinction and are classed here as 'un-split'") +
+           caption = chartCaption) +
       scale_y_continuous(labels=function(x) format(x, big.mark = ",", scientific = FALSE),
                          breaks = scales::breaks_pretty()) +
       scale_x_date(date_breaks = "1 month", 
                    date_labels = "%b-%y") +
+      scale_colour_manual(values = get_colour_palette()) +
       theme(axis.text.x = element_text(angle = 90)) +
       scale_size_manual(c(1,1,1,3,1))
     

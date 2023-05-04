@@ -2,11 +2,11 @@ library(tidyverse)
 library(readxl)
 library(DBI)
 library(odbc)
-STP_ICB_lookup_codes <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/STP_ICB_lookup_codes.xlsx")
+#STP_ICB_lookup_codes <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2023_23-008/data_for_monthly_report/STP_ICB_lookup_codes.xlsx")
 
 
 ################################################################################
-import_and_clean_unique_patients_data <- function(data_path = "N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/unique_patients/",
+import_and_clean_unique_patients_data <- function(data_path = "N:/_Everyone/Primary Care Group/SMT_Dental DENT 2023_23-008/unique_patients/",
                                                   commissioner_lookup = STP_ICB_lookup_codes){
   
   # Gets last month 
@@ -202,7 +202,7 @@ import_and_clean_calendar_UDA_data <- function(data_path,
   
   #add column for date and rename columns, split data for just april
   data_apr <- data %>%
-    mutate(data_month = as.Date("2022-04-01")) %>%
+    mutate(data_month = as.Date("2023-04-01")) %>%
     select(data_month, X__1, X__2, X__3, X__4, X__5, X__6, X__7, X__8, X__9, X__10,
            X__11, X__12, X__13, X__14, X__15, X__16, X__17, X__18, X__19, X__20) %>%
     rename(contract_number = X__1,
@@ -235,7 +235,7 @@ import_and_clean_calendar_UDA_data <- function(data_path,
     
     #add column for date and rename columns, split data for just may
     data_may <- data %>%
-      mutate(data_month = as.Date("2022-05-01")) %>%
+      mutate(data_month = as.Date("2023-05-01")) %>%
       select(data_month, X__1, X__2, X__3, X__4, X__5, X__6, X__7, X__8,
              X__21, X__22, X__23, X__24, X__25, X__26, X__27, X__28, X__29, X__30, X__31, X__32) %>%
       rename(contract_number = X__1,
@@ -268,7 +268,7 @@ import_and_clean_calendar_UDA_data <- function(data_path,
   if(ncol(data) > 32){
     #add column for date and rename columns, split data for just june
     data_jun <- data %>%
-      mutate(data_month = as.Date("2022-06-01")) %>%
+      mutate(data_month = as.Date("2023-06-01")) %>%
       select(data_month, X__1, X__2, X__3, X__4, X__5, X__6, X__7, X__8,
              X__33, X__34, X__35, X__36, X__37, X__38, X__39, X__40, X__41, X__42, X__43, X__44) %>%
       rename(contract_number = X__1,
@@ -300,7 +300,7 @@ import_and_clean_calendar_UDA_data <- function(data_path,
   if(ncol(data) > 44){
     #add column for date and rename columns, split data for just july
     data_jul <- data %>%
-      mutate(data_month = as.Date("2022-07-01")) %>%
+      mutate(data_month = as.Date("2023-07-01")) %>%
       select(data_month, X__1, X__2, X__3, X__4, X__5, X__6, X__7, X__8,
              X__45, X__46, X__47, X__48, X__49, X__50, X__51, X__52, X__53, X__54, X__55, X__56) %>%
       rename(contract_number = X__1,
@@ -332,7 +332,7 @@ import_and_clean_calendar_UDA_data <- function(data_path,
   if(ncol(data) > 56){
     #add column for date and rename columns, split data for just august
     data_aug <- data %>%
-      mutate(data_month = as.Date("2022-08-01")) %>%
+      mutate(data_month = as.Date("2023-08-01")) %>%
       select(data_month, X__1, X__2, X__3, X__4, X__5, X__6, X__7, X__8,
              X__57, X__58, X__59, X__60, X__61, X__62, X__63, X__64, X__65, X__66, X__67, X__68) %>%
       rename(contract_number = X__1,
@@ -364,7 +364,7 @@ import_and_clean_calendar_UDA_data <- function(data_path,
   if(ncol(data) > 68){
     #add column for date and rename columns, split data for just september
     data_sep <- data %>%
-      mutate(data_month = as.Date("2022-09-01")) %>%
+      mutate(data_month = as.Date("2023-09-01")) %>%
       select(data_month, X__1, X__2, X__3, X__4, X__5, X__6, X__7, X__8,
              X__69, X__70, X__71, X__72, X__73, X__74, X__75, X__76, X__77, X__78, X__79, X__80) %>%
       rename(contract_number = X__1,
@@ -396,7 +396,7 @@ import_and_clean_calendar_UDA_data <- function(data_path,
   if(ncol(data) > 80){
     #add column for date and rename columns, split data for just october
     data_oct <- data %>%
-      mutate(data_month = as.Date("2022-10-01")) %>%
+      mutate(data_month = as.Date("2023-10-01")) %>%
       select(data_month, X__1, X__2, X__3, X__4, X__5, X__6, X__7, X__8,
              X__81, X__82, X__83, X__84, X__85, X__86, X__87, X__88, X__89, X__90, X__91, X__92) %>%
       rename(contract_number = X__1,
@@ -428,7 +428,7 @@ import_and_clean_calendar_UDA_data <- function(data_path,
   if(ncol(data) > 92){
     #add column for date and rename columns, split data for just november
     data_nov <- data %>%
-      mutate(data_month = as.Date("2022-11-01")) %>%
+      mutate(data_month = as.Date("2023-11-01")) %>%
       select(data_month, X__1, X__2, X__3, X__4, X__5, X__6, X__7, X__8,
              X__93, X__94, X__95, X__96, X__97, X__98, X__99, X__100, X__101, X__102, X__103, X__104) %>%
       rename(contract_number = X__1,
@@ -460,7 +460,7 @@ import_and_clean_calendar_UDA_data <- function(data_path,
   if(ncol(data) > 104){
     #add column for date and rename columns, split data for just december
     data_dec <- data %>%
-      mutate(data_month = as.Date("2022-12-01")) %>%
+      mutate(data_month = as.Date("2023-12-01")) %>%
       select(data_month, X__1, X__2, X__3, X__4, X__5, X__6, X__7, X__8,
              X__105, X__106, X__107, X__108, X__109, X__110, X__111, X__112, X__113, X__114, X__115, X__116) %>%
       rename(contract_number = X__1,
@@ -492,7 +492,7 @@ import_and_clean_calendar_UDA_data <- function(data_path,
   if(ncol(data) > 116){
     #add column for date and rename columns, split data for just january
     data_jan <- data %>%
-      mutate(data_month = as.Date("2023-01-01")) %>%
+      mutate(data_month = as.Date("2024-01-01")) %>%
       select(data_month, X__1, X__2, X__3, X__4, X__5, X__6, X__7, X__8,
              X__117, X__118, X__119, X__120, X__121, X__122, X__123, X__124, X__125, X__126, X__127, X__128) %>%
       rename(contract_number = X__1,
@@ -524,7 +524,7 @@ import_and_clean_calendar_UDA_data <- function(data_path,
   if(ncol(data) > 128){
     #add column for date and rename columns, split data for just february
     data_feb <- data %>%
-      mutate(data_month = as.Date("2023-02-01")) %>%
+      mutate(data_month = as.Date("2024-02-01")) %>%
       select(data_month, X__1, X__2, X__3, X__4, X__5, X__6, X__7, X__8,
              X__129, X__130, X__131, X__132, X__133, X__134, X__135, X__136, X__137, X__138, X__139, X__140) %>%
       rename(contract_number = X__1,
@@ -556,7 +556,7 @@ import_and_clean_calendar_UDA_data <- function(data_path,
   if(ncol(data) > 140){
     #add column for date and rename columns, split data for just march
     data_mar <- data %>%
-      mutate(data_month = as.Date("2023-03-01")) %>%
+      mutate(data_month = as.Date("2024-03-01")) %>%
       select(data_month, X__1, X__2, X__3, X__4, X__5, X__6, X__7, X__8,
              X__141, X__142, X__143, X__144, X__145, X__146, X__147, X__148, X__149, X__150, X__151, X__152) %>%
       rename(contract_number = X__1,
@@ -623,7 +623,7 @@ import_and_clean_calendar_UOA_data <- function(data_path,
   
   #add column for date and rename columns, split data for just april
   data_apr <- data %>%
-    mutate(data_month = as.Date("2022-04-01")) %>%
+    mutate(data_month = as.Date("2023-04-01")) %>%
     select(data_month, X__1, X__2, X__3, X__4, X__5, X__6, X__7, 
            X__8) %>%
     rename(contract_number = X__1,
@@ -643,7 +643,7 @@ import_and_clean_calendar_UOA_data <- function(data_path,
   if(ncol(data) > 8){
     #add column for date and rename columns, split data for just may
     data_may <- data %>%
-      mutate(data_month = as.Date("2022-05-01")) %>%
+      mutate(data_month = as.Date("2023-05-01")) %>%
       select(data_month, X__1, X__2, X__3, X__4, X__5, X__6, X__7, 
              X__9) %>%
       rename(contract_number = X__1,
@@ -664,7 +664,7 @@ import_and_clean_calendar_UOA_data <- function(data_path,
   if(ncol(data) > 9){
     #add column for date and rename columns, split data for just jun
     data_jun <- data %>%
-      mutate(data_month = as.Date("2022-06-01")) %>%
+      mutate(data_month = as.Date("2023-06-01")) %>%
       select(data_month, X__1, X__2, X__3, X__4, X__5, X__6, X__7, 
              X__10) %>%
       rename(contract_number = X__1,
@@ -685,7 +685,7 @@ import_and_clean_calendar_UOA_data <- function(data_path,
   if(ncol(data) > 10){
     #add column for date and rename columns, split data for just jul
     data_jul <- data %>%
-      mutate(data_month = as.Date("2022-07-01")) %>%
+      mutate(data_month = as.Date("2023-07-01")) %>%
       select(data_month, X__1, X__2, X__3, X__4, X__5, X__6, X__7, 
              X__11) %>%
       rename(contract_number = X__1,
@@ -706,7 +706,7 @@ import_and_clean_calendar_UOA_data <- function(data_path,
   if(ncol(data) > 11){
     #add column for date and rename columns, split data for just aug
     data_aug <- data %>%
-      mutate(data_month = as.Date("2022-08-01")) %>%
+      mutate(data_month = as.Date("2023-08-01")) %>%
       select(data_month, X__1, X__2, X__3, X__4, X__5, X__6, X__7, 
              X__12) %>%
       rename(contract_number = X__1,
@@ -727,7 +727,7 @@ import_and_clean_calendar_UOA_data <- function(data_path,
   if(ncol(data) > 12){
     #add column for date and rename columns, split data for just sep
     data_sep <- data %>%
-      mutate(data_month = as.Date("2022-09-01")) %>%
+      mutate(data_month = as.Date("2023-09-01")) %>%
       select(data_month, X__1, X__2, X__3, X__4, X__5, X__6, X__7, 
              X__13) %>%
       rename(contract_number = X__1,
@@ -748,7 +748,7 @@ import_and_clean_calendar_UOA_data <- function(data_path,
   if(ncol(data) > 13){
     #add column for date and rename columns, split data for just oct
     data_oct <- data %>%
-      mutate(data_month = as.Date("2022-10-01")) %>%
+      mutate(data_month = as.Date("2023-10-01")) %>%
       select(data_month, X__1, X__2, X__3, X__4, X__5, X__6, X__7, 
              X__14) %>%
       rename(contract_number = X__1,
@@ -769,7 +769,7 @@ import_and_clean_calendar_UOA_data <- function(data_path,
   if(ncol(data) > 14){
     #add column for date and rename columns, split data for just nov
     data_nov <- data %>%
-      mutate(data_month = as.Date("2022-11-01")) %>%
+      mutate(data_month = as.Date("2023-11-01")) %>%
       select(data_month, X__1, X__2, X__3, X__4, X__5, X__6, X__7, 
              X__15) %>%
       rename(contract_number = X__1,
@@ -790,7 +790,7 @@ import_and_clean_calendar_UOA_data <- function(data_path,
   if(ncol(data) > 15){
     #add column for date and rename columns, split data for just dec
     data_dec <- data %>%
-      mutate(data_month = as.Date("2022-12-01")) %>%
+      mutate(data_month = as.Date("2023-12-01")) %>%
       select(data_month, X__1, X__2, X__3, X__4, X__5, X__6, X__7, 
              X__16) %>%
       rename(contract_number = X__1,
@@ -811,7 +811,7 @@ import_and_clean_calendar_UOA_data <- function(data_path,
   if(ncol(data) > 16){
     #add column for date and rename columns, split data for just jan
     data_jan <- data %>%
-      mutate(data_month = as.Date("2023-01-01")) %>%
+      mutate(data_month = as.Date("2024-01-01")) %>%
       select(data_month, X__1, X__2, X__3, X__4, X__5, X__6, X__7, 
              X__17) %>%
       rename(contract_number = X__1,
@@ -832,7 +832,7 @@ import_and_clean_calendar_UOA_data <- function(data_path,
   if(ncol(data) > 17){
     #add column for date and rename columns, split data for just feb
     data_feb <- data %>%
-      mutate(data_month = as.Date("2023-02-01")) %>%
+      mutate(data_month = as.Date("2024-02-01")) %>%
       select(data_month, X__1, X__2, X__3, X__4, X__5, X__6, X__7, 
              X__18) %>%
       rename(contract_number = X__1,
@@ -853,7 +853,7 @@ import_and_clean_calendar_UOA_data <- function(data_path,
   if(ncol(data) > 18){
     #add column for date and rename columns, split data for just mar
     data_mar <- data %>%
-      mutate(data_month = as.Date("2023-03-01")) %>%
+      mutate(data_month = as.Date("2024-03-01")) %>%
       select(data_month, X__1, X__2, X__3, X__4, X__5, X__6, X__7, 
              X__19) %>%
       rename(contract_number = X__1,

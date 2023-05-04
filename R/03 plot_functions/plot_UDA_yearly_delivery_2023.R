@@ -1,36 +1,23 @@
-# library (tidyverse)
-# library(DBI)
-# library(odbc)
 library(formattable)
-# 
-# UDA_data <- function(){
-#   
-#   con <- dbConnect(odbc::odbc(), "NCDR")
-#   sql <- "SELECT *
-# FROM [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UDA_scheduled]  "
-#   
-#   result <- dbSendQuery (con, sql)
-#   UDA_Data_sc <- dbFetch(result)
-#   dbClearResult(result)
-#   
-#   UDA_Data_sc
-# }
-# 
-# ##str(UDA_data_pull)
-# ##colnames(UDA_data_pull)
 
-plot_UDA_delivered_percent <- function(data = UDA_scheduled_data, ####this one has to be changed in final 
+plot_UDA_yearly_delivery <- function(data = UDA_scheduled_data, 
                                        level = "National",
                                        region_STP_name = NULL,
                                        remove_prototypes = TRUE, 
                                        plotChart = TRUE){
   
   if(remove_prototypes == TRUE){
-    # ##projection_data <- projection_data %>%
-    #   filter(annual_contracted_UDA > 100)
+    data <- data %>%
+      filter(annual_contracted_UDA > 100)
+    
+    chartCaption <- "Excludes contracts with annual contracted UDAs < 100."
+  }else{
+    
+    chartCaption <- "Includes contracts with annual contracted UDAs < 100."
   }
   
-  data <- data %>% filter(as.Date(month)>= "2022-04-01", 
+  data <- data %>% 
+    filter(as.Date(month)>= "2022-04-01", 
                                  annual_contracted_UDA > 100 ) %>% 
     select(month, contract_number, name_or_company_name,
            commissioner_name, commissioner_ods_code_icb, region_name,
@@ -71,6 +58,7 @@ plot_UDA_delivered_percent <- function(data = UDA_scheduled_data, ####this one h
     filter(performance_category %in% c('Delivered less than 96%', 
                                        "Delivered 96% or more"))
   
+  
   if(level == "National"){
     bar_plot_national <- ggplot(data_plot, 
                                 aes(x=performance_category, 
@@ -83,7 +71,8 @@ plot_UDA_delivered_percent <- function(data = UDA_scheduled_data, ####this one h
       labs(title = "Number of contracts delivered (in FY 2022/23) more or less than 96% of contracted UDA",
            subtitle = paste0("National", "\nDelivered from Apr-22 to ", format(Sys.Date() - lubridate::duration("4 weeks"), "%b-%y")),
            x = "Performance category",
-           y = "Number of contracts")
+           y = "Number of contracts",
+           caption = chartCaption)
     
     bar_plot_national
     
@@ -109,7 +98,8 @@ plot_UDA_delivered_percent <- function(data = UDA_scheduled_data, ####this one h
            subtitle = paste0("Delivered from Apr-22 to ", format(Sys.Date() - lubridate::duration("4 weeks"), "%b-%y")),
            x = "Region",
            y = "Number of contracts",
-           fill = "") +
+           fill = "",
+           caption = chartCaption) +
       theme_bw() +
       theme(legend.position="bottom")
     

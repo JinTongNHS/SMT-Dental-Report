@@ -1,5 +1,5 @@
 ################################################################################
-get_Q1_22_num_contracts_on_target <- function(data = UDA_scheduled_data, 
+get_quarterly_num_contracts_on_target <- function(data = UDA_scheduled_data, 
                                               remove_prototypes = T,
                                               scheduled_data = UDA_scheduled_data,
                                               UDAorUOA = "UDA",
@@ -36,7 +36,7 @@ get_Q1_22_num_contracts_on_target <- function(data = UDA_scheduled_data,
   
   #join in contracted UDA/UOAs from scheduled data
   data <- data %>%
-    filter(month >= as.Date("2023-01-01")) ##must update this at start of each quarter
+    filter(month >= as.Date("2023-04-01")) ##must update this at start of each quarter
   
   #create not in function
   `%notin%` = Negate(`%in%`)
@@ -53,13 +53,13 @@ get_Q1_22_num_contracts_on_target <- function(data = UDA_scheduled_data,
   }
   
   #way to progress through the months
-  if(max(data$month) == as.Date("2023-01-01")){
+  if(max(data$month) == as.Date("2023-04-01")){
     month_factor <- 1
   }
-  if(max(data$month) == as.Date("2023-02-01")){
+  if(max(data$month) == as.Date("2023-05-01")){
     month_factor <- 2
   }
-  if(max(data$month) == as.Date("2023-03-01")){
+  if(max(data$month) == as.Date("2023-06-01")){
     month_factor <- 3
   }
   

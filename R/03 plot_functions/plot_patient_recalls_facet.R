@@ -80,7 +80,8 @@ plot_patient_recalls_facet <- function(data = dental_recalls_STP_2018_22,
            subtitle = paste0(str_replace(treatment_band, "_", " "), "\n", region_STP_name),
            x = "Months since last visit",
            y = "Total form count",
-           fill = "") +
+           fill = "",
+           caption = "Includes contracts with annual contracted UDA > 100 and prototype contracts.") +
       facet_wrap(vars(financial_year),
                  #scales = "free_y",
                  nrow = 2)
