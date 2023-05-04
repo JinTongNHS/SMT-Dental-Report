@@ -11,7 +11,9 @@ source("N:/_Everyone/Mohammed_Emran/From_document_folder/R_Projects/SMT-Dental-R
 plot_BPE_no_oral_health_risk <- function(data = BPE_data,
                                          level = "National",
                                          region_STP_name = NULL,
-                                         ICB_lookup = STP_ICB_lookup_codes){
+                                         ICB_lookup = STP_ICB_lookup_codes,
+                                         plotChart = TRUE,
+                                         quartileOutput = "LQ"){
   
   data[is.na(data)] <- 0
   
@@ -69,48 +71,63 @@ plot_BPE_no_oral_health_risk <- function(data = BPE_data,
     group_by(Year_Month) %>% 
     summarise (med = median(percent_low_risk_whic_are1_year))
   
-  max_month<- max (data$Year_Month)
+  max_month <- max (data$Year_Month)
   
   p_meds_latest <- data %>% 
     group_by (Year_Month) %>% 
     summarise(med = median(percent_low_risk_whic_are1_year)) %>% 
     filter(Year_Month ==max_month)
   
-
-  numbers_calc <- data %>%  filter(Year_Month ==max_month)
-  
-  summary(numbers_calc$percent_low_risk_whic_are1_year)
-  
-  IQR(numbers_calc$percent_low_risk_whic_are1_year)
-  
   p_meds_latest_p <- formattable::percent (p_meds_latest$med, digits = 0)
   
-  p_test <- ggplot(data = data,
-                        aes(x = Year_Month, y = percent_low_risk_whic_are1_year)) +
-    geom_boxplot(aes(group = Year_Month)) +
-    labs(x = "Month",
-         y = "Percentage",
-         title = "Percentrage of Low Risk Patients Recalled within a Year by Contractors",
-         subtitle = subtitle
-         ) +
-    scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
-    scale_x_date(date_labels = "%b-%y") +
-    theme_bw() +
-    geom_text(data = p_meds, aes(x = Year_Month, y = med, label = med), 
-              size = 3, vjust = -.7) 
+  if(plotChart == TRUE){
+    p_test <- ggplot(data = data,
+                     aes(x = Year_Month, y = percent_low_risk_whic_are1_year)) +
+      geom_boxplot(aes(group = Year_Month)) +
+      labs(x = "Month",
+           y = "Percentrage of Low Risk Patients Recalled",
+           title = "Percentrage of Low Risk Patients Recalled within a Year by Contractors",
+           subtitle = subtitle
+      ) +
+      scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
+      scale_x_date(date_labels = "%b-%y") +
+      theme_bw() +
+      geom_text(data = p_meds, aes(x = Year_Month, y = med, label = med), 
+                size = 3, vjust = -.7) 
+    
+    legend_plot<- ggplot_box_legend()
+    
+    p <- plot_grid(p_test,
+                   legend_plot,
+                   nrow = 1, rel_widths = c(.6,.4))
+    
+    ###to be added at the bottom of chart
+    # description <- c("50% of all the contractors are recalling", formattable::percent (p_meds_latest$med, digits = 0),
+    #                  " of the patients with low oral health risk ") ##+ "of"
+    
+    p
+  }else if(!is.null(quartileOutput)){
+    
+    #get latest year of data
+    numbers_calc <- data %>%  
+      filter(Year_Month == max_month)
+
+    #output differentquartile based on input
+    if(quartileOutput == "LQ"){
+      quartile <- quantile(numbers_calc$percent_low_risk_whic_are1_year, prob = 0.25)
+    }else if(quartileOutput == "UQ"){
+      quartile <- quantile(numbers_calc$percent_low_risk_whic_are1_year, prob = 0.75)
+    }else{
+      quartile <- quantile(numbers_calc$percent_low_risk_whic_are1_year, prob = 0.5)
+    }
+
+    quartile
+  }else{
+    
+    #return max date
+    max_month
+  }
   
-  legend_plot<- ggplot_box_legend()
-  
-  p <- plot_grid(p_test,
-            legend_plot,
-            nrow = 1, rel_widths = c(.6,.4))
-  
-  ###to be added at the bottom of chart
-  
-  p
-  
-  description <- c("50% of all the contractors are recalling", formattable::percent (p_meds_latest$med, digits = 0),
-                   " of the patients with low oral health risk ") ##+ "of"
 }
 
 
