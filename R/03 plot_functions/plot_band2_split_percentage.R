@@ -1,3 +1,4 @@
+#graph to plot UDA split band 2
 plot_band2_split_percentage <- function(data = band2_split_data,
                                         scheduled_data = UDA_scheduled_data,
                                         level = "National",
