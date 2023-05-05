@@ -47,8 +47,11 @@ get_delivery_data <- function(data = UDA_scheduled_data,
   
   new_data <- UDA_UOAs_delivered %>%
     #April data needs scaling differently
-    mutate(scaled_monthly_UDA_UOAs_delivered = if_else(month != as.Date("2021-04-01") & month != as.Date("2020-04-01") 
-                                                       & month != as.Date("2019-04-01") & month != as.Date("2022-04-01"),
+    # mutate(scaled_monthly_UDA_UOAs_delivered = if_else(month != as.Date("2021-04-01") & month != as.Date("2020-04-01") 
+    #                                                    & month != as.Date("2019-04-01") & month != as.Date("2022-04-01"),
+    #                                                    monthly_UDA_UOAs_delivered * 12,
+    #                                                    monthly_UDA_UOAs_delivered * 18)) %>%
+    mutate(scaled_monthly_UDA_UOAs_delivered = if_else(substr(month, 6, 7) != "04",
                                                        monthly_UDA_UOAs_delivered * 12,
                                                        monthly_UDA_UOAs_delivered * 18)) %>%
     mutate(perc_UDA_UOA_delivered = round(scaled_monthly_UDA_UOAs_delivered * 100 / annual_contracted_UDA_UOA)) 
