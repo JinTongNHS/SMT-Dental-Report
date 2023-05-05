@@ -124,7 +124,6 @@ plot_DCP_analysis <- function(data = UDA_scheduled_data,
       select("month", "DCP_description.x", "Bands", "asissted_percent") %>%
       rename ( Percent_of_FP17 = Bands, DCP_description = DCP_description.x) %>%
       mutate(month = strftime(month, "%B-%y"))%>%
-      mutate(DCP_description = ) %>%
       mutate(DCP_description = str_replace_all(DCP_description, "_", " ")) 
     
     filtered_data_FP17$month <- factor(filtered_data_FP17$month,
