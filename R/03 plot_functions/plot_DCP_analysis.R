@@ -45,7 +45,7 @@ plot_DCP_analysis <- function(data = UDA_scheduled_data,
   
   dcp_summary <- dcp_main_new %>% 
     mutate(DCP_description = as.factor(DCP_description) %>%
-             forcats::fct_collapse(Hygienist_Therpaist_Assisted = c("Hygienist", "Therapist"))) %>%
+             forcats::fct_collapse(Hygienist_Therapist_Assisted = c("Hygienist", "Therapist"))) %>%
     group_by(month, DCP_description) %>%
     summarise (total_FP17 = sum(FP17_Current_Year_total, na.rm = TRUE),
                total_B1 = sum(Band_1._UDA, na.rm = TRUE),
@@ -124,7 +124,8 @@ plot_DCP_analysis <- function(data = UDA_scheduled_data,
       select("month", "DCP_description.x", "Bands", "asissted_percent") %>%
       rename ( Percent_of_FP17 = Bands, DCP_description = DCP_description.x) %>%
       mutate(month = strftime(month, "%B-%y"))%>%
-      mutate(DCP_description = str_replace_all(DCP_description, "_", " "))
+      mutate(DCP_description = ) %>%
+      mutate(DCP_description = str_replace_all(DCP_description, "_", " ")) 
     
     filtered_data_FP17$month <- factor(filtered_data_FP17$month,
                                       levels = c("October-22",
