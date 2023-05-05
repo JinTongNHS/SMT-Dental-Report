@@ -1,0 +1,956 @@
+---
+title: "Dental Data Pack"
+subtitle:  "National"
+author: "`r paste(format(Sys.time(), '%B, %Y'), ' - Reporting up to end of', format(Sys.Date() - lubridate::weeks(4), '%B, %Y'))`"
+output:
+  beamer_presentation:
+    slide_level: 2
+    toc: true
+    includes:
+      in_header: slide_format2.tex
+  slidy_presentation: default
+sansfont: Calibri Light
+fontsize: 8pt
+classoption: aspectratio = 169
+---
+
+
+```{r libraries, include = FALSE}
+library(tidyverse)
+library(readxl)
+library(DBI)
+library(odbc)
+library(reactable) #make sure you have the latest version by doing install.packages("reactable")
+library(downloadthis)
+library(lubridate)
+
+#source in all file from plot folder
+for (f in list.files(path = "../R/03 plot_functions/", pattern="*.R$")) {
+    source(paste0("../R/03 plot_functions/", f))
+}
+
+for (f in list.files(path = "../R/02 format_data_functions/", pattern="*.R$")) {
+    source(paste0("../R/02 format_data_functions/", f))
+}
+
+
+#pull data from NCDR
+UDA_calendar_data <- pull_UDA_calendar_data()
+UOA_calendar_data <- pull_UOA_calendar_data()
+UDA_scheduled_data <- pull_UDA_scheduled_data()
+UOA_scheduled_data <- pull_UOA_scheduled_data()
+payments_to_dentists <- pull_payments_to_dentist()
+
+historical_UDA_scheduled_data <- pull_UDA_scheduled_historical_data()
+historical_UDA_scheduled_data <- rename(historical_UDA_scheduled_data, month = data_month)
+
+historical_UOA_scheduled_data <- pull_UOA_scheduled_historical_data()
+historical_UOA_scheduled_data <- rename(historical_UOA_scheduled_data, month = data_month)
+
+#change column names and add regions
+UDA_calendar_data <- rename(UDA_calendar_data, month = data_month)
+UOA_calendar_data <- UOA_calendar_data %>%
+  rename(month = data_month) %>%
+  mutate(contract_number = as.numeric(contract_number),
+         UOA_total = as.numeric(UOA_total)) 
+
+    
+# UOA_calendar_data <- left_join( region_STP_lookup, by = c("contract_number", "name_or_company_name", "commissioner_name"))
+UDA_scheduled_data <- rename(UDA_scheduled_data, month = data_month)
+UOA_scheduled_data <- rename(UOA_scheduled_data, month = data_month)
+
+UDA_scheduled_data <- mutate(UDA_scheduled_data, month = as.Date(month))
+UOA_scheduled_data <- mutate(UOA_scheduled_data, month = as.Date(month))
+
+#sort out STP ICB changes
+STP_ICB_lookup_codes <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/STP_ICB_lookup_codes.xlsx")
+
+#Read local 111 file
+dental_data_111 <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/111_pathways_data/dental_data_111.xlsx")
+
+#############still to fix
+prototype_contracts <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/prototype_contracts.xlsx")
+contractor_categories <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/contractor_categories_Jan23.xlsx")
+contractor_categories <- contractor_categories %>%
+  mutate(contract_number = as.numeric(contract_number))
+contract_demographics <- readRDS("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/contract_demographics.rds")
+
+#read in unique patients
+#unique_patients_rolling <- readRDS("../data/unique_patients/unique_patients_rolling.rds")
+unique_patients_rolling <- pull_unique_patients_data()
+
+#read in recalls 
+dental_recalls_STP_2018_22 <- readRDS("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/dental_recalls_STP_2018_22.rds")
+
+#read in CDS data
+CDS_data <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/CDS/CDS_data.xlsx")
+CDS_data <- clean_CDS_data_colnames(CDS_data)
+
+#read in hand backs data
+contract_handbacks <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/contract_handbacks.xlsx")
+
+#read in and clean complaints data
+Dental_Access_Complaints_Data_June_22 <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/complaints/Dental Access Complaints Data June 22.xlsx")
+dental_complaints <- clean_complaints_data(Dental_Access_Complaints_Data_June_22)
+
+#UDA value data
+UDA_values <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/UDA_values.xlsx")
+UDA_UOA_value_data <- pull_UDA_UOA_value()
+
+#Pull patient charge data
+patient_exemption_data <- pull_patient_exemption_data()
+patient_exemption_data <- clean_patient_exemption_data()
+
+#pull health inequalities data
+health_inequalities_data <- pull_health_inequalities()
+
+missing_contracts_data <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/missing_contract_details.xlsx")
+
+#DCP_data <- read.csv("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/DCP_data/DPC_v1_Oct_2022.csv") 
+DCP_data <- pull_dcp_data()
+
+BPE_data <- pull_BPE_data()
+
+band2_split_data <- load_in_band2_split_data()
+
+new_vs_return_data <- pull_new_vs_returning_patients()
+
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+
+#avoid standard form
+options(scipen=999)
+
+# Suppress summarise info
+options(dplyr.summarise.inform = FALSE)
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+## Contents 1 
+
+
+#### Dental
+ * Table of number of contracts by MY category
+ * UDA activity
+ * UDA activity by MY category
+ * Cumulative UDA delivery per quarter
+ * YTD UDA delivery
+ * Historic UDA delivery
+ * Contract size vs delivery scatter plot
+ * UDA delivery profile across months
+ * Banded courses of treatment time series
+ * Banded courses of treatment time series as % of 2019 delivery
+ * Urgent treatment form submissions
+ * Percentage of FP17s in each band 2 sub-category
+ * UDAs delivered by patient charge status
+ * Contractors projected to deliver at least 96% of contracted UDAs
+ * Percentage of CoTs assisted by Dental Care Practitioners (DCPs)
+ * Percentage of UDAs assisted by Dental Care Practitioners (DCPs) by band
+ * Percentage of FP17s indicating low oral health risk
+ * 111 call volumes
+ * Unique patients seen rolling 12 months
+ * Unique patients seen rolling 12 months as % of April 2018 delivery
+ * Number of new patients
+ * Percentage of practices seeing new patients
+
+
+
+## Contents 2
+
+ * Patient re-attendance intervals
+ * Community Dental Services (CDS) Patients waiting for assessment
+ * CDS Patients waiting for treatment
+ * CDS Patients waiting for assessment
+ * CDS Patients waiting for treatment
+ * Practice closures based on PCAR report
+ * De-commissioned and re-commissioned UDAs and UOAs as a result of closure based on PCAR
+ * Total annual contracted UDAs trend
+ * Total number of contracts trend
+ * Total payments to dentists by financial year
+ * Cumulative financial value of UDAs delivered YTD
+
+#### Orthodontic 
+ * UOA activity
+ * UOA activity by MY category
+ * Cumulative UOA delivery per quarter
+ * YTD UOA delivery
+ * UOA delivery profile across months
+ 
+#### Appendix
+ * MY Category classification breakdown
+ * Data sources
+ 
+
+
+## Calendar and scheduled data
+
+All analyses in this report now only use **scheduled data**. 
+
+#### Calendar data explanation
+
+* Calendar data is based on courses of treatment completed within an entire month, for example 1st February to 28th Feb
+* For calendar data, if a COT was completed in February but not declared till March, that activity would still be registered as
+occurring in February.
+* This means that graphs using calendar data may change for historical months as more COTs are registered.
+* The activity % is now based on total number of UDA/UOAs delivered as a % of total contracted UDA/UOAs per quarter.
+
+
+#### Scheduled data explanation
+* The scheduling time period is usually between the 20th of one month and the 20th of the next month i.e., 21st April to the
+19th May. That means that any Mandatory contract COT completed after this period will not be included in the May
+scheduled data. However, if for example a COT was completed on May 1st, but reported to the BSA after the end of the
+reporting period (April 21st – May 19th), that activity would go into the following scheduled period. As a result, the
+scheduling period can be considered fixed.
+* N.B. Scheduled data for April is from 1st April - 21st April. This has been taken into account when scaling up to annual delivery.
+
+
+## UDA Activity Data
+
+```{r UDA_activity_Calendar1, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
+plot_UDA_UOA_delivery(data = UDA_scheduled_data, 
+                                  historic_data = historical_UDA_scheduled_data,
+                                  UDAorUOA = "UDA",
+                                  level = "National",
+                                  region_STP_name = NULL,
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  include_historic = FALSE)
+```
+
+* This graph shows the average monthly performance of the **`r get_num_contracts(level = "National", region_STP_name = NULL)`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (60% for Apr-Sep 21, 65% for Oct-Dec, 85% for Jan-Mar, 95% for Apr-Jun 22 and 100% going forward).
+
+
+
+## UDA activity data by MY Category
+#### Prototypes and contracts with annual contracted UDAs < 100 included
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_UDA_UOA_delivery_MY_cat(
+                             data = UDA_scheduled_data,
+                                  contractor_cats = contractor_categories,
+                                  UDAorUOA = "UDA",
+                                  level = "National",
+                                  region_STP_name = NULL,
+                                  remove_prototypes = F,
+                                  regional_lines = F,
+                                  STP_lines = F,
+                                  cat_lines = T,
+                                  plotChart = T)
+```
+
+
+
+
+## UDA activity data by MY Category
+#### Prototypes and contracts with annual contracted UDAs < 100 excluded
+
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_UDA_UOA_delivery_MY_cat(
+                             data = UDA_scheduled_data,
+                                  contractor_cats = contractor_categories,
+                                  UDAorUOA = "UDA",
+                                  level = "National",
+                                  region_STP_name = NULL,
+                                  remove_prototypes = T,
+                                  regional_lines = F,
+                                  STP_lines = F,
+                                  cat_lines = T,
+                                  plotChart = T)
+```
+
+
+## UDA cumulative activity data
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
+                                  
+                                  UDAorUOA = "UDA",
+                                  level = "National",
+                                  region_STP_name = NULL)
+```
+
+* This graph shows the cumulative activity by quarter of the
+**`r get_num_contracts(level = "National", region_STP_name = NULL)`**
+GDS/PDS/PDS+
+contracts measured against the expected monthly total activity to achieve the quarterly thresholds (100% for Jan-Mar 23).
+* From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
+**`r get_quarterly_num_contracts_on_target(level = "National", region_STP_name = NULL)`**
+contracts (
+**`r round(get_quarterly_num_contracts_on_target(level = "National", region_STP_name = NULL)*100/get_num_contracts(level = "National", region_STP_name = NULL))` %**
+) have delivered the required UDAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
+
+
+
+## YTD UDA delivery
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
+plot_YTD_UDA_UOA_delivery(data = UDA_scheduled_data, 
+                                  
+                                  historic_data = historical_UDA_scheduled_data,
+                                  UDAorUOA = "UDA",
+                                  level = "National",
+                                  region_STP_name = NULL,
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE)
+```
+
+
+
+
+## Historic UDA delivery
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_UDA_UOA_delivery(data = UDA_scheduled_data,  UDAorUOA = "UDA",
+                                  level = "National",
+                                  region_STP_name = NULL)
+```
+
+* This graph shows the monthly percentage of usual annual contracted UDAs scaled up to 12 months (18 months for April) submitted. The graph uses scheduled data to measure the
+activity which is fixed. This may be thought of as "UDAs submitted" in each month rather than delivered.
+
+
+
+
+## Contract size to delivery comparison
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_delivery_vs_contract_size_scatter_corporate(data = UDA_scheduled_data,
+                                                 demographics_data = contract_demographics,
+                                                 remove_prototypes = T,
+                                                 plot_month = NULL,
+                                                 UDAorUOA = "UDA",
+                                                 level = "National",
+                                                 region_STP_name = NULL)
+```
+
+* The scatter plot shows the relationship between contract size and delivery for the current month.
+* The number of contracts delivering above 95% contracted value for this month is
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "National", region_STP_name = NULL, get_num_above = 95)[1]`**
+(
+**`r round(as.numeric(plot_delivery_vs_contract_size_scatter_corporate(level = "National", region_STP_name = NULL, get_num_above = 95)[1]) *100 / get_num_contracts(level = "National", region_STP_name = NULL))`**
+% of contracts),
+with a mean contract size of
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "National", region_STP_name = NULL, get_num_above = 95)[2]`**
+UDAs.
+* The number of contracts delivering above 100% contracted value for this month is
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "National", region_STP_name = NULL, get_num_above = 100)[1]`**,
+with a mean contract size of
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "National", region_STP_name = NULL, get_num_above = 100)[2]`**
+UDAs.
+
+
+
+## UDA delivery profile
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
+                          
+                          UDAorUOA = "UDA",
+                          level = "National",
+                          region_STP_name = NULL,
+                          include_historic = FALSE)
+```
+ 
+ This graph shows the proportion of practices delivering
+between a certain % group of contracted UDA activity if performance for that
+month is annualised. Improvement would be seen as the distribution moving towards the right, as more contracts deliver closer to 100% of their contracted UDAs.
+
+
+
+
+## UOA activity data
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_UDA_UOA_delivery(data = UOA_scheduled_data, 
+                                  
+                                  historic_data = historical_UDA_scheduled_data,
+                                  UDAorUOA = "UOA",
+                                  level = "National",
+                                  region_STP_name = NULL,
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE,
+                                  include_historic = FALSE)
+```
+
+* This graph shows the average monthly performance of the
+**`r get_num_contracts(data = UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "National", region_STP_name = NULL)`**
+GDS/PDS contracts scaled up by 12 months measured against the delivery thresholds (80% for Apr-Sep 21, 85% for Oct-Dec, 90% for Jan-Mar, 100% for Apr-Jun 22).
+
+ 
+
+
+## UOA activity data by MY Category
+#### Prototypes and contracts with annual contracted UDAs < 100 included
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_UDA_UOA_delivery_MY_cat(
+                             data = UOA_scheduled_data,
+                                  contractor_cats = contractor_categories,
+                                  UDAorUOA = "UOA",
+                                  level = "National",
+                                  region_STP_name = NULL,
+                                  remove_prototypes = FALSE,
+                                  regional_lines = FALSE,
+                                  STP_lines = FALSE,
+                                  cat_lines = TRUE,
+                                  plotChart = TRUE)
+```
+
+
+
+
+
+## UOA activity data by MY Category
+#### Prototypes and contracts with annual contracted UDAs < 100 excluded
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_UDA_UOA_delivery_MY_cat(
+                             data = UOA_scheduled_data,
+                                  contractor_cats = contractor_categories,
+                                  UDAorUOA = "UOA",
+                                  remove_prototypes = TRUE,
+                                  regional_lines = FALSE,
+                                  STP_lines = FALSE,
+                                  cat_lines = TRUE,
+                                  plotChart = TRUE,
+                                  level = "National",
+                                  region_STP_name = NULL)
+```
+
+ 
+
+
+
+## UOA cumulative activity data
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data, 
+                                              
+                                              UDAorUOA = "UOA", 
+                                              level = "National",
+                                              region_STP_name = NULL,
+                                              plotChart = TRUE,
+                                              all_regions_and_STPs = FALSE,
+                                              remove_prototypes = TRUE)
+```
+
+* This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_scheduled_data, remove_prototypes = T,  "UOA", level = "National", region_STP_name = NULL)`**
+GDS/PDS contracts measured against the
+expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
+* From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
+**`r get_quarterly_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "National", region_STP_name = NULL)`**
+contracts (
+**`r round(get_quarterly_num_contracts_on_target(UOA_scheduled_data, remove_prototypes = T,  UDAorUOA = "UOA", level = "National", region_STP_name = NULL)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T,  "UOA", level = "National", region_STP_name = NULL))` %**
+) have delivered the required UOAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
+
+ 
+
+
+## YTD UOA delivery
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
+plot_YTD_UDA_UOA_delivery(data = UOA_scheduled_data, 
+                                  
+                                  UDAorUOA = "UOA",
+                                  level = "National",
+                                  region_STP_name = NULL,
+                                  remove_prototypes = TRUE, 
+                                  plotChart = TRUE, 
+                                  all_regions_and_STPs = FALSE)
+```
+
+
+
+
+
+## UOA delivery profile
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_UDA_UOA_delivery_profile(data = UOA_scheduled_data,
+                          
+                          UDAorUOA = "UOA",
+                          level = "National",
+                          region_STP_name = NULL)
+```
+
+* The graph shows the proportion of practices delivering
+between a certain % group of contracted UOA activity if performance for that
+month is annualised.
+This uses scheduled data.
+
+
+
+
+
+## Time series of banded Courses of Treatment
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
+plot_banded_CoT(data = UDA_scheduled_data,
+                
+                historic_data = historical_UDA_scheduled_data,
+                remove_prototypes = FALSE,
+                level = "National",
+                region_STP_name = NULL)
+```
+
+
+
+
+## Banded Courses of Treatment as % of 2019 delivery
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
+plot_banded_CoT(data = UDA_scheduled_data,
+                
+                historic_data = historical_UDA_scheduled_data,
+                remove_prototypes = FALSE,
+                level = "National",
+                region_STP_name = NULL,
+                asIndex = TRUE)
+```
+
+
+
+
+## Urgent treatment form submissions
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_urgent_form_submissions(data = UDA_scheduled_data,
+                
+                historic_data = historical_UDA_scheduled_data,
+                remove_prototypes = FALSE,
+                level = "National",
+                region_STP_name = NULL)
+```
+
+
+
+## Percentage of FP17s in each band 2 sub-category
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_band2_split_percentage(data = band2_split_data,
+                             scheduled_data = UDA_scheduled_data,
+                             remove_prototypes = FALSE, 
+                             commissioner_region_lookup = STP_ICB_lookup_codes,
+                           level = "National",
+                           region_STP_name = NULL,
+                             plotChart = TRUE)
+```
+
+
+
+
+## UDAs delivered by Patient Charge Status
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
+plot_UDAs_by_patient_exemption(data = patient_exemption_data,
+                               region_filter = "England")
+```
+ 
+96% is the delivery threshold that contracts are required to meet in order to be paid in full. If they deliver below this, they will be in clawback.
+ 
+
+
+
+## 111 dental related call volumes
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_111_referrals()
+```
+
+
+## Percentage of CoTs assisted by Dental Care Practitioners (DCPs)
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_DCP_analysis(data = UDA_scheduled_data,
+                              dcp_data = DCP_data,
+                              
+                              UDA_or_FP17 = "FP17",
+                              level = "National",
+                              region_STP_name = NULL)
+```
+
+N.B. This data has only been collected since October 2022 and may take a few months for contractors to get used to reporting on DCP assisted courses of treatment.
+
+
+
+## Percentage of UDAs assisted by Dental Care Practitioners (DCPs)
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_DCP_analysis(data = UDA_scheduled_data,
+                              dcp_data = DCP_data,
+                              
+                              UDA_or_FP17 = "UDA",
+                              level = "National",
+                              region_STP_name = NULL)
+```
+
+
+
+## Oral health risk assessment
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_BPE_no_oral_health_risk(data = BPE_data,
+                                         ICB_lookup = STP_ICB_lookup_codes,
+                                         level = "National",
+                                         region_STP_name = NULL)
+```
+
+The boxplot for **`r format(plot_BPE_no_oral_health_risk(level = "National", region_STP_name = NULL, plotChart = FALSE, quartileOutput = NULL), "%B %Y")`** shows that: 
+* Three quarters of contracts brought back at least **`r paste(plot_BPE_no_oral_health_risk(level = "National", region_STP_name = NULL, plotChart = FALSE, quartileOutput = "LQ"))`** of their low risk patients within one year
+* Half of contracts brought back at least **`r paste(plot_BPE_no_oral_health_risk(level = "National", region_STP_name = NULL, plotChart = FALSE, quartileOutput = "Median"))`** of their low risk patients within one year
+* A quarter of contracts brought back **`r paste(plot_BPE_no_oral_health_risk(level = "National", region_STP_name = NULL, plotChart = FALSE, quartileOutput = "UQ"))`** of their low risk patients within one year
+
+
+## Unique dental patients seen as a percentage of April 2018 figures
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_unique_patients_rolling(data = unique_patients_rolling,
+                                     
+                                     scheduled_data = UDA_scheduled_data,
+                                     level = "National",
+                                     region_STP_name = NULL,
+                                     plotChart = TRUE,
+                                     remove_prototypes = FALSE,
+                             asIndex = TRUE)
+```
+
+* The number of unique patients seen in the last 12 months is currently around
+**`r plot_unique_patients_rolling(level = "National",region_STP_name = NULL, plotChart = F,remove_prototypes = FALSE, get_perc = T)` %**
+of pre-pandemic levels.
+
+
+## New patients seen 
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_number_new_patients(data = new_vs_return_data, 
+                                                  scheduled_data = UDA_scheduled_data,
+                                                  as_percentage = FALSE,
+                                                  level = "National",
+                                                  region_STP_name = NULL)
+```
+
+
+
+## Percentage of providers seeing new patients
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_number_new_patients(data = new_vs_return_data, 
+                                                  scheduled_data = UDA_scheduled_data,
+                                                  as_percentage = TRUE,
+                                                  level = "National",
+                                                  region_STP_name = NULL)
+```
+
+
+
+## Patient re-attendance intervals - Band 1
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=12, fig.height=6}
+plot_patient_recalls_facet(data = dental_recalls_STP_2018_22,
+                                 treatment_band = "Band_1",
+                                 level = "National",
+                                 region_STP_name = NULL,
+                                 
+                                 plotChart = TRUE)
+```
+
+## Patient re-attendance intervals - Band 2
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=12, fig.height=6}
+plot_patient_recalls_facet(data = dental_recalls_STP_2018_22,
+                                 treatment_band = "Band_2",
+                                 level = "National",
+                                 region_STP_name = NULL,
+                                 
+                                 plotChart = TRUE)
+```
+
+## Patient re-attendance intervals - Band 3
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=12, fig.height=6}
+plot_patient_recalls_facet(data = dental_recalls_STP_2018_22,
+                                 treatment_band = "Band_3",
+                                 level = "National",
+                                 region_STP_name = NULL,
+                                 
+                                 plotChart = TRUE)
+```
+
+
+## Patient re-attendance intervals - Urgent
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=12, fig.height=6}
+plot_patient_recalls_facet(data = dental_recalls_STP_2018_22,
+                                 treatment_band = "Urgent",
+                                 level = "National",
+                                 region_STP_name = NULL,
+                                 
+                                 plotChart = TRUE)
+```
+
+
+## Patient re-attendance intervals - Other
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=12, fig.height=6}
+plot_patient_recalls_facet(data = dental_recalls_STP_2018_22,
+                                 treatment_band = "Other",
+                                 level = "National",
+                                 region_STP_name = NULL,
+                                 
+                                 plotChart = TRUE)
+```
+
+ 
+## Community Dental Services (CDS) - Patients waiting for assessment
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_CDS_patients_waiting_for_assessment(data = CDS_data,
+                                                     
+                                                     level = "National",
+                                                     region_STP_name = NULL,
+                                                     all_regions_and_STPs = FALSE)
+```
+
+
+## CDS - Patients waiting for treatment
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_CDS_patients_waiting_for_treatment(data = CDS_data,
+                                                     
+                                                     level = "National",
+                                                     region_STP_name = NULL,
+                                                     all_regions_and_STPs = FALSE)
+```
+
+
+
+## CDS - Wait times for assessment
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_CDS_wait_times_for_assessment(data = CDS_data,
+                                                     
+                                                     level = "National",
+                                                     region_STP_name = NULL,
+                                                     all_regions_and_STPs = FALSE)
+```
+
+
+
+## CDS - Wait times for treatment
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_CDS_wait_times_for_treatment(data = CDS_data,
+                                                     
+                                                     level = "National",
+                                                     region_STP_name = NULL,
+                                                     all_regions_and_STPs = FALSE)
+```
+
+ 
+
+
+## Practice closures
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_practice_closures(data = contract_handbacks,
+                                level = "National",
+                                region_STP_name = NULL,
+                                all_regions_and_STPs = FALSE,
+                                plotChart = TRUE)
+```
+
+For context, there are **`r get_num_contracts(remove_prototypes = FALSE)`** nationally, including prototypes and contracts with annual contracted UDAs < 100.
+
+This data is taken from the BSA Primary Care Activity Report (PCAR). Prior to October 2021, the report was quarterly which is why the figures in these graph show aggregated figures for Q1 and Q2 2021 and then monthly figures after that. Prior to Q1 2021, the data for this report was collected differently and is not comparable.
+
+
+
+## De-commissioned and re-commissioned UDAs and UOAs as a result of closure
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_re_and_de_commissioned_UDAs_UOAs(data = contract_handbacks,
+                                level = "National",
+                                region_STP_name = NULL,
+                                all_regions_and_STPs = FALSE,
+                                plotChart = TRUE)
+```
+
+This data is taken from the BSA Primary Care Activity Report (PCAR). Prior to October 2021, the report was quarterly which is why the figures in these graph show aggregated figures for Q1 and Q2 2021 and then monthly figures after that. Prior to Q1 2021, the data for this report was collected differently and is not comparable.
+
+
+
+## Annual contracted UDAs trend
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_UDAs_commissioned(data = UDA_scheduled_data,
+                                     historical_data = historical_UDA_scheduled_data,
+                                level = "National",
+                                region_STP_name = NULL,
+                                plotChart = TRUE)
+```
+
+The change in total annual contracted UDAs from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B %Y")` is
+**`r plot_UDAs_commissioned(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,level = "National",region_STP_name = NULL,plotChart = FALSE, getChange = TRUE)`%**.
+
+The dips seen every April may be due to the fact that new contracts starting at the beginning of the financial year will not have submitted any FP17s until May, which means that their contracted UDA data will not show up until May.
+
+
+## Payments to dentists
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_payments_to_dentists(data = payments_to_dentists,
+                                level = "National",
+                                region_STP_name = NULL,
+                                plotChart = TRUE)
+```
+
+
+
+
+## Cumulative financial value of UDAs delivered
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_cumulative_UDA_value(data = UDA_scheduled_data,
+                           historical_data = historical_UDA_scheduled_data,
+                           payments_data = payments_to_dentists,
+                           UDA_value_data = UDA_values,
+                           protos = prototype_contracts$prototype_contract_number,
+                           level = "National",
+                           region_STP_name = NULL,
+                           all_regions_and_STPs = FALSE,
+                           asIndex = FALSE,
+                           plotChart = TRUE)
+```
+
+
+
+## Appendix
+#### MY Category classification breakdown:
+
+
+
+* Cat 1
+  + Details in CoMPASS Correct
+* Cat 2
+  + Carry Forward - Other
+  + Flexibly Commissioned Contract
+  + Force majeure accepted
+  + Force majeure o/s
+  + In-year incorporation/merge (Parent contract - letter will be sent)
+  + Incomplete OOH/other access services
+  + Late subs processed
+  + Mixed / CoT Contract
+  + Non-recurring activity
+  + Open in-year
+  + Other
+  + Request to re-base
+  + Review Carry Forward
+  + Sub Contracts (Parent contract - letter will be sent)
+  + UDA Value below £15.00
+  + UDA Value exceeds £49.99
+  + UDC
+  + UOA Value exceeds £75.00
+  + Closed in-year
+  + Incomplete service line entries
+
+
+## Appendix continued
+* Cat 3
+  + CDS
+  + Closed in year
+  + Contract End Date before 01/04/2020
+  + Contract End Date before 01/04/2021
+  + Contract End Date before 01/04/2022
+  + DCO req to resolve locally
+  + Domiciliary/ Sedation
+  + IMOS/MOS
+  + In-year incorporation/merge (Child contract - letter will not be sent)
+  + Incomplete OOH/other access services
+  + Known performance/contract issues
+  + No Contracted activity
+  + No Contracted value
+  + Not paid by the NHSBSA
+  + Open in year
+  + Other
+  + Other - Please state why
+  + Other Advanced/Additional Services
+  + PDS Plus
+  + Prison
+  + Sub Contracts (Child contract - letter will not be sent)
+* Cat 4
+  + Dental Contract Reform
+
+
+## Data sources
+
+
+* BSA calendar and scheduled UDA data downloaded from the "NHS England Central Dashboard" on eDEN. This data is downloaded monthly and put on the NCDR.
+* Tables are:
+  + [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UDA_calendar]
+  + [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UDA_scheduled]
+  + [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UOA_calendar]
+  + [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UOA_scheduled]
+* Historical data going back to April 2016 is saved here:
+  + [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UDA_scheduled_historical]
+* A list of prototype contracts are also available in:
+  + [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[prototype_contracts]
+* Tables of UDA delivery on STP/ICB level in calendar and scheduled format available in:
+  + [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UDA_delivery_calendar]
+  + [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UDA_delivery_scheduled]
+
+* 111 data comes from the pathways tool which is received monthly by email.
+* Rolling unique patients data is received monthly by email from the BSA and saved on the NCDR in the following table:
+  + [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[unique_patients_rolling_12_month]
+* CDS data is downloaded from the [CDS dashboard](https://miteam.shinyapps.io/CDS_Dashboard/)
+* Payments to dentists data comes from the publicly available [BSA data](https://www.nhsbsa.nhs.uk/dental-data/nhs-payments-dentists)
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
