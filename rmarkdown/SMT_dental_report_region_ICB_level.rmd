@@ -4819,9 +4819,9 @@ plot_BPE_no_oral_health_risk(data = BPE_data,
 ```
 
 The boxplot for **`r format(plot_BPE_no_oral_health_risk(level = "Regional", region_STP_name = region, plotChart = FALSE, quartileOutput = NULL), "%B %Y")`** shows that: 
-* Three quarters of contracts brought back at least **`r paste(plot_BPE_no_oral_health_risk(level = "Regional", region_STP_name = region, plotChart = FALSE, quartileOutput = "LQ"))`** of their low risk patients within one year
-* Half of contracts brought back at least **`r paste(plot_BPE_no_oral_health_risk(level = "Regional", region_STP_name = region, plotChart = FALSE, quartileOutput = "Median"))`** of their low risk patients within one year
 * A quarter of contracts brought back **`r paste(plot_BPE_no_oral_health_risk(level = "Regional", region_STP_name = region, plotChart = FALSE, quartileOutput = "UQ"))`** of their low risk patients within one year
+* Half of contracts brought back at least **`r paste(plot_BPE_no_oral_health_risk(level = "Regional", region_STP_name = region, plotChart = FALSE, quartileOutput = "Median"))`** of their low risk patients within one year
+* Three quarters of contracts brought back at least **`r paste(plot_BPE_no_oral_health_risk(level = "Regional", region_STP_name = region, plotChart = FALSE, quartileOutput = "LQ"))`** of their low risk patients within one year
 
  ]
  .panel[.panel-name[`r STP1`]
@@ -4833,9 +4833,9 @@ plot_BPE_no_oral_health_risk(data = BPE_data,
 ```
 
 The boxplot for **`r format(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP1, plotChart = FALSE, quartileOutput = NULL), "%B %Y")`** shows that: 
-* Three quarters of contracts brought back at least **`r paste(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP1, plotChart = FALSE, quartileOutput = "LQ"))`** of their low risk patients within one year
-* Half of contracts brought back at least **`r paste(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP1, plotChart = FALSE, quartileOutput = "Median"))`** of their low risk patients within one year
 * A quarter of contracts brought back **`r paste(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP1, plotChart = FALSE, quartileOutput = "UQ"))`** of their low risk patients within one year
+* Half of contracts brought back at least **`r paste(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP1, plotChart = FALSE, quartileOutput = "Median"))`** of their low risk patients within one year
+* Three quarters of contracts brought back at least **`r paste(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP1, plotChart = FALSE, quartileOutput = "LQ"))`** of their low risk patients within one year
 
  ]
  .panel[.panel-name[`r STP2`]
@@ -4847,9 +4847,9 @@ plot_BPE_no_oral_health_risk(data = BPE_data,
 ```
 
 The boxplot for **`r format(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP2, plotChart = FALSE, quartileOutput = NULL), "%B %Y")`** shows that: 
-* Three quarters of contracts brought back at least **`r paste(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP2, plotChart = FALSE, quartileOutput = "LQ"))`** of their low risk patients within one year
-* Half of contracts brought back at least **`r paste(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP2, plotChart = FALSE, quartileOutput = "Median"))`** of their low risk patients within one year
 * A quarter of contracts brought back **`r paste(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP2, plotChart = FALSE, quartileOutput = "UQ"))`** of their low risk patients within one year
+* Half of contracts brought back at least **`r paste(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP2, plotChart = FALSE, quartileOutput = "Median"))`** of their low risk patients within one year
+* Three quarters of contracts brought back at least **`r paste(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP2, plotChart = FALSE, quartileOutput = "LQ"))`** of their low risk patients within one year
 
  ]
  .panel[.panel-name[`r STP3`]
@@ -4861,9 +4861,9 @@ plot_BPE_no_oral_health_risk(data = BPE_data,
 ```
 
 The boxplot for **`r format(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP3, plotChart = FALSE, quartileOutput = NULL), "%B %Y")`** shows that: 
-* Three quarters of contracts brought back at least **`r paste(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP3, plotChart = FALSE, quartileOutput = "LQ"))`** of their low risk patients within one year
-* Half of contracts brought back at least **`r paste(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP3, plotChart = FALSE, quartileOutput = "Median"))`** of their low risk patients within one year
 * A quarter of contracts brought back **`r paste(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP3, plotChart = FALSE, quartileOutput = "UQ"))`** of their low risk patients within one year
+* Half of contracts brought back at least **`r paste(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP3, plotChart = FALSE, quartileOutput = "Median"))`** of their low risk patients within one year
+* Three quarters of contracts brought back at least **`r paste(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP3, plotChart = FALSE, quartileOutput = "LQ"))`** of their low risk patients within one year
 
  ]
  .panel[.panel-name[`r STP4`]
@@ -4875,9 +4875,9 @@ plot_BPE_no_oral_health_risk(data = BPE_data,
 ```
 
 The boxplot for **`r if(eval4){format(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP4, plotChart = FALSE, quartileOutput = NULL), "%B %Y")}`** shows that: 
-* Three quarters of contracts brought back at least **`r if(eval4){paste(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP4, plotChart = FALSE, quartileOutput = "LQ"))}`** of their low risk patients within one year
-* Half of contracts brought back at least **`r if(eval4){paste(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP4, plotChart = FALSE, quartileOutput = "Median"))}`** of their low risk patients within one year
 * A quarter of contracts brought back **`r if(eval4){paste(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP4, plotChart = FALSE, quartileOutput = "UQ"))}`** of their low risk patients within one year
+* Half of contracts brought back at least **`r if(eval4){paste(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP4, plotChart = FALSE, quartileOutput = "Median"))}`** of their low risk patients within one year
+* Three quarters of contracts brought back at least **`r if(eval4){paste(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP4, plotChart = FALSE, quartileOutput = "LQ"))}`** of their low risk patients within one year
 
  ]
  .panel[.panel-name[`r STP5`]
@@ -4889,9 +4889,9 @@ plot_BPE_no_oral_health_risk(data = BPE_data,
 ```
 
 The boxplot for **`r if(eval5){format(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP5, plotChart = FALSE, quartileOutput = NULL), "%B %Y")}`** shows that: 
-* Three quarters of contracts brought back at least **`r if(eval5){paste(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP5, plotChart = FALSE, quartileOutput = "LQ"))}`** of their low risk patients within one year
-* Half of contracts brought back at least **`r if(eval5){paste(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP5, plotChart = FALSE, quartileOutput = "Median"))}`** of their low risk patients within one year
 * A quarter of contracts brought back **`r if(eval5){paste(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP5, plotChart = FALSE, quartileOutput = "UQ"))}`** of their low risk patients within one year
+* Half of contracts brought back at least **`r if(eval5){paste(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP5, plotChart = FALSE, quartileOutput = "Median"))}`** of their low risk patients within one year
+* Three quarters of contracts brought back at least **`r if(eval5){paste(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP5, plotChart = FALSE, quartileOutput = "LQ"))}`** of their low risk patients within one year
 
  ]
  .panel[.panel-name[`r STP6`]
@@ -4903,9 +4903,9 @@ plot_BPE_no_oral_health_risk(data = BPE_data,
 ```
 
 The boxplot for **`r if(eval6){format(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP6, plotChart = FALSE, quartileOutput = NULL), "%B %Y")}`** shows that: 
-* Three quarters of contracts brought back at least **`r if(eval6){paste(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP6, plotChart = FALSE, quartileOutput = "LQ"))}`** of their low risk patients within one year
-* Half of contracts brought back at least **`r if(eval6){paste(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP6, plotChart = FALSE, quartileOutput = "Median"))}`** of their low risk patients within one year
 * A quarter of contracts brought back **`r if(eval6){paste(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP6, plotChart = FALSE, quartileOutput = "UQ"))}`** of their low risk patients within one year
+* Half of contracts brought back at least **`r if(eval6){paste(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP6, plotChart = FALSE, quartileOutput = "Median"))}`** of their low risk patients within one year
+* Three quarters of contracts brought back at least **`r if(eval6){paste(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP6, plotChart = FALSE, quartileOutput = "LQ"))}`** of their low risk patients within one year
 
  ]
  .panel[.panel-name[`r STP7`]
@@ -4917,9 +4917,9 @@ plot_BPE_no_oral_health_risk(data = BPE_data,
 ```
 
 The boxplot for **`r if(eval7){format(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP7, plotChart = FALSE, quartileOutput = NULL), "%B %Y")}`** shows that: 
-* Three quarters of contracts brought back at least **`r if(eval7){paste(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP7, plotChart = FALSE, quartileOutput = "LQ"))}`** of their low risk patients within one year
-* Half of contracts brought back at least **`r if(eval7){paste(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP7, plotChart = FALSE, quartileOutput = "Median"))}`** of their low risk patients within one year
 * A quarter of contracts brought back **`r if(eval7){paste(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP7, plotChart = FALSE, quartileOutput = "UQ"))}`** of their low risk patients within one year
+* Half of contracts brought back at least **`r if(eval7){paste(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP7, plotChart = FALSE, quartileOutput = "Median"))}`** of their low risk patients within one year
+* Three quarters of contracts brought back at least **`r if(eval7){paste(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP7, plotChart = FALSE, quartileOutput = "LQ"))}`** of their low risk patients within one year
 
  ]
  .panel[.panel-name[`r STP8`]
@@ -4931,9 +4931,9 @@ plot_BPE_no_oral_health_risk(data = BPE_data,
 ```
 
 The boxplot for **`r if(eval8){format(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP8, plotChart = FALSE, quartileOutput = NULL), "%B %Y")}`** shows that: 
-* Three quarters of contracts brought back at least **`r if(eval8){paste(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP8, plotChart = FALSE, quartileOutput = "LQ"))}`** of their low risk patients within one year
-* Half of contracts brought back at least **`r if(eval8){paste(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP8, plotChart = FALSE, quartileOutput = "Median"))}`** of their low risk patients within one year
 * A quarter of contracts brought back **`r if(eval8){paste(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP8, plotChart = FALSE, quartileOutput = "UQ"))}`** of their low risk patients within one year
+* Half of contracts brought back at least **`r if(eval8){paste(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP8, plotChart = FALSE, quartileOutput = "Median"))}`** of their low risk patients within one year
+* Three quarters of contracts brought back at least **`r if(eval8){paste(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP8, plotChart = FALSE, quartileOutput = "LQ"))}`** of their low risk patients within one year
 
  ]
  .panel[.panel-name[`r STP9`]
@@ -4945,9 +4945,9 @@ plot_BPE_no_oral_health_risk(data = BPE_data,
 ```
 
 The boxplot for **`r if(eval9){format(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP9, plotChart = FALSE, quartileOutput = NULL), "%B %Y")}`** shows that: 
-* Three quarters of contracts brought back at least **`r if(eval9){paste(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP9, plotChart = FALSE, quartileOutput = "LQ"))}`** of their low risk patients within one year
-* Half of contracts brought back at least **`r if(eval9){paste(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP9, plotChart = FALSE, quartileOutput = "Median"))}`** of their low risk patients within one year
 * A quarter of contracts brought back **`r if(eval9){paste(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP9, plotChart = FALSE, quartileOutput = "UQ"))}`** of their low risk patients within one year
+* Half of contracts brought back at least **`r if(eval9){paste(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP9, plotChart = FALSE, quartileOutput = "Median"))}`** of their low risk patients within one year
+* Three quarters of contracts brought back at least **`r if(eval9){paste(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP9, plotChart = FALSE, quartileOutput = "LQ"))}`** of their low risk patients within one year
 
  ]
  .panel[.panel-name[`r STP10`]
@@ -4959,9 +4959,9 @@ plot_BPE_no_oral_health_risk(data = BPE_data,
 ```
 
 The boxplot for **`r if(eval10){format(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP10, plotChart = FALSE, quartileOutput = NULL), "%B %Y")}`** shows that: 
-* Three quarters of contracts brought back at least **`r if(eval10){paste(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP10, plotChart = FALSE, quartileOutput = "LQ"))}`** of their low risk patients within one year
-* Half of contracts brought back at least **`r if(eval10){paste(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP10, plotChart = FALSE, quartileOutput = "Median"))}`** of their low risk patients within one year
 * A quarter of contracts brought back **`r if(eval10){paste(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP10, plotChart = FALSE, quartileOutput = "UQ"))}`** of their low risk patients within one year
+* Half of contracts brought back at least **`r if(eval10){paste(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP10, plotChart = FALSE, quartileOutput = "Median"))}`** of their low risk patients within one year
+* Three quarters of contracts brought back at least **`r if(eval10){paste(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP10, plotChart = FALSE, quartileOutput = "LQ"))}`** of their low risk patients within one year
 
  ]
  .panel[.panel-name[`r STP11`]
@@ -4973,9 +4973,9 @@ plot_BPE_no_oral_health_risk(data = BPE_data,
 ```
 
 The boxplot for **`r if(eval11){format(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP11, plotChart = FALSE, quartileOutput = NULL), "%B %Y")}`** shows that: 
-* Three quarters of contracts brought back at least **`r if(eval11){paste(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP11, plotChart = FALSE, quartileOutput = "LQ"))}`** of their low risk patients within one year
-* Half of contracts brought back at least **`r if(eval11){paste(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP11, plotChart = FALSE, quartileOutput = "Median"))}`** of their low risk patients within one year
 * A quarter of contracts brought back **`r if(eval11){paste(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP11, plotChart = FALSE, quartileOutput = "UQ"))}`** of their low risk patients within one year
+* Half of contracts brought back at least **`r if(eval11){paste(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP11, plotChart = FALSE, quartileOutput = "Median"))}`** of their low risk patients within one year
+* Three quarters of contracts brought back at least **`r if(eval11){paste(plot_BPE_no_oral_health_risk(level = "STP", region_STP_name = STP11, plotChart = FALSE, quartileOutput = "LQ"))}`** of their low risk patients within one year
 
  ]
  ]

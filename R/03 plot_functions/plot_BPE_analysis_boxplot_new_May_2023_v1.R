@@ -85,7 +85,7 @@ plot_BPE_no_oral_health_risk <- function(data = BPE_data,
                      aes(x = Year_Month, y = percent_low_risk_whic_are1_year)) +
       geom_boxplot(aes(group = Year_Month)) +
       labs(x = "Month",
-           y = "Percentrage of Low Risk Patients Recalled",
+           y = "",
            title = "Percentrage of Low Risk Patients Recalled within a Year by Contractors",
            subtitle = subtitle
       ) +
