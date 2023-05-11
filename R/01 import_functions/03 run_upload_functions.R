@@ -43,6 +43,6 @@ upload_unique_patients_data(unique_patients = unique_patients_latest)
 
 ###### To be run after the rmarkdown is run ####################################
 # #Upload metrics
-# upload_delivery_metrics()
-# update_SOF_table_S109()
-# upload_unique_patients_metric()
+upload_delivery_metrics()
+update_SOF_table_S109()
+upload_unique_patients_metric()

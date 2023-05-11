@@ -122,7 +122,8 @@ upload_delivery_metrics <- function(calendar_data = UDA_calendar_data,
            monthly_UDAs_delivered = monthly_UDA_UOAs_delivered,
            scaled_monthly_UDAs_delivered = scaled_monthly_UDA_UOAs_delivered, 
            annual_contracted_UDAs = annual_contracted_UDA_UOA, 
-           scaled_perc_UDAs_delivered = perc_UDA_UOA_delivered)
+           scaled_perc_UDAs_delivered = perc_UDA_UOA_delivered) %>%
+    mutate(scaled_perc_UDAs_delivered = if_else(is.nan(scaled_perc_UDAs_delivered) | is.infinite(scaled_perc_UDAs_delivered), as.numeric(NA), scaled_perc_UDAs_delivered))
   
   
   
