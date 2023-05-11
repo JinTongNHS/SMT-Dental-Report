@@ -159,7 +159,7 @@ name: contents
  * [CDS Patients waiting for treatment](#cds-treatment)
  * [CDS Patients waiting for assessment](#cds-wait-weeks-assessment)
  * [CDS Patients waiting for treatment](#cds-wait-weeks-treatment)
- * [Practice closures based on PCAR report](#closures)
+ * [Contract closures based on PCAR report](#closures)
  * [De-commissioned and re-commissioned UDAs and UOAs as a result of closure based on PCAR](#de-and-re-commissioned)
  * [Total annual contracted UDAs trend](#annual-contracted-UDAs-trend)
  * [Total number of contracts trend](#num-contracts-trend)
@@ -5515,7 +5515,7 @@ plot_CDS_wait_times_for_treatment(data = CDS_data,
 ---
 name: closures
 
-### Practice closures
+### Contract closures
 
 ```{r xaringan-panelset-closures, echo=FALSE}
 xaringanExtra::use_panelset()

@@ -165,7 +165,7 @@ knitr::opts_chunk$set(echo = FALSE)
  * CDS Patients waiting for treatment
  * CDS Patients waiting for assessment
  * CDS Patients waiting for treatment
- * Practice closures based on PCAR report
+ * Contract closures based on PCAR report
  * De-commissioned and re-commissioned UDAs and UOAs as a result of closure based on PCAR
  * Total annual contracted UDAs trend
  * Total number of contracts trend
@@ -756,7 +756,7 @@ plot_CDS_wait_times_for_treatment(data = CDS_data,
  
 
 
-## Practice closures
+## Contract closures
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 plot_practice_closures(data = contract_handbacks,
