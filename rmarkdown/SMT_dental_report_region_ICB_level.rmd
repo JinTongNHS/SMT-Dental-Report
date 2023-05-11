@@ -13,7 +13,7 @@ output:
       highlightLines: true
       countIncrementalSlides: false
 params:
-  region: "East of England"
+  region: "London"
 ---
 
 
