@@ -20,13 +20,13 @@ get_delivery_profile_data <- function(data = UDA_scheduled_data,
   if(UDAorUOA == "UDA"){
     #create column for 12 month scaled % of UDAs delivered. April must be scaled differently.
     performance_table <- data %>%
-      mutate(monthly_perc_scaled = if_else(month != as.Date("2021-04-01") & month != as.Date("2022-04-01"),
+      mutate(monthly_perc_scaled = if_else(substr(month, 6, 7) != "04",
                                            round(UDA_delivered * 12 * 100 / annual_contracted_UDA),
-                                           round(UDA_delivered * 18 * 100 / annual_contracted_UDA))) 
+                                           round(UDA_delivered * 18 * 100 / annual_contracted_UDA)))
   }else{
     #create column for 12 month scaled % of UOAs delivered 
     performance_table <- data %>%
-      mutate(monthly_perc_scaled = if_else(month != as.Date("2021-04-01") & month != as.Date("2022-04-01"),
+      mutate(monthly_perc_scaled = if_else(substr(month, 6, 7) != "04",
                                            round(UOA_delivered * 12 * 100 / annual_contracted_UOA),
                                            round(UOA_delivered * 18 * 100 / annual_contracted_UOA)))
   }
