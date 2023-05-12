@@ -87,41 +87,43 @@ plot_number_new_vs_returning_patients <- function(data = new_vs_return_data,
   
   new_vs_return_data$Contract_Number<- as.numeric(new_vs_return_data$Contract_Number)
   
-  data_longer <- new_vs_return_data 
+  new_vs_return_data$month <- as.Date(new_vs_return_data$month)
   
-  colnames(data_longer) <- c(
-    "Contract.Number", "Latest_Provider_Name", "Latest_Region",            
-    "Latest_Region_Description", "Latest_Commissioner_Code",  "Latest_Commissioner_Name" ,
-    "adult_2022-04",             "adult_2022-05" ,            "adult_2022-06",            
-    "adult_2022-07" ,            "adult_2022-08"  ,           "adult_2022-09" ,           
-    "adult_2022-10"  ,           "adult_2022-11"   ,          "adult_2022-12"  ,          
-    "adult_2023-01"   ,          "adult_2023-02"    ,         "child_2022-04"   ,         
-    "child_2022-05"    ,         "child_2022-06"     ,        "child_2022-07"    ,        
-    "child_2022-08"     ,        "child_2022-09"      ,       "child_2022-10"     ,       
-    "child_2022-11"      ,       "child_2022-12"       ,      "child_2023-01"      ,      
-    "child_2023-02")
-  
-  
-  test_1<- data_longer<- data_longer %>% 
-    # select(!c(##Contract_Number, 
-    # Latest_Provider_Name, Latest_Region, 
-    # Latest_Commissioner_Code, Latest_Commissioner_Name)) %>% 
-    pivot_longer(cols = -c(Contract.Number, Latest_Provider_Name, Latest_Region,            
-    Latest_Region_Description, Latest_Commissioner_Code,  Latest_Commissioner_Name), 
-                 names_to = c('.value', 'month'), 
-                 names_sep="_") 
-  
-  year_x <- substr(test_1$month, 1, 4)
-  month_x <- substr(test_1$month, 6, 7)
-  test_1$month <- as.Date(paste0(year_x, "-", month_x, "-01"))
-  
+  # data_longer <- new_vs_return_data 
+  # 
+  # colnames(data_longer) <- c(
+  #   "Contract.Number", "Latest_Provider_Name", "Latest_Region",            
+  #   "Latest_Region_Description", "Latest_Commissioner_Code",  "Latest_Commissioner_Name" ,
+  #   "adult_2022-04",             "adult_2022-05" ,            "adult_2022-06",            
+  #   "adult_2022-07" ,            "adult_2022-08"  ,           "adult_2022-09" ,           
+  #   "adult_2022-10"  ,           "adult_2022-11"   ,          "adult_2022-12"  ,          
+  #   "adult_2023-01"   ,          "adult_2023-02"    ,         "child_2022-04"   ,         
+  #   "child_2022-05"    ,         "child_2022-06"     ,        "child_2022-07"    ,        
+  #   "child_2022-08"     ,        "child_2022-09"      ,       "child_2022-10"     ,       
+  #   "child_2022-11"      ,       "child_2022-12"       ,      "child_2023-01"      ,      
+  #   "child_2023-02")
+  # # 
+  # 
+  # test_1<- data_longer<- data_longer %>% 
+  #   # select(!c(##Contract_Number, 
+  #   # Latest_Provider_Name, Latest_Region, 
+  #   # Latest_Commissioner_Code, Latest_Commissioner_Name)) %>% 
+  #   pivot_longer(cols = -c(Contract.Number, Latest_Provider_Name, Latest_Region,            
+  #   Latest_Region_Description, Latest_Commissioner_Code,  Latest_Commissioner_Name), 
+  #                names_to = c('.value', 'month'), 
+  #                names_sep="_") 
+  # 
+  # year_x <- substr(test_1$month, 1, 4)
+  # month_x <- substr(test_1$month, 6, 7)
+  # test_1$month <- as.Date(paste0(year_x, "-", month_x, "-01"))
+  # 
   #####################
   #####################
   #####################  patients' numbers ################
   
-  patients_number_summary <- test_1 %>% group_by(month) %>% 
-    dplyr::summarise (new_adult_patients_number = sum(adult, na.rm = TRUE),
-                      new_child_patients_number = sum(child, na.rm = TRUE)) 
+  patients_number_summary <- new_vs_return_data %>% group_by(month) %>% 
+    dplyr::summarise (new_adult_patients_number = sum(Adult, na.rm = TRUE),
+                      new_child_patients_number = sum(Child, na.rm = TRUE)) 
   
   patients_number_summary_longer <- patients_number_summary %>% 
     pivot_longer (cols = c('new_adult_patients_number', 'new_child_patients_number'),
@@ -135,7 +137,7 @@ plot_number_new_vs_returning_patients <- function(data = new_vs_return_data,
       geom_line(aes(color=category),
                 linewidth = 1.2)+
       geom_point(aes(color=category),
-                 size = 3) +
+                 size = 3) + 
       scale_x_date(date_labels = "%b-%Y", breaks = "1 month") +
       expand_limits(y=0) +
       geom_text(aes(label = number), vjust=-.5)+
@@ -143,8 +145,9 @@ plot_number_new_vs_returning_patients <- function(data = new_vs_return_data,
       ##theme(legend.position="bottom") +
       theme(legend.position="top") +
       labs(title = "New Patient (no previous in last 24 months or before) Numbers",
-           subtitle = subtitle)
-    
+           subtitle = subtitle) +
+      theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+     
     new_patient_line_chart_england
     
   }
@@ -172,8 +175,8 @@ plot_number_new_vs_returning_patients <- function(data = new_vs_return_data,
                             "percent_served_new_adult_patients"),
                    names_to ='category',
                    values_to='Percentage') %>% 
-      select (month, category, Percentage) %>%
-      mutate(month = as.Date(month))
+      select (month, category, Percentage) ##%>%
+      ##mutate(month = as.Date(month))
     
     
     provider_chart <- ggplot(all_provider_longer, 
@@ -183,7 +186,7 @@ plot_number_new_vs_returning_patients <- function(data = new_vs_return_data,
                 linewidth = 1.5)+
       geom_point(aes(color=category),
                  size = 3) +
-     scale_x_date(date_labels = "%b-%Y", breaks = "1 month") +
+     scale_x_date(date_labels = "%d-%Y", breaks = "1 month") +
       expand_limits(y=0) +
       geom_text(aes(label = Percentage), vjust=-.5)+
       theme_classic() +
