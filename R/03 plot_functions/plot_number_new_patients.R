@@ -1,3 +1,5 @@
+##data <- new_vs_return_data
+
 plot_number_new_patients <- function(data = new_vs_return_data,
                                                   level = "National",
                                                   region_STP_name = NULL, 
@@ -78,13 +80,18 @@ plot_number_new_patients <- function(data = new_vs_return_data,
     
     ## providers percentage 
     
-    new_patients_provider_number <- test_1 %>% 
-      group_by (month) %>%
-      summarise(served_new_child_patients = sum(!is.na(child)),
-                served_new_adult_patients = sum(!is.na(adult))) 
+    new_patients_provider_number <- data %>% 
+             group_by (month) %>%
+             summarise(served_new_child_patients = sum(!is.na(Child)),
+                       served_new_adult_patients = sum(!is.na(Adult)))
+      
+    
+      contractors_number_all_patients <- scheduled_data %>%
+        group_by(month) %>%
+        count(month, name = "total_number_of_contractors_submitted_FP17")
     
     all_provider <- left_join(new_patients_provider_number, 
-                              contractors_number_all_patients, by = c("month" = "data_month"))
+                              contractors_number_all_patients, by = c("month" = "month"))
     
     
     all_provider <- all_provider %>% 
