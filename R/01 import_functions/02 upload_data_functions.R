@@ -29,7 +29,7 @@ upload_calendar_data <- function(UDA_latest,
   dbClearResult(result)
   
   UDA_calendar_data_latest <- UDA_calendar_data_full %>%
-    filter(data_month < as.Date("2022-04-01")) %>%
+    filter(data_month < as.Date("2023-04-01")) %>% ###needs to be updates every financial year
     bind_rows(UDA_latest)
   
   dbWriteTable(con, Id(catalog="NHSE_Sandbox_PrimaryCareNHSContracts",schema="Dental",table="UDA_calendar"),
@@ -45,7 +45,7 @@ upload_calendar_data <- function(UDA_latest,
   dbClearResult(result)
   
   UOA_calendar_data_latest <- UOA_calendar_data_full %>%
-    filter(data_month < as.Date("2022-04-01")) %>%
+    filter(data_month < as.Date("2023-04-01")) %>% ###need to be updated every financial yeat
     bind_rows(UOA_latest)
   
   dbWriteTable(con, Id(catalog="NHSE_Sandbox_PrimaryCareNHSContracts",schema="Dental",table="UOA_calendar"),
@@ -133,7 +133,10 @@ upload_delivery_metrics <- function(calendar_data = UDA_calendar_data,
   dbWriteTable(con, Id(catalog="NHSE_Sandbox_PrimaryCareNHSContracts",schema="Dental",table="UDA_delivery_calendar"),
                value = UDA_delivery_calendar, row.names = FALSE, append = FALSE, overwrite = TRUE)
 
-  dbWriteTable(con, Id(catalog="NHSE_Sandbox_PrimaryCareNHSContracts",schema="metric",table="UDA_delivery_scheduled_ICB"), ##NB schema has changed
+  dbWriteTable(con, Id(catalog="NHSE_Sandbox_PrimaryCareNHSContracts",schema="metric",table="UDA_delivery_scheduled_ICB"), 
+               value = UDA_delivery_scheduled, row.names = FALSE, append = FALSE, overwrite = TRUE)
+  
+  dbWriteTable(con, Id(catalog="NHSE_Sandbox_PrimaryCareNHSContracts",schema="Dental",table="UDA_delivery_scheduled"), 
                value = UDA_delivery_scheduled, row.names = FALSE, append = FALSE, overwrite = TRUE)
 
   dbWriteTable(con, Id(catalog="NHSE_Sandbox_PrimaryCareNHSContracts",schema="metric",table="UDA_delivery_scheduled_contract_level"), ##NB schema has changed
