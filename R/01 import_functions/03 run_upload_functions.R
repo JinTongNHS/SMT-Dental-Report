@@ -46,3 +46,14 @@ upload_unique_patients_data(unique_patients = unique_patients_latest)
 upload_delivery_metrics()
 update_SOF_table_S109()
 upload_unique_patients_metric()
+
+#save spreadsheet of SOF metric in shared location
+source("R/02 format_data_functions/pull_PCDID_data.R")
+SOF_data <- get_SOF_spreadsheet_data()
+SOF_109_numerator <- SOF_data[["numerator"]]
+SOF_109_denominator <- SOF_data[["denominator"]]
+SOF_109_rate <- SOF_data[["rate"]]
+
+writexl::write_xlsx(SOF_109_numerator, paste0("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/SOF_outputs/SOF_109_numerator_", Sys.Date(), ".xlsx"))
+writexl::write_xlsx(SOF_109_denominator, paste0("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/SOF_outputs/SOF_109_denominatorr_", Sys.Date(), ".xlsx"))
+writexl::write_xlsx(SOF_109_rate, paste0("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/SOF_outputs/SOF_109_rate_", Sys.Date(), ".xlsx"))

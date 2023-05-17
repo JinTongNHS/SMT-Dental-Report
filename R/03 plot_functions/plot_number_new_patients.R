@@ -1,8 +1,13 @@
+##data <- new_vs_return_data
+
 plot_number_new_patients <- function(data = new_vs_return_data,
-                                                  level = "National",
-                                                  region_STP_name = NULL, 
-                                                  scheduled_data = UDA_scheduled_data,
-                                                  as_percentage = FALSE){
+                                     level = "National",
+                                     region_STP_name = NULL, 
+                                     scheduled_data = UDA_scheduled_data,
+                                     as_percentage = FALSE){
+  
+  data <- data %>%
+    mutate(month = as.Date(month))
   
   
   #filter for region or STP if specified
@@ -78,13 +83,18 @@ plot_number_new_patients <- function(data = new_vs_return_data,
     
     ## providers percentage 
     
-    new_patients_provider_number <- test_1 %>% 
+    new_patients_provider_number <- data %>% 
       group_by (month) %>%
-      summarise(served_new_child_patients = sum(!is.na(child)),
-                served_new_adult_patients = sum(!is.na(adult))) 
+      summarise(served_new_child_patients = sum(!is.na(Child)),
+                served_new_adult_patients = sum(!is.na(Adult)))
+      
+    
+    contractors_number_all_patients <- scheduled_data %>%
+      group_by(month) %>%
+      count(month, name = "total_number_of_contractors_submitted_FP17")
     
     all_provider <- left_join(new_patients_provider_number, 
-                              contractors_number_all_patients, by = c("month" = "data_month"))
+                              contractors_number_all_patients, by = c("month" = "month"))
     
     
     all_provider <- all_provider %>% 
@@ -98,8 +108,8 @@ plot_number_new_patients <- function(data = new_vs_return_data,
                             "percent_served_new_adult_patients"),
                    names_to ='category',
                    values_to='Percentage') %>% 
-      select (month, category, Percentage) ##%>%
-    ##mutate(month = as.Date(month))
+      select(month, category, Percentage) %>%
+      mutate(month = as.Date(month))
     
     
     provider_chart <- ggplot(all_provider_longer, 
@@ -108,8 +118,11 @@ plot_number_new_patients <- function(data = new_vs_return_data,
       geom_line(aes(color=category),
                 linewidth = 1.5)+
       geom_point(aes(color=category),
-                 size = 3) +
-      scale_x_date(date_labels = "%d-%Y", breaks = "1 month") +
+                 size = 3) + 
+      scale_x_date(date_labels = "%b-%Y", breaks = "1 month") +
+      scale_y_continuous(breaks = seq(0, 1.1, 0.2),
+                         limits = c(0, 1.1),
+                         labels = scales::percent_format(accuracy = 1)) +
       expand_limits(y=0) +
       geom_text(aes(label = Percentage), vjust=-.5)+
       theme_bw() +
@@ -118,7 +131,8 @@ plot_number_new_patients <- function(data = new_vs_return_data,
       labs(title = "% of Providers Served New Patients",
            x = "Month",
            y = "Number of new patients",
-           subtitle = subtitle) 
+           subtitle = subtitle) +
+      theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
     
     provider_chart 
     
@@ -268,9 +282,9 @@ plot_number_new_patients <- function(data = new_vs_return_data,
 #       geom_point(aes(color=category),
 #                  size = 3) +
 #       scale_x_date(date_labels = "%b-%Y", breaks = "1 month") +
-#       scale_y_continuous(breaks = seq(0, 1.1, 0.2),
-#                          limits = c(0, 1.1),
-#                          labels = scales::percent_format(accuracy = 1)) +
+      # scale_y_continuous(breaks = seq(0, 1.1, 0.2),
+      #                    limits = c(0, 1.1),
+      #                    labels = scales::percent_format(accuracy = 1)) +
 #       expand_limits(y=0) +
 #       geom_text(aes(label = Percentage), vjust=-.5)+
 #       theme_bw() +
