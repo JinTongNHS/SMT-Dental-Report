@@ -54,6 +54,6 @@ SOF_109_numerator <- SOF_data[["numerator"]]
 SOF_109_denominator <- SOF_data[["denominator"]]
 SOF_109_rate <- SOF_data[["rate"]]
 
-writexl::write_xlsx(SOF_109_numerator, paste0("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/SOF_outputs/SOF_109_numerator_", Sys.Date(), ".xlsx"))
-writexl::write_xlsx(SOF_109_denominator, paste0("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/SOF_outputs/SOF_109_denominatorr_", Sys.Date(), ".xlsx"))
-writexl::write_xlsx(SOF_109_rate, paste0("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/SOF_outputs/SOF_109_rate_", Sys.Date(), ".xlsx"))
+writexl::write_xlsx(SOF_109_numerator, paste0("N:/_Everyone/Primary Care Group/SOF_outputs/SOF_109_numerator_", Sys.Date(), ".xlsx"))
+writexl::write_xlsx(SOF_109_denominator, paste0("N:/_Everyone/Primary Care Group/SOF_outputs/SOF_109_denominatorr_", Sys.Date(), ".xlsx"))
+writexl::write_xlsx(SOF_109_rate, paste0("N:/_Everyone/Primary Care Group/SOF_outputs/SOF_109_rate_", Sys.Date(), ".xlsx"))
