@@ -76,7 +76,8 @@ plot_number_new_patients <- function(data = new_vs_return_data,
         labs(title = "New Patient (no previous in last 24 months or before) Numbers",
              x = "Month",
              y = "Number of new patients",
-             subtitle = subtitle) +
+             subtitle = subtitle,
+             caption = "All contracts are included in this graph") +
         theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
       
       new_patient_line_chart_england
@@ -138,7 +139,8 @@ plot_number_new_patients <- function(data = new_vs_return_data,
         labs(title = "% of Providers Served New Patients",
              x = "Month",
              y = "Number of new patients",
-             subtitle = subtitle) +
+             subtitle = subtitle,
+             caption = "All contracts are included in this graph") +
         theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
       
       provider_chart 
