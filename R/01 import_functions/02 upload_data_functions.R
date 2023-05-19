@@ -34,23 +34,23 @@ upload_calendar_data <- function(UDA_latest,
   
   dbWriteTable(con, Id(catalog="NHSE_Sandbox_PrimaryCareNHSContracts",schema="Dental",table="UDA_calendar"),
                value = UDA_calendar_data_latest, row.names = FALSE, append = FALSE, overwrite = TRUE)
-  
-  
+
+
   #Get UOA table and overwrite this financial year
   sql <- "SELECT *
   FROM [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UOA_calendar]"
-  
+
   result <- dbSendQuery(con, sql)
   UOA_calendar_data_full <- dbFetch(result)
   dbClearResult(result)
-  
+
   UOA_calendar_data_latest <- UOA_calendar_data_full %>%
     filter(data_month < as.Date("2023-04-01")) %>% ###need to be updated every financial yeat
     bind_rows(UOA_latest)
-  
+
   dbWriteTable(con, Id(catalog="NHSE_Sandbox_PrimaryCareNHSContracts",schema="Dental",table="UOA_calendar"),
                value = UOA_calendar_data_latest, row.names = FALSE, append = FALSE, overwrite = TRUE)
-  
+
 }
 
 ################################################################################

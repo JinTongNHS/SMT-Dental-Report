@@ -4,7 +4,8 @@ plot_number_new_patients <- function(data = new_vs_return_data,
                                      level = "National",
                                      region_STP_name = NULL, 
                                      scheduled_data = UDA_scheduled_data,
-                                     as_percentage = FALSE){
+                                     as_percentage = FALSE,
+                                     plotChart = TRUE){
   
   data <- data %>%
     mutate(month = as.Date(month))
@@ -55,28 +56,34 @@ plot_number_new_patients <- function(data = new_vs_return_data,
                   values_to='number')
   
   if(as_percentage == FALSE){
-    new_patient_line_chart_england <- ggplot(patients_number_summary_longer, 
-                                             aes(x = month, y = number,
-                                                 group =category )) +
-      geom_line(aes(color=category),
-                linewidth = 1.2)+
-      geom_point(aes(color=category),
-                 size = 3) + 
-      scale_x_date(date_labels = "%b-%Y", breaks = "1 month") +
-      scale_y_continuous(breaks = scales::breaks_pretty(),
-                         labels=function(x) format(x, big.mark = ",", scientific = FALSE)) +
-      expand_limits(y=0) +
-      geom_text(aes(label = number), vjust=-.5)+
-      theme_bw() +
-      ##theme(legend.position="bottom") +
-      theme(legend.position="top") +
-      labs(title = "New Patient (no previous in last 24 months or before) Numbers",
-           x = "Month",
-           y = "Number of new patients",
-           subtitle = subtitle) +
-      theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
     
-    new_patient_line_chart_england
+    if(plotChart == TRUE){
+      new_patient_line_chart_england <- ggplot(patients_number_summary_longer, 
+                                               aes(x = month, y = number,
+                                                   group =category )) +
+        geom_line(aes(color=category),
+                  linewidth = 1.2)+
+        geom_point(aes(color=category),
+                   size = 3) + 
+        scale_x_date(date_labels = "%b-%Y", breaks = "1 month") +
+        scale_y_continuous(breaks = scales::breaks_pretty(),
+                           labels=function(x) format(x, big.mark = ",", scientific = FALSE)) +
+        expand_limits(y=0) +
+        geom_text(aes(label = number), vjust=-.5)+
+        theme_bw() +
+        ##theme(legend.position="bottom") +
+        theme(legend.position="top") +
+        labs(title = "New Patient (no previous in last 24 months or before) Numbers",
+             x = "Month",
+             y = "Number of new patients",
+             subtitle = subtitle) +
+        theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+      
+      new_patient_line_chart_england
+    }else{
+      patients_number_summary_longer
+    }
+    
     
   }
   else{
@@ -111,30 +118,36 @@ plot_number_new_patients <- function(data = new_vs_return_data,
       select(month, category, Percentage) %>%
       mutate(month = as.Date(month))
     
+    if(plotChart == TRUE){
+      provider_chart <- ggplot(all_provider_longer, 
+                               aes(x = month, y = Percentage,
+                                   group =category )) +
+        geom_line(aes(color=category),
+                  linewidth = 1.5)+
+        geom_point(aes(color=category),
+                   size = 3) + 
+        scale_x_date(date_labels = "%b-%Y", breaks = "1 month") +
+        scale_y_continuous(breaks = seq(0, 1.1, 0.2),
+                           limits = c(0, 1.1),
+                           labels = scales::percent_format(accuracy = 1)) +
+        expand_limits(y=0) +
+        geom_text(aes(label = Percentage), vjust=-.5)+
+        theme_bw() +
+        ##theme(legend.position="bottom") +
+        theme(legend.position="top") +
+        labs(title = "% of Providers Served New Patients",
+             x = "Month",
+             y = "Number of new patients",
+             subtitle = subtitle) +
+        theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+      
+      provider_chart 
+    }else{
+      
+      all_provider_longer
+    }
     
-    provider_chart <- ggplot(all_provider_longer, 
-                             aes(x = month, y = Percentage,
-                                 group =category )) +
-      geom_line(aes(color=category),
-                linewidth = 1.5)+
-      geom_point(aes(color=category),
-                 size = 3) + 
-      scale_x_date(date_labels = "%b-%Y", breaks = "1 month") +
-      scale_y_continuous(breaks = seq(0, 1.1, 0.2),
-                         limits = c(0, 1.1),
-                         labels = scales::percent_format(accuracy = 1)) +
-      expand_limits(y=0) +
-      geom_text(aes(label = Percentage), vjust=-.5)+
-      theme_bw() +
-      ##theme(legend.position="bottom") +
-      theme(legend.position="top") +
-      labs(title = "% of Providers Served New Patients",
-           x = "Month",
-           y = "Number of new patients",
-           subtitle = subtitle) +
-      theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
     
-    provider_chart 
     
   }
 }
