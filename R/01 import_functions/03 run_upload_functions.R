@@ -31,6 +31,8 @@ UOA_calendar_data_latest <- import_and_clean_calendar_UOA_data(data_path = paste
 unique_patients_latest <- import_and_clean_unique_patients_data(data_path = "N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/unique_patients/",
                                                                 commissioner_lookup = STP_ICB_lookup_codes)
 
+# band2_split_latest <- import_and_clean_band2_split_data(data_path = "N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/band_2_split_data/")
+
 #upload activity data
 upload_scheduled_data(UDA_latest = UDA_scheduled_data_latest,
                       UOA_latest = UOA_scheduled_data_latest)
@@ -40,6 +42,9 @@ upload_calendar_data(UDA_latest = UDA_calendar_data_latest,
 
 #upload unique patients data
 upload_unique_patients_data(unique_patients = unique_patients_latest)
+
+# #upload band 2 split data
+# upload_band2_split_data(band2_split = band2_split_latest)
 
 ###### To be run after the rmarkdown is run ####################################
 # #Upload metrics

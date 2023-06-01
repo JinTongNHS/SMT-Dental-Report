@@ -886,53 +886,42 @@ import_and_clean_calendar_UOA_data <- function(data_path,
 }
 
 
-# ################################################################################
-# #function to import and clean data
-# #N.B. this assumes that the columns are in the same order each time!
-# import_and_clean_scheduled_UOA_data <- function(data_path = "data/raw_data/dashboard_raw_data/UOA_scheduled_raw_data/UOA_scheduled_Apr21.xlsx",
-#                                                 data_date = as.Date("2021-04-01"),
-#                                                 commissioner_lookup = contract_ICB_lookup){
-#   
-#   #read in data with correct types and removing top 3 rows and renaming columns 
-#   data <- read_excel(data_path, 
-#                      col_types = c("numeric", "text", "text",
-#                                    "text", "date", "date", "numeric", 
-#                                    "numeric", "numeric", "numeric", "numeric"), 
-#                      skip = 3,
-#                      col_names = TRUE,
-#                      .name_repair = ~ paste0("X__", seq_along(.x)))
-#   
-#   #remove last 4 rows with eDen source
-#   data <- data[1:(nrow(data) - 4),]
-#   
-#   # #check format of data - manual check should be done to see if columns are in the same order as expected
-#   # if(ncol(data) != 18){
-#   #   print("WARNING: The data you have loaded is not in the usual format. Please check.")
-#   # }
-#   
-#   #add column for date and rename columns
-#   data <- data %>%
-#     mutate(data_month = data_date) %>%
-#     select(data_month, everything()) %>%
-#     rename(contract_number = X__1,
-#            contract_type = X__2,
-#            name_or_company_name = X__3,
-#            #commissioner_name = X__4,
-#            paid_by_BSA = X__4,
-#            contract_start_date = X__5,
-#            contract_end_date = X__6,
-#            annual_contracted_UOA = X__7,
-#            annual_contracted_UDA = X__8,
-#            UOA_delivered = X__9,
-#            orthodontic_FP17s = X__10#, 
-#            #orthodontic_starts = X__17,
-#            #orthodontic_completions = X__18 
-#     ) %>%
-#     select(-starts_with("X__")) %>%
-#     filter(!is.na(contract_number))
-#   
-#   #join in commissioner code
-#   data <- data %>%
-#     left_join(contract_ICB_lookup, by = "contract_number")
-#   
-# }
+
+################################################################################
+import_and_clean_band2_split_data <- function(data_path = "N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/band_2_split_data/"){
+  
+  # Gets last month 
+  data_month <- lubridate::floor_date(Sys.Date()  - lubridate::duration("1 week"), unit = "month") ###might need to change depending on which week the code is run
+  data_month_name <- format(Sys.Date()  - lubridate::duration("1 week"), format = "%b%y")
+  
+  band2_split <- read_excel(paste0(data_path, "band_2_split_", data_month_name,".xlsx"),
+                            col_names = FALSE, 
+                            skip = 4,
+                            .name_repair = ~ paste0("X__", seq_along(.x)))
+  
+  #clean column names
+  band2_split  <- band2_split  %>%
+    rename(contract_number = X__1,
+           contract_type = X__2,
+           name_or_company_name = X__3,
+           commissioner_name = X__4,
+           paid_by_BSA = X__5,
+           contract_start_date = X__6,
+           contract_end_date = X__7,
+           total_band2_UDAs_delivered = X__8,
+           YTD_band2_UDAs_delivered_before_Nov22 = X__9,
+           band_2a_UDAs = X__10,
+           band_2b_UDAs = X__11,
+           band_2c_UDAs = X__12,
+           total_band2_FP17s_delivered = X__13,
+           YTD_band2_FP17ss_delivered_before_Nov22 = X__14,
+           band_2a_FP17s = X__15,
+           band_2b_FP17s = X__16,
+           band_2c_FP17s = X__17
+    ) %>%
+    mutate(month = data_month) %>%
+    filter(!is.na(contract_number)) %>%
+    select(month, everything()) %>%
+    select(!(starts_with("X")))
+  
+}

@@ -28,7 +28,7 @@ load_in_band2_split_data <- function(){
              band_2b_UDAs = X__11,
              band_2c_UDAs = X__12,
              total_band2_FP17s_delivered = X__13,
-             YTD_band2_FP17ss_delivered_before_Nov22 = X__14,
+             YTD_band2_FP17s_delivered_before_Nov22 = X__14,
              band_2a_FP17s = X__15,
              band_2b_FP17s = X__16,
              band_2c_FP17s = X__17
@@ -44,6 +44,9 @@ load_in_band2_split_data <- function(){
   }
   
   band2_split_data <- band2_split_data %>%
-    select(month, everything())
+    select(month, everything()) %>%
+    select(!(starts_with("X")))
+  
+  
   
 }
