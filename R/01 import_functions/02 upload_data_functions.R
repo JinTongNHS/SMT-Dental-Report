@@ -1,6 +1,5 @@
 ################################################################################
-upload_scheduled_data <- function(UDA_latest,
-                                  UOA_latest){
+upload_UDA_scheduled_data <- function(UDA_latest){
   
   #Append schedule data and overwrite calendar data in NCDR
   con <- dbConnect(odbc::odbc(), "NCDR")
@@ -8,7 +7,15 @@ upload_scheduled_data <- function(UDA_latest,
   #Append UDA scheduled data
   dbWriteTable(con, Id(catalog="NHSE_Sandbox_PrimaryCareNHSContracts",schema="Dental",table="UDA_scheduled"),
                value = UDA_latest, row.names = FALSE, append=TRUE)
+
+}
+
+################################################################################
+upload_UOA_scheduled_data <- function(UOA_latest){
   
+  #Append schedule data and overwrite calendar data in NCDR
+  con <- dbConnect(odbc::odbc(), "NCDR")
+
   #Append UOA scheduled data
   dbWriteTable(con, Id(catalog="NHSE_Sandbox_PrimaryCareNHSContracts",schema="Dental",table="UOA_scheduled"),
                value = UOA_latest, row.names = FALSE, append=TRUE)
@@ -16,8 +23,7 @@ upload_scheduled_data <- function(UDA_latest,
 }
 
 ################################################################################
-upload_calendar_data <- function(UDA_latest,
-                                 UOA_latest){
+upload_UDA_calendar_data <- function(UDA_latest){
   
   con <- dbConnect(odbc::odbc(), "NCDR")
   
@@ -34,8 +40,15 @@ upload_calendar_data <- function(UDA_latest,
   
   dbWriteTable(con, Id(catalog="NHSE_Sandbox_PrimaryCareNHSContracts",schema="Dental",table="UDA_calendar"),
                value = UDA_calendar_data_latest, row.names = FALSE, append = FALSE, overwrite = TRUE)
+  
+  
+}
 
-
+################################################################################
+upload_UOA_calendar_data <- function(UOA_latest){
+  
+  con <- dbConnect(odbc::odbc(), "NCDR")
+  
   #Get UOA table and overwrite this financial year
   sql <- "SELECT *
   FROM [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UOA_calendar]"
