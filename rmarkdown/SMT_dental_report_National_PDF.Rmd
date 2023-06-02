@@ -657,53 +657,6 @@ plot_patient_recalls_facet(data = dental_recalls_STP_2018_22,
 ```
 
  
-## Community Dental Services (CDS) - Patients waiting for assessment
-
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_CDS_patients_waiting_for_assessment(data = CDS_data,
-                                                     
-                                                     level = "National",
-                                                     region_STP_name = NULL,
-                                                     all_regions_and_STPs = FALSE)
-```
-
-
-## CDS - Patients waiting for treatment
-
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_CDS_patients_waiting_for_treatment(data = CDS_data,
-                                                     
-                                                     level = "National",
-                                                     region_STP_name = NULL,
-                                                     all_regions_and_STPs = FALSE)
-```
-
-
-
-## CDS - Wait times for assessment
-
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_CDS_wait_times_for_assessment(data = CDS_data,
-                                                     
-                                                     level = "National",
-                                                     region_STP_name = NULL,
-                                                     all_regions_and_STPs = FALSE)
-```
-
-
-
-## CDS - Wait times for treatment
-
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_CDS_wait_times_for_treatment(data = CDS_data,
-                                                     
-                                                     level = "National",
-                                                     region_STP_name = NULL,
-                                                     all_regions_and_STPs = FALSE)
-```
-
- 
-
 
 ## Contract closures
 
