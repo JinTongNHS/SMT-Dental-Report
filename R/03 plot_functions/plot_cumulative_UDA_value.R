@@ -3,13 +3,21 @@
 plot_cumulative_UDA_value <- function(data = UDA_scheduled_data,
                            historical_data = historical_UDA_scheduled_data,
                            payments_data = payments_to_dentists,
-                           UDA_value_data = UDA_values,
+                           UDA_value_data = UDA_UOA_value_data,#UDA_values,
                            protos = prototype_contracts$prototype_contract_number,
                            level = "National",
                            region_STP_name = NULL,
                            all_regions_and_STPs = FALSE,
                            asIndex = FALSE,
                            plotChart = TRUE){
+  
+  UDA_value_data <- UDA_value_data %>%
+    filter(Date == max(UDA_value_data$Date)) %>%
+    select(contract_number = Contract_Number, 
+           provider_name = Latest_Provider_Name, 
+           UDA_finanical_value = UDA_Financial_Value, 
+           UDA_performance_target = UDA_Performance_Target, 
+           pounds_per_UDA = Cost_per_UDA)
   
   payments_data <- payments_data %>%
     select(year, Contract, Total_Contracted_UDA, Baseline_Contract) %>%
@@ -20,24 +28,25 @@ plot_cumulative_UDA_value <- function(data = UDA_scheduled_data,
     mutate(contract_number = as.numeric(str_replace(Contract, "/", ""))) %>%
     select(year, contract_number, UDA_value)
   
-  UDA_value_data_2021_22 <- UDA_value_data %>%
-    mutate(year = "2021/22") %>%
+  UDA_value_data_2023_24 <- UDA_value_data %>%
+    mutate(year = "2023/24") %>%
     select(contract_number, 
            UDA_value = pounds_per_UDA,
            year)
   
-  payments_data <- bind_rows(payments_data, UDA_value_data_2021_22)
+  payments_data <- bind_rows(payments_data, UDA_value_data_2023_24)
 
   data <- data %>%
     bind_rows(historical_data) %>%
-    mutate(year = case_when(month >= as.Date("2021-04-01") & month < as.Date("2022-04-01") ~ "2021/22",
-                            month >= as.Date("2022-04-01")  ~ "2022/23 YTD",
+    mutate(year = case_when(month >= as.Date("2021-04-01") & month < as.Date("2022-04-01") ~ "2023/24",
+                            month >= as.Date("2022-04-01") & month < as.Date("2023-04-01") ~ "2022/23",
+                            month >= as.Date("2023-04-01") & month < as.Date("2024-04-01") ~ "2023/24",
                             TRUE ~ year)) %>%
     left_join(payments_data, by = c("contract_number", "year")) %>%
     mutate(UDA_value = case_when(is.na(UDA_value) ~ 28,
                                  TRUE ~ UDA_value)) %>%
     mutate(financial_delivery = UDA_delivered * UDA_value) %>%
-    filter(!(contract_number %in% protos & month < as.Date("2022-04-01"))) %>%
+    #filter(!(contract_number %in% protos & month < as.Date("2022-04-01"))) %>%
     filter(annual_contracted_UDA > 100)
   
   #filter for STP or region
@@ -55,7 +64,7 @@ plot_cumulative_UDA_value <- function(data = UDA_scheduled_data,
   
   #get cumulative data for this financial year
   data_this_year <- data %>%
-    filter(month >= as.Date("2022-04-01")) %>%
+    filter(month >= as.Date("2023-04-01")) %>%
     group_by(month) %>%
     summarise(financial_delivery = sum(financial_delivery, na.rm = TRUE)) %>%
     mutate(financial_delivery_million_pounds = financial_delivery / 1000000) %>%
@@ -63,7 +72,7 @@ plot_cumulative_UDA_value <- function(data = UDA_scheduled_data,
   
   #get mean over 2017/18 - 2019/20
   prev_years <- data %>%
-    filter(month < as.Date("2022-04-01") & month >= as.Date("2017-04-01")) %>%
+    filter(month < as.Date("2020-04-01") & month >= as.Date("2017-04-01")) %>%
     group_by(year) %>%
     summarise(financial_delivery = sum(financial_delivery, na.rm = TRUE)) %>%
     mutate(financial_delivery_million_pounds = financial_delivery / 1000000) %>%
@@ -80,7 +89,7 @@ plot_cumulative_UDA_value <- function(data = UDA_scheduled_data,
     mutate(month = as.Date(month))
   
 
-  title <- "Cumulative financial value of UDAs delivered  YTD 2022/23 (Million GBP)"
+  title <- "Cumulative financial value of UDAs delivered  YTD 2023/24 (Million GBP)"
   ylab <- "Financial value of UDAs delivered YTD\n (\u00A3 Million)"
   labelEnd <- " Million"
   labelStart <- "\u00A3"
@@ -123,7 +132,7 @@ plot_cumulative_UDA_value <- function(data = UDA_scheduled_data,
            x = "Month",
            y = ylab,
            colour = "",
-           caption = "UDA values have be calculated by dividing the baseline contract by the annual contracted UDAs for each contract. \nWhere this data was not availabale, \u00A328 per UDA was used in the calculation. \nIt has been assumed that in 2022/23 the UDA value for each contract will be the same as in 2021/22. \nThis graph excludes contracts with annual contracted UDAs < 100. Prototype contracts are excluded up until April 2022.")
+           caption = "UDA values have be calculated by dividing the baseline contract by the annual contracted UDAs for each contract. \nWhere this data was not availabale, \u00A328 per UDA was used in the calculation. \nIt has been assumed that in 2022/23 the UDA value for each contract will be the same as in 2023/24.")
     
   }else{
     data
