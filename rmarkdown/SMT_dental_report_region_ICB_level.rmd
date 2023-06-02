@@ -1070,7 +1070,7 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
 **`r get_num_contracts(level = "Regional", region_STP_name = region)`**
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (100% for Jan-Mar 23).
-* From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
+* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r get_quarterly_num_contracts_on_target(level = "Regional", region_STP_name = region)`**
 contracts (
 **`r round(get_quarterly_num_contracts_on_target(level = "Regional", region_STP_name = region)*100/get_num_contracts(level = "Regional", region_STP_name = region))` %**
@@ -1090,7 +1090,7 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
 **`r get_num_contracts(level = "STP", region_STP_name = STP1)`**
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (100% for Jan-Mar 23).
-* From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
+* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r get_quarterly_num_contracts_on_target(level = "STP", region_STP_name = STP1)`**
 contracts (
 **`r round(get_quarterly_num_contracts_on_target(level = "STP", region_STP_name = STP1)*100/get_num_contracts(level = "STP", region_STP_name = STP1))` %**
@@ -1111,7 +1111,7 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
 **`r get_num_contracts(level = "STP", region_STP_name = STP2)`**
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (100% for Jan-Mar 23).
-* From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
+* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r get_quarterly_num_contracts_on_target(level = "STP", region_STP_name = STP2)`**
 contracts (
 **`r round(get_quarterly_num_contracts_on_target(level = "STP", region_STP_name = STP2)*100/get_num_contracts(level = "STP", region_STP_name = STP2))` %**
@@ -1132,7 +1132,7 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
 **`r get_num_contracts(level = "STP", region_STP_name = STP3)`**
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (100% for Jan-Mar 23).
-* From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
+* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r get_quarterly_num_contracts_on_target(level = "STP", region_STP_name = STP3)`**
 contracts (
 **`r round(get_quarterly_num_contracts_on_target(level = "STP", region_STP_name = STP3)*100/get_num_contracts(level = "STP", region_STP_name = STP3))` %**
@@ -1153,7 +1153,7 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
 **`r if(eval4){get_num_contracts(level = "STP", region_STP_name = STP4)}`**
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (100% for Jan-Mar 23).
-* From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
+* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r if(eval4){get_quarterly_num_contracts_on_target(level = "STP", region_STP_name = STP4)}`**
 contracts (
 **`r if(eval4){round(get_quarterly_num_contracts_on_target(level = "STP", region_STP_name = STP4)*100/get_num_contracts(level = "STP", region_STP_name = STP4))}` %**
@@ -1174,7 +1174,7 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
 **`r if(eval5){get_num_contracts(level = "STP", region_STP_name = STP5)}`**
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (100% for Jan-Mar 23).
-* From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
+* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r if(eval5){get_quarterly_num_contracts_on_target(level = "STP", region_STP_name = STP5)}`**
 contracts (
 **`r if(eval5){round(get_quarterly_num_contracts_on_target(level = "STP", region_STP_name = STP5)*100/get_num_contracts(level = "STP", region_STP_name = STP5))}` %**
@@ -1195,7 +1195,7 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
 **`r if(eval6){get_num_contracts(level = "STP", region_STP_name = STP6)}`**
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (100% for Jan-Mar 23).
-* From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
+* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r if(eval6){get_quarterly_num_contracts_on_target(level = "STP", region_STP_name = STP6)}`**
 contracts (
 **`r if(eval6){round(get_quarterly_num_contracts_on_target(level = "STP", region_STP_name = STP6)*100/get_num_contracts(level = "STP", region_STP_name = STP6))}` %**
@@ -1216,7 +1216,7 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
 **`r if(eval7){get_num_contracts(level = "STP", region_STP_name = STP7)}`**
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (100% for Jan-Mar 23).
-* From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
+* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r if(eval7){get_quarterly_num_contracts_on_target(level = "STP", region_STP_name = STP7)}`**
 contracts (
 **`r if(eval7){round(get_quarterly_num_contracts_on_target(level = "STP", region_STP_name = STP7)*100/get_num_contracts(level = "STP", region_STP_name = STP7))}` %**
@@ -1237,7 +1237,7 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
 **`r if(eval8){get_num_contracts(level = "STP", region_STP_name = STP8)}`**
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (100% for Jan-Mar 23).
-* From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
+* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r if(eval8){get_quarterly_num_contracts_on_target(level = "STP", region_STP_name = STP8)}`**
 contracts (
 **`r if(eval8){round(get_quarterly_num_contracts_on_target(level = "STP", region_STP_name = STP8)*100/get_num_contracts(level = "STP", region_STP_name = STP8))}` %**
@@ -1258,7 +1258,7 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
 **`r if(eval9){get_num_contracts(level = "STP", region_STP_name = STP9)}`**
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (100% for Jan-Mar 23).
-* From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
+* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r if(eval9){get_quarterly_num_contracts_on_target(level = "STP", region_STP_name = STP9)}`**
 contracts (
 **`r if(eval9){round(get_quarterly_num_contracts_on_target(level = "STP", region_STP_name = STP9)*100/get_num_contracts(level = "STP", region_STP_name = STP9))}` %**
@@ -1279,7 +1279,7 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
 **`r if(eval10){get_num_contracts(level = "STP", region_STP_name = STP10)}`**
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (100% for Jan-Mar 23).
-* From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
+* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r if(eval10){get_quarterly_num_contracts_on_target(level = "STP", region_STP_name = STP10)}`**
 contracts (
 **`r if(eval10){round(get_quarterly_num_contracts_on_target(level = "STP", region_STP_name = STP10)*100/get_num_contracts(level = "STP", region_STP_name = STP10))}` %**
@@ -1300,7 +1300,7 @@ plot_cumulative_UDA_UOA_to_target(data = UDA_scheduled_data,
 **`r if(eval11){get_num_contracts(level = "STP", region_STP_name = STP11)}`**
 GDS/PDS/PDS+
 contracts measured against the expected monthly total activity to achieve the quarterly thresholds (100% for Jan-Mar 23).
-* From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
+* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r if(eval11){get_quarterly_num_contracts_on_target(level = "STP", region_STP_name = STP11)}`**
 contracts (
 **`r if(eval11){round(get_quarterly_num_contracts_on_target(level = "STP", region_STP_name = STP11)*100/get_num_contracts(level = "STP", region_STP_name = STP11))}` %**
@@ -2720,7 +2720,7 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data,
 * This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "Regional", region_STP_name = region)`**
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
-* From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
+* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r get_quarterly_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = region)`**
 contracts (
 **`r round(get_quarterly_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "Regional", region_STP_name = region)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "Regional", region_STP_name = region))` %**
@@ -2742,7 +2742,7 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data,
 * This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP1)`**
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
-* From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
+* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r get_quarterly_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP1)`**
 contracts (
 **`r round(get_quarterly_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP1)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP1))` %**
@@ -2765,7 +2765,7 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data,
 * This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP2)`**
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
-* From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
+* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r get_quarterly_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP2)`**
 contracts (
 **`r round(get_quarterly_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP2)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP2))` %**
@@ -2788,7 +2788,7 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data,
 * This graph shows the cumulative activity by quarter of the **`r get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP3)`**
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
-* From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
+* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r get_quarterly_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP3)`**
 contracts (
 **`r round(get_quarterly_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP3)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP3))` %**
@@ -2811,7 +2811,7 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data,
 * This graph shows the cumulative activity by quarter of the **`r if(eval4){get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP4)}`**
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
-* From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
+* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r if(eval4){get_quarterly_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP4)}`**
 contracts (
 **`r if(eval4){round(get_quarterly_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP4)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP4))}` %**
@@ -2834,7 +2834,7 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data,
 * This graph shows the cumulative activity by quarter of the **`r if(eval5){get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP5)}`**
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
-* From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
+* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r if(eval5){get_quarterly_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP5)}`**
 contracts (
 **`r if(eval5){round(get_quarterly_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP5)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP5))}` %**
@@ -2857,7 +2857,7 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data,
 * This graph shows the cumulative activity by quarter of the **`r if(eval6){get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP6)}`**
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
-* From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
+* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r if(eval6){get_quarterly_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP6)}`**
 contracts (
 **`r if(eval6){round(get_quarterly_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP6)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP6))}` %**
@@ -2880,7 +2880,7 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data,
 * This graph shows the cumulative activity by quarter of the **`r if(eval7){get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP7)}`**
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
-* From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
+* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r if(eval7){get_quarterly_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP7)}`**
 contracts (
 **`r if(eval7){round(get_quarterly_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP7)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP7))}` %**
@@ -2903,7 +2903,7 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data,
 * This graph shows the cumulative activity by quarter of the **`r if(eval8){get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP8)}`**
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
-* From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
+* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r if(eval8){get_quarterly_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP8)}`**
 contracts (
 **`r if(eval8){round(get_quarterly_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP8)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP8))}` %**
@@ -2926,7 +2926,7 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data,
 * This graph shows the cumulative activity by quarter of the **`r if(eval9){get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP9)}`**
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
-* From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
+* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r if(eval9){get_quarterly_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP9)}`**
 contracts (
 **`r if(eval9){round(get_quarterly_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP9)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP9))}` %**
@@ -2949,7 +2949,7 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data,
 * This graph shows the cumulative activity by quarter of the **`r if(eval10){get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP10)}`**
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
-* From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
+* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r if(eval10){get_quarterly_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP10)}`**
 contracts (
 **`r if(eval10){round(get_quarterly_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP10)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP10))}` %**
@@ -2972,7 +2972,7 @@ plot_cumulative_UDA_UOA_to_target(data = UOA_scheduled_data,
 * This graph shows the cumulative activity by quarter of the **`r if(eval11){get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP11)}`**
 GDS/PDS contracts measured against the
 expected monthly total activity to achieve the quarterly thresholds (100% for Apr-Jun 22).
-* From the start of January to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
+* From the start of April to the end of `r format(Sys.Date() - lubridate::weeks(4), "%B")`
 **`r if(eval11){get_quarterly_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP11)}`**
 contracts (
 **`r if(eval11){round(get_quarterly_num_contracts_on_target(UOA_scheduled_data, UDAorUOA = "UOA", level = "STP", region_STP_name = STP11)*100/get_num_contracts(UOA_scheduled_data, remove_prototypes = T, "UOA", level = "STP", region_STP_name = STP11))}` %**
