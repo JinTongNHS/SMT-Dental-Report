@@ -111,7 +111,7 @@ DCP_data <- pull_dcp_data()
 
 BPE_data <- pull_BPE_data()
 
-band2_split_data <- load_in_band2_split_data()
+band2_split_data <- pull_band2_split_data()
 
 new_vs_return_data <- pull_new_vs_returning_patients()
 

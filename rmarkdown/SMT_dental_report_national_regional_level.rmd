@@ -3384,20 +3384,6 @@ plot_UDAs_by_patient_exemption(data = patient_exemption_data,
 
 ---
 
-name: uda-projection
-
-### Contracts that have delivered at least 96% of contracted UDAs
-
-```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
-plot_UDA_yearly_delivery(level = "Regional")
-```
-
- 96% is the delivery threshold that contracts are required to meet in order to be paid in full. If they deliver below this, they will be in clawback.
-
-
-[Return to contents](#contents)
-
----
 
 name: 111-call-volumes
 

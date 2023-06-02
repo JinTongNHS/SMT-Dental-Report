@@ -17,7 +17,7 @@ plot_UDA_yearly_delivery <- function(data = UDA_scheduled_data,
   }
   
   data <- data %>% 
-    filter(as.Date(month)>= "2023-04-01" ####needs to be updated each year
+    filter(as.Date(month) >= as.Date("2023-04-01") ####needs to be updated each year
            ) %>% 
     select(month, contract_number, name_or_company_name,
            commissioner_name, commissioner_ods_code_icb, region_name,

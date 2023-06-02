@@ -111,7 +111,7 @@ DCP_data <- pull_dcp_data()
 
 BPE_data <- pull_BPE_data()
 
-band2_split_data <- load_in_band2_split_data()
+band2_split_data <- pull_band2_split_data()
 
 new_vs_return_data <- pull_new_vs_returning_patients()
 
@@ -369,25 +369,6 @@ plot_UDA_UOA_delivery_MY_cat(
 
 
 
-
-## UOA activity data by MY Category
-#### Prototypes and contracts with annual contracted UDAs < 100 excluded
-
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_MY_cat(
-                             data = UOA_scheduled_data,
-                                  contractor_cats = contractor_categories,
-                                  UDAorUOA = "UOA",
-                                  remove_prototypes = TRUE,
-                                  regional_lines = FALSE,
-                                  STP_lines = FALSE,
-                                  cat_lines = TRUE,
-                                  plotChart = TRUE,
-                                  level = "National",
-                                  region_STP_name = NULL)
-```
-
- 
 
 
 
