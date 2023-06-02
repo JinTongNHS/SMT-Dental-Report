@@ -32,7 +32,8 @@ plot_UDAs_by_patient_exemption <- function(data = patient_exemption_data,
               size = 3)  + 
     theme(legend.position="top")  + 
     #scale_y_continuous(breaks = seq(0, 78000000, by = 50000)) +
-    scale_fill_manual(values = colorBlindGrey8, labels = c("Child", "Adult exempt", "Adult non exempt")) +
+    scale_fill_manual(values = colorBlindGrey8, labels = c("Child", "Adult exempt", "Adult non exempt")
+                      ) +
     labs(title = "UDAs delivered by Patient Charge Status",
          subtitle = paste(subtitle, "2021/22"),
          x = "Treatment charge band",
