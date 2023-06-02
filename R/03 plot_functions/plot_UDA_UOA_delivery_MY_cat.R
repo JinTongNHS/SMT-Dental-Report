@@ -88,8 +88,10 @@ plot_UDA_UOA_delivery_MY_cat <- function(data = UDA_scheduled_data,
     
   }else if(cat_lines){
     data <- data %>%
-      filter(!is.na(category_sub_type))
-    
+      mutate(category_sub_type = if_else(is.na(category_sub_type), "Category not known", category_sub_type)) %>%
+      filter(!is.na(scaled_perc_UDA_UOA_delivered) & !is.infinite(scaled_perc_UDA_UOA_delivered) & !is.nan(scaled_perc_UDA_UOA_delivered))
+      #filter(!is.na(category_sub_type))
+
     g <- 
       ggplot(data) +
       theme_bw() +
@@ -189,7 +191,9 @@ plot_UDA_UOA_delivery_MY_cat <- function(data = UDA_scheduled_data,
     scale_x_date(date_breaks = "1 month", 
                  date_labels = "%b-%y") +
     scale_y_continuous(limits = c(0, max(c(data$scaled_perc_UDA_UOA_delivered, 90), na.rm = T) + 10),
-                       breaks = scales::breaks_pretty()) 
+                       breaks = scales::breaks_pretty()) +
+    theme(axis.text.x = element_text(angle = 90, vjust=-0.0001
+    ))
   
   
   if(regional_lines == F & cat_lines == F){
