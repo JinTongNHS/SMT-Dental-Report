@@ -36,7 +36,7 @@ plot_unique_patients_rolling <- function(data = unique_patients_rolling,
     chartCaption <- "*N.B. this analysis uses unique patients per contract** and does not take \ninto account patients who have been seen at more than one dental practice. \n**EXCLUDING contracts with annual contracted UDA < 100. Excluding prototype contracts up until April 2022."
   }else{
     
-    chartCaption <- "*N.B. this analysis uses unique patients per contract** and does not take \ninto account patients who have been seen at more than one dental practice. \n**INCLUDING contracts with annual contracted UDA < 100. Excluding prototype contracts up until April 2022."
+    chartCaption <- "*N.B. this analysis uses unique patients per contract** and does not take \ninto account patients who have been seen at more than one dental practice. \n**INCLUDING contracts with annual contracted UDA < 100 and prototype contracts."
   }
   
   #filter for region or STP
