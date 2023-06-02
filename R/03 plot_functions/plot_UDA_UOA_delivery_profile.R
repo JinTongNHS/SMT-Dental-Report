@@ -24,6 +24,11 @@ plot_UDA_UOA_delivery_profile <- function(data = UDA_scheduled_data,
     
     data <- bind_rows(data, historic_data)
     
+  }else{
+    
+    #only show rolling 12 months
+    data <- data %>%
+      filter(month >= max(data$month) - lubridate::years(1))
   }
   
   #filter for STP or region
