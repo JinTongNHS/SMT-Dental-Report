@@ -480,20 +480,6 @@ plot_banded_CoT(data = UDA_scheduled_data,
 
 
 
-
-## Urgent treatment form submissions
-
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_urgent_form_submissions(data = UDA_scheduled_data,
-                
-                historic_data = historical_UDA_scheduled_data,
-                remove_prototypes = FALSE,
-                level = "National",
-                region_STP_name = NULL)
-```
-
-
-
 ## Percentage of FP17s in each band 2 sub-category
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
