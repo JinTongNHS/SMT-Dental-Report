@@ -44,8 +44,8 @@ plot_DCP_analysis <- function(data = UDA_scheduled_data,
     mutate(DCP_description = replace(DCP_description, DCP_description== "Dental Nurse", "Dental_Nurse_assisted"))
   
   dcp_summary <- dcp_main_new %>% 
-    mutate(DCP_description = as.factor(DCP_description) %>%
-             forcats::fct_collapse(Hygienist_Therapist_Assisted = c("Hygienist", "Therapist"))) %>%
+    # mutate(DCP_description = as.factor(DCP_description) %>%
+    #          forcats::fct_collapse(Hygienist_Therapist_Assisted = c("Hygienist", "Therapist"))) %>%
     group_by(month, DCP_description) %>%
     summarise (total_FP17 = sum(FP17_Current_Year_total, na.rm = TRUE),
                total_B1 = sum(Band_1._UDA, na.rm = TRUE),
@@ -79,41 +79,36 @@ plot_DCP_analysis <- function(data = UDA_scheduled_data,
   filtered_data_UDA = filter(total, Bands %in% c("total_B1",	"total_B2",	"total_B3", "total_urgent")) %>%
     select(month, "DCP_description.x", "Bands", "asissted_percent") %>%
     rename (DCP_description = DCP_description.x) %>%
-    mutate(month = strftime(month, "%B-%y")) %>%
+    mutate(month = as.Date(month)) %>%
     mutate(DCP_description = str_replace_all(DCP_description, "_", " "))
+
   
-  filtered_data_UDA$month <- factor(filtered_data_UDA$month,
-                                     levels = c("October-22",
-                                                "November-22",
-                                                "December-22",
-                                                "January-23",
-                                                "February-23",
-                                                "March-23",
-                                                "April-23",
-                                                "May-23",
-                                                "June-23",
-                                                "July-23",
-                                                "August-23",
-                                                "September-23"))
-  
-  UDA_plot <- ggplot(filtered_data_UDA, aes(x=DCP_description, y= asissted_percent, fill= Bands)) +
-    geom_bar(stat="identity") +
-    facet_grid(cols = vars(month), labeller = label_value) +
-    theme_minimal()  +
+  UDA_plot <- 
+    # ggplot(filtered_data_UDA, aes(x=DCP_description, y= asissted_percent, fill= Bands)) +
+    # geom_bar(stat="identity") +
+    # facet_grid(cols = vars(month), labeller = label_value) +
+    
+    ggplot(filtered_data_UDA, 
+           aes(x=month, y= asissted_percent)) +
+    facet_grid(cols = vars(Bands)) +
+    geom_line(aes(colour = DCP_description),
+              size = 1) +
     geom_text(aes(label= asissted_percent),hjust=0.5, 
-              size=3.5,check_overlap = TRUE,
-              position = position_stack(vjust = 0.6)) +
+              size=3.5,check_overlap = TRUE) +
     scale_fill_manual(values = c("#009E73", "#F0E442", "#D55E00", "#CC79A7"),
                       labels = c("Band 1", "Band 2", "Band 3", "Urgent")) +
-    scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) +
+    scale_x_date(date_breaks = "1 month",
+                 date_labels = "%b-%y") +
     theme_bw() +
     labs(title = "Percentage of total UDAs delivered which had DCP* assistance by band",
          subtitle = subtitle,
-         x = "DCP description",
+         x = "Month",
          y = "Percentage of total UDAs delivered",
-         fill = "Band",
+         colour = "DCP description",
          caption = "*Dental Care Practitioner") + 
-    scale_y_continuous(labels = scales::percent)
+    scale_y_continuous(labels = scales::percent)+
+    theme(axis.text.x = element_text(angle = 90, vjust=-0.0001
+    ))
   
   UDA_plot
     
@@ -122,41 +117,31 @@ plot_DCP_analysis <- function(data = UDA_scheduled_data,
     filtered_data_FP17 <- total %>%
       filter( Bands %in% c("total_FP17")) %>% 
       select("month", "DCP_description.x", "Bands", "asissted_percent") %>%
+      mutate(month = as.Date(month)) %>%
       rename ( Percent_of_FP17 = Bands, DCP_description = DCP_description.x) %>%
-      mutate(month = strftime(month, "%B-%y"))%>%
       mutate(DCP_description = str_replace_all(DCP_description, "_", " ")) 
     
-    filtered_data_FP17$month <- factor(filtered_data_FP17$month,
-                                      levels = c("October-22",
-                                                 "November-22",
-                                                 "December-22",
-                                                 "January-23",
-                                                 "February-23",
-                                                 "March-23",
-                                                 "April-23",
-                                                 "May-23",
-                                                 "June-23",
-                                                 "July-23",
-                                                 "August-23",
-                                                 "September-23"))
 
     FP17_plot <- 
       ggplot(filtered_data_FP17, 
-             aes(x=DCP_description, y= asissted_percent)) +
-      geom_bar(stat="identity", position = "dodge", fill = "steelblue") +
-      facet_grid(cols = vars(month), labeller = label_value) +
-      geom_text(aes(label = asissted_percent), 
-                colour = "black", size= 3.5,
-                position = position_dodge(width = 1), vjust=-0.25) +
+             aes(x=month, y= asissted_percent)) +
+      geom_line(aes(colour = DCP_description),
+                size = 1) +
+      geom_text(aes(label = asissted_percent),
+                colour = "black", size= 3.5, vjust=-0.25) +
       theme(legend.position="bottom") +
-      theme_bw() + 
-      scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) +
+      theme_bw() +
+      scale_x_date(date_breaks = "1 month",
+                   date_labels = "%b-%y") +
       labs(title = "Percentage of total Courses of Treatment (CoTs) delivered which had DCP* assistance",
            subtitle = subtitle,
-           x = "DCP description",
+           x = "Month",
            y = "Percentage of total CoTs delivered",
+           colour = "DCP description",
            caption = "*Dental Care Practitioner") + 
-      scale_y_continuous(labels = scales::percent)
+      scale_y_continuous(labels = scales::percent)  +
+      theme(axis.text.x = element_text(angle = 90, vjust=-0.0001
+      ))
     
     FP17_plot
     
