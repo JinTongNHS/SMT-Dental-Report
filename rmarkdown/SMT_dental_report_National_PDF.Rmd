@@ -245,25 +245,6 @@ plot_UDA_UOA_delivery_MY_cat(
 
 
 
-## UDA activity data by MY Category
-#### Prototypes and contracts with annual contracted UDAs < 100 excluded
-
-
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_MY_cat(
-                             data = UDA_scheduled_data,
-                                  contractor_cats = contractor_categories,
-                                  UDAorUOA = "UDA",
-                                  level = "National",
-                                  region_STP_name = NULL,
-                                  remove_prototypes = T,
-                                  regional_lines = F,
-                                  STP_lines = F,
-                                  cat_lines = T,
-                                  plotChart = T)
-```
-
-
 ## UDA cumulative activity data
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
