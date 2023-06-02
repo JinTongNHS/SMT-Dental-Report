@@ -3985,27 +3985,12 @@ name: uda-projection
 
 ### Contracts that have delivered at least 96% of contracted UDAs
 
-```{r xaringan-panelset-uda_projection, echo=FALSE}
-xaringanExtra::use_panelset()
-```
- <font size="2">
-.panelset[
-
- .panel[.panel-name[National]
-```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
-plot_UDA_yearly_delivery(level = "National")
-```
-
-
- ]
- .panel[.panel-name[Regional]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
 plot_UDA_yearly_delivery(level = "Regional")
 ```
 
- ]
  96% is the delivery threshold that contracts are required to meet in order to be paid in full. If they deliver below this, they will be in clawback.
- ]
+
 
 [Return to contents](#contents)
 
