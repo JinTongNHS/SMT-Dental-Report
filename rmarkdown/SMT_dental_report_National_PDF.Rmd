@@ -688,22 +688,6 @@ This data is taken from the BSA Primary Care Activity Report (PCAR). Prior to Oc
 
 
 
-## Annual contracted UDAs trend
-
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDAs_commissioned(data = UDA_scheduled_data,
-                                     historical_data = historical_UDA_scheduled_data,
-                                level = "National",
-                                region_STP_name = NULL,
-                                plotChart = TRUE)
-```
-
-The change in total annual contracted UDAs from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B %Y")` is
-**`r plot_UDAs_commissioned(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,level = "National",region_STP_name = NULL,plotChart = FALSE, getChange = TRUE)`%**.
-
-The dips seen every April may be due to the fact that new contracts starting at the beginning of the financial year will not have submitted any FP17s until May, which means that their contracted UDA data will not show up until May.
-
-
 ## Payments to dentists
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}

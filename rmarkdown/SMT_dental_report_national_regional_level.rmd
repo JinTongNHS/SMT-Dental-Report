@@ -156,8 +156,6 @@ name: contents
  * [BSA CDS dashboard - opens in web](https://miteam.shinyapps.io/CDS_Dashboard/)
  * [Contract closures based on PCAR report](#closures)
  * [De-commissioned and re-commissioned UDAs and UOAs as a result of closure based on PCAR](#de-and-re-commissioned)
- * [Total annual contracted UDAs trend](#annual-contracted-UDAs-trend)
- * [Total number of contracts trend](#num-contracts-trend)
  * [Total payments to dentists by financial year](#payemts)
  * [Cumulative financial value of UDAs delivered YTD](#uda-value)
 
@@ -4789,122 +4787,6 @@ reactable(
  ]
  
 This data is taken from the BSA Primary Care Activity Report (PCAR). Prior to October 2021, the report was quarterly which is why the figures in these graph show aggregated figures for Q1 and Q2 2021 and then monthly figures after that. Prior to Q1 2021, the data for this report was collected differently and is not comparable.
-
-[Return to contents](#contents)
-
-
----
-name: annual-contracted-UDAs-trend
-
-### Annual contracted UDAs trend
-
-```{r xaringan-panelset-annual-contracted-trend, echo=FALSE}
-xaringanExtra::use_panelset()
-```
-
- <font size="2">
-.panelset[
-.panel[.panel-name[National]
-
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDAs_commissioned(data = UDA_scheduled_data,
-                                     historical_data = historical_UDA_scheduled_data,
-                                level = "National",
-                                region_STP_name = NULL,
-                                plotChart = TRUE)
-```
-
-The change in total annual contracted UDAs from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B %Y")` is
-**`r plot_UDAs_commissioned(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,level = "National",region_STP_name = NULL,plotChart = FALSE, getChange = TRUE)`%**.
- ]
- .panel[.panel-name[South East]
-
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDAs_commissioned(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,
-                                level = "Regional",
-                                region_STP_name = "South East",
-                                plotChart = TRUE)
-```
-
-The change in total annual contracted UDAs from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B %Y")` is
-**`r plot_UDAs_commissioned(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,level = "Regional",region_STP_name = "South East",plotChart = FALSE, getChange = TRUE)`%**.
- ]
- .panel[.panel-name[South West]
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDAs_commissioned(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,
-                                level = "Regional",
-                                region_STP_name = "South West",
-                                plotChart = TRUE)
-```
-
-The change in total annual contracted UDAs from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B %Y")` is
-**`r plot_UDAs_commissioned(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,level = "Regional",region_STP_name = "South West",plotChart = FALSE, getChange = TRUE)`%**.
-
- ]
- .panel[.panel-name[North West]
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDAs_commissioned(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,
-                                level = "Regional",
-                                region_STP_name = "North West",
-                                plotChart = TRUE)
-```
-
-The change in total annual contracted UDAs from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B %Y")` is
-**`r plot_UDAs_commissioned(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,level = "Regional",region_STP_name = "North West",plotChart = FALSE, getChange = TRUE)`%**.
-
- ]
- .panel[.panel-name[North East and Yorkshire]
-
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDAs_commissioned(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,
-                                level = "Regional",
-                                region_STP_name = "North East and Yorkshire",
-                                plotChart = TRUE)
-```
-
-The change in total annual contracted UDAs from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B %Y")` is
-**`r plot_UDAs_commissioned(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,level = "Regional",region_STP_name = "North East and Yorkshire",plotChart = FALSE, getChange = TRUE)`%**.
-
- ]
-.panel[.panel-name[London]
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDAs_commissioned(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,
-                                level = "Regional",
-                                region_STP_name = "London",
-                                plotChart = TRUE)
-```
-
-The change in total annual contracted UDAs from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B %Y")` is
-**`r plot_UDAs_commissioned(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,level = "Regional",region_STP_name = "London",plotChart = FALSE, getChange = TRUE)`%**.
-
- ]
- .panel[.panel-name[Midlands]
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDAs_commissioned(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,
-                                level = "Regional",
-                                region_STP_name = "Midlands",
-                                plotChart = TRUE)
-```
-
-The change in total annual contracted UDAs from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B %Y")` is
-**`r plot_UDAs_commissioned(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,level = "Regional",region_STP_name = "Midlands",plotChart = FALSE, getChange = TRUE)`%**.
-
- ]
- .panel[.panel-name[East of England]
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDAs_commissioned(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,
-                                level = "Regional",
-                                region_STP_name = "East of England",
-                                plotChart = TRUE)
-```
-
-The change in total annual contracted UDAs from `r format(Sys.Date() - lubridate::weeks(4), "%B")` 2018 to `r format(Sys.Date() - lubridate::weeks(4), "%B %Y")` is
-**`r plot_UDAs_commissioned(data = UDA_scheduled_data, historical_data = historical_UDA_scheduled_data,level = "Regional",region_STP_name = "East of England",plotChart = FALSE, getChange = TRUE)`%**.
-
- ]
- ]
- 
-The dips seen every April may be due to the fact that new contracts starting at the beginning of the financial year will not have submitted any FP17s until May, which means that their contracted UDA data will not show up until May.
 
 [Return to contents](#contents)
 
