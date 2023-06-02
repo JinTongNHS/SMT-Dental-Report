@@ -297,36 +297,6 @@ activity which is fixed. This may be thought of as "UDAs submitted" in each mont
 
 
 
-
-## Contract size to delivery comparison
-
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_delivery_vs_contract_size_scatter_corporate(data = UDA_scheduled_data,
-                                                 demographics_data = contract_demographics,
-                                                 remove_prototypes = T,
-                                                 plot_month = NULL,
-                                                 UDAorUOA = "UDA",
-                                                 level = "National",
-                                                 region_STP_name = NULL)
-```
-
-* The scatter plot shows the relationship between contract size and delivery for the current month.
-* The number of contracts delivering above 95% contracted value for this month is
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "National", region_STP_name = NULL, get_num_above = 95)[1]`**
-(
-**`r round(as.numeric(plot_delivery_vs_contract_size_scatter_corporate(level = "National", region_STP_name = NULL, get_num_above = 95)[1]) *100 / get_num_contracts(level = "National", region_STP_name = NULL))`**
-% of contracts),
-with a mean contract size of
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "National", region_STP_name = NULL, get_num_above = 95)[2]`**
-UDAs.
-* The number of contracts delivering above 100% contracted value for this month is
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "National", region_STP_name = NULL, get_num_above = 100)[1]`**,
-with a mean contract size of
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "National", region_STP_name = NULL, get_num_above = 100)[2]`**
-UDAs.
-
-
-
 ## UDA delivery profile
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
@@ -342,7 +312,19 @@ plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
 between a certain % group of contracted UDA activity if performance for that
 month is annualised. Improvement would be seen as the distribution moving towards the right, as more contracts deliver closer to 100% of their contracted UDAs.
 
-
+* The number of contracts delivering above 95% contracted value for this month is
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "National", region_STP_name = NULL, get_num_above = 95)[1]`**
+(
+**`r round(as.numeric(plot_delivery_vs_contract_size_scatter_corporate(level = "National", region_STP_name = NULL, get_num_above = 95)[1]) *100 / get_num_contracts(level = "National", region_STP_name = NULL))`**
+% of contracts),
+with a mean contract size of
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "National", region_STP_name = NULL, get_num_above = 95)[2]`**
+UDAs.
+* The number of contracts delivering above 100% contracted value for this month is
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "National", region_STP_name = NULL, get_num_above = 100)[1]`**,
+with a mean contract size of
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "National", region_STP_name = NULL, get_num_above = 100)[2]`**
+UDAs.
 
 
 ## UOA activity data

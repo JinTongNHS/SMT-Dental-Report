@@ -335,7 +335,6 @@ name: contents
  * [Cumulative UDA delivery per quarter](#cumulative-udas)
  * [YTD UDA delivery](#YTD-udas)
  * [Historical UDA delivery](#historic-udas)
- * [Contract size vs delivery scatter plot](#contract-size-scatter)
  * [UDA delivery profile across months](#uda-delivery-profile)
  * [Banded courses of treatment time series](#banded-cots)
  * [Banded courses of treatment time series as % of 2019 delivery](#banded-cots-index)
@@ -1672,357 +1671,6 @@ activity which is fixed. This may be thought of as "UDAs submitted" in each mont
 
 ---
 
-name: contract-size-scatter
-
-### Contract size to delivery comparison
-
-```{r xaringan-panelset-contract_size, echo=FALSE}
-xaringanExtra::use_panelset()
-```
- <font size="1">
-.panelset[
-
- .panel[.panel-name[`r region`]
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_delivery_vs_contract_size_scatter_corporate(data = UDA_scheduled_data,
-                                                 demographics_data = contract_demographics,
-                                                 remove_prototypes = T,
-                                                 plot_month = NULL,
-                                                 UDAorUOA = "UDA",
-                                                 level = "Regional",
-                                                 region_STP_name = region)
-```
-
-* The scatter plot shows the relationship between contract size and delivery for the current month.
-* The number of contracts delivering above 95% contracted value for this month is
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = region, get_num_above = 0.95)[1]`**
-(
-**`r round(as.numeric(plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = region, get_num_above = 0.95)[1]) *100 / get_num_contracts(level = "Regional", region_STP_name = region))`**
-% of contracts),
-with a mean contract size of
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = region, get_num_above = 0.95)[2]`**
-UDAs.
-* The number of contracts delivering above 100% contracted value for this month is
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = region, get_num_above = 1)[1]`**,
-with a mean contract size of
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = region, get_num_above = 1)[2]`**
-UDAs.
-
- ]
- .panel[.panel-name[`r STP1`]
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_delivery_vs_contract_size_scatter_corporate(data = UDA_scheduled_data,
-                                                 demographics_data = contract_demographics,
-                                                 remove_prototypes = T,
-                                                 plot_month = NULL,
-                                                 UDAorUOA = "UDA",
-                                                 level = "STP",
-                                                 region_STP_name = STP1)
-```
-
-* The scatter plot shows the relationship between contract size and delivery for the current month.
-* The number of contracts delivering above 95% contracted value for this month is
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP1, get_num_above = 0.95)[1]`**
-(
-**`r round(as.numeric(plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP1, get_num_above = 0.95)[1]) *100 / get_num_contracts(level = "STP", region_STP_name = STP1))`**
-% of contracts),
-with a mean contract size of
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP1, get_num_above = 0.95)[2]`**
-UDAs.
-* The number of contracts delivering above 100% contracted value for this month is
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP1, get_num_above = 1)[1]`**,
-with a mean contract size of
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP1, get_num_above = 1)[2]`**
-UDAs.
-
-
- ]
-.panel[.panel-name[`r STP2`]
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_delivery_vs_contract_size_scatter_corporate(data = UDA_scheduled_data,
-                                                 demographics_data = contract_demographics,
-                                                 remove_prototypes = T,
-                                                 plot_month = NULL,
-                                                 UDAorUOA = "UDA",
-                                                 level = "STP",
-                                                 region_STP_name = STP2)
-```
-
-* The scatter plot shows the relationship between contract size and delivery for the current month.
-* The number of contracts delivering above 95% contracted value for this month is
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP2, get_num_above = 0.95)[1]`**
-(
-**`r round(as.numeric(plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP2, get_num_above = 0.95)[1]) *100 / get_num_contracts(level = "STP", region_STP_name = STP2))`**
-% of contracts),
-with a mean contract size of
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP2, get_num_above = 0.95)[2]`**
-UDAs.
-* The number of contracts delivering above 100% contracted value for this month is
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP2, get_num_above = 1)[1]`**,
-with a mean contract size of
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP2, get_num_above = 1)[2]`**
-UDAs.
-
-
- ]
-.panel[.panel-name[`r STP3`]
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_delivery_vs_contract_size_scatter_corporate(data = UDA_scheduled_data,
-                                                 demographics_data = contract_demographics,
-                                                 remove_prototypes = T,
-                                                 plot_month = NULL,
-                                                 UDAorUOA = "UDA",
-                                                 level = "STP",
-                                                 region_STP_name = STP3)
-```
-
-* The scatter plot shows the relationship between contract size and delivery for the current month.
-* The number of contracts delivering above 95% contracted value for this month is
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP3, get_num_above = 0.95)[1]`**
-(
-**`r round(as.numeric(plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP3, get_num_above = 0.95)[1]) *100 / get_num_contracts(level = "STP", region_STP_name = STP3))`**
-% of contracts),
-with a mean contract size of
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP3, get_num_above = 0.95)[2]`**
-UDAs.
-* The number of contracts delivering above 100% contracted value for this month is
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP3, get_num_above = 1)[1]`**,
-with a mean contract size of
-**`r plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP3, get_num_above = 1)[2]`**
-UDAs.
-
-
- ]
-.panel[.panel-name[`r STP4`]
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval4}
-plot_delivery_vs_contract_size_scatter_corporate(data = UDA_scheduled_data,
-                                                 demographics_data = contract_demographics,
-                                                 remove_prototypes = T,
-                                                 plot_month = NULL,
-                                                 UDAorUOA = "UDA",
-                                                 level = "STP",
-                                                 region_STP_name = STP4)
-```
-
-* The scatter plot shows the relationship between contract size and delivery for the current month.
-* The number of contracts delivering above 95% contracted value for this month is
-**`r if(eval4){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP4, get_num_above = 0.95)[1]}`**
-(
-**`r if(eval4){round(as.numeric(plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP4, get_num_above = 0.95)[1]) *100 / get_num_contracts(level = "STP", region_STP_name = STP4))}`**
-% of contracts),
-with a mean contract size of
-**`r if(eval4){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP4, get_num_above = 0.95)[2]}`**
-UDAs.
-* The number of contracts delivering above 100% contracted value for this month is
-**`r if(eval4){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP4, get_num_above = 1)[1]}`**,
-with a mean contract size of
-**`r if(eval4){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP4, get_num_above = 1)[2]}`**
-UDAs.
-
-
- ]
-.panel[.panel-name[`r STP5`]
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval5}
-plot_delivery_vs_contract_size_scatter_corporate(data = UDA_scheduled_data,
-                                                 demographics_data = contract_demographics,
-                                                 remove_prototypes = T,
-                                                 plot_month = NULL,
-                                                 UDAorUOA = "UDA",
-                                                 level = "STP",
-                                                 region_STP_name = STP5)
-```
-
-* The scatter plot shows the relationship between contract size and delivery for the current month.
-* The number of contracts delivering above 95% contracted value for this month is
-**`r if(eval5){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP5, get_num_above = 0.95)[1]}`**
-(
-**`r if(eval5){round(as.numeric(plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP5, get_num_above = 0.95)[1]) *100 / get_num_contracts(level = "STP", region_STP_name = STP5))}`**
-% of contracts),
-with a mean contract size of
-**`r if(eval5){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP5, get_num_above = 0.95)[2]}`**
-UDAs.
-* The number of contracts delivering above 100% contracted value for this month is
-**`r if(eval5){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP5, get_num_above = 1)[1]}`**,
-with a mean contract size of
-**`r if(eval5){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP5, get_num_above = 1)[2]}`**
-UDAs.
-
-
- ]
- .panel[.panel-name[`r STP6`]
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval6}
-plot_delivery_vs_contract_size_scatter_corporate(data = UDA_scheduled_data,
-                                                 demographics_data = contract_demographics,
-                                                 remove_prototypes = T,
-                                                 plot_month = NULL,
-                                                 UDAorUOA = "UDA",
-                                                 level = "STP",
-                                                 region_STP_name = STP6)
-```
-
-* The scatter plot shows the relationship between contract size and delivery for the current month.
-* The number of contracts delivering above 95% contracted value for this month is
-**`r if(eval6){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP6, get_num_above = 0.95)[1]}`**
-(
-**`r if(eval6){round(as.numeric(plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP6, get_num_above = 0.95)[1]) *100 / get_num_contracts(level = "STP", region_STP_name = STP6))}`**
-% of contracts),
-with a mean contract size of
-**`r if(eval6){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP6, get_num_above = 0.95)[2]}`**
-UDAs.
-* The number of contracts delivering above 100% contracted value for this month is
-**`r if(eval6){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP6, get_num_above = 1)[1]}`**,
-with a mean contract size of
-**`r if(eval6){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP6, get_num_above = 1)[2]}`**
-UDAs.
-
-
- ]
- .panel[.panel-name[`r STP7`]
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval7}
-plot_delivery_vs_contract_size_scatter_corporate(data = UDA_scheduled_data,
-                                                 demographics_data = contract_demographics,
-                                                 remove_prototypes = T,
-                                                 plot_month = NULL,
-                                                 UDAorUOA = "UDA",
-                                                 level = "STP",
-                                                 region_STP_name = STP7)
-```
-
-* The scatter plot shows the relationship between contract size and delivery for the current month.
-* The number of contracts delivering above 95% contracted value for this month is
-**`r if(eval7){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP7, get_num_above = 0.95)[1]}`**
-(
-**`r if(eval7){round(as.numeric(plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP7, get_num_above = 0.95)[1]) *100 / get_num_contracts(level = "STP", region_STP_name = STP7))}`**
-% of contracts),
-with a mean contract size of
-**`r if(eval7){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP7, get_num_above = 0.95)[2]}`**
-UDAs.
-* The number of contracts delivering above 100% contracted value for this month is
-**`r if(eval7){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP7, get_num_above = 1)[1]}`**,
-with a mean contract size of
-**`r if(eval7){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP7, get_num_above = 1)[2]}`**
-UDAs.
-
-
- ]
- .panel[.panel-name[`r STP8`]
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval8}
-plot_delivery_vs_contract_size_scatter_corporate(data = UDA_scheduled_data,
-                                                 demographics_data = contract_demographics,
-                                                 remove_prototypes = T,
-                                                 plot_month = NULL,
-                                                 UDAorUOA = "UDA",
-                                                 level = "STP",
-                                                 region_STP_name = STP8)
-```
-
-* The scatter plot shows the relationship between contract size and delivery for the current month.
-* The number of contracts delivering above 95% contracted value for this month is
-**`r if(eval8){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP8, get_num_above = 0.95)[1]}`**
-(
-**`r if(eval8){round(as.numeric(plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP8, get_num_above = 0.95)[1]) *100 / get_num_contracts(level = "STP", region_STP_name = STP8))}`**
-% of contracts),
-with a mean contract size of
-**`r if(eval8){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP8, get_num_above = 0.95)[2]}`**
-UDAs.
-* The number of contracts delivering above 100% contracted value for this month is
-**`r if(eval8){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP8, get_num_above = 1)[1]}`**,
-with a mean contract size of
-**`r if(eval8){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP8, get_num_above = 1)[2]}`**
-UDAs.
-
-
- ]
- .panel[.panel-name[`r STP9`]
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval9}
-plot_delivery_vs_contract_size_scatter_corporate(data = UDA_scheduled_data,
-                                                 demographics_data = contract_demographics,
-                                                 remove_prototypes = T,
-                                                 plot_month = NULL,
-                                                 UDAorUOA = "UDA",
-                                                 level = "STP",
-                                                 region_STP_name = STP9)
-```
-
-* The scatter plot shows the relationship between contract size and delivery for the current month.
-* The number of contracts delivering above 95% contracted value for this month is
-**`r if(eval9){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP9, get_num_above = 0.95)[1]}`**
-(
-**`r if(eval9){round(as.numeric(plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP9, get_num_above = 0.95)[1]) *100 / get_num_contracts(level = "STP", region_STP_name = STP9))}`**
-% of contracts),
-with a mean contract size of
-**`r if(eval9){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP9, get_num_above = 0.95)[2]}`**
-UDAs.
-* The number of contracts delivering above 100% contracted value for this month is
-**`r if(eval9){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP9, get_num_above = 1)[1]}`**,
-with a mean contract size of
-**`r if(eval9){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP9, get_num_above = 1)[2]}`**
-UDAs.
-
-
- ]
- .panel[.panel-name[`r STP10`]
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval10}
-plot_delivery_vs_contract_size_scatter_corporate(data = UDA_scheduled_data,
-                                                 demographics_data = contract_demographics,
-                                                 remove_prototypes = T,
-                                                 plot_month = NULL,
-                                                 UDAorUOA = "UDA",
-                                                 level = "STP",
-                                                 region_STP_name = STP10)
-```
-
-* The scatter plot shows the relationship between contract size and delivery for the current month.
-* The number of contracts delivering above 95% contracted value for this month is
-**`r if(eval10){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP10, get_num_above = 0.95)[1]}`**
-(
-**`r if(eval10){round(as.numeric(plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP10, get_num_above = 0.95)[1]) *100 / get_num_contracts(level = "STP", region_STP_name = STP10))}`**
-% of contracts),
-with a mean contract size of
-**`r if(eval10){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP10, get_num_above = 0.95)[2]}`**
-UDAs.
-* The number of contracts delivering above 100% contracted value for this month is
-**`r if(eval10){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP10, get_num_above = 1)[1]}`**,
-with a mean contract size of
-**`r if(eval10){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP10, get_num_above = 1)[2]}`**
-UDAs.
-
-
- ]
- .panel[.panel-name[`r STP11`]
-```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval11}
-plot_delivery_vs_contract_size_scatter_corporate(data = UDA_scheduled_data,
-                                                 demographics_data = contract_demographics,
-                                                 remove_prototypes = T,
-                                                 plot_month = NULL,
-                                                 UDAorUOA = "UDA",
-                                                 level = "STP",
-                                                 region_STP_name = STP11)
-```
-
-* The scatter plot shows the relationship between contract size and delivery for the current month.
-* The number of contracts delivering above 95% contracted value for this month is
-**`r if(eval11){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP11, get_num_above = 0.95)[1]}`**
-(
-**`r if(eval11){round(as.numeric(plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP11, get_num_above = 0.95)[1]) *100 / get_num_contracts(level = "STP", region_STP_name = STP11))}`**
-% of contracts),
-with a mean contract size of
-**`r if(eval11){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP11, get_num_above = 0.95)[2]}`**
-UDAs.
-* The number of contracts delivering above 100% contracted value for this month is
-**`r if(eval11){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP11, get_num_above = 1)[1]}`**,
-with a mean contract size of
-**`r if(eval11){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP11, get_num_above = 1)[2]}`**
-UDAs.
-
-
- ]
- ]
-
-[Return to contents](#contents)
-
----
-
 name: uda-delivery-profile
 
 ### UDA delivery profile
@@ -2043,6 +1691,22 @@ plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
                           region_STP_name = region)
 ```
 
+
+* The number of contracts delivering above 95% contracted value for this month is
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = region, get_num_above = 0.95)[1]`**
+(
+**`r round(as.numeric(plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = region, get_num_above = 0.95)[1]) *100 / get_num_contracts(level = "Regional", region_STP_name = region))`**
+% of contracts),
+with a mean contract size of
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = region, get_num_above = 0.95)[2]`**
+UDAs.
+* The number of contracts delivering above 100% contracted value for this month is
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = region, get_num_above = 1)[1]`**,
+with a mean contract size of
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "Regional", region_STP_name = region, get_num_above = 1)[2]`**
+UDAs.
+
+
  ]
  .panel[.panel-name[`r STP1`]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
@@ -2053,6 +1717,23 @@ plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
                           level = "STP",
                           region_STP_name = STP1)
 ```
+
+
+
+* The number of contracts delivering above 95% contracted value for this month is
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP1, get_num_above = 0.95)[1]`**
+(
+**`r round(as.numeric(plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP1, get_num_above = 0.95)[1]) *100 / get_num_contracts(level = "STP", region_STP_name = STP1))`**
+% of contracts),
+with a mean contract size of
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP1, get_num_above = 0.95)[2]`**
+UDAs.
+* The number of contracts delivering above 100% contracted value for this month is
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP1, get_num_above = 1)[1]`**,
+with a mean contract size of
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP1, get_num_above = 1)[2]`**
+UDAs.
+
 
 
  ]
@@ -2067,6 +1748,22 @@ plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
 ```
 
 
+
+* The number of contracts delivering above 95% contracted value for this month is
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP2, get_num_above = 0.95)[1]`**
+(
+**`r round(as.numeric(plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP2, get_num_above = 0.95)[1]) *100 / get_num_contracts(level = "STP", region_STP_name = STP2))`**
+% of contracts),
+with a mean contract size of
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP2, get_num_above = 0.95)[2]`**
+UDAs.
+* The number of contracts delivering above 100% contracted value for this month is
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP2, get_num_above = 1)[1]`**,
+with a mean contract size of
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP2, get_num_above = 1)[2]`**
+UDAs.
+
+
  ]
  .panel[.panel-name[`r STP3`]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
@@ -2079,6 +1776,21 @@ plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
 ```
 
 
+* The number of contracts delivering above 95% contracted value for this month is
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP3, get_num_above = 0.95)[1]`**
+(
+**`r round(as.numeric(plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP3, get_num_above = 0.95)[1]) *100 / get_num_contracts(level = "STP", region_STP_name = STP3))`**
+% of contracts),
+with a mean contract size of
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP3, get_num_above = 0.95)[2]`**
+UDAs.
+* The number of contracts delivering above 100% contracted value for this month is
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP3, get_num_above = 1)[1]`**,
+with a mean contract size of
+**`r plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP3, get_num_above = 1)[2]`**
+UDAs.
+
+
  ]
  .panel[.panel-name[`r STP4`]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval4}
@@ -2089,6 +1801,22 @@ plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
                           level = "STP",
                           region_STP_name = STP4)
 ```
+
+ 
+* The number of contracts delivering above 95% contracted value for this month is
+**`r if(eval4){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP4, get_num_above = 0.95)[1]}`**
+(
+**`r if(eval4){round(as.numeric(plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP4, get_num_above = 0.95)[1]) *100 / get_num_contracts(level = "STP", region_STP_name = STP4))}`**
+% of contracts),
+with a mean contract size of
+**`r if(eval4){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP4, get_num_above = 0.95)[2]}`**
+UDAs.
+* The number of contracts delivering above 100% contracted value for this month is
+**`r if(eval4){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP4, get_num_above = 1)[1]}`**,
+with a mean contract size of
+**`r if(eval4){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP4, get_num_above = 1)[2]}`**
+UDAs.
+
 
 
  ]
@@ -2103,6 +1831,21 @@ plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
 ```
 
 
+* The number of contracts delivering above 95% contracted value for this month is
+**`r if(eval5){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP5, get_num_above = 0.95)[1]}`**
+(
+**`r if(eval5){round(as.numeric(plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP5, get_num_above = 0.95)[1]) *100 / get_num_contracts(level = "STP", region_STP_name = STP5))}`**
+% of contracts),
+with a mean contract size of
+**`r if(eval5){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP5, get_num_above = 0.95)[2]}`**
+UDAs.
+* The number of contracts delivering above 100% contracted value for this month is
+**`r if(eval5){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP5, get_num_above = 1)[1]}`**,
+with a mean contract size of
+**`r if(eval5){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP5, get_num_above = 1)[2]}`**
+UDAs.
+
+
  ]
  .panel[.panel-name[`r STP6`]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval6}
@@ -2115,6 +1858,23 @@ plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
 ```
 
 
+ 
+* The number of contracts delivering above 95% contracted value for this month is
+**`r if(eval6){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP6, get_num_above = 0.95)[1]}`**
+(
+**`r if(eval6){round(as.numeric(plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP6, get_num_above = 0.95)[1]) *100 / get_num_contracts(level = "STP", region_STP_name = STP6))}`**
+% of contracts),
+with a mean contract size of
+**`r if(eval6){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP6, get_num_above = 0.95)[2]}`**
+UDAs.
+* The number of contracts delivering above 100% contracted value for this month is
+**`r if(eval6){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP6, get_num_above = 1)[1]}`**,
+with a mean contract size of
+**`r if(eval6){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP6, get_num_above = 1)[2]}`**
+UDAs.
+
+
+ 
  ]
  .panel[.panel-name[`r STP7`]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval7}
@@ -2126,6 +1886,22 @@ plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
                           region_STP_name = STP7)
 ```
 
+
+
+
+* The number of contracts delivering above 95% contracted value for this month is
+**`r if(eval7){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP7, get_num_above = 0.95)[1]}`**
+(
+**`r if(eval7){round(as.numeric(plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP7, get_num_above = 0.95)[1]) *100 / get_num_contracts(level = "STP", region_STP_name = STP7))}`**
+% of contracts),
+with a mean contract size of
+**`r if(eval7){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP7, get_num_above = 0.95)[2]}`**
+UDAs.
+* The number of contracts delivering above 100% contracted value for this month is
+**`r if(eval7){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP7, get_num_above = 1)[1]}`**,
+with a mean contract size of
+**`r if(eval7){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP7, get_num_above = 1)[2]}`**
+UDAs.
 
 
  ]
@@ -2140,6 +1916,22 @@ plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
 ```
 
 
+* The number of contracts delivering above 95% contracted value for this month is
+**`r if(eval8){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP8, get_num_above = 0.95)[1]}`**
+(
+**`r if(eval8){round(as.numeric(plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP8, get_num_above = 0.95)[1]) *100 / get_num_contracts(level = "STP", region_STP_name = STP8))}`**
+% of contracts),
+with a mean contract size of
+**`r if(eval8){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP8, get_num_above = 0.95)[2]}`**
+UDAs.
+* The number of contracts delivering above 100% contracted value for this month is
+**`r if(eval8){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP8, get_num_above = 1)[1]}`**,
+with a mean contract size of
+**`r if(eval8){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP8, get_num_above = 1)[2]}`**
+UDAs.
+
+
+
  ]
   .panel[.panel-name[`r STP9`]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval9}
@@ -2150,6 +1942,22 @@ plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
                           level = "STP",
                           region_STP_name = STP9)
 ```
+
+ 
+* The number of contracts delivering above 95% contracted value for this month is
+**`r if(eval9){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP9, get_num_above = 0.95)[1]}`**
+(
+**`r if(eval9){round(as.numeric(plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP9, get_num_above = 0.95)[1]) *100 / get_num_contracts(level = "STP", region_STP_name = STP9))}`**
+% of contracts),
+with a mean contract size of
+**`r if(eval9){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP9, get_num_above = 0.95)[2]}`**
+UDAs.
+* The number of contracts delivering above 100% contracted value for this month is
+**`r if(eval9){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP9, get_num_above = 1)[1]}`**,
+with a mean contract size of
+**`r if(eval9){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP9, get_num_above = 1)[2]}`**
+UDAs.
+
 
 
  ]
@@ -2164,6 +1972,22 @@ plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
 ```
 
 
+* The number of contracts delivering above 95% contracted value for this month is
+**`r if(eval10){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP10, get_num_above = 0.95)[1]}`**
+(
+**`r if(eval10){round(as.numeric(plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP10, get_num_above = 0.95)[1]) *100 / get_num_contracts(level = "STP", region_STP_name = STP10))}`**
+% of contracts),
+with a mean contract size of
+**`r if(eval10){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP10, get_num_above = 0.95)[2]}`**
+UDAs.
+* The number of contracts delivering above 100% contracted value for this month is
+**`r if(eval10){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP10, get_num_above = 1)[1]}`**,
+with a mean contract size of
+**`r if(eval10){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP10, get_num_above = 1)[2]}`**
+UDAs.
+
+
+
  ]
  .panel[.panel-name[`r STP11`]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, eval = eval11}
@@ -2176,6 +2000,20 @@ plot_UDA_UOA_delivery_profile(data = UDA_scheduled_data,
 ```
 
 
+ 
+* The number of contracts delivering above 95% contracted value for this month is
+**`r if(eval11){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP11, get_num_above = 0.95)[1]}`**
+(
+**`r if(eval11){round(as.numeric(plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP11, get_num_above = 0.95)[1]) *100 / get_num_contracts(level = "STP", region_STP_name = STP11))}`**
+% of contracts),
+with a mean contract size of
+**`r if(eval11){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP11, get_num_above = 0.95)[2]}`**
+UDAs.
+* The number of contracts delivering above 100% contracted value for this month is
+**`r if(eval11){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP11, get_num_above = 1)[1]}`**,
+with a mean contract size of
+**`r if(eval11){plot_delivery_vs_contract_size_scatter_corporate(level = "STP", region_STP_name = STP11, get_num_above = 1)[2]}`**
+UDAs.
  ]
  ]
  
