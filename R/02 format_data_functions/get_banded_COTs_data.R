@@ -11,7 +11,7 @@ get_banded_COTs_data <- function(data = UDA_scheduled_data,
   historic_data <- historic_data %>%
     rename(total_UDAs = UDA_delivered)
   
-  data <- bind_rows(data, historic_data)
+  #data <- bind_rows(data, historic_data)
   
   #remove prototype contracts if specified
   #only removes prototypes before April 2022

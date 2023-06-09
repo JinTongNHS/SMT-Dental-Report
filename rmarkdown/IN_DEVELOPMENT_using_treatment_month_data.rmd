@@ -39,11 +39,11 @@ for (f in list.files(path = "../R/02 format_data_functions/", pattern="*.R$")) {
 #sort out STP ICB changes
 STP_ICB_lookup_codes <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/STP_ICB_lookup_codes.xlsx")
 
-UDA_treatment_month_FD_Apr23 <- read_csv("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/new_treatment_month_data/UDA_treatment_month_FD_Apr23.csv") #####put in shared folder
-UDA_treatment_month_non_FD_Apr23 <- read_csv("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/new_treatment_month_data/UDA_treatment_month_non_FD_Apr23.csv")
+UDA_treatment_month_FD <- read_csv("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/new_treatment_month_data/UDA_treatment_month_FD_Apr23.csv") #####put in shared folder
+UDA_treatment_month_non_FD <- read_csv("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/new_treatment_month_data/UDA_treatment_month_non_FD_Apr23.csv")
 
-UDA_treatment_month_FD_Apr23 <- clean_treatment_month_columns(UDA_treatment_month_FD_Apr23)
-UDA_treatment_month_non_FD_Apr23 <- clean_treatment_month_columns(UDA_treatment_month_non_FD_Apr23)
+UDA_treatment_month_FD <- clean_treatment_month_columns(UDA_treatment_month_FD)
+UDA_treatment_month_non_FD <- clean_treatment_month_columns(UDA_treatment_month_non_FD)
 
 #pull data from NCDR
 UDA_calendar_data <- pull_UDA_calendar_data()
@@ -143,43 +143,11 @@ name: contents
  * [Table of number of contracts by MY category](#contracts-table)
  * [UDA activity](#short-uda-activity)
  * [UDA activity by MY category](#short-uda-activity-my-cat)
- * [Cumulative UDA delivery per quarter](#cumulative-udas)
  * [YTD UDA delivery](#YTD-udas)
  * [Historic UDA delivery](#historic-udas)
  * [UDA delivery profile across months](#uda-delivery-profile)
  * [Banded courses of treatment time series](#banded-cots)
- * [Banded courses of treatment time series as % of 2019 delivery](#banded-cots-index)
  * [Percentage of FP17s in each band 2 sub-category](#band2-split-FP17-perc)
- * [UDAs delivered by patient charge status](#patient-charge)
- * [Contractors projected to deliver at least 96% of contracted UDAs](#UDA-projection)
- * [Percentage of CoTs assisted by Dental Care Practitioners (DCPs)](#dcp-fp17)
- * [Percentage of UDAs assisted by Dental Care Practitioners (DCPs) by band](#dcp-uda)
- * [Percentage of FP17s indicating low oral health risk](#bpe)
- * [111 call volumes](#111-call-volumes)
- * [Unique patients seen rolling 12 months](#unique-patients)
- * [Unique patients seen rolling 12 months as % of April 2018 delivery](#unique-patients-index)
- * [Number of new patients](#new-patients)
- * [Percentage of practices seeing new patients](#new-patients-perc)
- * [Patient re-attendance intervals](#reattendance)
- * [BSA CDS dashboard - opens in web](https://miteam.shinyapps.io/CDS_Dashboard/)
- * [Contract closures based on PCAR report](#closures)
- * [De-commissioned and re-commissioned UDAs and UOAs as a result of closure based on PCAR](#de-and-re-commissioned)
- * [Total payments to dentists by financial year](#payemts)
- * [Cumulative financial value of UDAs delivered YTD](#uda-value)
-
-
----
-
-name: contents
-#### Contents 2
-
- <font size="2">
-#### Orthodontic 
- * [UOA activity](#uoa-activity)
- * [UOA activity by MY category](#uoa-activity-my-cat)
- * [Cumulative UOA delivery per quarter](#cumulative-uoas)
- * [YTD UOA delivery](#YTD-uoas)
- * [UOA delivery profile across months](#uoa-delivery-profile)
  
 #### Appendix
  * [MY Category classification breakdown](#my-cat-breakdown)
@@ -235,13 +203,13 @@ xaringanExtra::use_panelset()
 
 #### Excluding Foundation Dentists, On-time submissions
 ```{r table11, echo = FALSE, warning = FALSE, message = FALSE}
-knitr::kable(table_number_cat_contracts(data = UDA_treatment_month_non_FD_Apr23, remove_prototypes = F, level = "National", region_STP_name = NULL), format = 'html') %>%
+knitr::kable(table_number_cat_contracts(data = UDA_treatment_month_non_FD, remove_prototypes = F, level = "National", region_STP_name = NULL), format = 'html') %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
 ```
 
 #### Foundations dentists only, On-time submissions
 ```{r table21, echo = FALSE, warning = FALSE, message = FALSE}
-knitr::kable( table_number_cat_contracts(data = UDA_treatment_month_FD_Apr23, remove_prototypes = F, level = "National", region_STP_name = NULL), format = 'html') %>%
+knitr::kable( table_number_cat_contracts(data = UDA_treatment_month_FD, remove_prototypes = F, level = "National", region_STP_name = NULL), format = 'html') %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
 ```
 
@@ -251,13 +219,13 @@ knitr::kable( table_number_cat_contracts(data = UDA_treatment_month_FD_Apr23, re
 
 #### Excluding Foundation Dentists, On-time submissions
 ```{r table12, echo = FALSE, warning = FALSE, message = FALSE}
-knitr::kable(table_number_cat_contracts(data = UDA_treatment_month_non_FD_Apr23, remove_prototypes = F, level = "Regional", region_STP_name = "South East"), format = 'html') %>%
+knitr::kable(table_number_cat_contracts(data = UDA_treatment_month_non_FD, remove_prototypes = F, level = "Regional", region_STP_name = "South East"), format = 'html') %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
 ```
 
 #### Foundations dentists only, On-time submissions
 ```{r table22, echo = FALSE, warning = FALSE, message = FALSE}
-knitr::kable(table_number_cat_contracts(data = UDA_treatment_month_FD_Apr23, remove_prototypes = T, level = "Regional", region_STP_name = "South East"), format = 'html') %>%
+knitr::kable(table_number_cat_contracts(data = UDA_treatment_month_FD, remove_prototypes = T, level = "Regional", region_STP_name = "South East"), format = 'html') %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
 ```
 
@@ -268,13 +236,13 @@ knitr::kable(table_number_cat_contracts(data = UDA_treatment_month_FD_Apr23, rem
 
 #### Excluding Foundation Dentists, On-time submissions
 ```{r table13, echo = FALSE, warning = FALSE, message = FALSE}
-knitr::kable(table_number_cat_contracts(data = UDA_treatment_month_non_FD_Apr23, remove_prototypes = F, level = "Regional", region_STP_name = "South West"), format = 'html') %>%
+knitr::kable(table_number_cat_contracts(data = UDA_treatment_month_non_FD, remove_prototypes = F, level = "Regional", region_STP_name = "South West"), format = 'html') %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
 ```
 
 #### Foundations dentists only, On-time submissions
 ```{r table23, echo = FALSE, warning = FALSE, message = FALSE}
-knitr::kable(table_number_cat_contracts(data = UDA_treatment_month_FD_Apr23, remove_prototypes = T, level = "Regional", region_STP_name = "South West"), format = 'html') %>%
+knitr::kable(table_number_cat_contracts(data = UDA_treatment_month_FD, remove_prototypes = T, level = "Regional", region_STP_name = "South West"), format = 'html') %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
 ```
 
@@ -285,13 +253,13 @@ knitr::kable(table_number_cat_contracts(data = UDA_treatment_month_FD_Apr23, rem
 
 #### Excluding Foundation Dentists, On-time submissions
 ```{r table14, echo = FALSE, warning = FALSE, message = FALSE}
-knitr::kable(table_number_cat_contracts(data = UDA_treatment_month_non_FD_Apr23, remove_prototypes = F, level = "Regional", region_STP_name = "North West"), format = 'html') %>%
+knitr::kable(table_number_cat_contracts(data = UDA_treatment_month_non_FD, remove_prototypes = F, level = "Regional", region_STP_name = "North West"), format = 'html') %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
 ```
 
 #### Foundations dentists only, On-time submissions
 ```{r table24, echo = FALSE, warning = FALSE, message = FALSE}
-knitr::kable(table_number_cat_contracts(data = UDA_treatment_month_FD_Apr23, remove_prototypes = T, level = "Regional", region_STP_name = "North West"), format = 'html') %>%
+knitr::kable(table_number_cat_contracts(data = UDA_treatment_month_FD, remove_prototypes = T, level = "Regional", region_STP_name = "North West"), format = 'html') %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
 ```
 
@@ -302,13 +270,13 @@ knitr::kable(table_number_cat_contracts(data = UDA_treatment_month_FD_Apr23, rem
 
 #### Excluding Foundation Dentists, On-time submissions
 ```{r table15, echo = FALSE, warning = FALSE, message = FALSE}
-knitr::kable(table_number_cat_contracts(data = UDA_treatment_month_non_FD_Apr23, remove_prototypes = F, level = "Regional", region_STP_name = "North East and Yorkshire"), format = 'html') %>%
+knitr::kable(table_number_cat_contracts(data = UDA_treatment_month_non_FD, remove_prototypes = F, level = "Regional", region_STP_name = "North East and Yorkshire"), format = 'html') %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
 ```
 
 #### Foundations dentists only, On-time submissions
 ```{r table25, echo = FALSE, warning = FALSE, message = FALSE}
-knitr::kable(table_number_cat_contracts(data = UDA_treatment_month_FD_Apr23, remove_prototypes = T, level = "Regional", region_STP_name = "North East and Yorkshire"), format = 'html') %>%
+knitr::kable(table_number_cat_contracts(data = UDA_treatment_month_FD, remove_prototypes = T, level = "Regional", region_STP_name = "North East and Yorkshire"), format = 'html') %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
 ```
 
@@ -319,13 +287,13 @@ knitr::kable(table_number_cat_contracts(data = UDA_treatment_month_FD_Apr23, rem
 
 #### Excluding Foundation Dentists, On-time submissions
 ```{r table16, echo = FALSE, warning = FALSE, message = FALSE}
-knitr::kable(table_number_cat_contracts(data = UDA_treatment_month_non_FD_Apr23, remove_prototypes = F, level = "Regional", region_STP_name = "London"), format = 'html') %>%
+knitr::kable(table_number_cat_contracts(data = UDA_treatment_month_non_FD, remove_prototypes = F, level = "Regional", region_STP_name = "London"), format = 'html') %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
 ```
 
 #### Foundations dentists only, On-time submissions
 ```{r table26, echo = FALSE, warning = FALSE, message = FALSE}
-knitr::kable(table_number_cat_contracts(data = UDA_treatment_month_FD_Apr23, remove_prototypes = T, level = "Regional", region_STP_name = "London"), format = 'html') %>%
+knitr::kable(table_number_cat_contracts(data = UDA_treatment_month_FD, remove_prototypes = T, level = "Regional", region_STP_name = "London"), format = 'html') %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
 ```
 
@@ -335,13 +303,13 @@ knitr::kable(table_number_cat_contracts(data = UDA_treatment_month_FD_Apr23, rem
 
 #### Excluding Foundation Dentists, On-time submissions
 ```{r table17, echo = FALSE, warning = FALSE, message = FALSE}
-knitr::kable(table_number_cat_contracts(data = UDA_treatment_month_non_FD_Apr23, remove_prototypes = F, level = "Regional", region_STP_name = "Midlands"), format = 'html') %>%
+knitr::kable(table_number_cat_contracts(data = UDA_treatment_month_non_FD, remove_prototypes = F, level = "Regional", region_STP_name = "Midlands"), format = 'html') %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
 ```
 
 #### Foundations dentists only, On-time submissions
 ```{r table27, echo = FALSE, warning = FALSE, message = FALSE}
-knitr::kable(table_number_cat_contracts(data = UDA_treatment_month_FD_Apr23, remove_prototypes = T, level = "Regional", region_STP_name = "Midlands"), format = 'html') %>%
+knitr::kable(table_number_cat_contracts(data = UDA_treatment_month_FD, remove_prototypes = T, level = "Regional", region_STP_name = "Midlands"), format = 'html') %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
 ```
 
@@ -352,13 +320,13 @@ knitr::kable(table_number_cat_contracts(data = UDA_treatment_month_FD_Apr23, rem
 
 #### Excluding Foundation Dentists, On-time submissions
 ```{r table18, echo = FALSE, warning = FALSE, message = FALSE}
-knitr::kable(table_number_cat_contracts(data = UDA_treatment_month_non_FD_Apr23, remove_prototypes = F, level = "Regional", region_STP_name = "East of England"), format = 'html') %>%
+knitr::kable(table_number_cat_contracts(data = UDA_treatment_month_non_FD, remove_prototypes = F, level = "Regional", region_STP_name = "East of England"), format = 'html') %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
 ```
 
 #### Foundations dentists only, On-time submissions
 ```{r table28, echo = FALSE, warning = FALSE, message = FALSE}
-knitr::kable(table_number_cat_contracts(data = UDA_treatment_month_FD_Apr23, remove_prototypes = T, level = "Regional", region_STP_name = "East of England"), format = 'html') %>%
+knitr::kable(table_number_cat_contracts(data = UDA_treatment_month_FD, remove_prototypes = T, level = "Regional", region_STP_name = "East of England"), format = 'html') %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
 ```
 
@@ -385,7 +353,7 @@ xaringanExtra::use_panelset()
 
 .panel[.panel-name[National]
 ```{r UDA_activity_Calendar1, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
-plot_historic_UDA_UOA_delivery_treatment_month(data = UDA_treatment_month_non_FD_Apr23,
+plot_historic_UDA_UOA_delivery_treatment_month(data = UDA_treatment_month_non_FD,
                                                scheduled_data = UDA_scheduled_data, 
                                                historic_data = historical_UDA_scheduled_data,
                                                contractor_cats = contractor_categories,
@@ -403,7 +371,7 @@ plot_historic_UDA_UOA_delivery_treatment_month(data = UDA_treatment_month_non_FD
 ]
 .panel[.panel-name[South East]
 ```{r UDA_activity_Calendar2, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
-plot_historic_UDA_UOA_delivery_treatment_month(data = UDA_treatment_month_non_FD_Apr23,
+plot_historic_UDA_UOA_delivery_treatment_month(data = UDA_treatment_month_non_FD,
                                                scheduled_data = UDA_scheduled_data, 
                                                historic_data = historical_UDA_scheduled_data,
                                                contractor_cats = contractor_categories,
@@ -421,7 +389,7 @@ plot_historic_UDA_UOA_delivery_treatment_month(data = UDA_treatment_month_non_FD
 ]
 .panel[.panel-name[South West]
 ```{r UDA_activity_Calendar3, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
-plot_historic_UDA_UOA_delivery_treatment_month(data = UDA_treatment_month_non_FD_Apr23,
+plot_historic_UDA_UOA_delivery_treatment_month(data = UDA_treatment_month_non_FD,
                                                scheduled_data = UDA_scheduled_data, 
                                                historic_data = historical_UDA_scheduled_data,
                                                contractor_cats = contractor_categories,
@@ -439,7 +407,7 @@ plot_historic_UDA_UOA_delivery_treatment_month(data = UDA_treatment_month_non_FD
 ]
 .panel[.panel-name[North West]
 ```{r UDA_activity_Calendar4, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
-plot_historic_UDA_UOA_delivery_treatment_month(data = UDA_treatment_month_non_FD_Apr23,
+plot_historic_UDA_UOA_delivery_treatment_month(data = UDA_treatment_month_non_FD,
                                                scheduled_data = UDA_scheduled_data, 
                                                historic_data = historical_UDA_scheduled_data,
                                                contractor_cats = contractor_categories,
@@ -457,7 +425,7 @@ plot_historic_UDA_UOA_delivery_treatment_month(data = UDA_treatment_month_non_FD
 ]
 .panel[.panel-name[North East and Yorkshire]
 ```{r UDA_activity_Calendar5, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
-plot_historic_UDA_UOA_delivery_treatment_month(data = UDA_treatment_month_non_FD_Apr23,
+plot_historic_UDA_UOA_delivery_treatment_month(data = UDA_treatment_month_non_FD,
                                                scheduled_data = UDA_scheduled_data, 
                                                historic_data = historical_UDA_scheduled_data,
                                                contractor_cats = contractor_categories,
@@ -475,7 +443,7 @@ plot_historic_UDA_UOA_delivery_treatment_month(data = UDA_treatment_month_non_FD
 ]
 .panel[.panel-name[London]
 ```{r UDA_activity_Calendar6, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
-plot_historic_UDA_UOA_delivery_treatment_month(data = UDA_treatment_month_non_FD_Apr23,
+plot_historic_UDA_UOA_delivery_treatment_month(data = UDA_treatment_month_non_FD,
                                                scheduled_data = UDA_scheduled_data, 
                                                historic_data = historical_UDA_scheduled_data,
                                                contractor_cats = contractor_categories,
@@ -493,7 +461,7 @@ plot_historic_UDA_UOA_delivery_treatment_month(data = UDA_treatment_month_non_FD
 ]
 .panel[.panel-name[Midlands]
 ```{r UDA_activity_Calendar7, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
-plot_historic_UDA_UOA_delivery_treatment_month(data = UDA_treatment_month_non_FD_Apr23,
+plot_historic_UDA_UOA_delivery_treatment_month(data = UDA_treatment_month_non_FD,
                                                scheduled_data = UDA_scheduled_data, 
                                                historic_data = historical_UDA_scheduled_data,
                                                contractor_cats = contractor_categories,
@@ -511,7 +479,7 @@ plot_historic_UDA_UOA_delivery_treatment_month(data = UDA_treatment_month_non_FD
 ]
 .panel[.panel-name[East of England]
 ```{r UDA_activity_Calendar8, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
-plot_historic_UDA_UOA_delivery_treatment_month(data = UDA_treatment_month_non_FD_Apr23,
+plot_historic_UDA_UOA_delivery_treatment_month(data = UDA_treatment_month_non_FD,
                                                scheduled_data = UDA_scheduled_data, 
                                                historic_data = historical_UDA_scheduled_data,
                                                contractor_cats = contractor_categories,
@@ -545,7 +513,7 @@ xaringanExtra::use_panelset()
 
 .panel[.panel-name[National]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_MY_cat_treatment_month(data = UDA_treatment_month_non_FD_Apr23, 
+plot_UDA_UOA_delivery_MY_cat_treatment_month(data = UDA_treatment_month_non_FD, 
                                              contractor_cats = contractor_categories,
                                              UDAorUOA = "UDA",
                                              level = "National",
@@ -560,7 +528,7 @@ plot_UDA_UOA_delivery_MY_cat_treatment_month(data = UDA_treatment_month_non_FD_A
 ]
 .panel[.panel-name[South East]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_MY_cat_treatment_month(data = UDA_treatment_month_non_FD_Apr23, 
+plot_UDA_UOA_delivery_MY_cat_treatment_month(data = UDA_treatment_month_non_FD, 
                                              contractor_cats = contractor_categories,
                                              UDAorUOA = "UDA",
                                              remove_prototypes = FALSE,
@@ -576,7 +544,7 @@ plot_UDA_UOA_delivery_MY_cat_treatment_month(data = UDA_treatment_month_non_FD_A
 ]
 .panel[.panel-name[South West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_MY_cat_treatment_month(data = UDA_treatment_month_non_FD_Apr23, 
+plot_UDA_UOA_delivery_MY_cat_treatment_month(data = UDA_treatment_month_non_FD, 
                                              contractor_cats = contractor_categories,
                                              UDAorUOA = "UDA",
                                              remove_prototypes = FALSE,
@@ -592,7 +560,7 @@ plot_UDA_UOA_delivery_MY_cat_treatment_month(data = UDA_treatment_month_non_FD_A
 ]
 .panel[.panel-name[North West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_MY_cat_treatment_month(data = UDA_treatment_month_non_FD_Apr23, 
+plot_UDA_UOA_delivery_MY_cat_treatment_month(data = UDA_treatment_month_non_FD, 
                                              contractor_cats = contractor_categories,
                                              UDAorUOA = "UDA",
                                              remove_prototypes = FALSE,
@@ -608,7 +576,7 @@ plot_UDA_UOA_delivery_MY_cat_treatment_month(data = UDA_treatment_month_non_FD_A
 ]
 .panel[.panel-name[North East and Yorkshire]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_MY_cat_treatment_month(data = UDA_treatment_month_non_FD_Apr23, 
+plot_UDA_UOA_delivery_MY_cat_treatment_month(data = UDA_treatment_month_non_FD, 
                                              contractor_cats = contractor_categories,
                                              UDAorUOA = "UDA",
                                              remove_prototypes = FALSE,
@@ -624,7 +592,7 @@ plot_UDA_UOA_delivery_MY_cat_treatment_month(data = UDA_treatment_month_non_FD_A
 ]
 .panel[.panel-name[London]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_MY_cat_treatment_month(data = UDA_treatment_month_non_FD_Apr23, 
+plot_UDA_UOA_delivery_MY_cat_treatment_month(data = UDA_treatment_month_non_FD, 
                                              contractor_cats = contractor_categories,
                                              UDAorUOA = "UDA",
                                              remove_prototypes = FALSE,
@@ -640,7 +608,7 @@ plot_UDA_UOA_delivery_MY_cat_treatment_month(data = UDA_treatment_month_non_FD_A
 ]
 .panel[.panel-name[Midlands]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_MY_cat_treatment_month(data = UDA_treatment_month_non_FD_Apr23, 
+plot_UDA_UOA_delivery_MY_cat_treatment_month(data = UDA_treatment_month_non_FD, 
                                              contractor_cats = contractor_categories,
                                              UDAorUOA = "UDA",
                                              remove_prototypes = FALSE,
@@ -656,7 +624,7 @@ plot_UDA_UOA_delivery_MY_cat_treatment_month(data = UDA_treatment_month_non_FD_A
 ]
 .panel[.panel-name[East of England]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_MY_cat_treatment_month(data = UDA_treatment_month_non_FD_Apr23, 
+plot_UDA_UOA_delivery_MY_cat_treatment_month(data = UDA_treatment_month_non_FD, 
                                              contractor_cats = contractor_categories,
                                              UDAorUOA = "UDA",
                                              remove_prototypes = FALSE,
@@ -688,7 +656,7 @@ xaringanExtra::use_panelset()
 
 .panel[.panel-name[National]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
-plot_YTD_UDA_UOA_delivery(data = UDA_treatment_month_non_FD_Apr23, 
+plot_YTD_UDA_UOA_delivery(data = UDA_treatment_month_non_FD, 
                                   
                                   historic_data = historical_UDA_scheduled_data,
                                   UDAorUOA = "UDA",
@@ -703,7 +671,7 @@ plot_YTD_UDA_UOA_delivery(data = UDA_treatment_month_non_FD_Apr23,
 ]
 .panel[.panel-name[South East]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
-plot_YTD_UDA_UOA_delivery(data = UDA_treatment_month_non_FD_Apr23, 
+plot_YTD_UDA_UOA_delivery(data = UDA_treatment_month_non_FD, 
                                   
                                   historic_data = historical_UDA_scheduled_data,
                                   UDAorUOA = "UDA",
@@ -718,7 +686,7 @@ plot_YTD_UDA_UOA_delivery(data = UDA_treatment_month_non_FD_Apr23,
 ]
 .panel[.panel-name[South West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
-plot_YTD_UDA_UOA_delivery(data = UDA_treatment_month_non_FD_Apr23, 
+plot_YTD_UDA_UOA_delivery(data = UDA_treatment_month_non_FD, 
                                   
                                   historic_data = historical_UDA_scheduled_data,
                                   UDAorUOA = "UDA",
@@ -733,7 +701,7 @@ plot_YTD_UDA_UOA_delivery(data = UDA_treatment_month_non_FD_Apr23,
 ]
 .panel[.panel-name[North West]
 ```{r  echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
-plot_YTD_UDA_UOA_delivery(data = UDA_treatment_month_non_FD_Apr23, 
+plot_YTD_UDA_UOA_delivery(data = UDA_treatment_month_non_FD, 
                                   
                                   historic_data = historical_UDA_scheduled_data,
                                   UDAorUOA = "UDA",
@@ -748,7 +716,7 @@ plot_YTD_UDA_UOA_delivery(data = UDA_treatment_month_non_FD_Apr23,
 ]
 .panel[.panel-name[North East and Yorkshire]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
-plot_YTD_UDA_UOA_delivery(data = UDA_treatment_month_non_FD_Apr23, 
+plot_YTD_UDA_UOA_delivery(data = UDA_treatment_month_non_FD, 
                                   
                                   historic_data = historical_UDA_scheduled_data,
                                   UDAorUOA = "UDA",
@@ -763,7 +731,7 @@ plot_YTD_UDA_UOA_delivery(data = UDA_treatment_month_non_FD_Apr23,
 ]
 .panel[.panel-name[London]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
-plot_YTD_UDA_UOA_delivery(data = UDA_treatment_month_non_FD_Apr23, 
+plot_YTD_UDA_UOA_delivery(data = UDA_treatment_month_non_FD, 
                                   
                                   historic_data = historical_UDA_scheduled_data,
                                   UDAorUOA = "UDA",
@@ -778,7 +746,7 @@ plot_YTD_UDA_UOA_delivery(data = UDA_treatment_month_non_FD_Apr23,
 ]
 .panel[.panel-name[Midlands]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
-plot_YTD_UDA_UOA_delivery(data = UDA_treatment_month_non_FD_Apr23, 
+plot_YTD_UDA_UOA_delivery(data = UDA_treatment_month_non_FD, 
                                   
                                   historic_data = historical_UDA_scheduled_data,
                                   UDAorUOA = "UDA",
@@ -793,7 +761,7 @@ plot_YTD_UDA_UOA_delivery(data = UDA_treatment_month_non_FD_Apr23,
 ]
 .panel[.panel-name[East of England]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
-plot_YTD_UDA_UOA_delivery(data = UDA_treatment_month_non_FD_Apr23, 
+plot_YTD_UDA_UOA_delivery(data = UDA_treatment_month_non_FD, 
                                   
                                   historic_data = historical_UDA_scheduled_data,
                                   UDAorUOA = "UDA",
@@ -824,7 +792,7 @@ xaringanExtra::use_panelset()
 
  .panel[.panel-name[National]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_profile(data = UDA_treatment_month_non_FD_Apr23,
+plot_UDA_UOA_delivery_profile(data = UDA_treatment_month_non_FD,
                           
                           UDAorUOA = "UDA",
                           level = "National",
@@ -849,7 +817,7 @@ UDAs.
  ]
  .panel[.panel-name[South East]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_profile(data = UDA_treatment_month_non_FD_Apr23,
+plot_UDA_UOA_delivery_profile(data = UDA_treatment_month_non_FD,
                           
                           UDAorUOA = "UDA",
                           level = "Regional",
@@ -874,7 +842,7 @@ UDAs.
  ]
  .panel[.panel-name[South West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_profile(data = UDA_treatment_month_non_FD_Apr23,
+plot_UDA_UOA_delivery_profile(data = UDA_treatment_month_non_FD,
                           
                           UDAorUOA = "UDA",
                           level = "Regional",
@@ -901,7 +869,7 @@ UDAs.
  ]
  .panel[.panel-name[North West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_profile(data = UDA_treatment_month_non_FD_Apr23,
+plot_UDA_UOA_delivery_profile(data = UDA_treatment_month_non_FD,
                           
                           UDAorUOA = "UDA",
                           level = "Regional",
@@ -928,7 +896,7 @@ UDAs.
  ]
  .panel[.panel-name[North East and Yorkshire]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_profile(data = UDA_treatment_month_non_FD_Apr23,
+plot_UDA_UOA_delivery_profile(data = UDA_treatment_month_non_FD,
                           
                           UDAorUOA = "UDA",
                           level = "Regional",
@@ -954,7 +922,7 @@ UDAs.
  ]
 .panel[.panel-name[London]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_profile(data = UDA_treatment_month_non_FD_Apr23,
+plot_UDA_UOA_delivery_profile(data = UDA_treatment_month_non_FD,
                           
                           UDAorUOA = "UDA",
                           level = "Regional",
@@ -979,7 +947,7 @@ UDAs.
  ]
  .panel[.panel-name[Midlands]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_profile(data = UDA_treatment_month_non_FD_Apr23,
+plot_UDA_UOA_delivery_profile(data = UDA_treatment_month_non_FD,
                           
                           UDAorUOA = "UDA",
                           level = "Regional",
@@ -1006,7 +974,7 @@ UDAs.
  ]
  .panel[.panel-name[East of England]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_UDA_UOA_delivery_profile(data = UDA_treatment_month_non_FD_Apr23,
+plot_UDA_UOA_delivery_profile(data = UDA_treatment_month_non_FD,
                           
                           UDAorUOA = "UDA",
                           level = "Regional",
@@ -1037,7 +1005,7 @@ UDAs.
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 
-data <- plot_UDA_UOA_delivery_profile(data = UDA_treatment_month_non_FD_Apr23,
+data <- plot_UDA_UOA_delivery_profile(data = UDA_treatment_month_non_FD,
                           
                           UDAorUOA = "UDA",
                           level = "National",
@@ -1058,7 +1026,7 @@ data %>%
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 reactable(
-  plot_UDA_UOA_delivery_profile(data = UDA_treatment_month_non_FD_Apr23,
+  plot_UDA_UOA_delivery_profile(data = UDA_treatment_month_non_FD,
                           
                           UDAorUOA = "UDA",
                           level = "National",
@@ -1100,7 +1068,7 @@ xaringanExtra::use_panelset()
 
  .panel[.panel-name[National]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
-plot_banded_CoT(data = UDA_treatment_month_non_FD_Apr23,
+plot_banded_CoT(data = UDA_treatment_month_non_FD,
                 
                 historic_data = historical_UDA_scheduled_data,
                 remove_prototypes = FALSE,
@@ -1112,7 +1080,7 @@ plot_banded_CoT(data = UDA_treatment_month_non_FD_Apr23,
  ]
  .panel[.panel-name[South East]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
-plot_banded_CoT(data = UDA_treatment_month_non_FD_Apr23,
+plot_banded_CoT(data = UDA_treatment_month_non_FD,
                 
                 historic_data = historical_UDA_scheduled_data,
                 remove_prototypes = FALSE,
@@ -1123,7 +1091,7 @@ plot_banded_CoT(data = UDA_treatment_month_non_FD_Apr23,
  ]
  .panel[.panel-name[South West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
-plot_banded_CoT(data = UDA_treatment_month_non_FD_Apr23,
+plot_banded_CoT(data = UDA_treatment_month_non_FD,
                 
                 historic_data = historical_UDA_scheduled_data,
                 remove_prototypes = FALSE,
@@ -1134,7 +1102,7 @@ plot_banded_CoT(data = UDA_treatment_month_non_FD_Apr23,
  ]
  .panel[.panel-name[North West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
-plot_banded_CoT(data = UDA_treatment_month_non_FD_Apr23,
+plot_banded_CoT(data = UDA_treatment_month_non_FD,
                 
                 historic_data = historical_UDA_scheduled_data,
                 remove_prototypes = FALSE,
@@ -1145,7 +1113,7 @@ plot_banded_CoT(data = UDA_treatment_month_non_FD_Apr23,
  ]
  .panel[.panel-name[North East and Yorkshire]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
-plot_banded_CoT(data = UDA_treatment_month_non_FD_Apr23,
+plot_banded_CoT(data = UDA_treatment_month_non_FD,
                 
                 historic_data = historical_UDA_scheduled_data,
                 remove_prototypes = FALSE,
@@ -1156,7 +1124,7 @@ plot_banded_CoT(data = UDA_treatment_month_non_FD_Apr23,
  ]
 .panel[.panel-name[London]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
-plot_banded_CoT(data = UDA_treatment_month_non_FD_Apr23,
+plot_banded_CoT(data = UDA_treatment_month_non_FD,
                 
                 historic_data = historical_UDA_scheduled_data,
                 remove_prototypes = FALSE,
@@ -1167,7 +1135,7 @@ plot_banded_CoT(data = UDA_treatment_month_non_FD_Apr23,
  ]
  .panel[.panel-name[Midlands]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
-plot_banded_CoT(data = UDA_treatment_month_non_FD_Apr23,
+plot_banded_CoT(data = UDA_treatment_month_non_FD,
                 
                 historic_data = historical_UDA_scheduled_data,
                 remove_prototypes = FALSE,
@@ -1179,7 +1147,7 @@ plot_banded_CoT(data = UDA_treatment_month_non_FD_Apr23,
  ]
  .panel[.panel-name[East of England]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
-plot_banded_CoT(data = UDA_treatment_month_non_FD_Apr23,
+plot_banded_CoT(data = UDA_treatment_month_non_FD,
                 
                 historic_data = historical_UDA_scheduled_data,
                 remove_prototypes = FALSE,
@@ -1194,7 +1162,7 @@ plot_banded_CoT(data = UDA_treatment_month_non_FD_Apr23,
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 
-data <- plot_banded_CoT(data = UDA_treatment_month_non_FD_Apr23,
+data <- plot_banded_CoT(data = UDA_treatment_month_non_FD,
                 
                 historic_data = historical_UDA_scheduled_data,
                 remove_prototypes = FALSE,
@@ -1216,7 +1184,7 @@ data %>%
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
 reactable(
-  plot_banded_CoT(data = UDA_treatment_month_non_FD_Apr23,
+  plot_banded_CoT(data = UDA_treatment_month_non_FD,
                 
                 historic_data = historical_UDA_scheduled_data,
                 remove_prototypes = FALSE,
