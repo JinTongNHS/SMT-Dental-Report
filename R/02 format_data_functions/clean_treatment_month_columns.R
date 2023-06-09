@@ -41,6 +41,9 @@ clean_treatment_month_columns <- function(data = UDA_treatment_month_non_FD_Apr2
     distinct()
   
   data <- data %>%
-    left_join(commissioner_lookup, by = "commissioner_name")
+    left_join(commissioner_lookup, by = "commissioner_name") %>%
+    mutate(year = substr(month, 1, 4),
+           month = substr(month, 5, 6)) %>%
+    mutate(month = as.Date(paste0(year,"-", month, "-01"))) 
   
 }

@@ -89,7 +89,7 @@ plot_UDA_UOA_delivery_profile <- function(data = UDA_scheduled_data,
       scale_x_datetime(breaks = data$month, 
                        labels = scales::date_format("%b-%y")) +
       geom_vline(xintercept = as.Date("2020-07-01"), colour = "black", size = 5) +
-      scale_y_continuous(limits = c(0, 55)) +
+      #scale_y_continuous(limits = c(0, 55)) +
       theme_bw() +
       theme(axis.text.x = element_text(angle = 90))
   }else{

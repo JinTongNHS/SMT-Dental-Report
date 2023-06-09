@@ -1,21 +1,12 @@
-# library(readr)
-# UDA_treatment_month_FD_Apr23 <- read_csv("data/New treatment month data/UDA_treatment_month_FD_Apr23.csv")
-# UDA_treatment_month_non_FD_Apr23 <- read_csv("data/New treatment month data/UDA_treatment_month_non_FD_Apr23.csv")
-# 
-# UDA_treatment_month_FD_Apr23 <- clean_treatment_month_columns(UDA_treatment_month_FD_Apr23)
-# UDA_treatment_month_non_FD_Apr23 <- clean_treatment_month_columns(UDA_treatment_month_non_FD_Apr23)
-
 #CAT 1s only non FDs
 ################################################################################
 plot_historic_UDA_UOA_delivery_treatment_month <- function(data = UDA_treatment_month_non_FD_Apr23,
                                                            scheduled_data = UDA_scheduled_data, 
                                                            historic_data = historical_UDA_scheduled_data,
-                                                           #historic_data_UOA = historical_UOA_scheduled_data,
                                                            contractor_cats = contractor_categories,
                                                            UDAorUOA = "UDA",
                                                            level = "National",
                                                            region_STP_name = NULL,
-                                                           remove_prototypes = TRUE, 
                                                            plotChart = TRUE, 
                                                            all_regions_and_STPs = FALSE,
                                                            include_historic = TRUE){
@@ -57,6 +48,7 @@ plot_historic_UDA_UOA_delivery_treatment_month <- function(data = UDA_treatment_
   
   historic_data <- historic_data %>%
     mutate(month = as.Date(month)) %>%
+    filter(month < as.Date("2023-04-01")) %>%
     filter(!is.na(annual_contracted_UDA)) %>% #filters out contracts with no data on contracted UDAs
     select(month, contract_number, commissioner_name, region_name,
            annual_contracted_UDA,
@@ -87,9 +79,9 @@ plot_historic_UDA_UOA_delivery_treatment_month <- function(data = UDA_treatment_
     data <- data %>%
       left_join(contractor_cats, by = "contract_number") %>%
       filter(category_sub_type == "CDR CAT 1") %>%
-      mutate(year = substr(month, 1, 4),
-             month = substr(month, 5, 6)) %>%
-      mutate(month = as.Date(paste0(year,"-", month, "-01"))) %>%
+      # mutate(year = substr(month, 1, 4),
+      #        month = substr(month, 5, 6)) %>%
+      # mutate(month = as.Date(paste0(year,"-", month, "-01"))) %>%
       group_by(month) %>%
       summarise(UDA_delivery = sum(UDA_delivered, na.rm = TRUE),
                 contracted_UDAs = sum(annual_contracted_UDA, na.rm = TRUE) / 12) %>%
@@ -118,11 +110,13 @@ plot_historic_UDA_UOA_delivery_treatment_month <- function(data = UDA_treatment_
 
     ggplot() +
       geom_line(data = data, aes(x = month,
-                          y = perc_UDA_delivered)) +
+                          y = perc_UDA_delivered),
+                colour = "steelblue") +
       geom_point(#data = filter(data, year_type == "Current Financial Year"),
         data = data,
                  aes(x = month,
-                     y = perc_UDA_delivered)) +
+                     y = perc_UDA_delivered),
+        colour = "steelblue") +
       geom_text(data = filter(data, year_type == "Previous Financial Years (Averages)"),
                 aes(x = month + 120,
                     y = perc_UDA_delivered - 4,
@@ -141,12 +135,12 @@ plot_historic_UDA_UOA_delivery_treatment_month <- function(data = UDA_treatment_
       facet_wrap(vars(year_type),
                  scales = "free_x") +
       theme_bw() +
-      # scale_x_date(limits = c(as.Date("2016-03-01"), NA)) +
+      #☺scale_x_date(breaks = scales::breaks_width(1)) +
       scale_y_continuous(limits = c(0, max(c(data$perc_UDA_delivered, 95), na.rm = T) + 5),
                          breaks = seq(0, max(c(data$perc_UDA_delivered, 95), na.rm = T) + 5, 10)#,
                          #labels = scales::percent_format(accuracy = 1)
                          ) +
-      labs(title = "Treatment month data: Monthly percentage of usual annual contracted UDAs \ndelivered across CAT 1 contracts* scaled up to 12 months**",
+      labs(title = "Treatment month data: Monthly percentage of usual annual contracted UDAs \ndelivered across CAT 1 contracts* scaled up to 12 months**, Foundation Dentists Excluded",
            x = "Time period",
            y = "Percentage of contracted UDAs delivered",
            subtitle = subtitle,
