@@ -537,6 +537,28 @@ The boxplot for **`r format(plot_BPE_no_oral_health_risk(level = "National", reg
 * Half of contracts brought back at least **`r paste(plot_BPE_no_oral_health_risk(level = "National", region_STP_name = NULL, plotChart = FALSE, quartileOutput = "Median"))`** of their low risk patients within one year
 * A quarter of contracts brought back **`r paste(plot_BPE_no_oral_health_risk(level = "National", region_STP_name = NULL, plotChart = FALSE, quartileOutput = "UQ"))`** of their low risk patients within one year
 
+---
+
+name: unique-patients
+
+### Unique dental patients seen
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_unique_patients_rolling(data = unique_patients_rolling,
+                                     
+                                     scheduled_data = UDA_scheduled_data,
+                                     level = "National",
+                                     region_STP_name = NULL,
+                                     plotChart = TRUE,
+                                     remove_prototypes = FALSE)
+```
+
+* The number of unique patients seen in the last 12 months is currently around
+**`r plot_unique_patients_rolling(level = "National",region_STP_name = NULL, plotChart = F,remove_prototypes = FALSE, get_perc = T)` %**
+of pre-pandemic levels.
+
+N.B. This analysis now includes all contracts.
+
 
 ## Unique dental patients seen as a percentage of April 2018 figures
 
