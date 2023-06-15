@@ -71,10 +71,19 @@ dental_data_111 <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2
 
 #############still to fix
 prototype_contracts <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/prototype_contracts.xlsx")
-contractor_categories <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/contractor_categories_Jan23.xlsx")
+# contractor_categories <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT ##2022_23-008/data_for_monthly_report/contractor_categories_Jan23.xlsx") ##did not find. ##changed_ME
+
+
+contractor_categories <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/contractor_categories.xlsx")
+
+
 contractor_categories <- contractor_categories %>%
   mutate(contract_number = as.numeric(contract_number))
 contract_demographics <- readRDS("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/contract_demographics.rds")
+
+
+
+contractor_categories
 
 #read in unique patients
 #unique_patients_rolling <- readRDS("../data/unique_patients/unique_patients_rolling.rds")
