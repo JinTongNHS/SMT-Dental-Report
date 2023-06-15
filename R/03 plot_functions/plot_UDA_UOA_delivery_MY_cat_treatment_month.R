@@ -1,15 +1,15 @@
 ################################################################################
-plot_UDA_UOA_delivery_MY_cat <- function(data = UDA_scheduled_data, 
-                                           contractor_cats = contractor_categories,
-                                           UDAorUOA = "UDA",
-                                           level = "National",
-                                           region_STP_name = NULL,
-                                           remove_prototypes = T,
-                                           regional_lines = F, 
-                                           STP_lines = F,
-                                           cat_lines = F,
-                                           plotChart = T){
-
+plot_UDA_UOA_delivery_MY_cat_treatment_month <- function(data = UDA_treatment_month_non_FD_Apr23, 
+                                                         contractor_cats = contractor_categories,
+                                                         UDAorUOA = "UDA",
+                                                         level = "National",
+                                                         region_STP_name = NULL,
+                                                         remove_prototypes = T,
+                                                         regional_lines = F, 
+                                                         STP_lines = F,
+                                                         cat_lines = T,
+                                                         plotChart = T){
+  
   #join in MY categories
   data <- data %>%
     left_join(contractor_cats, by = "contract_number")
@@ -31,9 +31,9 @@ plot_UDA_UOA_delivery_MY_cat <- function(data = UDA_scheduled_data,
   if(UDAorUOA == "UDA"){
     #get data into the right format
     data <- get_delivery_data_MY_cat(calendar_data = calendar_data, scheduled_data = data, remove_prototypes, UDAorUOA = "UDA", regional_lines, STP_lines, cat_lines)
-    title <- "Calendar monthly percentage of usual annual contracted UDAs \ndelivered across all contracts* scaled up to 12 months"
+    title <- "Treatment month percentage of usual annual contracted UDAs \ndelivered across all contracts scaled up to 12 months split by MY Category \nExcluding Foundation Dentists"
     ylab <- "% of contracted UDAs delivered"
-    captionTitle <- "*Excluding contracts with annual contracted UDA < 100. Excluding prototype contracts up until April 2022."
+    captionTitle <- ""
     lineCol <- "coral"
     septemberTarget <- 60
     decemberTarget <- 65
@@ -43,9 +43,9 @@ plot_UDA_UOA_delivery_MY_cat <- function(data = UDA_scheduled_data,
     
     #get data into the right format
     data <- get_delivery_data_MY_cat(calendar_data = calendar_data, scheduled_data = data, remove_prototypes, UDAorUOA = "UOA", regional_lines, STP_lines, cat_lines)
-    title <- "Calendar monthly percentage of usual annual contracted UOAs \ndelivered across all contracts* scaled up to 12 months"
+    title <- "Treatment month percentage of usual annual contracted UOAs \ndelivered across all contracts scaled up to 12 months split by MY Category \nExcluding Foundation Dentists"
     ylab <- "% of contracted UOAs delivered"
-    captionTitle <- "*Excluding contracts with no annual contracted UOAs. Excluding prototype contracts up until April 2022."
+    captionTitle <- "*Excluding contracts with no annual contracted UOAs."
     lineCol <- "#009E73"
     septemberTarget <- 80
     decemberTarget <- 85
@@ -90,8 +90,8 @@ plot_UDA_UOA_delivery_MY_cat <- function(data = UDA_scheduled_data,
     data <- data %>%
       mutate(category_sub_type = if_else(is.na(category_sub_type), "Category not known", category_sub_type)) %>%
       filter(!is.na(scaled_perc_UDA_UOA_delivered) & !is.infinite(scaled_perc_UDA_UOA_delivered) & !is.nan(scaled_perc_UDA_UOA_delivered))
-      #filter(!is.na(category_sub_type))
-
+    #filter(!is.na(category_sub_type))
+    
     g <- 
       ggplot(data) +
       theme_bw() +
@@ -105,8 +105,8 @@ plot_UDA_UOA_delivery_MY_cat <- function(data = UDA_scheduled_data,
       )
     
     legendTitle <- "MY Category"
-    subtitle_addition <- if_else(remove_prototypes, " - *Excluding prototypes and contracts with annual contracted UDA < 100",
-                                 " - *Including prototypes and contracts with annual contracted UDA < 100")
+    # subtitle_addition <- if_else(remove_prototypes, " - *Excluding prototypes and contracts with annual contracted UDA < 100",
+    #                              " - *Including prototypes and contracts with annual contracted UDA < 100")
     
     captionTitle <- ""
     
@@ -144,7 +144,7 @@ plot_UDA_UOA_delivery_MY_cat <- function(data = UDA_scheduled_data,
       labs(title = title, 
            x = "Month",
            y = ylab, 
-           subtitle = paste0(subtitle, subtitle_addition),
+           subtitle = paste0(subtitle),
            caption = captionTitle)
     
   }else{
@@ -152,7 +152,7 @@ plot_UDA_UOA_delivery_MY_cat <- function(data = UDA_scheduled_data,
       labs(title = title, 
            x = "Month",
            y = ylab, 
-           subtitle = paste0(subtitle, subtitle_addition),
+           subtitle = paste0(subtitle),
            caption = captionTitle,
            colour = legendTitle) 
     

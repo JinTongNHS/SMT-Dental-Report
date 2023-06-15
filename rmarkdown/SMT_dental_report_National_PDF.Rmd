@@ -70,7 +70,7 @@ dental_data_111 <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2
 
 #############still to fix
 prototype_contracts <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/prototype_contracts.xlsx")
-contractor_categories <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/contractor_categories_Jan23.xlsx")
+contractor_categories <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/contractor_categories.xlsx")
 contractor_categories <- contractor_categories %>%
   mutate(contract_number = as.numeric(contract_number))
 contract_demographics <- readRDS("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/contract_demographics.rds")
@@ -536,6 +536,28 @@ The boxplot for **`r format(plot_BPE_no_oral_health_risk(level = "National", reg
 * Three quarters of contracts brought back at least **`r paste(plot_BPE_no_oral_health_risk(level = "National", region_STP_name = NULL, plotChart = FALSE, quartileOutput = "LQ"))`** of their low risk patients within one year
 * Half of contracts brought back at least **`r paste(plot_BPE_no_oral_health_risk(level = "National", region_STP_name = NULL, plotChart = FALSE, quartileOutput = "Median"))`** of their low risk patients within one year
 * A quarter of contracts brought back **`r paste(plot_BPE_no_oral_health_risk(level = "National", region_STP_name = NULL, plotChart = FALSE, quartileOutput = "UQ"))`** of their low risk patients within one year
+
+---
+
+name: unique-patients
+
+### Unique dental patients seen
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
+plot_unique_patients_rolling(data = unique_patients_rolling,
+                                     
+                                     scheduled_data = UDA_scheduled_data,
+                                     level = "National",
+                                     region_STP_name = NULL,
+                                     plotChart = TRUE,
+                                     remove_prototypes = FALSE)
+```
+
+* The number of unique patients seen in the last 12 months is currently around
+**`r plot_unique_patients_rolling(level = "National",region_STP_name = NULL, plotChart = F,remove_prototypes = FALSE, get_perc = T)` %**
+of pre-pandemic levels.
+
+N.B. This analysis now includes all contracts.
 
 
 ## Unique dental patients seen as a percentage of April 2018 figures
