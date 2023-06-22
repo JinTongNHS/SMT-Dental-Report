@@ -39,8 +39,8 @@ for (f in list.files(path = "../R/02 format_data_functions/", pattern="*.R$")) {
 #sort out STP ICB changes
 STP_ICB_lookup_codes <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/STP_ICB_lookup_codes.xlsx")
 
-UDA_treatment_month_FD <- read_csv("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/new_treatment_month_data/UDA_treatment_month_FD_Apr23.csv") #####put in shared folder
-UDA_treatment_month_non_FD <- read_csv("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/new_treatment_month_data/UDA_treatment_month_non_FD_Apr23.csv")
+UDA_treatment_month_FD <- read_csv("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/new_treatment_month_data/UDA_treatment_month_FD_Apr23_May23.csv") #####put in shared folder
+UDA_treatment_month_non_FD <- read_csv("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/new_treatment_month_data/UDA_treatment_month_non_FD_Apr23_May23.csv")
 
 UDA_treatment_month_FD <- clean_treatment_month_columns(UDA_treatment_month_FD)
 UDA_treatment_month_non_FD <- clean_treatment_month_columns(UDA_treatment_month_non_FD)
