@@ -31,7 +31,8 @@ clean_treatment_month_columns <- function(data = UDA_treatment_month_non_FD_Apr2
            FP17s_band_2 = BAND2_FORM_COUNT, 
            FP17s_band_3 = BAND3_FORM_COUNT, 
            FP17s_band_urgent = URGENT_FORM_COUNT, 
-           FP17s_band_other = OTHER_FORM_COUNT)
+           FP17s_band_other = OTHER_FORM_COUNT) %>% 
+           select(-c(contract_start_date, contract_end_date))
   
   #join in commissioner code
   commissioner_lookup <- commissioner_lookup %>%
