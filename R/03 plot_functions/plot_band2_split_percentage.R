@@ -1,4 +1,5 @@
 #graph to plot UDA split band 2
+  
 plot_band2_split_percentage <- function(data = band2_split_data,
                                         scheduled_data = UDA_scheduled_data,
                                         level = "National",
@@ -13,6 +14,9 @@ plot_band2_split_percentage <- function(data = band2_split_data,
     select(commissioner_name = commissioner_name_ICB,
            region_name) %>%
     distinct()
+  
+  band2_split_data$month <- as.Date(band2_split_data$month)
+  scheduled_data$month <- as.Date(scheduled_data$month)
   
   annual_contracted_UDA <- scheduled_data %>%
     select(month,

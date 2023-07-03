@@ -9,7 +9,7 @@ pull_band2_split_data <- function(){
   
   
   sql <- "SELECT *
-  FROM [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UDA_scheduled_band_2_split]"
+  FROM [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UDA_scheduled_band_2_split_new]"
   result <- dbSendQuery(con, sql)
   band2_split_data <- dbFetch(result)
   dbClearResult(result)

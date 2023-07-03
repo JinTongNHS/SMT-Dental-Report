@@ -5147,7 +5147,10 @@ name: data-sources
 * Tables of UDA delivery on STP/ICB level in calendar and scheduled format available in:
   + [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UDA_delivery_calendar]
   + [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UDA_delivery_scheduled]
-
+* Tables of DCP and Oral Health Assessment (BPE):
+  + [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[DCP]
+  + [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[BPE]
+  
 * 111 data comes from the pathways tool which is received monthly by email.
 * Rolling unique patients data is received monthly by email from the BSA and saved on the NCDR in the following table:
   + [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[unique_patients_rolling_12_month]
