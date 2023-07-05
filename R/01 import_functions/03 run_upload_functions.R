@@ -3,7 +3,7 @@ library(readxl)
 library(DBI)
 library(odbc)
 
-##source("R/01 import_functions/01 import_dental_data_functions.R")
+source("R/01 import_functions/01 import_dental_data_functions.R")
 source("R/01 import_functions/02 upload_data_functions.R")
 
 #load in lookup
