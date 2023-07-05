@@ -3,7 +3,7 @@ library(readxl)
 library(DBI)
 library(odbc)
 
-source("R/01 import_functions/01 import_dental_data_functions.R")
+##source("R/01 import_functions/01 import_dental_data_functions.R")
 source("R/01 import_functions/02 upload_data_functions.R")
 
 #load in lookup
@@ -30,8 +30,8 @@ UOA_calendar_data_latest <- import_and_clean_calendar_UOA_data(data_path = paste
 
 unique_patients_latest <- import_and_clean_unique_patients_data(data_path = "N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/unique_patients/",
                                                                 commissioner_lookup = STP_ICB_lookup_codes)
-
-band2_split_latest <- import_and_clean_band2_split_data(data_path = "N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/band_2_split_data/")
+# 
+# band2_split_latest <- import_and_clean_band2_split_data(data_path = "N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/band_2_split_data/")
 
 #upload activity data
 upload_UDA_scheduled_data(UDA_latest = UDA_scheduled_data_latest)
@@ -46,7 +46,7 @@ upload_UOA_calendar_data(UOA_latest = UOA_calendar_data_latest)
 upload_unique_patients_data(unique_patients = unique_patients_latest)
 
 #upload band 2 split data
-upload_band2_split_data(band2_split = band2_split_latest)
+##upload_band2_split_data(band2_split = band2_split_latest)
 
 ################################################################################
 # Pulls in new data before metric tables can be uploaded

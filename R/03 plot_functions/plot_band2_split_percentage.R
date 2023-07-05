@@ -15,9 +15,11 @@ plot_band2_split_percentage <- function(data = band2_split_data,
            region_name) %>%
     distinct()
   
+  data$month <- as.Date(data$month)
   band2_split_data$month <- as.Date(band2_split_data$month)
   scheduled_data$month <- as.Date(scheduled_data$month)
-  
+  scheduled_data$month<- as.Date(scheduled_data$month)
+    
   annual_contracted_UDA <- scheduled_data %>%
     select(month,
            contract_number,
@@ -53,6 +55,11 @@ plot_band2_split_percentage <- function(data = band2_split_data,
   }
   
   if(UDA_or_FP17 == "UDA"){
+    data$month <- as.Date(data$month)
+    band2_split_data$month <- as.Date(band2_split_data$month)
+    scheduled_data$month <- as.Date(scheduled_data$month)
+    scheduled_data$month<- as.Date(scheduled_data$month)
+    
     data <- data %>%
       select(month, band_2a_UDAs, band_2b_UDAs, band_2c_UDAs, total_band2_UDAs_delivered) %>%
       mutate(unsplit_band2s = total_band2_UDAs_delivered - band_2a_UDAs - band_2b_UDAs - band_2c_UDAs) %>%
@@ -69,6 +76,11 @@ plot_band2_split_percentage <- function(data = band2_split_data,
                               band == "band_2c_UDAs" ~ "Band 2C",
                               band == "unsplit_band2s" ~ "Un-split band 2**"))
   }else if(UDA_or_FP17 == "FP17"){
+    data$month <- as.Date(data$month)
+    band2_split_data$month <- as.Date(band2_split_data$month)
+    scheduled_data$month <- as.Date(scheduled_data$month)
+    scheduled_data$month<- as.Date(scheduled_data$month)
+    
     data <- data %>%
       select(month, band_2a_FP17s, band_2b_FP17s, band_2c_FP17s, total_band2_FP17s_delivered) %>%
       mutate(unsplit_band2s = total_band2_FP17s_delivered - band_2a_FP17s - band_2b_FP17s - band_2c_FP17s) %>%
@@ -92,6 +104,11 @@ plot_band2_split_percentage <- function(data = band2_split_data,
   
   if(plotChart == TRUE){
     
+    data$month <- as.Date(data$month)
+    band2_split_data$month <- as.Date(band2_split_data$month)
+    scheduled_data$month <- as.Date(scheduled_data$month)
+    scheduled_data$month<- as.Date(scheduled_data$month)
+    
     ggplot(data,
            aes(x = month, 
                y = percentage,
@@ -114,6 +131,11 @@ plot_band2_split_percentage <- function(data = band2_split_data,
     
   }else if(plotChart == FALSE & UDA_or_FP17 == "UDA"){
     
+    data$month <- as.Date(data$month)
+    band2_split_data$month <- as.Date(band2_split_data$month)
+    scheduled_data$month <- as.Date(scheduled_data$month)
+    scheduled_data$month<- as.Date(scheduled_data$month)
+    
     data <- data %>%
       mutate(percentage = round(percentage, 1) * 100) %>%
       rename(Month = month,
@@ -123,6 +145,11 @@ plot_band2_split_percentage <- function(data = band2_split_data,
              `Percentage of total band 2 UDAs delivered` = percentage)
     
   }else if(plotChart == FALSE & UDA_or_FP17 == "FP17"){
+    
+    data$month <- as.Date(data$month)
+    band2_split_data$month <- as.Date(band2_split_data$month)
+    scheduled_data$month <- as.Date(scheduled_data$month)
+    scheduled_data$month<- as.Date(scheduled_data$month)
     
     data <- data %>%
       mutate(percentage = round(percentage, 1) * 100) %>%

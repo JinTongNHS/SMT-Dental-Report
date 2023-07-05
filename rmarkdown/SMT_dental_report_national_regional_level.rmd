@@ -408,6 +408,8 @@ plot_UDA_UOA_delivery(data = UDA_scheduled_data,
 
 * This graph shows the average monthly performance of the **`r get_num_contracts(level = "National", region_STP_name = NULL)`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (60% for Apr-Sep 21, 65% for Oct-Dec, 85% for Jan-Mar, 95% for Apr-Jun 22 and 100% going forward).
 
+* When June (2023) delivery is scaled by the number of working days in the schedule delivery is 83% of expected UDAs delivered.
+
 
 ]
 .panel[.panel-name[South East]
