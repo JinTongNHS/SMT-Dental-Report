@@ -71,10 +71,10 @@ dental_data_111 <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2
 
 #############still to fix
 prototype_contracts <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/prototype_contracts.xlsx")
-# contractor_categories <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT ##2022_23-008/data_for_monthly_report/contractor_categories_Jan23.xlsx") ##did not find. ##changed_ME
+contractor_categories <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/contractor_categories_Jan23.xlsx") ##did not find. ##changed_ME
 
-
-contractor_categories <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/contractor_categories.xlsx")
+# 
+# contractor_categories <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT #2022_23-008/data_for_monthly_report/contractor_categories.xlsx")
 
 
 contractor_categories <- contractor_categories %>%
@@ -407,6 +407,8 @@ plot_UDA_UOA_delivery(data = UDA_scheduled_data,
 ```
 
 * This graph shows the average monthly performance of the **`r get_num_contracts(level = "National", region_STP_name = NULL)`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (60% for Apr-Sep 21, 65% for Oct-Dec, 85% for Jan-Mar, 95% for Apr-Jun 22 and 100% going forward).
+
+* When June (2023) delivery is scaled by the number of working days in the schedule delivery is 83% of expected UDAs delivered.
 
 
 ]
@@ -5147,7 +5149,10 @@ name: data-sources
 * Tables of UDA delivery on STP/ICB level in calendar and scheduled format available in:
   + [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UDA_delivery_calendar]
   + [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[UDA_delivery_scheduled]
-
+* Tables of DCP and Oral Health Assessment (BPE):
+  + [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[DCP]
+  + [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[BPE]
+  
 * 111 data comes from the pathways tool which is received monthly by email.
 * Rolling unique patients data is received monthly by email from the BSA and saved on the NCDR in the following table:
   + [NHSE_Sandbox_PrimaryCareNHSContracts].[Dental].[unique_patients_rolling_12_month]

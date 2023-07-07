@@ -78,15 +78,15 @@ upload_unique_patients_data <- function(unique_patients){
 }
 
 ################################################################################
-upload_band2_split_data <- function(band2_split){
-  
-  #Append latest data to table on NCDR
-  con <- dbConnect(odbc::odbc(), "NCDR")
-  
-  dbWriteTable(con, Id(catalog="NHSE_Sandbox_PrimaryCareNHSContracts",schema="Dental",table="UDA_scheduled_band_2_split"),
-               value = band2_split_latest, row.names = FALSE, append = TRUE)
-  
-}
+# upload_band2_split_data <- function(band2_split){
+#   
+#   #Append latest data to table on NCDR
+#   con <- dbConnect(odbc::odbc(), "NCDR")
+#   
+#   dbWriteTable(con, Id(catalog="NHSE_Sandbox_PrimaryCareNHSContracts",schema="Dental",table="UDA_scheduled_band_2_split"),
+#                value = band2_split_latest, row.names = FALSE, append = TRUE)
+#   
+# }
 
 #This is the table used for PCDID
 ################################################################################

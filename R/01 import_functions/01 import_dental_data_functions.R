@@ -888,40 +888,40 @@ import_and_clean_calendar_UOA_data <- function(data_path,
 
 
 ################################################################################
-import_and_clean_band2_split_data <- function(data_path = "N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/band_2_split_data/"){
-  
-  # Gets last month 
-  data_month <- lubridate::floor_date(Sys.Date()  - lubridate::duration("1 week"), unit = "month") ###might need to change depending on which week the code is run
-  data_month_name <- format(Sys.Date()  - lubridate::duration("1 week"), format = "%b%y")
-  
-  band2_split <- read_excel(paste0(data_path, "band_2_split_", data_month_name,".xlsx"),
-                            col_names = FALSE, 
-                            skip = 4,
-                            .name_repair = ~ paste0("X__", seq_along(.x)))
-  
-  #clean column names
-  band2_split  <- band2_split  %>%
-    rename(contract_number = X__1,
-           contract_type = X__2,
-           name_or_company_name = X__3,
-           commissioner_name = X__4,
-           paid_by_BSA = X__5,
-           contract_start_date = X__6,
-           contract_end_date = X__7,
-           total_band2_UDAs_delivered = X__8,
-           YTD_band2_UDAs_delivered_before_Nov22 = X__9,
-           band_2a_UDAs = X__10,
-           band_2b_UDAs = X__11,
-           band_2c_UDAs = X__12,
-           total_band2_FP17s_delivered = X__13,
-           YTD_band2_FP17ss_delivered_before_Nov22 = X__14,
-           band_2a_FP17s = X__15,
-           band_2b_FP17s = X__16,
-           band_2c_FP17s = X__17
-    ) %>%
-    mutate(month = data_month) %>%
-    filter(!is.na(contract_number)) %>%
-    select(month, everything()) %>%
-    select(!(starts_with("X")))
-  
-}
+# import_and_clean_band2_split_data <- function(data_path = "N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/band_2_split_data/"){
+#   
+#   # Gets last month 
+#   data_month <- lubridate::floor_date(Sys.Date()  - lubridate::duration("1 week"), unit = "month") ###might need to change depending on which week the code is run
+#   data_month_name <- format(Sys.Date()  - lubridate::duration("1 week"), format = "%b%y")
+#   
+#   band2_split <- read_excel(paste0(data_path, "band_2_split_", data_month_name,".xlsx"),
+#                             col_names = FALSE, 
+#                             skip = 4,
+#                             .name_repair = ~ paste0("X__", seq_along(.x)))
+#   
+#   #clean column names
+#   band2_split  <- band2_split  %>%
+#     rename(contract_number = X__1,
+#            contract_type = X__2,
+#            name_or_company_name = X__3,
+#            commissioner_name = X__4,
+#            paid_by_BSA = X__5,
+#            contract_start_date = X__6,
+#            contract_end_date = X__7,
+#            total_band2_UDAs_delivered = X__8,
+#            YTD_band2_UDAs_delivered_before_Nov22 = X__9,
+#            band_2a_UDAs = X__10,
+#            band_2b_UDAs = X__11,
+#            band_2c_UDAs = X__12,
+#            total_band2_FP17s_delivered = X__13,
+#            YTD_band2_FP17ss_delivered_before_Nov22 = X__14,
+#            band_2a_FP17s = X__15,
+#            band_2b_FP17s = X__16,
+#            band_2c_FP17s = X__17
+#     ) %>%
+#     mutate(month = data_month) %>%
+#     filter(!is.na(contract_number)) %>%
+#     select(month, everything()) %>%
+#     select(!(starts_with("X")))
+#   
+# }
