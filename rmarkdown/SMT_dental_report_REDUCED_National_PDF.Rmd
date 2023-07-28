@@ -149,6 +149,8 @@ plot_UDA_UOA_delivery(data = UDA_scheduled_data,
 
 * When June (2023) delivery is scaled by the number of working days in the schedule delivery is 83% of expected UDAs delivered.
 
+
+
 ## UDA activity data by MY Category
 #### Prototypes and contracts with annual contracted UDAs < 100 included
 

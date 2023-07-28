@@ -143,6 +143,7 @@ name: contents
 #### Dental
  * [Table of number of contracts by MY category](#contracts-table)
  * [UDA activity](#short-uda-activity)
+ * [Historic UDA activity- Treatment Data](#short-uda-activity-treatment-data)
  * [UDA activity by MY category](#short-uda-activity-my-cat)
  * [Cumulative UDA delivery per quarter](#cumulative-udas)
  * [YTD UDA delivery](#YTD-udas)
@@ -158,7 +159,7 @@ name: contents
  * [Percentage of FP17s indicating low oral health risk](#bpe)
  * [111 call volumes](#111-call-volumes)
  * [Unique patients seen rolling 12 months](#unique-patients)
- * [Unique patients seen rolling 12 months as % of April 2018 delivery](#unique-patients-index)
+ * [Unique patients seen rolling 12 months as % of February 2020 delivery](#unique-patients-index)
  * [Number of new patients](#new-patients)
  * [Percentage of practices seeing new patients](#new-patients-perc)
  * [Patient re-attendance intervals](#reattendance)
@@ -195,7 +196,7 @@ This is an interactive markdown report.  You can navigate from slide to slide by
 
 ### Calendar and scheduled data
 
-All analyses in this report now only use **scheduled data**. 
+All analyses in this report now only use **scheduled data** except historic UDA activity plot uses **treatment data**. 
 
 <font size="2">
 #### Calendar data explanation
@@ -562,6 +563,170 @@ Full scheduled delivery data back to 2016 can be found on [slide 10](#historic-u
 [Return to contents](#contents)
 
 ---
+
+
+
+
+
+name: short-uda-activity-treatment-data
+
+### Historic UDA activity- Treatment Data
+
+```{r xaringan-panelset-UDA-activity, echo=FALSE}
+xaringanExtra::use_panelset()
+```
+ <font size="2">
+.panelset[
+
+.panel[.panel-name[National]
+```{r UDA_activity_Calendar1, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
+plot_historic_UDA_UOA_delivery_treatment_month(data = UDA_treatment_month_non_FD,
+                                               scheduled_data = UDA_scheduled_data, 
+                                               historic_data = historical_UDA_scheduled_data,
+                                               contractor_cats = contractor_categories,
+                                               UDAorUOA = "UDA",
+                                               level = "National",
+                                               region_STP_name = NULL,
+                                               plotChart = TRUE, 
+                                               all_regions_and_STPs = FALSE,
+                                               include_historic = TRUE)
+```
+
+* This graph shows the average monthly performance of the **`r get_num_contracts(level = "National", region_STP_name = NULL)`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (60% for Apr-Sep 21, 65% for Oct-Dec, 85% for Jan-Mar, 95% for Apr-Jun 22 and 100% going forward).
+
+
+]
+.panel[.panel-name[South East]
+```{r UDA_activity_Calendar2, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
+plot_historic_UDA_UOA_delivery_treatment_month(data = UDA_treatment_month_non_FD,
+                                               scheduled_data = UDA_scheduled_data, 
+                                               historic_data = historical_UDA_scheduled_data,
+                                               contractor_cats = contractor_categories,
+                                               UDAorUOA = "UDA",
+                                               plotChart = TRUE, 
+                                               all_regions_and_STPs = FALSE,
+                                               include_historic = TRUE,
+                                  level = "Regional",
+                                  region_STP_name = "South East")
+```
+
+* This graph shows the average monthly performance of the **`r get_num_contracts(level = "Regional", region_STP_name = "South East")`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (60% for Apr-Sep 21, 65% for Oct-Dec, 85% for Jan-Mar, 95% for Apr-Jun 22 and 100% going forward).
+
+
+]
+.panel[.panel-name[South West]
+```{r UDA_activity_Calendar3, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
+plot_historic_UDA_UOA_delivery_treatment_month(data = UDA_treatment_month_non_FD,
+                                               scheduled_data = UDA_scheduled_data, 
+                                               historic_data = historical_UDA_scheduled_data,
+                                               contractor_cats = contractor_categories,
+                                               UDAorUOA = "UDA",
+                                               plotChart = TRUE, 
+                                               all_regions_and_STPs = FALSE,
+                                               include_historic = TRUE,
+                                  level = "Regional",
+                                  region_STP_name = "South West")
+```
+
+* This graph shows the average monthly performance of the **`r get_num_contracts(level = "Regional", region_STP_name = "South West")`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (60% for Apr-Sep 21, 65% for Oct-Dec, 85% for Jan-Mar, 95% for Apr-Jun 22 and 100% going forward).
+
+
+]
+.panel[.panel-name[North West]
+```{r UDA_activity_Calendar4, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
+plot_historic_UDA_UOA_delivery_treatment_month(data = UDA_treatment_month_non_FD,
+                                               scheduled_data = UDA_scheduled_data, 
+                                               historic_data = historical_UDA_scheduled_data,
+                                               contractor_cats = contractor_categories,
+                                               UDAorUOA = "UDA",
+                                               plotChart = TRUE, 
+                                               all_regions_and_STPs = FALSE,
+                                               include_historic = TRUE,
+                                  level = "Regional",
+                                  region_STP_name = "North West")
+```
+
+* This graph shows the average monthly performance of the **`r get_num_contracts(level = "Regional", region_STP_name = "North West")`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (60% for Apr-Sep 21, 65% for Oct-Dec, 85% for Jan-Mar, 95% for Apr-Jun 22 and 100% going forward).
+
+
+]
+.panel[.panel-name[North East and Yorkshire]
+```{r UDA_activity_Calendar5, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
+plot_historic_UDA_UOA_delivery_treatment_month(data = UDA_treatment_month_non_FD,
+                                               scheduled_data = UDA_scheduled_data, 
+                                               historic_data = historical_UDA_scheduled_data,
+                                               contractor_cats = contractor_categories,
+                                               UDAorUOA = "UDA",
+                                               plotChart = TRUE, 
+                                               all_regions_and_STPs = FALSE,
+                                               include_historic = TRUE,
+                                  level = "Regional",
+                                  region_STP_name = "North East and Yorkshire")
+```
+
+* This graph shows the average monthly performance of the **`r get_num_contracts(level = "Regional", region_STP_name = "North East and Yorkshire")`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (60% for Apr-Sep 21, 65% for Oct-Dec, 85% for Jan-Mar, 95% for Apr-Jun 22 and 100% going forward).
+
+
+]
+.panel[.panel-name[London]
+```{r UDA_activity_Calendar6, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
+plot_historic_UDA_UOA_delivery_treatment_month(data = UDA_treatment_month_non_FD,
+                                               scheduled_data = UDA_scheduled_data, 
+                                               historic_data = historical_UDA_scheduled_data,
+                                               contractor_cats = contractor_categories,
+                                               UDAorUOA = "UDA",
+                                               plotChart = TRUE, 
+                                               all_regions_and_STPs = FALSE,
+                                               include_historic = TRUE,
+                                  level = "Regional",
+                                  region_STP_name = "London")
+```
+
+* This graph shows the average monthly performance of the **`r get_num_contracts(level = "Regional", region_STP_name = "London")`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (60% for Apr-Sep 21, 65% for Oct-Dec, 85% for Jan-Mar, 95% for Apr-Jun 22 and 100% going forward).
+
+
+]
+.panel[.panel-name[Midlands]
+```{r UDA_activity_Calendar7, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
+plot_historic_UDA_UOA_delivery_treatment_month(data = UDA_treatment_month_non_FD,
+                                               scheduled_data = UDA_scheduled_data, 
+                                               historic_data = historical_UDA_scheduled_data,
+                                               contractor_cats = contractor_categories,
+                                               UDAorUOA = "UDA",
+                                               plotChart = TRUE, 
+                                               all_regions_and_STPs = FALSE,
+                                               include_historic = TRUE,
+                                  level = "Regional",
+                                  region_STP_name = "Midlands")
+```
+
+* This graph shows the average monthly performance of the **`r get_num_contracts(level = "Regional", region_STP_name = "Midlands")`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (60% for Apr-Sep 21, 65% for Oct-Dec, 85% for Jan-Mar, 95% for Apr-Jun 22 and 100% going forward).
+
+
+]
+.panel[.panel-name[East of England]
+```{r UDA_activity_Calendar8, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
+plot_historic_UDA_UOA_delivery_treatment_month(data = UDA_treatment_month_non_FD,
+                                               scheduled_data = UDA_scheduled_data, 
+                                               historic_data = historical_UDA_scheduled_data,
+                                               contractor_cats = contractor_categories,
+                                               UDAorUOA = "UDA",
+                                               plotChart = TRUE, 
+                                               all_regions_and_STPs = FALSE,
+                                               include_historic = TRUE,
+                                  level = "Region",
+                                  region_STP_name = "East of England")
+```
+
+* This graph shows the average monthly performance of the **`r get_num_contracts(level = "Regional", region_STP_name = "East of England")`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (60% for Apr-Sep 21, 65% for Oct-Dec, 85% for Jan-Mar, 95% for Apr-Jun 22 and 100% going forward).
+
+]
+]
+
+[Return to contents](#contents)
+
+---
+
 
 name: short-uda-activity-my-cat
 
@@ -3054,7 +3219,7 @@ xaringanExtra::use_panelset()
 
  .panel[.panel-name[National]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
-plot_banded_CoT(data = UDA_scheduled_data,
+plot_banded_CoT_averge_2019(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
                 remove_prototypes = FALSE,
@@ -3067,7 +3232,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
  ]
  .panel[.panel-name[South East]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
-plot_banded_CoT(data = UDA_scheduled_data,
+plot_banded_CoT_averge_2019(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
                 remove_prototypes = FALSE,
@@ -3079,7 +3244,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
  ]
  .panel[.panel-name[South West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
-plot_banded_CoT(data = UDA_scheduled_data,
+plot_banded_CoT_averge_2019(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
                 remove_prototypes = FALSE,
@@ -3091,7 +3256,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
  ]
  .panel[.panel-name[North West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
-plot_banded_CoT(data = UDA_scheduled_data,
+plot_banded_CoT_averge_2019(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
                 remove_prototypes = FALSE,
@@ -3103,7 +3268,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
  ]
  .panel[.panel-name[North East and Yorkshire]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
-plot_banded_CoT(data = UDA_scheduled_data,
+plot_banded_CoT_averge_2019(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
                 remove_prototypes = FALSE,
@@ -3115,7 +3280,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
  ]
 .panel[.panel-name[London]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
-plot_banded_CoT(data = UDA_scheduled_data,
+plot_banded_CoT_averge_2019(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
                 remove_prototypes = FALSE,
@@ -3127,7 +3292,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
  ]
  .panel[.panel-name[Midlands]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
-plot_banded_CoT(data = UDA_scheduled_data,
+plot_banded_CoT_averge_2019(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
                 remove_prototypes = FALSE,
@@ -3140,7 +3305,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
  ]
  .panel[.panel-name[East of England]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
-plot_banded_CoT(data = UDA_scheduled_data,
+plot_banded_CoT_averge_2019(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
                 remove_prototypes = FALSE,
@@ -4016,7 +4181,7 @@ N.B. This analysis now includes all contracts.
 
 name: unique-patients-index
 
-### Unique dental patients seen as a percentage of April 2018 figures
+### Unique dental patients seen as percentage of February 2020 figures
 
 ```{r xaringan-panelset-Unique-patients2, echo=FALSE}
 xaringanExtra::use_panelset()
@@ -4026,7 +4191,7 @@ xaringanExtra::use_panelset()
 
  .panel[.panel-name[National]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_unique_patients_rolling(data = unique_patients_rolling,
+plot_unique_patients_rolling_as_percent_of_feb_20(data = unique_patients_rolling,
                                      
                                      scheduled_data = UDA_scheduled_data,
                                      level = "National",
@@ -4037,13 +4202,13 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
 ```
 
 * The number of unique patients seen in the last 12 months is currently around
-**`r plot_unique_patients_rolling(level = "National",region_STP_name = NULL, plotChart = F,remove_prototypes = FALSE, get_perc = T)` %**
+**`r plot_unique_patients_rolling_as_percent_of_feb_20(level = "National",region_STP_name = NULL, plotChart = F,remove_prototypes = FALSE, get_perc = T)` %**
 of pre-pandemic levels.
 
  ]
  .panel[.panel-name[South East]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_unique_patients_rolling(data = unique_patients_rolling,
+plot_unique_patients_rolling_as_percent_of_feb_20(data = unique_patients_rolling,
                                      
                                      scheduled_data = UDA_scheduled_data,
                                      level = "Regional",
@@ -4054,13 +4219,13 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
 ```
 
 * The number of unique patients seen in the last 12 months is currently around
-**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "South East", plotChart = F,remove_prototypes = FALSE, get_perc = T)` %**
+**`r plot_unique_patients_rolling_as_percent_of_feb_20(level = "Regional",region_STP_name = "South East", plotChart = F,remove_prototypes = FALSE, get_perc = T)` %**
 of pre-pandemic levels.
 
  ]
  .panel[.panel-name[South West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_unique_patients_rolling(data = unique_patients_rolling,
+plot_unique_patients_rolling_as_percent_of_feb_20(data = unique_patients_rolling,
                                      
                                      scheduled_data = UDA_scheduled_data,
                                      level = "Regional",
@@ -4071,13 +4236,13 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
 ```
 
 * The number of unique patients seen in the last 12 months is currently around
-**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "South West", plotChart = F,remove_prototypes = FALSE, get_perc = T)` %**
+**`r plot_unique_patients_rolling_as_percent_of_feb_20(level = "Regional",region_STP_name = "South West", plotChart = F,remove_prototypes = FALSE, get_perc = T)` %**
 of pre-pandemic levels.
 
  ]
  .panel[.panel-name[North West]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_unique_patients_rolling(data = unique_patients_rolling,
+plot_unique_patients_rolling_as_percent_of_feb_20(data = unique_patients_rolling,
                                      
                                      scheduled_data = UDA_scheduled_data,
                                      level = "Regional",
@@ -4088,13 +4253,13 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
 ```
 
 * The number of unique patients seen in the last 12 months is currently around
-**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "North West", plotChart = F,remove_prototypes = FALSE, get_perc = T)` %**
+**`r plot_unique_patients_rolling_as_percent_of_feb_20(level = "Regional",region_STP_name = "North West", plotChart = F,remove_prototypes = FALSE, get_perc = T)` %**
 of pre-pandemic levels.
 
  ]
  .panel[.panel-name[North East and Yorkshire]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_unique_patients_rolling(data = unique_patients_rolling,
+plot_unique_patients_rolling_as_percent_of_feb_20(data = unique_patients_rolling,
                                      
                                      scheduled_data = UDA_scheduled_data,
                                      level = "Regional",
@@ -4105,14 +4270,14 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
 ```
 
 * The number of unique patients seen in the last 12 months is currently around
-**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "North East and Yorkshire", plotChart = F,remove_prototypes = FALSE, get_perc = T)` %**
+**`r plot_unique_patients_rolling_as_percent_of_feb_20(level = "Regional",region_STP_name = "North East and Yorkshire", plotChart = F,remove_prototypes = FALSE, get_perc = T)` %**
 of pre-pandemic levels.
 
 
  ]
 .panel[.panel-name[London]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_unique_patients_rolling(data = unique_patients_rolling,
+plot_unique_patients_rolling_as_percent_of_feb_20(data = unique_patients_rolling,
                                      
                                      scheduled_data = UDA_scheduled_data,
                                      level = "Regional",
@@ -4123,13 +4288,13 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
 ```
 
 * The number of unique patients seen in the last 12 months is currently around
-**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "London", plotChart = F,remove_prototypes = FALSE, get_perc = T)` %**
+**`r plot_unique_patients_rolling_as_percent_of_feb_20(level = "Regional",region_STP_name = "London", plotChart = F,remove_prototypes = FALSE, get_perc = T)` %**
 of pre-pandemic levels.
 
  ]
  .panel[.panel-name[Midlands]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_unique_patients_rolling(data = unique_patients_rolling,
+plot_unique_patients_rolling_as_percent_of_feb_20(data = unique_patients_rolling,
                                      
                                      scheduled_data = UDA_scheduled_data,
                                      level = "Regional",
@@ -4140,13 +4305,13 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
 ```
 
 * The number of unique patients seen in the last 12 months is currently around
-**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "Midlands", plotChart = F,remove_prototypes = FALSE, get_perc = T)` %**
+**`r plot_unique_patients_rolling_as_percent_of_feb_20(level = "Regional",region_STP_name = "Midlands", plotChart = F,remove_prototypes = FALSE, get_perc = T)` %**
 of pre-pandemic levels.
 
  ]
  .panel[.panel-name[East of England]
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_unique_patients_rolling(data = unique_patients_rolling,
+plot_unique_patients_rolling_as_percent_of_feb_20(data = unique_patients_rolling,
                                      
                                      scheduled_data = UDA_scheduled_data,
                                      level = "Regional",
@@ -4157,7 +4322,7 @@ plot_unique_patients_rolling(data = unique_patients_rolling,
 ```
 
 * The number of unique patients seen in the last 12 months is currently around
-**`r plot_unique_patients_rolling(level = "Regional",region_STP_name = "East of England", plotChart = F,remove_prototypes = FALSE, get_perc = T)` %**
+**`r plot_unique_patients_rolling_as_percent_of_feb_20(level = "Regional",region_STP_name = "East of England", plotChart = F,remove_prototypes = FALSE, get_perc = T)` %**
 of pre-pandemic levels.
 
  ]

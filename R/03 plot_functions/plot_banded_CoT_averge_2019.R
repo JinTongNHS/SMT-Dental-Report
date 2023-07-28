@@ -63,7 +63,7 @@ plot_banded_CoT_averge_2019 <- function(data = UDA_scheduled_data,
     #   left_join(data2019, by = c("band", "month_number")) %>%
     #   mutate(CoTs = CoTs * 100 / CoTs_2019)
     
-    title <- "Banded Courses of Treatment as a Percentage of Average Delivery of 2019"
+    title <- "Banded Courses of Treatment as Percentage of Average Delivery of 2019"
     ylab <- "Percentage of 2019 FP17* forms submitted"
     
   }else{
