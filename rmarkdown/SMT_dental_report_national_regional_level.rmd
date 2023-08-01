@@ -66,6 +66,17 @@ UOA_scheduled_data <- mutate(UOA_scheduled_data, month = as.Date(month))
 #sort out STP ICB changes
 STP_ICB_lookup_codes <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/STP_ICB_lookup_codes.xlsx")
 
+# Treatment Month Data
+UDA_treatment_month_FD <- read_csv("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/new_treatment_month_data/UDA_treatment_month_FD_Apr23_May23.csv") #####put in shared folder
+UDA_treatment_month_non_FD <- read_csv("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/new_treatment_month_data/UDA_treatment_month_non_FD_Apr23_May23.csv")
+
+UDA_treatment_month_FD <- clean_treatment_month_columns(UDA_treatment_month_FD)
+UDA_treatment_month_non_FD <- clean_treatment_month_columns(UDA_treatment_month_non_FD)
+
+
+#sort out STP ICB changes
+STP_ICB_lookup_codes <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/STP_ICB_lookup_codes.xlsx")
+
 #Read local 111 file
 dental_data_111 <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/111_pathways_data/dental_data_111.xlsx")
 
@@ -572,14 +583,14 @@ name: short-uda-activity-treatment-data
 
 ### Historic UDA activity- Treatment Data
 
-```{r xaringan-panelset-UDA-activity, echo=FALSE}
+```{r xaringan-panelset-UDA-activity-historic, echo=FALSE}
 xaringanExtra::use_panelset()
 ```
  <font size="2">
 .panelset[
 
 .panel[.panel-name[National]
-```{r UDA_activity_Calendar1, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
+```{r UDA_activity_Calendar11, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
 plot_historic_UDA_UOA_delivery_treatment_month(data = UDA_treatment_month_non_FD,
                                                scheduled_data = UDA_scheduled_data, 
                                                historic_data = historical_UDA_scheduled_data,
@@ -597,7 +608,7 @@ plot_historic_UDA_UOA_delivery_treatment_month(data = UDA_treatment_month_non_FD
 
 ]
 .panel[.panel-name[South East]
-```{r UDA_activity_Calendar2, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
+```{r UDA_activity_Calendar21, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
 plot_historic_UDA_UOA_delivery_treatment_month(data = UDA_treatment_month_non_FD,
                                                scheduled_data = UDA_scheduled_data, 
                                                historic_data = historical_UDA_scheduled_data,
@@ -615,7 +626,7 @@ plot_historic_UDA_UOA_delivery_treatment_month(data = UDA_treatment_month_non_FD
 
 ]
 .panel[.panel-name[South West]
-```{r UDA_activity_Calendar3, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
+```{r UDA_activity_Calendar31, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
 plot_historic_UDA_UOA_delivery_treatment_month(data = UDA_treatment_month_non_FD,
                                                scheduled_data = UDA_scheduled_data, 
                                                historic_data = historical_UDA_scheduled_data,
@@ -633,7 +644,7 @@ plot_historic_UDA_UOA_delivery_treatment_month(data = UDA_treatment_month_non_FD
 
 ]
 .panel[.panel-name[North West]
-```{r UDA_activity_Calendar4, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
+```{r UDA_activity_Calendar41, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
 plot_historic_UDA_UOA_delivery_treatment_month(data = UDA_treatment_month_non_FD,
                                                scheduled_data = UDA_scheduled_data, 
                                                historic_data = historical_UDA_scheduled_data,
@@ -651,7 +662,7 @@ plot_historic_UDA_UOA_delivery_treatment_month(data = UDA_treatment_month_non_FD
 
 ]
 .panel[.panel-name[North East and Yorkshire]
-```{r UDA_activity_Calendar5, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
+```{r UDA_activity_Calendar51, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
 plot_historic_UDA_UOA_delivery_treatment_month(data = UDA_treatment_month_non_FD,
                                                scheduled_data = UDA_scheduled_data, 
                                                historic_data = historical_UDA_scheduled_data,
@@ -669,7 +680,7 @@ plot_historic_UDA_UOA_delivery_treatment_month(data = UDA_treatment_month_non_FD
 
 ]
 .panel[.panel-name[London]
-```{r UDA_activity_Calendar6, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
+```{r UDA_activity_Calendar61, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
 plot_historic_UDA_UOA_delivery_treatment_month(data = UDA_treatment_month_non_FD,
                                                scheduled_data = UDA_scheduled_data, 
                                                historic_data = historical_UDA_scheduled_data,
@@ -687,7 +698,7 @@ plot_historic_UDA_UOA_delivery_treatment_month(data = UDA_treatment_month_non_FD
 
 ]
 .panel[.panel-name[Midlands]
-```{r UDA_activity_Calendar7, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
+```{r UDA_activity_Calendar71, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
 plot_historic_UDA_UOA_delivery_treatment_month(data = UDA_treatment_month_non_FD,
                                                scheduled_data = UDA_scheduled_data, 
                                                historic_data = historical_UDA_scheduled_data,
@@ -705,7 +716,7 @@ plot_historic_UDA_UOA_delivery_treatment_month(data = UDA_treatment_month_non_FD
 
 ]
 .panel[.panel-name[East of England]
-```{r UDA_activity_Calendar8, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
+```{r UDA_activity_Calendar81, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
 plot_historic_UDA_UOA_delivery_treatment_month(data = UDA_treatment_month_non_FD,
                                                scheduled_data = UDA_scheduled_data, 
                                                historic_data = historical_UDA_scheduled_data,

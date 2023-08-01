@@ -12,6 +12,7 @@ output:
 sansfont: Calibri Light
 fontsize: 8pt
 classoption: aspectratio = 169
+##always_allow_html: true
 ---
 
 
@@ -163,14 +164,16 @@ knitr::opts_chunk$set(echo = FALSE)
  * 111 call volumes
  * Unique patients seen rolling 12 months
  * Unique patients seen rolling 12 months as % of April 2018 delivery
- * Number of new patients
- * Percentage of practices seeing new patients
+ 
+
 
 
 
 ## Contents 2
 
- * Patient re-attendance intervals
+  * Number of new patients
+  * Percentage of practices seeing new patients
+  * Patient re-attendance intervals
  <!-- * Community Dental Services (CDS) Patients waiting for assessment -->
  <!-- * CDS Patients waiting for treatment -->
  <!-- * CDS Patients waiting for assessment -->
@@ -236,15 +239,8 @@ plot_UDA_UOA_delivery(data = UDA_scheduled_data,
 
 * When June (2023) delivery is scaled by the number of working days in the schedule delivery is 83% of expected UDAs delivered.
 
-### Historic UDA activity- Treatment Data
+## Historic UDA activity- Treatment Data
 
-```{r xaringan-panelset-UDA-activity, echo=FALSE}
-xaringanExtra::use_panelset()
-```
- <font size="2">
-.panelset[
-
-.panel[.panel-name[National]
 ```{r UDA_activity_Calendar11, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
 plot_historic_UDA_UOA_delivery_treatment_month(data = UDA_treatment_month_non_FD,
                                                scheduled_data = UDA_scheduled_data, 
