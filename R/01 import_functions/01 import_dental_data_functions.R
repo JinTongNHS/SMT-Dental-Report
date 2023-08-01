@@ -6,7 +6,7 @@ library(odbc)
 
 
 ################################################################################
-import_and_clean_unique_patients_data <- function(data_path = "N:/_Everyone/Primary Care Group/SMT_Dental DENT 2023_23-008/unique_patients/",
+import_and_clean_unique_patients_data <- function(data_path = "N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/unique_patients/",
                                                   commissioner_lookup = STP_ICB_lookup_codes){
   
   # Gets last month 
