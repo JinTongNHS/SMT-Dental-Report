@@ -117,9 +117,9 @@ upload_unique_patients_data(unique_patients = unique_patients_latest)
 
 
 
-upload_delivery_metrics()
+upload_delivery_metrics()## manul run if needed get_delivery_data_calendar.R, get_delivery_data.R
 update_SOF_table_S109()
-upload_unique_patients_metric()
+upload_unique_patients_metric()##manul run plot_unique_patients_rolling.R
 
 #save spreadsheet of SOF metric in shared location
 source("R/02 format_data_functions/pull_PCDID_data.R")
