@@ -24,7 +24,7 @@ library(odbc)
 library(reactable) #make sure you have the latest version by doing install.packages("reactable")
 library(downloadthis)
 library(lubridate)
-
+library(ggside)
 #source in all file from plot folder
 for (f in list.files(path = "../R/03 plot_functions/", pattern="*.R$")) {
     source(paste0("../R/03 plot_functions/", f))
@@ -232,7 +232,6 @@ contracts measured against the expected monthly total activity to achieve the qu
 contracts (
 **`r round(get_quarterly_num_contracts_on_target(level = "National", region_STP_name = NULL)*100/get_num_contracts(level = "National", region_STP_name = NULL))` %**
 ) have delivered the required UDAs or more to be on track towards the Q4 threshold (100%) by the end of March 2023.
-
 ]
 ]
 

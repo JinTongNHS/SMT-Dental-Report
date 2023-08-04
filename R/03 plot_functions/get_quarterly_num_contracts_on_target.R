@@ -59,9 +59,15 @@ get_quarterly_num_contracts_on_target <- function(data = UDA_scheduled_data,
   if(max(data$month) == as.Date("2023-05-01")){
     month_factor <- 2
   }
+  if(max(data$month) == as.Date("2023-07-01")){
+    month_factor <- 4
+  }
   if(max(data$month) == as.Date("2023-06-01")){
     month_factor <- 3
   }
+  
+  
+  
   
   if(UDAorUOA == "UDA"){
     #count number of contracts meeting target

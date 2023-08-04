@@ -65,7 +65,8 @@ plot_BPE_no_oral_health_risk <- function(data = BPE_data,
     mutate (percent_low_risk_whic_are1_year = 
               formattable::percent (low_risk_less1year/nlow_risk, digits =0)) %>% 
     mutate (percentlowrisk= formattable::percent (nlow_risk/ compYear_Monthe_forms, digits =0) ) %>% 
-    filter(!is.na(percent_low_risk_whic_are1_year))
+    filter(!is.na(percent_low_risk_whic_are1_year)) %>% 
+    filter (percent_low_risk_whic_are1_year<2)
   
    p_meds <- data %>% 
     group_by(Year_Month) %>% 
