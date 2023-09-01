@@ -61,12 +61,15 @@ plot_cumulative_UDA_UOA_to_target <- function(data = UDA_scheduled_data,
   if(all_regions_and_STPs == FALSE & nrow(data) < 28){
 
     
-    if(!(as.Date("2023-05-01") %in% data$month)){
-      data <- data %>% add_row(month = as.Date("2023-05-01"))
-    }
+    # if(!(as.Date("2023-05-01") %in% data$month)){
+    #   data <- data %>% add_row(month = as.Date("2023-05-01"))
+    # }
     
     if(!(as.Date("2023-06-01") %in% data$month)){
       data <- data %>% add_row(month = as.Date("2023-06-01"))
+    }
+    if(!(as.Date("2023-07-01") %in% data$month)){
+      data <- data %>% add_row(month = as.Date("2023-07-01"))
     }
   }
   
@@ -83,7 +86,8 @@ plot_cumulative_UDA_UOA_to_target <- function(data = UDA_scheduled_data,
                                          month < as.Date("2022-10-01") ~ "Jul-Sep (Q2 22/23)",
                                          month < as.Date("2023-01-01") ~ "Oct-Dec (Q3 22/23)",
                                          month < as.Date("2023-04-01") ~ "Jan-Mar (Q4 22/23)",
-                                         month < as.Date("2023-07-01") ~ "Apr-Jun (Q1 23/24)"
+                                         month < as.Date("2023-07-01") ~ "Apr-Jun (Q1 23/24)",
+                                         month < as.Date("2023-10-01") ~ "Jul-Sep (Q2 23/24)"
                                          ))
   
   data$financial_quarter <- factor(data$financial_quarter,
@@ -95,7 +99,9 @@ plot_cumulative_UDA_UOA_to_target <- function(data = UDA_scheduled_data,
                                               "Jul-Sep (Q2 22/23)",
                                               "Oct-Dec (Q3 22/23)",
                                               "Jan-Mar (Q4 22/23)",
-                                              "Apr-Jun (Q1 23/24)"))
+                                              "Apr-Jun (Q1 23/24)",
+                                              "Jul-Sep (Q2 23/24)"
+                                              ))
   
   
   if(all_regions_and_STPs == FALSE){
@@ -113,17 +119,21 @@ plot_cumulative_UDA_UOA_to_target <- function(data = UDA_scheduled_data,
                                                                         0,
                                                                         cumulative_perc_of_contracted_UDA_UOAs_delivered)) %>%
       mutate(target = c(
-        rep(seq(from = septemberTarget/3, to = septemberTarget, length.out = 3),2),
-        seq(from = decemberTarget/3, to = decemberTarget, length.out = 3),
-        seq(from = marchTarget/3, to = marchTarget, length.out = 3),
-        seq(from = juneTarget/3, to = juneTarget, length.out = 3),
-        seq(from = 100/3, to = 100, length.out = 3),
-        seq(from = 100/3, to = 100, length.out = 3),
-        seq(from = 100/3, to = 100, length.out = 3),
-        seq(from = 100/3, to = 100, length.out = 3)
+        rep(seq(from = 100/3, to = 100, length.out = 3),9),
+        seq(from = 100/3, to = 100, length.out = 1)
+          #seq(from = septemberTarget/3, to = septemberTarget, length.out = 4)),
+        # seq(from = decemberTarget/3, to = decemberTarget, length.out = 3),
+        # seq(from = marchTarget/3, to = marchTarget, length.out = 3),
+        # seq(from = juneTarget/3, to = juneTarget, length.out = 3),
+        # # 
+        # seq(from = 100/3, to = 100, length.out = 3),
+        # seq(from = 100/3, to = 100, length.out = 3),
+        # seq(from = 100/3, to = 100, length.out = 3),
+        # seq(from = 100/3, to = 100, length.out = 3),
+        # seq(from = 100/3, to = 100, length.out = 3)
       )
       ) %>%
-      filter(month >= as.Date("2022-04-01"))
+      filter(month >= as.Date("2022-07-01"))
     
   }else{
     #cumulative sum column
@@ -151,13 +161,13 @@ plot_cumulative_UDA_UOA_to_target <- function(data = UDA_scheduled_data,
                      colour = financial_quarter),
                  shape = 4,
                  size = 3) +
-      geom_vline(xintercept = as.Date("2022-06-01") + lubridate::days(15),
-                 linetype = "dotted") +
       geom_vline(xintercept = as.Date("2022-09-01") + lubridate::days(15),
                  linetype = "dotted") +
       geom_vline(xintercept = as.Date("2022-12-01") + lubridate::days(15),
                  linetype = "dotted") +
       geom_vline(xintercept = as.Date("2023-03-01") + lubridate::days(15),
+                 linetype = "dotted") +
+      geom_vline(xintercept = as.Date("2023-06-01") + lubridate::days(15),
                  linetype = "dotted") +
       annotate(geom = "text",
                x = data_to_plot$month,

@@ -12,6 +12,7 @@ output:
 sansfont: Calibri Light
 fontsize: 8pt
 classoption: aspectratio = 169
+##always_allow_html: true
 ---
 
 
@@ -54,13 +55,22 @@ UOA_calendar_data <- UOA_calendar_data %>%
   mutate(contract_number = as.numeric(contract_number),
          UOA_total = as.numeric(UOA_total)) 
 
-    
+#sort out STP ICB changes
+STP_ICB_lookup_codes <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/STP_ICB_lookup_codes.xlsx")
+
 # UOA_calendar_data <- left_join( region_STP_lookup, by = c("contract_number", "name_or_company_name", "commissioner_name"))
 UDA_scheduled_data <- rename(UDA_scheduled_data, month = data_month)
 UOA_scheduled_data <- rename(UOA_scheduled_data, month = data_month)
 
 UDA_scheduled_data <- mutate(UDA_scheduled_data, month = as.Date(month))
 UOA_scheduled_data <- mutate(UOA_scheduled_data, month = as.Date(month))
+
+# Treatment Month Data
+UDA_treatment_month_FD <- read_csv("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/new_treatment_month_data/UDA_treatment_month_FD_Apr23_May23.csv") #####put in shared folder
+UDA_treatment_month_non_FD <- read_csv("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/new_treatment_month_data/UDA_treatment_month_non_FD_Apr23_May23.csv")
+
+UDA_treatment_month_FD <- clean_treatment_month_columns(UDA_treatment_month_FD)
+UDA_treatment_month_non_FD <- clean_treatment_month_columns(UDA_treatment_month_non_FD)
 
 #sort out STP ICB changes
 STP_ICB_lookup_codes <- read_excel("N:/_Everyone/Primary Care Group/SMT_Dental DENT 2022_23-008/data_for_monthly_report/STP_ICB_lookup_codes.xlsx")
@@ -135,6 +145,7 @@ knitr::opts_chunk$set(echo = FALSE)
 #### Dental
  * Table of number of contracts by MY category
  * UDA activity
+ * Historic UDA activity- Treatment Data
  * UDA activity by MY category
  * Cumulative UDA delivery per quarter
  * YTD UDA delivery
@@ -153,18 +164,20 @@ knitr::opts_chunk$set(echo = FALSE)
  * 111 call volumes
  * Unique patients seen rolling 12 months
  * Unique patients seen rolling 12 months as % of April 2018 delivery
- * Number of new patients
- * Percentage of practices seeing new patients
+ 
+
 
 
 
 ## Contents 2
 
- * Patient re-attendance intervals
- * Community Dental Services (CDS) Patients waiting for assessment
- * CDS Patients waiting for treatment
- * CDS Patients waiting for assessment
- * CDS Patients waiting for treatment
+  * Number of new patients
+  * Percentage of practices seeing new patients
+  * Patient re-attendance intervals
+ <!-- * Community Dental Services (CDS) Patients waiting for assessment -->
+ <!-- * CDS Patients waiting for treatment -->
+ <!-- * CDS Patients waiting for assessment -->
+ <!-- * CDS Patients waiting for treatment -->
  * Contract closures based on PCAR report
  * De-commissioned and re-commissioned UDAs and UOAs as a result of closure based on PCAR
  * Total annual contracted UDAs trend
@@ -187,7 +200,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ## Calendar and scheduled data
 
-All analyses in this report now only use **scheduled data**. 
+All analyses in this report now only use **scheduled data** except historic UDA activity plot uses **treatment data**. 
 
 #### Calendar data explanation
 
@@ -224,7 +237,26 @@ plot_UDA_UOA_delivery(data = UDA_scheduled_data,
 * This graph shows the average monthly performance of the **`r get_num_contracts(level = "National", region_STP_name = NULL)`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (60% for Apr-Sep 21, 65% for Oct-Dec, 85% for Jan-Mar, 95% for Apr-Jun 22 and 100% going forward).
 
 
-* When June (2023) delivery is scaled by the number of working days in the schedule delivery is 83% of expected UDAs delivered.
+* When July (2023) delivery is scaled by the number of working days in the schedule delivery is 81% of expected UDAs delivered.
+
+## Historic UDA activity- Treatment Data
+
+```{r UDA_activity_Calendar11, echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5, fig.align='center'}
+plot_historic_UDA_UOA_delivery_treatment_month(data = UDA_treatment_month_non_FD,
+                                               scheduled_data = UDA_scheduled_data, 
+                                               historic_data = historical_UDA_scheduled_data,
+                                               contractor_cats = contractor_categories,
+                                               UDAorUOA = "UDA",
+                                               level = "National",
+                                               region_STP_name = NULL,
+                                               plotChart = TRUE, 
+                                               all_regions_and_STPs = FALSE,
+                                               include_historic = TRUE)
+```
+
+* This graph shows the average monthly performance of the **`r get_num_contracts(level = "National", region_STP_name = NULL)`** GDS/PDS/PDS+ contracts scaled up by 12 months measured against the delivery thresholds (60% for Apr-Sep 21, 65% for Oct-Dec, 85% for Jan-Mar, 95% for Apr-Jun 22 and 100% going forward).
+
+
 
 ## UDA activity data by MY Category
 #### Prototypes and contracts with annual contracted UDAs < 100 included
@@ -451,7 +483,7 @@ plot_banded_CoT(data = UDA_scheduled_data,
 ## Banded Courses of Treatment as % of 2019 delivery
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, , fig.width=14, fig.height=5}
-plot_banded_CoT(data = UDA_scheduled_data,
+plot_banded_CoT_averge_2019(data = UDA_scheduled_data,
                 
                 historic_data = historical_UDA_scheduled_data,
                 remove_prototypes = FALSE,
@@ -540,8 +572,6 @@ The boxplot for **`r format(plot_BPE_no_oral_health_risk(level = "National", reg
 
 ---
 
-name: unique-patients
-
 ### Unique dental patients seen
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
@@ -561,10 +591,10 @@ of pre-pandemic levels.
 N.B. This analysis now includes all contracts.
 
 
-## Unique dental patients seen as a percentage of April 2018 figures
+## Unique dental patients seen as a percentage of February 2020 figures
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE, fig.width=14, fig.height=5}
-plot_unique_patients_rolling(data = unique_patients_rolling,
+plot_unique_patients_rolling_as_percent_of_feb_20(data = unique_patients_rolling,
                                      
                                      scheduled_data = UDA_scheduled_data,
                                      level = "National",
